@@ -1,0 +1,13 @@
+{
+    "name": "DealerSale",
+    "alias": "dealersale",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\DealerSale\\Providers\\DealerSaleServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

@@ -1,0 +1,13 @@
+{
+    "name": "DealerPanel",
+    "alias": "dealerpanel",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\DealerPanel\\Providers\\DealerPanelServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
