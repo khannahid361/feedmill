@@ -273,9 +273,12 @@ class SaleController extends BaseController{
             DB::beginTransaction();
             try{
                 $sale = $this->model->with('SaleProductList')->find($request->id);
+
                 if($request->sale_status == 2) {
                     $customer              = Customer::find($sale->customer_id);
+
                     $customerAccountId     = ChartOfAccount::where(['customer_id' => $sale->customer_id])->first();
+//                    return response()->json($customerAccountId);
                     $paymentData = [
                         'payment_method' => $sale->payment_method ? $sale->payment_method : null,
                         'account_id'     => $sale->account_id ? $sale->account_id : null,
@@ -390,13 +393,16 @@ class SaleController extends BaseController{
     private function customerAccounts($customerAccountId,$invoiceNo,$saleDate,$customerName,$grandTotal,$totalTax,$paymentData){
         $productSaleChartOfAccountId               = DB::table('chart_of_accounts')->where('code', $this->coa_head_code('product_sale'))->value('id');
         $taxChartOfAccountId                       = DB::table('chart_of_accounts')->where('code', $this->coa_head_code('tax'))->value('id');
-        $saleChartOfAccountTransaction             = collect(['chart_of_account_id' => $customerAccountId,'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
+        $saleChartOfAccountTransaction             = collect(['chart_of_account_id' => $customerAccountId->customer_id,'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
             'description' => 'Customer debit For Invoice No -  ' . $invoiceNo . ' Customer ' .$customerName,'debit' => $grandTotal,
             'credit' => 0,'posted' => 1,'approve' => 1,'created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s')]);
+
         $productSaleChartOfAccountTransaction      = collect(['chart_of_account_id' => $productSaleChartOfAccountId,'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
             'description' => 'Sale Income For Invoice NO - ' . $invoiceNo . ' Customer ' .$customerName,'debit' => 0,'credit' => $grandTotal,
             'posted' => 1,'approve' => 1,'created_by' => auth()->user()->name, 'created_at' => date('Y-m-d H:i:s')]);
+//        return response()->json($saleChartOfAccountTransaction);
         Transaction::insert([$saleChartOfAccountTransaction->all(),$productSaleChartOfAccountTransaction->all()]);
+
         if($totalTax > 0){
             $taxChartOfAccountTransaction              = collect(['chart_of_account_id' => $taxChartOfAccountId,'voucher_no' => $invoiceNo, 'voucher_type' => 'INVOICE', 'voucher_date' => $saleDate,
                 'description' => 'Sale Total Tax For Invoice NO - ' . $invoiceNo . ' Customer ' .$customerName,'debit' => $totalTax,'credit' => 0,'posted' => 1,
@@ -404,7 +410,7 @@ class SaleController extends BaseController{
             Transaction::insert($taxChartOfAccountTransaction->all());
         }
         if(!empty($paymentData['paid_amount'])){
-            $customerCredit                            = collect(['chart_of_account_id' => $customerAccountId,'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
+            $customerCredit                            = collect(['chart_of_account_id' => $customerAccountId->customer_id,'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
                 'description' => 'Customer credit for Paid Amount For Customer Invoice NO- ' . $invoiceNo . ' Customer- ' . $customerName,'debit' => 0,
                 'credit' => $paymentData['paid_amount'],'posted' => 1,'approve' => 1,'Created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s') ]);
             if($paymentData['payment_method'] == 1){

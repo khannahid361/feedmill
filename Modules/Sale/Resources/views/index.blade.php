@@ -29,13 +29,7 @@
                                 <input type="hidden" id="end_date" name="end_date">
                             </div>
                         </div>
-{{--                        <x-form.selectbox labelName="Order Received By" name="salesmen_id" col="col-md-4" class="selectpicker">--}}
-{{--                            @if (!$salesmen->isEmpty())--}}
-{{--                                @foreach ($salesmen as $value)--}}
-{{--                                    <option value="{{ $value->id }}">{{ $value->name.' - '.$value->phone }}</option>--}}
-{{--                                @endforeach--}}
-{{--                            @endif--}}
-{{--                        </x-form.selectbox>--}}
+
                         <x-form.selectbox labelName="Customer" name="customer_id" col="col-md-4" class="selectpicker">
                             @if (!$customer->isEmpty())
                                 @foreach ($customer as $value)

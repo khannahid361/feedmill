@@ -35,11 +35,11 @@
                                     <input type="text" class="fcs form-control date" name="sale_date" id="sale_date" value="<?php echo e(date('Y-m-d')); ?>" readonly />
                                 </div>
                                 <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Customer','name' => 'customer_id','col' => 'col-md-3','class' => 'fcs']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Customer','name' => 'customer_id','col' => 'col-md-3','class' => 'fcs selectpicker']]); ?>
 <?php $component->withName('form.selectbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Customer','name' => 'customer_id','col' => 'col-md-3','class' => 'fcs']); ?>
+<?php $component->withAttributes(['labelName' => 'Customer','name' => 'customer_id','col' => 'col-md-3','class' => 'fcs selectpicker']); ?>
                                     <?php if(!$customer->isEmpty()): ?>
                                         <?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <option value="<?php echo e($value->id); ?>"><?php echo e($value->name); ?></option>
@@ -540,6 +540,7 @@
             order_tax = (subtotal - order_discount) * (order_tax / 100);
             var grand_total = (subtotal + order_tax + shipping_cost + labor_cost) - order_discount;
             var previous_due = parseFloat($('#previous_due').val());
+            console.log(previous_due);
             var net_total = grand_total + previous_due;
             var total_commission = (subtotal - order_discount);
             $('#item').text(item);

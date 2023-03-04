@@ -35,7 +35,7 @@
                                     <label for="sale_date">Sale Date</label>
                                     <input type="text" class="fcs form-control date" name="sale_date" id="sale_date" value="{{ date('Y-m-d') }}" readonly />
                                 </div>
-                                <x-form.selectbox labelName="Customer" name="customer_id" col="col-md-3" class="fcs">
+                                <x-form.selectbox labelName="Customer" name="customer_id" col="col-md-3" class="fcs selectpicker">
                                     @if (!$customer->isEmpty())
                                         @foreach ($customer as $value)
                                             <option value="{{ $value->id }}">{{ $value->name}}</option>
@@ -490,6 +490,7 @@
             order_tax = (subtotal - order_discount) * (order_tax / 100);
             var grand_total = (subtotal + order_tax + shipping_cost + labor_cost) - order_discount;
             var previous_due = parseFloat($('#previous_due').val());
+            console.log(previous_due);
             var net_total = grand_total + previous_due;
             var total_commission = (subtotal - order_discount);
             $('#item').text(item);
