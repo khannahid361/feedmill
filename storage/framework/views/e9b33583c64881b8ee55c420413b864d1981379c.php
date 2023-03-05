@@ -222,36 +222,51 @@
                                     <input type="hidden" name="grand_total" value="<?php echo e($sale->grand_total); ?>">
                                     <input type="hidden" name="total_commission" id="total_commission" value="<?php echo e($sale->total_commission); ?>">
                                 </div>
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
+                                <div class="payment col-md-12 <?php if($sale->payment_status == 3): ?> d-none <?php endif; ?>">
+                                    <div class="row">
+                                        <div class="form-group col-md-4 required">
+                                            <label for="previous_due">Previous Due</label>
+                                            <input type="text" class="form-control" name="previous_due" id="previous_due" value="<?php echo e($sale->previous_due); ?>" readonly>
+                                        </div>
+                                        <div class="form-group col-md-4 required">
+                                            <label for="net_total">Net Total</label>
+                                            <input type="text" class="form-control" name="net_total" id="net_total" value="<?php echo e(($sale->grand_total + $sale->previous_due)); ?>" readonly>
+                                        </div>
+                                        <div class="form-group col-md-4 required">
+                                            <label for="paid_amount">Paid Amount</label>
+                                            <input type="text" class="form-control" name="paid_amount" id="paid_amount" value="<?php echo e($sale->paid_amount); ?>">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="due_amount">Due Amount</label>
+                                            <input type="text" class="form-control" name="due_amount" id="due_amount" value="<?php echo e($sale->due_amount); ?>" readonly>
+                                        </div>
+
+
+
+
+
+
+                                        <div class="form-group col-md-4">
+                                            <label for="payment_method"><?php echo e(__('Payment Method')); ?></label>
+                                            <select class="form-control payment_method" id="payment_method" name="payment_method" onchange="paymentMethod()">
+                                                <option value=""><?php echo e(__('Please Select')); ?></option>
+                                                <?php $__currentLoopData = SALE_PAYMENT_METHOD; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value="<?php echo e($key); ?>" <?php if($key == $sale->payment_method): ?> selected="selected" <?php endif; ?>><?php echo e($value); ?></option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="account_id"><?php echo e(__('Account')); ?></label>
+                                            <select class="form-control" id="account_id" name="account_id">
+                                                <option value="<?php echo e($sale->account->id); ?>"><?php echo e($sale->account->name); ?></option>
+                                            </select>
+                                        </div>
+
+
+
+
+                                    </div>
+                                </div>
                                 <div class="form-group col-md-12 text-center pt-5">
                                     
                                     <button type="button" class="btn btn-primary btn-sm mr-3" id="save-btn" onclick="update_data()"><i class="fas fa-save"></i> Update</button>
@@ -413,7 +428,7 @@
                             <select name="products[${count}][pro_id]" id="product_list_${count}" class="fcs selectpicker col-md-12  products-alls product_details_${count} form-control" onchange="getProductDetails(this,${count})" data-live-search="true" data-row="${count}">
                             <?php if(!$products->isEmpty()): ?>
                 <option value="0">Please Select</option>
-<?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <option value="<?php echo e($product->product_id); ?>"><?php echo e($product->name); ?></option>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 <?php endif; ?>
@@ -705,6 +720,41 @@
             }
             $('#due_amount').val((payable_amount - parseFloat($('#paid_amount').val())).toFixed(2));
         });
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        function paymentMethod(){
+            let paymentMethod =  $('#payment_method').find('option:selected').val();
+            if(paymentMethod != ''){
+                $.ajax({
+                    url       : "<?php echo e(url('payment-account-list')); ?>/" + paymentMethod,
+                    type      : 'GET',
+                    dataType  : 'JSON',
+                    success   : function(data){
+                        if(data != ''){
+                            html = `<option value="">Select Please</option>`;
+                            $.each(data, function(key, value) { html += '<option value="'+ value.id +'">'+ value.name +'</option>'; });
+                            $('#account_id').empty();
+                            $('#account_id').append(html);
+                           var s = $('#account_id').val(<?php echo e($sale->account_id); ?>);
+                            console.log(s);
+                            $('.selectpicker').selectpicker('refresh');
+                        }
+                    }
+                })
+            }
+        }
         function update_data(){
             var rownumber = $('table#product_table tbody tr:last').index();
             if (rownumber < 0) {

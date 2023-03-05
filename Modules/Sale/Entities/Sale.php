@@ -4,6 +4,7 @@ namespace Modules\Sale\Entities;
 
 use App\Models\BaseModel;
 use Illuminate\Support\Facades\DB;
+use Modules\Account\Entities\ChartOfAccount;
 use Modules\Location\Entities\Area;
 use Modules\Location\Entities\Route;
 use Modules\Product\Entities\Product;
@@ -30,12 +31,15 @@ class Sale extends BaseModel{
     public function route(){
         return $this->belongsTo(Route::class,'route_id','id');
     }
-    public function area(){
-        return $this->belongsTo(Area::class,'area_id','id');
+    public function account(){
+        return $this->belongsTo(ChartOfAccount::class,'account_id','id');
     }
-    public function salesmen(){
-        return $this->belongsTo(Salesmen::class,'salesmen_id','id');
-    }
+//    public function area(){
+//        return $this->belongsTo(Area::class,'area_id','id');
+//    }
+//    public function salesmen(){
+//        return $this->belongsTo(Salesmen::class,'salesmen_id','id');
+//    }
     public function customer(){
         return $this->belongsTo(Customer::class,'customer_id','id');
     }

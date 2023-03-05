@@ -21,11 +21,6 @@
                                 <input type="text" class="form-control" value="{{$details->customer->name}}"/>
                                 <input type="hidden" id="customer_id" name="customer_id" value="{{$details->customer->id}}"/>
                             </div>
-{{--                            <div class="form-group col-md-6 required">--}}
-{{--                                <label for="customer">{{'Sale\'s Person'}}</label>--}}
-{{--                                <input type="text" class="form-control" value="{{$details->salesmen->name}}"/>--}}
-{{--                                <input type="hidden" id="salesmen_id" name="salesmen_id" value="{{$details->salesmen->id}}"/>--}}
-{{--                            </div>--}}
                             <div class="form-group col-md-6 required">
                                 <label for="tenant_id">{{'Warehouse'}}</label>
                                 <select class="form-control selectpicker" id="warehouse_id" name="warehouse_id" data-live-search="true">

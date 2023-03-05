@@ -220,6 +220,8 @@ class SaleController extends BaseController{
                 'sale'         => $this->model->with('sale_products','customer')->find($id),
                 'taxes'        => Tax::activeTaxes(),
             ];
+
+//            return response()->json($data);
             return view('sale::edit',$data);
         }else{
             return $this->access_blocked();
@@ -390,10 +392,11 @@ class SaleController extends BaseController{
             return response()->json($this->unauthorized());
         }
     }
+
     private function customerAccounts($customerAccountId,$invoiceNo,$saleDate,$customerName,$grandTotal,$totalTax,$paymentData){
         $productSaleChartOfAccountId               = DB::table('chart_of_accounts')->where('code', $this->coa_head_code('product_sale'))->value('id');
         $taxChartOfAccountId                       = DB::table('chart_of_accounts')->where('code', $this->coa_head_code('tax'))->value('id');
-        $saleChartOfAccountTransaction             = collect(['chart_of_account_id' => $customerAccountId->customer_id,'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
+        $saleChartOfAccountTransaction             = collect(['chart_of_account_id' => $customerAccountId->id,'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
             'description' => 'Customer debit For Invoice No -  ' . $invoiceNo . ' Customer ' .$customerName,'debit' => $grandTotal,
             'credit' => 0,'posted' => 1,'approve' => 1,'created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s')]);
 
@@ -410,7 +413,7 @@ class SaleController extends BaseController{
             Transaction::insert($taxChartOfAccountTransaction->all());
         }
         if(!empty($paymentData['paid_amount'])){
-            $customerCredit                            = collect(['chart_of_account_id' => $customerAccountId->customer_id,'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
+            $customerCredit                            = collect(['chart_of_account_id' => $customerAccountId->id,'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
                 'description' => 'Customer credit for Paid Amount For Customer Invoice NO- ' . $invoiceNo . ' Customer- ' . $customerName,'debit' => 0,
                 'credit' => $paymentData['paid_amount'],'posted' => 1,'approve' => 1,'Created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s') ]);
             if($paymentData['payment_method'] == 1){
@@ -431,5 +434,16 @@ class SaleController extends BaseController{
             'description' => 'Inventory Credit For Invoice No '.$invoiceNo,'debit' => 0,'credit' => $cost, 'posted'  => 1,
             'approve' => 1,'created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s')]);
         Transaction::insert($inventory->all());
+    }
+
+    public function paymentAccountList($id){
+        if($id == 1) {
+            $accounts = ChartOfAccount::where(['code' =>  $this->coa_head_code('cash_in_hand'),'status'=>1])->get();
+        }elseif ($id == 2) {
+            $accounts = ChartOfAccount::where('code', 'like', $this->coa_head_code('cash_at_bank').'%')->where(['status' => 1 , 'level' => 4])->get();
+        }else{
+            $accounts = ChartOfAccount::where('code', 'like', $this->coa_head_code('cash_at_mobile_bank').'%')->where(['status' => 1 , 'level' => 4])->get();
+        }
+        return response()->json($accounts);
     }
 }

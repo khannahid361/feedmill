@@ -203,36 +203,51 @@
                                     <input type="hidden" name="grand_total" value="{{ $sale->grand_total }}">
                                     <input type="hidden" name="total_commission" id="total_commission" value="{{ $sale->total_commission }}">
                                 </div>
-                                {{--                                <div class="payment col-md-12 @if($sale->payment_status == 3) d-none @endif">--}}
-                                {{--                                    <div class="row">--}}
-                                {{--                                        <div class="form-group col-md-4 required">--}}
-                                {{--                                            <label for="previous_due">Previous Due</label>--}}
-                                {{--                                            <input type="text" class="form-control" name="previous_due" id="previous_due" value="{{ $sale->previous_due }}" readonly>--}}
-                                {{--                                        </div>--}}
-                                {{--                                        <div class="form-group col-md-4 required">--}}
-                                {{--                                            <label for="net_total">Net Total</label>--}}
-                                {{--                                            <input type="text" class="form-control" name="net_total" id="net_total" value="{{ ($sale->grand_total + $sale->previous_due) }}" readonly>--}}
-                                {{--                                        </div>--}}
-                                {{--                                        <div class="form-group col-md-4 required">--}}
-                                {{--                                            <label for="paid_amount">Paid Amount</label>--}}
-                                {{--                                            <input type="text" class="form-control" name="paid_amount" id="paid_amount" value="{{$sale->paid_amount }}">--}}
-                                {{--                                        </div>--}}
-                                {{--                                        <div class="form-group col-md-4">--}}
-                                {{--                                            <label for="due_amount">Due Amount</label>--}}
-                                {{--                                            <input type="text" class="form-control" name="due_amount" id="due_amount" value="{{$sale->due_amount }}" readonly>--}}
-                                {{--                                        </div>--}}
-                                {{--                                        <x-form.selectbox labelName="Payment Method" name="payment_method" onchange="account_list(this.value)" required="required"  col="col-md-4">--}}
-                                {{--                                            @foreach (SALE_PAYMENT_METHOD as $key => $value)--}}
-                                {{--                                                <option value="{{ $key }}" @if($sale->payment_method) {{ $sale->payment_method == $key ? 'selected' : '' }} @endif>{{ $value }}</option>--}}
-                                {{--                                            @endforeach--}}
-                                {{--                                        </x-form.selectbox>--}}
-                                {{--                                        <x-form.selectbox labelName="Account" name="account_id" required="required"  col="col-md-4"/>--}}
-                                {{--                                        <div class="form-group required col-md-4 @if($sale->payment_method) {{ $sale->payment_method != 1  ? '' : 'd-none' }} @endif reference_no">--}}
-                                {{--                                            <label for="reference_no">Reference No</label>--}}
-                                {{--                                            <input type="text" class="form-control" name="reference_no" id="reference_no" value="{{ $sale->reference_no }}">--}}
-                                {{--                                        </div>--}}
-                                {{--                                    </div>--}}
-                                {{--                                </div>--}}
+                                <div class="payment col-md-12 @if($sale->payment_status == 3) d-none @endif">
+                                    <div class="row">
+                                        <div class="form-group col-md-4 required">
+                                            <label for="previous_due">Previous Due</label>
+                                            <input type="text" class="form-control" name="previous_due" id="previous_due" value="{{ $sale->previous_due }}" readonly>
+                                        </div>
+                                        <div class="form-group col-md-4 required">
+                                            <label for="net_total">Net Total</label>
+                                            <input type="text" class="form-control" name="net_total" id="net_total" value="{{ ($sale->grand_total + $sale->previous_due) }}" readonly>
+                                        </div>
+                                        <div class="form-group col-md-4 required">
+                                            <label for="paid_amount">Paid Amount</label>
+                                            <input type="text" class="form-control" name="paid_amount" id="paid_amount" value="{{$sale->paid_amount }}">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="due_amount">Due Amount</label>
+                                            <input type="text" class="form-control" name="due_amount" id="due_amount" value="{{$sale->due_amount }}" readonly>
+                                        </div>
+{{--                                        <x-form.selectbox labelName="Payment Method" name="payment_method" onchange="paymentMethod()" required="required"  col="col-md-4">--}}
+{{--                                            @foreach (SALE_PAYMENT_METHOD as $key => $value)--}}
+{{--                                                <option value="{{ $key }}">{{ $value }}</option>--}}
+{{--                                            @endforeach--}}
+{{--                                        </x-form.selectbox>--}}
+{{--                                        <x-form.selectbox labelName="Account" name="account_id" required="required"  col="col-md-4"/>--}}
+                                        <div class="form-group col-md-4">
+                                            <label for="payment_method">{{__('Payment Method')}}</label>
+                                            <select class="form-control payment_method" id="payment_method" name="payment_method" onchange="paymentMethod()">
+                                                <option value="">{{__('Please Select')}}</option>
+                                                @foreach (SALE_PAYMENT_METHOD as $key => $value)
+                                                    <option value="{{ $key }}" @if($key == $sale->payment_method) selected="selected" @endif>{{ $value }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="account_id">{{__('Account')}}</label>
+                                            <select class="form-control" id="account_id" name="account_id">
+                                                <option value="{{$sale->account->id}}">{{$sale->account->name}}</option>
+                                            </select>
+                                        </div>
+{{--                                        <div class="form-group required col-md-4 @if($sale->payment_method) {{ $sale->payment_method != 1  ? '' : 'd-none' }} @endif reference_no">--}}
+{{--                                            <label for="reference_no">Reference No</label>--}}
+{{--                                            <input type="text" class="form-control" name="reference_no" id="reference_no" value="{{ $sale->reference_no }}">--}}
+{{--                                        </div>--}}
+                                    </div>
+                                </div>
                                 <div class="form-group col-md-12 text-center pt-5">
                                     {{--                                    <a href="{{ url('sale') }}" class="btn btn-danger btn-sm mr-3"><i class="far fa-window-close"></i> Cancel</a>--}}
                                     <button type="button" class="btn btn-primary btn-sm mr-3" id="save-btn" onclick="update_data()"><i class="fas fa-save"></i> Update</button>
@@ -394,7 +409,7 @@
                             <select name="products[${count}][pro_id]" id="product_list_${count}" class="fcs selectpicker col-md-12  products-alls product_details_${count} form-control" onchange="getProductDetails(this,${count})" data-live-search="true" data-row="${count}">
                             @if (!$products->isEmpty())
                 <option value="0">Please Select</option>
-@foreach ($products as $product)
+        @foreach ($products as $product)
                 <option value="{{ $product->product_id }}">{{ $product->name }}</option>
                             @endforeach
                 @endif
@@ -686,6 +701,41 @@
             }
             $('#due_amount').val((payable_amount - parseFloat($('#paid_amount').val())).toFixed(2));
         });
+
+        {{--function account_list(payment_method) {--}}
+        {{--    $.ajax({--}}
+        {{--        url    : "{{route('account.list')}}",--}}
+        {{--        type   : "POST",--}}
+        {{--        data   : { payment_method: payment_method,_token: _token},--}}
+        {{--        success: function (data) {--}}
+        {{--            $('#sale_store_form #account_id').empty().html(data);--}}
+        {{--            $('#sale_store_form #account_id.selectpicker').selectpicker('refresh');--}}
+        {{--        },--}}
+        {{--        error: function (xhr, ajaxOption, thrownError) {console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);}--}}
+        {{--    });--}}
+        {{--}--}}
+
+        function paymentMethod(){
+            let paymentMethod =  $('#payment_method').find('option:selected').val();
+            if(paymentMethod != ''){
+                $.ajax({
+                    url       : "{{url('payment-account-list')}}/" + paymentMethod,
+                    type      : 'GET',
+                    dataType  : 'JSON',
+                    success   : function(data){
+                        if(data != ''){
+                            html = `<option value="">Select Please</option>`;
+                            $.each(data, function(key, value) { html += '<option value="'+ value.id +'">'+ value.name +'</option>'; });
+                            $('#account_id').empty();
+                            $('#account_id').append(html);
+                           var s = $('#account_id').val({{$sale->account_id}});
+                            console.log(s);
+                            $('.selectpicker').selectpicker('refresh');
+                        }
+                    }
+                })
+            }
+        }
         function update_data(){
             var rownumber = $('table#product_table tbody tr:last').index();
             if (rownumber < 0) {

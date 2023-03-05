@@ -33,4 +33,5 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('product-select-search', 'ProductController@product_select_search');
             Route::post('product-search-with-id', 'ProductController@product_search_with_id')->name('product.search.with.id');
        });
+    Route::get('payment-account-list/{id}','SaleController@paymentAccountList')->name('payment.account.list');
 });
