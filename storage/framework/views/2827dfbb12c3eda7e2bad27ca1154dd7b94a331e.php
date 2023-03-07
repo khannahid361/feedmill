@@ -1,19 +1,17 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', $page_title); ?>
 
-@section('title', $page_title)
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
 <link href="plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
         <!--begin::Notice-->
         <div class="card card-custom gutter-b">
             <div class="card-header flex-wrap py-5">
                 <div class="card-title">
-                    <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
+                    <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
                 </div>
             </div>
         </div>
@@ -23,14 +21,35 @@
             <div class="card-header flex-wrap py-5">
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row">
-                        <x-form.textbox labelName="Product Name" name="name" col="col-md-3" />
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Material Name','name' => 'name','col' => 'col-md-3']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Material Name','name' => 'name','col' => 'col-md-3']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
 
-                        <x-form.selectbox labelName="Categories" name="category_id" col="col-md-3" class="selectpicker">
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Categories','name' => 'category_id','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Categories','name' => 'category_id','col' => 'col-md-3','class' => 'selectpicker']); ?>
                             <option value="" selected>Select Please</option>
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                            @endforeach
-                        </x-form.selectbox>
+                            <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($category->id); ?>"><?php echo e($category->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                         <div class="col-md-6">
                             <div style="margin-top:28px;">
                                 <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
@@ -54,8 +73,8 @@
                                 <thead class="bg-primary">
                                     <tr>
                                         <th>Sl</th>
-                                        <th>Product Name</th>
-                                        <th>Product Code</th>
+                                        <th>Material Name</th>
+                                        <th>Material Code</th>
                                         <th>Category</th>
                                         <th>Stock Unit</th>
                                         <th>Stock Qty</th>
@@ -73,9 +92,9 @@
         <!--end::Card-->
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script src="plugins/custom/datatables/datatables.bundle.js" type="text/javascript"></script>
 <script>
     var table;
@@ -101,7 +120,7 @@
                 zeroRecords: '<strong class="text-danger">No Data Found</strong>'
             },
             "ajax": {
-                "url": "{{route('product.stock.alert.report.datatable.data')}}",
+                "url": "<?php echo e(route('material.stock.alert.report.datatable.data')); ?>",
                 "type": "POST",
                 "data": function (data) {
                     data.name         = $("#form-filter #name").val();
@@ -128,11 +147,11 @@
                     "extend": 'print',
                     'text':'Print',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ config('settings.title') ? config('settings.title') : env('APP_NAME') }} <br> {{config('settings.address')}}<br> {{ $page_title }} List <br> Date: {{ date('Y-m-d') }} ",
+                    "title": "<?php echo e(config('settings.title') ? config('settings.title') : env('APP_NAME')); ?> <br> <?php echo e(config('settings.address')); ?><br> <?php echo e($page_title); ?> List <br> Date: <?php echo e(date('Y-m-d')); ?> ",
                     "orientation": "landscape", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
-                        columns: [0,1,2,3,4,5]
+                        columns: [0,1,2,3,4,5,6]
                     },
                     customize: function (win) {
                         $(win.document.body).addClass('bg-white');
@@ -148,10 +167,10 @@
                     "extend": 'csv',
                     'text':'CSV',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ config('settings.title') ? config('settings.title') : env('APP_NAME') }} <br> {{config('settings.address')}}<br> {{ $page_title }} List <br> Date: {{ date('Y-m-d') }} ",
-                    "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                    "title": "<?php echo e(config('settings.title') ? config('settings.title') : env('APP_NAME')); ?> <br> <?php echo e(config('settings.address')); ?><br> <?php echo e($page_title); ?> List <br> Date: <?php echo e(date('Y-m-d')); ?> ",
+                    "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "exportOptions": {
-                         columns: [0,1,2,3,4,5]
+                         columns: [0,1,2,3,4,5,6]
                     },
                     footer:true
                 },
@@ -159,10 +178,10 @@
                     "extend": 'excel',
                     'text':'Excel',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ config('settings.title') ? config('settings.title') : env('APP_NAME') }} <br> {{config('settings.address')}}<br> {{ $page_title }} List <br> Date: {{ date('Y-m-d') }} ",
-                    "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                    "title": "<?php echo e(config('settings.title') ? config('settings.title') : env('APP_NAME')); ?> <br> <?php echo e(config('settings.address')); ?><br> <?php echo e($page_title); ?> List <br> Date: <?php echo e(date('Y-m-d')); ?> ",
+                    "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "exportOptions": {
-                         columns: [0,1,2,3,4,5]
+                         columns: [0,1,2,3,4,5,6]
                     },
                     footer:true
                 },
@@ -170,12 +189,12 @@
                     "extend": 'pdf',
                     'text':'PDF',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
-                    "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                    "title": "<?php echo e(config('settings.title') ? config('settings.title') : env('APP_NAME')); ?> <br> <?php echo e(config('settings.address')); ?><br> <?php echo e($page_title); ?> List <br> Date: <?php echo e(date('Y-m-d')); ?> ",
+                    "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "orientation": "landscape", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
-                         columns: [0,1,2,3,4,5]
+                         columns: [0,1,2,3,4,5,6]
                     },
                     customize: function(doc) {
                         doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
@@ -204,4 +223,6 @@
 
 
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\insaf\Modules/Report\Resources/views/material-stock-alert.blade.php ENDPATH**/ ?>

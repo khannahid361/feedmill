@@ -31,8 +31,8 @@
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </x-form.selectbox>
-                        <div class="col-md-6">   
-                            <div style="margin-top:28px;">    
+                        <div class="col-md-6">
+                            <div style="margin-top:28px;">
                                 <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                 data-toggle="tooltip" data-theme="dark" title="Reset">
                                 <i class="fas fa-undo-alt"></i></button>
@@ -81,7 +81,7 @@
     var table;
 
     $(document).ready(function(){
-    
+
         table = $('#dataTable').DataTable({
             "processing": true, //Feature control the processing indicator
             "serverSide": true, //Feature control DataTable server side processing mode
@@ -93,8 +93,8 @@
                 [5, 10, 15, 25, 50, 100, 1000, 10000, -1],
                 [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
             ],
-            "pageLength": 25, //number of data show per page
-            "language": { 
+            "pageLength": 10000, //number of data show per page
+            "language": {
                 processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
                 emptyTable: '<strong class="text-danger">No Data Found</strong>',
                 infoEmpty: '',
@@ -119,7 +119,7 @@
             "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
-    
+
             "buttons": [
                 {
                     'extend':'colvis','className':'btn btn-secondary btn-sm text-white','text':'Column','columns': ':gt(0)'
@@ -128,11 +128,11 @@
                     "extend": 'print',
                     'text':'Print',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
+                    "title": "{{ config('settings.title') ? config('settings.title') : env('APP_NAME') }} <br> {{config('settings.address')}}<br> {{ $page_title }} List <br> Date: {{ date('Y-m-d') }} ",
                     "orientation": "landscape", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
-                        columns: [0,1,2,3,4,5]
+                        columns: [0,1,2,3,4,5,6]
                     },
                     customize: function (win) {
                         $(win.document.body).addClass('bg-white');
@@ -148,10 +148,10 @@
                     "extend": 'csv',
                     'text':'CSV',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
+                    "title": "{{ config('settings.title') ? config('settings.title') : env('APP_NAME') }} <br> {{config('settings.address')}}<br> {{ $page_title }} List <br> Date: {{ date('Y-m-d') }} ",
                     "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
                     "exportOptions": {
-                         columns: [0,1,2,3,4,5]
+                         columns: [0,1,2,3,4,5,6]
                     },
                     footer:true
                 },
@@ -159,10 +159,10 @@
                     "extend": 'excel',
                     'text':'Excel',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
+                    "title": "{{ config('settings.title') ? config('settings.title') : env('APP_NAME') }} <br> {{config('settings.address')}}<br> {{ $page_title }} List <br> Date: {{ date('Y-m-d') }} ",
                     "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
                     "exportOptions": {
-                         columns: [0,1,2,3,4,5]
+                         columns: [0,1,2,3,4,5,6]
                     },
                     footer:true
                 },
@@ -170,15 +170,15 @@
                     "extend": 'pdf',
                     'text':'PDF',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
+                    "title": "{{ config('settings.title') ? config('settings.title') : env('APP_NAME') }} <br> {{config('settings.address')}}<br> {{ $page_title }} List <br> Date: {{ date('Y-m-d') }} ",
                     "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
                     "orientation": "landscape", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
-                         columns: [0,1,2,3,4,5]
+                         columns: [0,1,2,3,4,5,6]
                     },
                     customize: function(doc) {
-                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
+                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
                         doc.styles.tableHeader.fontSize = 7;
                         doc.pageMargins = [5,5,5,5];
                     },
@@ -186,20 +186,20 @@
                 },
             ],
         });
-    
+
         $('#btn-filter').click(function () {
             table.ajax.reload();
         });
-    
+
         $('#btn-reset').click(function () {
             $('#form-filter')[0].reset();
             $('#form-filter .selectpicker').selectpicker('refresh');
             table.ajax.reload();
         });
 
-        
-    
-    
+
+
+
     });
 
 
