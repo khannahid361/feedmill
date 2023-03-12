@@ -1,205 +1,241 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::group(['middleware' => ['auth']], function () {
-
-    //Department Routes
-    Route::get('department', 'DepartmentController@index')->name('department');
-    Route::group(['prefix' => 'department', 'as' => 'department.'], function () {
-        Route::post('datatable-data', 'DepartmentController@get_datatable_data')->name('datatable.data');
-        Route::post('store-or-update', 'DepartmentController@store_or_update_data')->name('store.or.update');
-        Route::post('edit', 'DepartmentController@edit')->name('edit');
-        Route::post('delete', 'DepartmentController@delete')->name('delete');
-        Route::post('bulk-delete', 'DepartmentController@bulk_delete')->name('bulk.delete');
-        Route::post('change-status', 'DepartmentController@change_status')->name('change.status');
-    });
-
-    //Division Routes
-    Route::get('division', 'DivisionController@index')->name('division');
-    Route::group(['prefix' => 'division', 'as' => 'division.'], function () {
-        Route::post('datatable-data', 'DivisionController@get_datatable_data')->name('datatable.data');
-        Route::post('store-or-update', 'DivisionController@store_or_update_data')->name('store.or.update');
-        Route::post('edit', 'DivisionController@edit')->name('edit');
-        Route::post('delete', 'DivisionController@delete')->name('delete');
-        Route::post('bulk-delete', 'DivisionController@bulk_delete')->name('bulk.delete');
-        Route::post('change-status', 'DivisionController@change_status')->name('change.status');
-    });
-    Route::get('department-id-wise-division-list/{id}', 'DivisionController@department_id_wise_division_list');
-
-    //Designation Routes
-    Route::get('designation', 'DesignationController@index')->name('designation');
-    Route::group(['prefix' => 'designation', 'as' => 'designation.'], function () {
-        Route::post('datatable-data', 'DesignationController@get_datatable_data')->name('datatable.data');
-        Route::post('store-or-update', 'DesignationController@store_or_update_data')->name('store.or.update');
-        Route::post('edit', 'DesignationController@edit')->name('edit');
-        Route::post('delete', 'DesignationController@delete')->name('delete');
-        Route::post('bulk-delete', 'DesignationController@bulk_delete')->name('bulk.delete');
-        Route::post('change-status', 'DesignationController@change_status')->name('change.status');
-    });
-
     //Employee Routes
-    Route::get('employee', 'EmployeeController@index')->name('employee');
-    Route::group(['prefix' => 'employee', 'as' => 'employee.'], function () {
+    Route::get('manage-employee', 'EmployeeController@index')->name('employee');
+    Route::group(['prefix' => 'employee', 'as' => 'employee.'], function (){
+        Route::get('add-employee', 'EmployeeController@add')->name('add');
         Route::post('datatable-data', 'EmployeeController@get_datatable_data')->name('datatable.data');
-        Route::get('add', 'EmployeeController@create')->name('add');
         Route::post('store-or-update', 'EmployeeController@store_or_update_data')->name('store.or.update');
-        Route::get('details/{id}', 'EmployeeController@show')->name('details');
         Route::get('edit/{id}', 'EmployeeController@edit')->name('edit');
+        Route::post('update', 'EmployeeController@update_data')->name('update');
         Route::post('delete', 'EmployeeController@delete')->name('delete');
-        Route::post('bulk-delete', 'EmployeeController@bulk_delete')->name('bulk.delete');
         Route::post('change-status', 'EmployeeController@change_status')->name('change.status');
-        Route::post('shift-change', 'EmployeeController@change_shift')->name('change.shift');
-        Route::post('allowance-deduction-setup', 'EmployeeController@setup_allowance_deduction')->name('setup.allowance.deduction');
-    });
-    //Allowance Routes
-    Route::get('benifits', 'AllowanceDeductionController@index')->name('benifits');
-    Route::group(['prefix' => 'benifits', 'as' => 'benifits.'], function () {
-        Route::post('datatable-data', 'AllowanceDeductionController@get_datatable_data')->name('datatable.data');
-        Route::post('store-or-update', 'AllowanceDeductionController@store_or_update_data')->name('store.or.update');
-        Route::post('edit', 'AllowanceDeductionController@edit')->name('edit');
-        Route::post('delete', 'AllowanceDeductionController@delete')->name('delete');
-        Route::post('bulk-delete', 'AllowanceDeductionController@bulk_delete')->name('bulk.delete');
-        Route::post('change-status', 'AllowanceDeductionController@change_status')->name('change.status');
-    });
-    //Allowance Mange Salary Setup  Routes
-    Route::get('salary-setup', 'AllowanceDeductionManageController@index')->name('salary.setup');
-    Route::group(['prefix' => 'salary.setup', 'as' => 'salary.setup.'], function () {
-        Route::post('datatable-data', 'AllowanceDeductionManageController@get_datatable_data')->name('datatable.data');
-        Route::post('store-or-update', 'AllowanceDeductionManageController@store_or_update_data')->name('store.or.update');
-        Route::get('add', 'AllowanceDeductionManageController@create')->name('add');
-        Route::get('edit/{id}', 'AllowanceDeductionManageController@edit')->name('edit');
-        Route::post('delete', 'AllowanceDeductionManageController@delete')->name('delete');
-        Route::post('bulk-delete', 'AllowanceDeductionManageController@bulk_delete')->name('bulk.delete');
-        Route::post('change-status', 'AllowanceDeductionManageController@change_status')->name('change.status');
-    });
-    Route::get('employee-id-wise-salary-list/{id}', 'AllowanceDeductionManageController@employee_id_wise_salary_list');
-
-    //HoliDay Routes
-    Route::get('holiday', 'HolidayController@index')->name('holiday');
-    Route::group(['prefix' => 'holiday', 'as' => 'holiday.'], function () {
-        Route::post('datatable-data', 'HolidayController@get_datatable_data')->name('datatable.data');
-        Route::post('store-or-update', 'HolidayController@store_or_update_data')->name('store.or.update');
-        Route::post('edit', 'HolidayController@edit')->name('edit');
-        Route::post('delete', 'HolidayController@delete')->name('delete');
-        Route::post('bulk-delete', 'HolidayController@bulk_delete')->name('bulk.delete');
-        Route::post('change-status', 'HolidayController@change_status')->name('change.status');
-    });
-    //Weekly HoliDay Routes
-    Route::get('weekly-holiday', 'WeeklyHolidayController@index')->name('weekly.holiday');
-    Route::group(['prefix' => 'weekly.holiday', 'as' => 'weekly.holiday.'], function () {
-        Route::post('datatable-data', 'WeeklyHolidayController@get_datatable_data')->name('datatable.data');
-        Route::post('store-or-update', 'WeeklyHolidayController@store_or_update_data')->name('store.or.update');
-        Route::post('edit', 'WeeklyHolidayController@edit')->name('edit');
-        Route::post('delete', 'WeeklyHolidayController@delete')->name('delete');
-        Route::post('bulk-delete', 'WeeklyHolidayController@bulk_delete')->name('bulk.delete');
-        Route::post('change-status', 'WeeklyHolidayController@change_status')->name('change.status');
-    });
-    
-    //Route Routes
-    Route::get('route', 'RouteController@index')->name('route');
-    Route::group(['prefix' => 'route', 'as' => 'route.'], function () {
-        Route::post('datatable-data', 'RouteController@get_datatable_data')->name('datatable.data');
-        Route::post('store-or-update', 'RouteController@store_or_update_data')->name('store.or.update');
-        Route::post('edit', 'RouteController@edit')->name('edit');
-        Route::post('delete', 'RouteController@delete')->name('delete');
-        Route::post('bulk-delete', 'RouteController@bulk_delete')->name('bulk.delete');
-        Route::post('change-status', 'RouteController@change_status')->name('change.status');
     });
 
-    //Leave Type Routes
-    Route::get('leave-type', 'LeaveController@index')->name('leave.type');
-    Route::group(['prefix' => 'leave.type', 'as' => 'leave.type.'], function () {
-        Route::post('datatable-data', 'LeaveController@get_datatable_data')->name('datatable.data');
-        Route::post('store-or-update', 'LeaveController@store_or_update_data')->name('store.or.update');
-        Route::post('edit', 'LeaveController@edit')->name('edit');
-        Route::post('delete', 'LeaveController@delete')->name('delete');
-        Route::post('bulk-delete', 'LeaveController@bulk_delete')->name('bulk.delete');
-        Route::post('change-status', 'LeaveController@change_status')->name('change.status');
+    //Labour Routes
+    Route::get('manage-labour', 'LabourController@index')->name('labour');
+    Route::group(['prefix' => 'labour', 'as' => 'labour.'], function (){
+        Route::get('add-labour', 'LabourController@add')->name('add');
+        Route::post('datatable-data', 'LabourController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'LabourController@store_or_update_data')->name('store.or.update');
+        Route::get('edit/{id}', 'LabourController@edit')->name('edit');
+        Route::post('update', 'LabourController@update_data')->name('update');
+        Route::post('delete', 'LabourController@delete')->name('delete');
+        Route::post('change-status', 'LabourController@change_status')->name('change.status');
     });
 
-    //Shift Routes
-    Route::get('shift', 'ShiftController@index')->name('shift');
-    Route::group(['prefix' => 'shift', 'as' => 'shift.'], function () {
-        Route::post('datatable-data', 'ShiftController@get_datatable_data')->name('datatable.data');
-        Route::post('store-or-update', 'ShiftController@store_or_update_data')->name('store.or.update');
-        Route::post('edit', 'ShiftController@edit')->name('edit');
-        Route::post('delete', 'ShiftController@delete')->name('delete');
-        Route::post('bulk-delete', 'ShiftController@bulk_delete')->name('bulk.delete');
-        Route::post('change-status', 'ShiftController@change_status')->name('change.status');
+    //salary Setup Routes
+    Route::get('manage-salary', 'SalaryController@index')->name('salary');
+    Route::group(['prefix' => 'salary', 'as' => 'salary.'], function (){
+        Route::post('/add-employee-salary/go', 'SalaryController@go');
+        Route::get('/manage-salary/{id}', 'SalaryController@create');
+        Route::get('add-employee', 'SalaryController@add')->name('add');
+        Route::post('datatable-data', 'SalaryController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'SalaryController@store_or_update_data')->name('store.or.update');
+        Route::post('update', 'SalaryController@update_data')->name('update');
+        Route::get('edit/{id}', 'SalaryController@edit')->name('edit');
+        Route::post('delete', 'SalaryController@delete')->name('delete');
+        Route::post('change-status', 'SalaryController@change_status')->name('change.status');
     });
 
-    //Employee Leave
-    Route::get('leave-application', 'LeaveApplicationManageController@index')->name('leave.application');
-    Route::group(['prefix' => 'leave.application', 'as' => 'leave.application.'], function () {
-        Route::post('datatable-data', 'LeaveApplicationManageController@get_datatable_data')->name('datatable.data');
-        Route::get('add', 'LeaveApplicationManageController@create')->name('add');
-        Route::post('store-or-update', 'LeaveApplicationManageController@store_or_update_data')->name('store.or.update');
-        Route::get('details/{id}', 'LeaveApplicationManageController@show')->name('details');
-        Route::get('edit/{id}', 'LeaveApplicationManageController@edit')->name('edit');
-        Route::post('delete', 'LeaveApplicationManageController@delete')->name('delete');
-        Route::post('bulk-delete', 'LeaveApplicationManageController@bulk_delete')->name('bulk.delete');
-        Route::post('change-status', 'LeaveApplicationManageController@change_status')->name('change.status');
-    });
-    Route::get('employee-id-wise-leave-list/{id}', 'LeaveApplicationManageController@employee_id_wise_leave_list');
-    Route::get('leave-type-wise-leave/{id}', 'LeaveApplicationManageController@leave_type_wise_leave');
-
-
-    //Attendance
-    Route::get('attendance', 'AttendanceController@index')->name('attendance');  
-    Route::group(['prefix' => 'attendance', 'as' => 'attendance.'], function () {
-        Route::post('datatable-data', 'AttendanceController@get_datatable_data')->name('datatable.data');
-        Route::get('add', 'AttendanceController@create')->name('add');
-        Route::post('store-or-update', 'AttendanceController@store_or_update_data')->name('store.or.update');
-        Route::post('edit', 'AttendanceController@edit')->name('edit');
-        Route::post('delete', 'AttendanceController@delete')->name('delete');
-        Route::post('bulk-delete', 'AttendanceController@bulk_delete')->name('bulk.delete');
-        Route::post('change-status', 'AttendanceController@change_status')->name('change.status');
-    });
-    Route::get('employee-id-wise-employee-details/{id}', 'EmployeeController@employee_id_wise_employee_details');
-
-    //Attendance Report..
-    Route::get('attendance-report', 'AttendanceReportController@index')->name('attendance.report');  
-    Route::group(['prefix' => 'attendance-report', 'as' => 'attendance.report.'], function () {
-        Route::get('datatable-data', 'AttendanceReportController@attendance_report')->name('datatable.data');
-        Route::get('add', 'AttendanceReportController@create')->name('add');
-        Route::post('store-or-update', 'AttendanceReportController@store_or_update_data')->name('store.or.update');
-        Route::post('edit', 'AttendanceReportController@edit')->name('edit');
-        Route::post('delete', 'AttendanceReportController@delete')->name('delete');
-        Route::post('bulk-delete', 'AttendanceReportController@bulk_delete')->name('bulk.delete');
-        Route::post('change-status', 'AttendanceReportController@change_status')->name('change.status');
+    //Monthly Employee salary Payment Setup Routes
+    Route::get('manage-salary-payment', 'SalaryPaymentController@index')->name('salaryPayment');
+    Route::group(['prefix' => 'salaryPayment', 'as' => 'salaryPayment.'], function (){
+        Route::get('/employee-salary/go', 'SalaryPaymentController@create')->name('salary.create');
+        Route::get('/employee-allowance/{id}/{month}', 'SalaryPaymentController@allowanceView')->name('salary.allowance');
+        Route::get('/employee-deduction/{id}/{month}', 'SalaryPaymentController@deductionView')->name('salary.deduction');
+        Route::get('/salary-payslip/{id}', 'SalaryPaymentController@payslipView')->name('salary.payslip');
+        Route::get('add-employee', 'SalaryPaymentController@add')->name('add');
+        Route::post('datatable-data', 'SalaryPaymentController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'SalaryPaymentController@store_or_update_data')->name('store.or.update');
+        Route::post('update', 'SalaryPaymentController@update_data')->name('update');
+        Route::get('edit/{id}', 'SalaryPaymentController@edit')->name('edit');
+        Route::post('delete', 'SalaryPaymentController@delete')->name('delete');
+        Route::post('change-status', 'SalaryPaymentController@change_status')->name('change.status');
     });
 
-    //Salary Generated..
-    Route::get('salary-generate', 'SalaryGenerateController@index')->name('salary.generate');
-    Route::group(['prefix' => 'salary-generate', 'as' => 'salary.generate.'], function () {
-        Route::get('add', 'SalaryGenerateController@create')->name('add');
-        Route::post('datatable-data', 'SalaryGenerateController@get_datatable_data')->name('datatable.data');
-        Route::get('salary-datatable-data', 'SalaryGenerateController@salary_report')->name('report.data');
-        Route::post('store', 'SalaryGenerateController@store_data')->name('store');
-        Route::post('update', 'SalaryGenerateController@update')->name('update');
-        Route::get('edit/{id}', 'SalaryGenerateController@edit')->name('edit');
-        Route::get('view/{id}', 'SalaryGenerateController@pay_slip')->name('view');
-        Route::post('delete', 'SalaryGenerateController@delete')->name('delete');
-        Route::post('bulk-delete', 'SalaryGenerateController@bulk_delete')->name('bulk.delete');
-        Route::post('change-status', 'SalaryGenerateController@change_status')->name('change.status');
+    //Monthly Labour salary Payment Setup Routes
+    Route::get('manage-labour-salary-payment', 'LabourSalaryPaymentController@index')->name('labourSalaryPayment');
+    Route::group(['prefix' => 'labourSalaryPayment', 'as' => 'labourSalaryPayment.'], function (){
+        Route::get('/labour-salary/go', 'LabourSalaryPaymentController@create')->name('salary.create');
+        Route::get('/labour-allowance/{id}/{month}', 'LabourSalaryPaymentController@allowanceView')->name('salary.allowance');
+        Route::get('/labour-deduction/{id}/{month}', 'LabourSalaryPaymentController@deductionView')->name('salary.deduction');
+        Route::get('/salary-payslip/{id}', 'LabourSalaryPaymentController@payslipView')->name('salary.payslip');
+        Route::get('add-labour', 'LabourSalaryPaymentController@add')->name('add');
+        Route::post('datatable-data', 'LabourSalaryPaymentController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'LabourSalaryPaymentController@store_or_update_data')->name('store.or.update');
+        Route::post('update', 'LabourSalaryPaymentController@update_data')->name('update');
+        Route::get('edit/{id}', 'LabourSalaryPaymentController@edit')->name('edit');
+        Route::post('delete', 'LabourSalaryPaymentController@delete')->name('delete');
+        Route::post('change-status', 'LabourSalaryPaymentController@change_status')->name('change.status');
     });
-    
-    //Salary Generated Payment Routes
-    Route::post('salary-generate-payment-store-or-update', 'SalaryGeneratePaymentController@store_or_update')->name('salary.generate.payment.store.or.update');
-    Route::post('salary-generate-payment/view', 'SalaryGeneratePaymentController@show')->name('salary.generate.payment.show');
-    Route::post('salary-generate-payment/edit', 'SalaryGeneratePaymentController@edit')->name('salary.generate.payment.edit');
-    Route::post('salary-generate-payment/delete', 'SalaryGeneratePaymentController@delete')->name('salary.generate.payment.delete');
 
+    //salary PaySlip Routes
+    Route::get('generate-salary-sheet-and-payslip', 'PaySlipController@index')->name('payslip');
+    Route::group(['prefix' => 'payslip', 'as' => 'payslip.'], function (){
+        Route::post('datatable-data', 'PaySlipController@get_datatable_data')->name('datatable.data');
+        Route::get('view-payslip', 'PaySlipController@payslip')->name('view.payslip');
+    });
+
+    //Salary Statement Routes
+    Route::get('salary-statement', 'SalaryStatementController@index')->name('statement');
+    Route::group(['prefix' => 'statement', 'as' => 'statement.'], function (){
+        Route::post('datatable-data', 'SalaryStatementController@get_datatable_data')->name('datatable.data');
+        Route::get('salary-statement', 'SalaryStatementController@salaryStatement')->name('salary.statement');
+    });
+
+    //Employee Salary Advance Routes
+    Route::get('manage-salary-advance', 'SalaryAdvanceController@index')->name('salaryAdvance');
+    Route::group(['prefix' => 'salaryAdvance', 'as' => 'salaryAdvance.'], function (){
+        Route::post('datatable-data', 'SalaryAdvanceController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'SalaryAdvanceController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'SalaryAdvanceController@edit')->name('edit');
+    });
+
+    //Labour Salary Advance Routes
+    Route::get('labour-salary-advance', 'LabourAdvanceController@index')->name('labourSalaryAdvance');
+    Route::group(['prefix' => 'labourSalaryAdvance', 'as' => 'labourSalaryAdvance.'], function (){
+        Route::post('datatable-data', 'LabourAdvanceController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'LabourAdvanceController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'LabourAdvanceController@edit')->name('edit');
+    });
+
+    //Provident Fund Routes
+    Route::get('provident-funds', 'ProvidentFundController@index')->name('providentFund');
+    Route::group(['prefix' => 'providentFund', 'as' => 'providentFund.'], function (){
+        Route::post('datatable-data', 'ProvidentFundController@get_datatable_data')->name('datatable.data');
+        Route::get('/provident-fund/{id}', 'ProvidentFundController@view')->name('view.providentFund');
+    });
+
+    //salary Increment Setup Routes
+    Route::get('manage-increment', 'IncrementController@index')->name('increment');
+    Route::group(['prefix' => 'increment', 'as' => 'increment.'], function (){
+        Route::get('add-increment', 'IncrementController@add')->name('add');
+        Route::post('datatable-data', 'IncrementController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'IncrementController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'IncrementController@edit')->name('edit');
+        Route::post('delete', 'IncrementController@delete')->name('delete');
+    });
+
+    //Employee Deduction Setup Routes
+    Route::get('manage-deductions', 'DeductionController@index')->name('deduction');
+    Route::group(['prefix' => 'deduction', 'as' => 'deduction.'], function (){
+        Route::post('datatable-data', 'DeductionController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'DeductionController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'DeductionController@edit')->name('edit');
+    });
+
+    //Labour Deduction Setup Routes
+    Route::get('manage-labour-deductions', 'LabourDeductionController@index')->name('deduction');
+    Route::group(['prefix' => 'deduction', 'as' => 'deduction.'], function (){
+        Route::post('datatable-data', 'LabourDeductionController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'LabourDeductionController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'LabourDeductionController@edit')->name('edit');
+    });
+
+    //Employee Allowances Setup Routes
+    Route::get('manage-allowances', 'AllowancesController@index')->name('allowances');
+    Route::group(['prefix' => 'allowances', 'as' => 'allowances.'], function (){
+        Route::post('datatable-data', 'AllowancesController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'AllowancesController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'AllowancesController@edit')->name('edit');
+    });
+
+    //Labour Allowances Setup Routes
+    Route::get('manage-labour-allowance', 'LabourAllowancesController@index')->name('allowances');
+    Route::group(['prefix' => 'allowances', 'as' => 'allowances.'], function (){
+        Route::post('datatable-data', 'LabourAllowancesController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'LabourAllowancesController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'LabourAllowancesController@edit')->name('edit');
+    });
+
+    //Employee Bonus Setup Routes
+    Route::get('manage-bonuses', 'BonusControllerController@index')->name('bonus');
+    Route::group(['prefix' => 'bonus', 'as' => 'bonus.'], function (){
+        Route::post('datatable-data', 'BonusControllerController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'BonusControllerController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'BonusControllerController@edit')->name('edit');
+        Route::post('delete', 'BonusControllerController@delete')->name('delete');
+        Route::post('change-status', 'BonusControllerController@change_status')->name('change.status');
+    });
+
+    //Labour Bonus Setup Routes
+    Route::get('manage-labour-bonus', 'LabourBonusController@index')->name('bonus');
+    Route::group(['prefix' => 'bonus', 'as' => 'bonus.'], function (){
+        Route::post('datatable-data', 'LabourBonusController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'LabourBonusController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'LabourBonusController@edit')->name('edit');
+        Route::post('delete', 'LabourBonusController@delete')->name('delete');
+        Route::post('change-status', 'LabourBonusController@change_status')->name('change.status');
+    });
+
+    //Employee Attendance Setup Routes
+    Route::get('employee-attendance', 'EmployeeAttendanceController@index')->name('empAttendance');
+    Route::group(['prefix' => 'empAttendance', 'as' => 'empAttendance.'], function (){
+        Route::post('datatable-data', 'EmployeeAttendanceController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'EmployeeAttendanceController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'EmployeeAttendanceController@edit')->name('edit');
+        Route::post('delete', 'EmployeeAttendanceController@delete')->name('delete');
+        Route::post('change-status', 'EmployeeAttendanceController@change_status')->name('change.status');
+    });
+
+    //Employee Leave Setup Routes
+    Route::get('employee-leave-application', 'EmployeeLeaveAppController@index')->name('empLeave');
+    Route::group(['prefix' => 'empLeave', 'as' => 'empLeave.'], function (){
+        Route::post('datatable-data', 'EmployeeLeaveAppController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'EmployeeLeaveAppController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'EmployeeLeaveAppController@edit')->name('edit');
+        Route::post('delete', 'EmployeeLeaveAppController@delete')->name('delete');
+        Route::post('change-status', 'EmployeeLeaveAppController@change_status')->name('change.status');
+    });
+
+    //Labour Leave Setup Routes
+    Route::get('labour-leave-application', 'LabourLeaveAppController@index')->name('labourLeave');
+    Route::group(['prefix' => 'labourLeave', 'as' => 'labourLeave.'], function (){
+        Route::post('datatable-data', 'LabourLeaveAppController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'LabourLeaveAppController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'LabourLeaveAppController@edit')->name('edit');
+        Route::post('delete', 'LabourLeaveAppController@delete')->name('delete');
+        Route::post('change-status', 'LabourLeaveAppController@change_status')->name('change.status');
+    });
+
+
+    //Leave Category Setup Routes
+    Route::get('manage-leave-category', 'LeaveCatController@index')->name('leave');
+    Route::group(['prefix' => 'leave', 'as' => 'leave.'], function (){
+        Route::post('/add-employee-salary/go', 'LeaveCatController@go');
+        Route::get('/manage-salary/{id}', 'LeaveCatController@create');
+        Route::get('add-employee', 'LeaveCatController@add')->name('add');
+        Route::post('datatable-data', 'LeaveCatController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'LeaveCatController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'LeaveCatController@edit')->name('edit');
+        Route::post('delete', 'LeaveCatController@delete')->name('delete');
+        Route::post('change-status', 'LeaveCatController@change_status')->name('change.status');
+    });
+
+    //Working Time Setup Routes
+    Route::get('attendance-setting', 'AttendanceSettingController@index')->name('attendanceSetting');
+    Route::group(['prefix' => 'attendanceSetting', 'as' => 'attendanceSetting.'], function (){
+        Route::post('datatable-data', 'AttendanceSettingController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'AttendanceSettingController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'AttendanceSettingController@edit')->name('edit');
+    });
+
+
+    //Working Day Setup Routes
+    Route::get('manage-working-days', 'WorkingDayController@index')->name('workingDays');
+    Route::group(['prefix' => 'workingDays', 'as' => 'workingDays.'], function (){
+        Route::post('/working-days/update/', 'WorkingDayController@update');
+    });
+
+    //Branch Routes
+    Route::get('manage-branch', 'BranchController@index')->name('branch');
+    Route::group(['prefix' => 'branch', 'as' => 'branch.'], function () {
+        Route::post('datatable-data', 'BranchController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'BranchController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'BranchController@edit')->name('edit');
+        Route::post('delete', 'BranchController@delete')->name('delete');
+    });
 });

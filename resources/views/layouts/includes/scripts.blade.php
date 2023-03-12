@@ -3,6 +3,7 @@
 <script src="{{asset('js/config.js')}}" type="text/javascript"></script>
 <script src="{{asset('js/scripts.bundle.js')}}" type="text/javascript"></script>
 <script src="{{asset('js/custom.js')}}" type="text/javascript"></script>
+<script src="{{asset('plugins/custom/datatables/datatables.bundle.js')}}" type="text/javascript"></script>
 <script>
     var _token = "{{ csrf_token() }}";
     var $window = $(window);

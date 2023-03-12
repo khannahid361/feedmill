@@ -1,6 +1,7 @@
 <link href="<?php echo e(asset('css/global/plugins.bundle.css')); ?>" rel="stylesheet" type="text/css" />
 <link href="<?php echo e(asset('css/style.bundle.css')); ?>" rel="stylesheet" type="text/css" />
 <link href="<?php echo e(asset('css/customDesign.css')); ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.css')); ?>" rel="stylesheet" type="text/css" />
 <?php echo $__env->yieldPushContent('styles'); ?>
 <style>
     #preloader {

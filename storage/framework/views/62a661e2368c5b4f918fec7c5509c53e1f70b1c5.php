@@ -3,6 +3,7 @@
 <script src="<?php echo e(asset('js/config.js')); ?>" type="text/javascript"></script>
 <script src="<?php echo e(asset('js/scripts.bundle.js')); ?>" type="text/javascript"></script>
 <script src="<?php echo e(asset('js/custom.js')); ?>" type="text/javascript"></script>
+<script src="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.js')); ?>" type="text/javascript"></script>
 <script>
     var _token = "<?php echo e(csrf_token()); ?>";
     var $window = $(window);

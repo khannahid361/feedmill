@@ -17,6 +17,34 @@ class BaseController extends Controller
         'Change Status' => '<i class="fas fa-check-circle text-success mr-2"></i>Change Status',
     ];
 
+    public function actionButton($key){
+        $button = [
+            'Edit'                          => '<i class="fas fa-edit text-primary mr-2"></i>'.__('file.Edit'),
+            'paySlip'                       => '<i class="fas fa-file-invoice text-warning mr-2"></i>'.__('file.Pay Slip'),
+            'View'                          => '<i class="fas fa-eye text-warning mr-2"></i>'.__('file.View'),
+            'Details'                       => '<i class="fas fa-newspaper text-primary mr-2"></i>'.__('file.Details'),
+            'Delete'                        => '<i class="fas fa-trash text-danger mr-2"></i>'.__('file.Delete'),
+            'Change Status'                 => '<i class="fas fa-check-circle text-success mr-2"></i>'.__('file.Change Status'),
+            'Received'                      => '<i class="fas fa-check-circle text-success mr-2"></i>'.__('file.Received'),
+            'Add Payment'                   => '<i class="fas fa-plus-square text-info mr-2"></i>'.__('file.Add Payment'),
+            'Payment List'                  => '<i class="fas fa-file-invoice-dollar text-dark mr-2"></i>'.__('file.Payment List'),
+            'Finish Good'                   => '<i class="fas fa-boxes text-info mr-2"></i>'.__('file.Finish Good'),
+            'Production Product'            => '<i class="fas fa-boxes text-info mr-2"></i>'.__('file.Production Product'),
+            'Update Delivery'               => '<i class="fas fa-truck text-info mr-2"></i>'.__('file.Update Delivery'),
+            'Report'                        => '<i class="fas fa-file-invoice text-info mr-2"></i>'.__('file.Report'),
+            'Delivery'                      => '<i class="fas fa-truck text-info mr-2"></i>'.__('file.Delivery'),
+            'Return'                        => '<i class="fas fa-truck text-danger mr-2"></i>'.__('file.Return'),
+            'Return Invoice'                => '<i class="fas fa-receipt text-danger mr-2"></i>'.__('file.Return Invoice'),
+            'Purchase Invoice'              => '<i class="fas fa-file-invoice text-info mr-2"></i>'.__('file.Purchase Invoice'),
+            'Received Invoice'              => '<i class="fas fa-receipt text-info mr-2"></i>'.__('file.Received Invoice'),
+            'Delivery Invoice'              => '<i class="fas fa-receipt text-info mr-2"></i>'.__('file.Delivery Invoice'),
+            'Save'                          => __('file.Save'),
+            'Generate Slip'                 => '<i class="fas fa-file-invoice-dollar text-dark mr-2"></i>'.__('file.Generate Slip'),
+            'Builder'                       => '<i class="fas fa-th-list text-success mr-2"></i>'.__('file.Builder').__('file.Builder'),
+            'Summary'                       => '<i class="fas fa-newspaper text-primary mr-2"></i>'.__('file.Summary'),
+        ];
+        return $button[$key];
+    }
     /**
      * @param string $title
      * @param string $subTitle

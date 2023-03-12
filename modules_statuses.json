@@ -28,5 +28,7 @@
     "DealerPanel": true,
     "DealerLoginController": true,
     "Salary": true,
-    "Loan": true
+    "Loan": true,
+    "Department": true,
+    "Designation": true
 }
