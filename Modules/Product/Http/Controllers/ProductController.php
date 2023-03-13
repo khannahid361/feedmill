@@ -122,10 +122,12 @@ class ProductController extends BaseController
     public function store_or_update(ProductFormRequest $request)
     {
         if($request->ajax()){
+//            dd($request->all());
+//            return response()->json($request->all());
             if(permission('product-add')){
                 DB::beginTransaction();
                 try {
-                    $collection = collect($request->validated())->except(['materials','image','product_id']);
+                    $collection = collect($request->all())->except(['materials','image','product_id']);
                     $collection = $this->track_data($collection,$request->update_id);
                     $image      = $request->old_image;
                     if ($request->hasFile('image')) {
@@ -141,9 +143,11 @@ class ProductController extends BaseController
 
                     $product_materials = [];
                     if($request->has('materials')){
-                        foreach($request->materials as $value)
-                        {
-                            array_push($product_materials,$value['id']);
+                        foreach($request->materials as $value) {
+                            $product_materials[] = [
+                              'material_id' => $value['id'],
+                              'qty'         => $value['qty']
+                            ];
                         }
                     }
                     $product->product_material()->sync($product_materials);
@@ -225,7 +229,7 @@ class ProductController extends BaseController
         }else{
             return $this->access_blocked();
         }
-        
+
     }
 
     public function delete(Request $request)
@@ -238,7 +242,7 @@ class ProductController extends BaseController
                     if($sale_product > 0){
                         $output = ['status'=>'error','message'=>'Cannot delete because this product is realted with sale and purchase data'];
                     }else{
-       
+
                         $product  = $this->model->find($request->id);
                         $old_image = $product ? $product->image : '';
                         $result    = $product->delete();

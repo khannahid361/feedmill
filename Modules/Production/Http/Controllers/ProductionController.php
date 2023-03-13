@@ -502,14 +502,13 @@ class ProductionController extends BaseController
     }
 
 
-
     public function product_material_list(Request $request)
     {
         $tab = $request->tab;
         $materials = DB::table('product_material as pm')
                     ->join('materials as m','pm.material_id','=','m.id')
                     ->leftJoin('units as u','m.unit_id','=','u.id')
-                    ->select('pm.*','m.material_name','m.material_code','m.cost','m.qty','m.type','m.unit_id','u.unit_name','u.unit_code')
+                    ->select('pm.product_id','pm.material_id','pm.qty as q_ty','m.material_name','m.material_code','m.cost','m.qty','m.type','m.unit_id','u.unit_name','u.unit_code')
                     ->where('pm.product_id',$request->product_id)
                     ->get();
         return view('production::production.materials',compact('materials','tab'))->render();

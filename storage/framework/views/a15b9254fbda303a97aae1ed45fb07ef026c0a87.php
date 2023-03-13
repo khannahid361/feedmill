@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', $page_title); ?>
 
-@section('title', $page_title)
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
 <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
 <style>
     #form-tab li a.active{
@@ -23,21 +21,21 @@
         font-size: 20px;
     }
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
         <!--begin::Notice-->
         <div class="card card-custom gutter-b">
             <div class="card-header flex-wrap py-5">
                 <div class="card-title">
-                    <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
+                    <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
                     <button type="button" class="btn btn-primary btn-sm mr-5" onclick="check_material_stock()" id="save-btn"><i class="fas fa-save"></i> Save</button>
-                    <a href="{{ route('production') }}" class="btn btn-warning btn-sm font-weight-bolder">
+                    <a href="<?php echo e(route('production')); ?>" class="btn btn-warning btn-sm font-weight-bolder">
                         <i class="fas fa-arrow-left"></i> Back</a>
                     <!--end::Button-->
                 </div>
@@ -47,19 +45,51 @@
         <!--begin::Card-->
         <div class="card card-custom" style="padding-bottom: 100px !important;">
             <form id="store_or_update_form" method="post" enctype="multipart/form-data">
-                @csrf
+                <?php echo csrf_field(); ?>
                 <div class="card-body">
                     <div class="col-md-12">
                         <div class="row">
-                            <x-form.textbox labelName="Batch No." name="batch_no" value="{{ $batch_no }}" required="required" property="readonly" col="col-md-4"/>
-                            <x-form.textbox labelName="Date" name="start_date" required="required" col="col-md-4" class="date" property="readonly" value="{{ date('Y-m-d') }}"/>
-                            <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required"  col="col-md-4" class="selectpicker">
-                                @if (!$warehouses->isEmpty())
-                                    @foreach ($warehouses as $warehouse)
-                                        <option value="{{ $warehouse->id }}" {{ $warehouse->id == 1 ? 'selected' : '' }}>{{ $warehouse->name }}</option>
-                                    @endforeach
-                                @endif
-                            </x-form.selectbox>
+                            <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Batch No.','name' => 'batch_no','value' => ''.e($batch_no).'','required' => 'required','property' => 'readonly','col' => 'col-md-4']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Batch No.','name' => 'batch_no','value' => ''.e($batch_no).'','required' => 'required','property' => 'readonly','col' => 'col-md-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                            <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Date','name' => 'start_date','required' => 'required','col' => 'col-md-4','class' => 'date','property' => 'readonly','value' => ''.e(date('Y-m-d')).'']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Date','name' => 'start_date','required' => 'required','col' => 'col-md-4','class' => 'date','property' => 'readonly','value' => ''.e(date('Y-m-d')).'']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                            <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Warehouse','name' => 'warehouse_id','required' => 'required','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Warehouse','name' => 'warehouse_id','required' => 'required','col' => 'col-md-4','class' => 'selectpicker']); ?>
+                                <?php if(!$warehouses->isEmpty()): ?>
+                                    <?php $__currentLoopData = $warehouses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $warehouse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($warehouse->id); ?>" <?php echo e($warehouse->id == 1 ? 'selected' : ''); ?>><?php echo e($warehouse->name); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endif; ?>
+                             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                         </div>
                     </div>
                     <div class="col-md-12 pt-5">
@@ -85,28 +115,28 @@
                                                             <label >Product</label>
                                                             <select name="production[1][product_id]" id="production_1_product_id"  onchange="materialData(this.value,1)" class="form-control selectpicker">
                                                                 <option value="">Select Please</option>
-                                                                @if (!$products->isEmpty())
-                                                                    @foreach ($products as $id => $name)
-                                                                    <option value="{{ $id }}">{{ $name }}</option>
-                                                                    @endforeach
-                                                                @endif
+                                                                <?php if(!$products->isEmpty()): ?>
+                                                                    <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                    <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
+                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                <?php endif; ?>
                                                             </select>
                                                         </div>
                                                         <div class="form-group col-md-3 required">
                                                             <label >Total Year</label>
                                                             <select name="production[1][year]" id="production_1_year"  onchange="generateDate(this.value,1)" class="form-control selectpicker">
-                                                                @for ($i = 1; $i <= 3; $i++)
-                                                                <option value="{{ $i }}" {{ $i == 1 ? 'selected' : '' }}>{{ $i }}</option>
-                                                                @endfor
+                                                                <?php for($i = 1; $i <= 3; $i++): ?>
+                                                                <option value="<?php echo e($i); ?>" <?php echo e($i == 1 ? 'selected' : ''); ?>><?php echo e($i); ?></option>
+                                                                <?php endfor; ?>
                                                             </select>
                                                         </div>
                                                         <div class="form-group col-md-3 required">
                                                             <label for="mfg_date">Mfg. Date</label>
-                                                            <input type="text" class="form-control date" name="production[1][mfg_date]" id="production_1_mfg_date" value="{{ date('Y-m-d') }}" readonly />
+                                                            <input type="text" class="form-control date" name="production[1][mfg_date]" id="production_1_mfg_date" value="<?php echo e(date('Y-m-d')); ?>" readonly />
                                                         </div>
                                                         <div class="form-group col-md-3 required">
                                                             <label for="exp_date">Exp. Date</label>
-                                                            <input type="text" class="form-control date" name="production[1][exp_date]" id="production_1_exp_date" value="{{ date('Y-m-d',strtotime('+1 year')) }}" readonly />
+                                                            <input type="text" class="form-control date" name="production[1][exp_date]" id="production_1_exp_date" value="<?php echo e(date('Y-m-d',strtotime('+1 year'))); ?>" readonly />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -128,10 +158,10 @@
         <!--end::Card-->
     </div>
 </div>
-@include('production::production.view-modal')
-@endsection
+<?php echo $__env->make('production::production.view-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script src="js/moment.js"></script>
 <script src="js/bootstrap-datetimepicker.min.js"></script>
 
@@ -159,28 +189,28 @@ $(document).ready(function () {
                                                         <label >Product</label>
                                                         <select name="production[`+tab+`][product_id]" id="production_`+tab+`_product_id"  onchange="materialData(this.value,`+tab+`)" class="form-control selectpicker">
                                                             <option value="">Select Please</option>
-                                                            @if (!$products->isEmpty())
-                                                                @foreach ($products as $id => $name)
-                                                                <option value="{{ $id }}">{{ $name }}</option>
-                                                                @endforeach
-                                                            @endif
+                                                            <?php if(!$products->isEmpty()): ?>
+                                                                <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
+                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                            <?php endif; ?>
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-3 required">
                                                         <label >Total Year</label>
                                                         <select name="production[`+tab+`][year]" id="production_`+tab+`_year"  onchange="generateDate(this.value,`+tab+`)" class="form-control selectpicker">
-                                                            @for ($i = 1; $i <= 3; $i++)
-                                                            <option value="{{ $i }}" {{ $i == 1 ? 'selected' : '' }}>{{ $i }}</option>
-                                                            @endfor
+                                                            <?php for($i = 1; $i <= 3; $i++): ?>
+                                                            <option value="<?php echo e($i); ?>" <?php echo e($i == 1 ? 'selected' : ''); ?>><?php echo e($i); ?></option>
+                                                            <?php endfor; ?>
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-3 required">
                                                         <label for="mfg_date">Mfg. Date</label>
-                                                        <input type="text" class="form-control date" name="production[`+tab+`][mfg_date]" id="production_`+tab+`_mfg_date" value="{{ date('Y-m-d') }}" readonly />
+                                                        <input type="text" class="form-control date" name="production[`+tab+`][mfg_date]" id="production_`+tab+`_mfg_date" value="<?php echo e(date('Y-m-d')); ?>" readonly />
                                                     </div>
                                                     <div class="form-group col-md-3 required">
                                                         <label for="exp_date">Exp. Date</label>
-                                                        <input type="text" class="form-control date" name="production[`+tab+`][exp_date]" id="production_`+tab+`_exp_date" value="{{ date('Y-m-d',strtotime('+1 year')) }}" readonly />
+                                                        <input type="text" class="form-control date" name="production[`+tab+`][exp_date]" id="production_`+tab+`_exp_date" value="<?php echo e(date('Y-m-d',strtotime('+1 year'))); ?>" readonly />
                                                     </div>
                                                 </div>
                                             </div>
@@ -232,7 +262,7 @@ $(document).ready(function () {
 function materialData(product_id,tab)
 {
     $.ajax({
-        url:"{{ url('production/product-materials') }}",
+        url:"<?php echo e(url('production/product-materials')); ?>",
         data:{product_id:product_id,tab:tab,_token:_token},
         type:"POST",
         success:function(data){
@@ -276,59 +306,59 @@ function generateDate(number,tab)
 }
 
 
-{{--function check_material_stock()--}}
-{{--{--}}
-{{--    let form = document.getElementById('store_or_update_form');--}}
-{{--    let formData = new FormData(form);--}}
-{{--    let url = "{{url('production/check-material-stock')}}";--}}
-{{--    $.ajax({--}}
-{{--        url: url,--}}
-{{--        type: "POST",--}}
-{{--        data: formData,--}}
-{{--        contentType: false,--}}
-{{--        processData: false,--}}
-{{--        cache: false,--}}
-{{--        beforeSend: function(){--}}
-{{--            $('#save-btn').addClass('spinner spinner-white spinner-right');--}}
-{{--        },--}}
-{{--        complete: function(){--}}
-{{--            $('#save-btn').removeClass('spinner spinner-white spinner-right');--}}
-{{--        },--}}
-{{--        success: function (data) {--}}
-{{--            $('#store_or_update_form').find('.is-invalid').removeClass('is-invalid');--}}
-{{--            $('#store_or_update_form').find('.error').remove();--}}
-{{--            if (data.status == false) {--}}
-{{--                $.each(data.errors, function (key, value){--}}
-{{--                    var key = key.split('.').join('_');--}}
-{{--                    $('#store_or_update_form input#' + key).addClass('is-invalid');--}}
-{{--                    $('#store_or_update_form textarea#' + key).addClass('is-invalid');--}}
-{{--                    $('#store_or_update_form select#' + key).parent().addClass('is-invalid');--}}
-{{--                    $('#store_or_update_form #' + key).parent().append(--}}
-{{--                    '<small class="error text-danger">' + value + '</small>');--}}
-{{--                });--}}
-{{--            } else {--}}
-{{--                console.log(data);--}}
-{{--                if (data.status == 'success') {--}}
-{{--                    store_data();--}}
-{{--                }else{--}}
-{{--                    $('#view_modal #view-data').empty().html(data);--}}
-{{--                    $('#view_modal').modal({--}}
-{{--                        keyboard: false,--}}
-{{--                        backdrop: 'static',--}}
-{{--                    });--}}
-{{--                    $('#view_modal .modal-title').html('<i class="fas fa-file-alt text-white"></i> <span> Material Stock Availibility Details</span>');--}}
-{{--                }--}}
-{{--            }--}}
-{{--        },--}}
-{{--        error: function (xhr, ajaxOption, thrownError) {--}}
-{{--            console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);--}}
-{{--        }--}}
-{{--    });--}}
-{{--}--}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function store_data(){
     let form = document.getElementById('store_or_update_form');
     let formData = new FormData(form);
-    let url = "{{url('production/store')}}";
+    let url = "<?php echo e(url('production/store')); ?>";
     $.ajax({
         url: url,
         type: "POST",
@@ -358,7 +388,7 @@ function store_data(){
             // } else {
                 notification(data.status, data.message);
                 if (data.status == 'success') {
-                    window.location.replace("{{ url('production') }}");
+                    window.location.replace("<?php echo e(url('production')); ?>");
                 }
             // }
         },
@@ -369,25 +399,27 @@ function store_data(){
 }
 
 </script>
-{{--<script>--}}
-{{--    $(document).ready(function(){--}}
-{{--        calculation();--}}
-{{--    });--}}
 
-{{--    //For Calculation--}}
-{{--    $(document).on("keyup", "#store_or_update_form", function() {--}}
-{{--        calculation();--}}
-{{--    });--}}
-{{--    function calculation(tab, row) {--}}
-{{--        // var sum = 0;--}}
-{{--        // var finishedQty = parseFloat($('#finished_qty_'+tab+'').val());--}}
-{{--        // var basic_salary                = $("#finished_qty").val();--}}
-{{--        // $('#production_'+tab+'_materials_'+row+'_total').val(parseFloat(basic_salary).toFixed(2));--}}
-{{--        sum = 0--}}
-{{--        $("finished_qty").each(function(){--}}
-{{--            sum += parseInt($(this).val())--}}
-{{--        })--}}
-{{--        $('#production_'+tab+'_materials_'+row+'_total').text(sum)--}}
-{{--    }--}}
-{{--</script>--}}
-@endpush
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\insaf\Modules/Production\Resources/views/production/create.blade.php ENDPATH**/ ?>
