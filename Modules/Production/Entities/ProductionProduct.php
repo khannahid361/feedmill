@@ -12,7 +12,7 @@ use Modules\Production\Entities\ProductionCoupon;
 class ProductionProduct extends BaseModel
 {
 
-    protected $fillable = ['production_id', 'product_id', 'year', 'mfg_date', 'exp_date','labor_cost','other_cost', 'base_unit_qty', 'per_unit_cost'];
+    protected $fillable = ['production_id', 'product_id', 'year', 'mfg_date', 'exp_date','labor_cost','other_cost','sub_total', 'base_unit_qty', 'per_unit_cost'];
 
     public function production()
     {

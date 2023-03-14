@@ -21,7 +21,7 @@ class ProductionRequest extends FormRequest
 
         $collection = collect(request());
         if($collection->has('production')){
-            
+
             foreach (request()->production as $key => $value) {
 
                 $this->rules['production.'.$key.'.product_id'] = ['required'];
@@ -40,16 +40,16 @@ class ProductionRequest extends FormRequest
                 $this->messages['production.'.$key.'.end_date.after_or_equal'] = 'This end date must be equal or greater than mfg date';
 
 
-                if(!empty($value['materials']) && count($value['materials']) > 0)
-                {
-                    foreach ($value['materials'] as $index => $item) {
-                        $this->rules['production.'.$key.'.materials.'.$index.'.qty'] = ['required','numeric','gt:0'];
-
-                        $this->messages['production.'.$key.'.materials.'.$index.'.qty.required']        = 'This quantity field is required';
-                        $this->messages['production.'.$key.'.materials.'.$index.'.qty.numeric']         = 'This quantity field value must be numeric';
-                        $this->messages['production.'.$key.'.materials.'.$index.'.qty.gt']              = 'This quantity field value must be greater than 0 ';
-                    }
-                }
+//                if(!empty($value['materials']) && count($value['materials']) > 0)
+//                {
+//                    foreach ($value['materials'] as $index => $item) {
+//                        $this->rules['production.'.$key.'.materials.'.$index.'.qty'] = ['required','numeric','gt:0'];
+//
+//                        $this->messages['production.'.$key.'.materials.'.$index.'.qty.required']        = 'This quantity field is required';
+//                        $this->messages['production.'.$key.'.materials.'.$index.'.qty.numeric']         = 'This quantity field value must be numeric';
+//                        $this->messages['production.'.$key.'.materials.'.$index.'.qty.gt']              = 'This quantity field value must be greater than 0 ';
+//                    }
+//                }
             }
         }
 

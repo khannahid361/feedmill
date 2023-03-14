@@ -20,6 +20,8 @@
         border-radius: 50%;
         font-size: 20px;
     }
+
+
 </style>
 <?php $__env->stopPush(); ?>
 
@@ -93,15 +95,15 @@
                         </div>
                     </div>
                     <div class="col-md-12 pt-5">
-                        <ul class="nav nav-tabs nav-tabs-2" id="form-tab" role="tablist" style="border-bottom: 0px !important;justify-content: space-between;">
-                            <li class="nav-item mx-0 mb-3" id="tab1">
-                                <a class="nav-link active text-center step  step-1" data-toggle="tab" href="#tab-1" role="tab">Product-1</a>
-                            </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link text-center bg-success text-white" id="add-new-tab" style="cursor: pointer;"><i class="fas fa-plus-circle mr-2 text-white"></i> Add More</a>
-                            </li>
-                        </ul>
+
+
+
+
+
+
+
+
 
                             <input type="hidden" name="tab" id="check_tab">
                             <div class="tab-content">
@@ -306,55 +308,55 @@ function generateDate(number,tab)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function check_material_stock()
+{
+    let form = document.getElementById('store_or_update_form');
+    let formData = new FormData(form);
+    let url = "<?php echo e(url('production/check-material-stock')); ?>";
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        beforeSend: function(){
+            $('#save-btn').addClass('spinner spinner-white spinner-right');
+        },
+        complete: function(){
+            $('#save-btn').removeClass('spinner spinner-white spinner-right');
+        },
+        success: function (data) {
+            $('#store_or_update_form').find('.is-invalid').removeClass('is-invalid');
+            $('#store_or_update_form').find('.error').remove();
+            if (data.status == false) {
+                $.each(data.errors, function (key, value){
+                    var key = key.split('.').join('_');
+                    $('#store_or_update_form input#' + key).addClass('is-invalid');
+                    $('#store_or_update_form textarea#' + key).addClass('is-invalid');
+                    $('#store_or_update_form select#' + key).parent().addClass('is-invalid');
+                    $('#store_or_update_form #' + key).parent().append(
+                    '<small class="error text-danger">' + value + '</small>');
+                });
+            } else {
+                console.log(data);
+                if (data.status == 'success') {
+                    store_data();
+                }else{
+                    $('#view_modal #view-data').empty().html(data);
+                    $('#view_modal').modal({
+                        keyboard: false,
+                        backdrop: 'static',
+                    });
+                    $('#view_modal .modal-title').html('<i class="fas fa-file-alt text-white"></i> <span> Material Stock Availibility Details</span>');
+                }
+            }
+        },
+        error: function (xhr, ajaxOption, thrownError) {
+            console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
+        }
+    });
+}
 function store_data(){
     let form = document.getElementById('store_or_update_form');
     let formData = new FormData(form);
@@ -376,21 +378,10 @@ function store_data(){
         success: function (data) {
             $('#store_or_update_form').find('.is-invalid').removeClass('is-invalid');
             $('#store_or_update_form').find('.error').remove();
-            // if (data.status == false) {
-            //     $.each(data.errors, function (key, value){
-            //         var key = key.split('.').join('_');
-            //         $('#store_or_update_form input#' + key).addClass('is-invalid');
-            //         $('#store_or_update_form textarea#' + key).addClass('is-invalid');
-            //         $('#store_or_update_form select#' + key).parent().addClass('is-invalid');
-            //         $('#store_or_update_form #' + key).parent().append(
-            //         '<small class="error text-danger">' + value + '</small>');
-            //     });
-            // } else {
                 notification(data.status, data.message);
                 if (data.status == 'success') {
                     window.location.replace("<?php echo e(url('production')); ?>");
                 }
-            // }
         },
         error: function (xhr, ajaxOption, thrownError) {
             console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
@@ -400,25 +391,52 @@ function store_data(){
 
 </script>
 
+<script>
+    function _(x){
+        return document.getElementById(x);
+    }
 
+    $(document).on('input','.other_cost',function(){
+        let other_cost  = $(this).val();
+        let grand_t     = $('#grand_total').val();
+        let finishedqty = $('#finished_qty').val();
 
+        _('grand_total').value = + _('g_tl').value + + other_cost;
+        let a = $('#grand_total').val();
 
+        _('cost_per_unit').value = a  / finishedqty;
+    });
 
+    $(document).on('input','.finishedQty',function(){
+        let finishedQty = $(this).val();
+        $('.track').each(function(){
+            let s_qt    = $(this).data('stock_qty');
+            let qty     = $(this).data('qty');
+            if(s_qt > qty){
+                document.getElementById($(this).data('total')).value = $(this).data('qty') * $(this).data('cost') * finishedQty;
 
+            }else if(s_qt < qty) {
+                $(this).find('.active-bg').css('background-color', 'green');
+                // $(this).addClass('active-bg');
+                // $('.active-bg').style('color', 'red');
+                // $(".active-bg").css("color", "red");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+            }
+        })
+        calculation();
+    });
+    function calculation(){
+        let total      = 0;
+        $('.total').each(function(){
+            if($(this).val() == ''){
+                total += + 0;
+            }else{
+                total += + $(this).val();
+            }
+        })
+    _('g_tl').value                     = total;
+    }
+</script>
 
 <?php $__env->stopPush(); ?>
 

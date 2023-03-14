@@ -202,7 +202,9 @@ class ProductionController extends BaseController
 
     public function store(ProductionRequest $request)
     {
+        dd($request->all());
         if ($request->ajax()) {
+
             if (permission('production-add')) {
                 if($request->has('production')){
                     DB::beginTransaction();
@@ -224,6 +226,9 @@ class ProductionController extends BaseController
                                     'year'            => $product['year'],
                                     'mfg_date'        => $product['mfg_date'],
                                     'exp_date'        => $product['exp_date'],
+                                    'other_cost'      => $product['other_cost'],
+                                    'sub_total'       => $product['sub_total'],
+                                    'per_unit_cost'   => $product['cost_per_unit'],
                                 ];
                                 $productData = ProductionProduct::create($product_data);
                                 if($product){
@@ -233,7 +238,7 @@ class ProductionController extends BaseController
                                         foreach ($product['materials'] as $value) {
                                             $materials[$value['material_id']] = [
                                                 'unit_id' => $value['unit_id'],
-                                                'qty'     => $value['qty'],
+                                                'qty'     => $value['q_ty'],
                                                 'cost'    => $value['cost'],
                                                 'total'   => $value['total'],
                                             ];
