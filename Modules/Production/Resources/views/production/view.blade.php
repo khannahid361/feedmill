@@ -14,7 +14,7 @@
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                   <a href="{{ route('production') }}" class="btn btn-warning btn-sm font-weight-bolder"> 
+                   <a href="{{ route('production') }}" class="btn btn-warning btn-sm font-weight-bolder">
                         <i class="fas fa-arrow-left"></i> Back</a>
                     <!--end::Button-->
                 </div>
@@ -39,7 +39,7 @@
                             @foreach ($production->products as $key => $item)
                             <div class="row pt-5">
                                 <div class="col-md-12 text-center">
-                                    <h3 class="py-3 bg-warning text-white" style="margin: 10px auto 10px auto;">{{ ($key+1).' - '.$item->product->name }}</h3>
+{{--                                    <h3 class="py-3 bg-warning text-white" style="margin: 10px auto 10px auto;">{{ ($key+1).' - '.$item->product->name }}</h3>--}}
                                 </div>
                                 <div class="col-md-12">
                                     <table class="table table-bordered pb-5" id="material_table_{{ $key + 1 }}">
@@ -47,13 +47,14 @@
                                             <th class="text-center">Mfg. Date</th>
                                             <th class="text-center">Exp. Date</th>
                                             <th class="text-center">Unit Name</th>
-                                            <th class="text-center">Finish Goods Qty</th>
+{{--                                            <th class="text-center">Finish Goods Qty</th>--}}
+                                            <th class="text-center">Total Finished Quantity</th>
                                             @if ($item->has_coupon == 1)
                                             <th class="text-center">Total Coupon</th>
                                             <th class="text-center">Coupon Price</th>
                                             <th class="text-center">Coupon Exp. Date</th>
                                             @endif
-                                            
+
                                         </thead>
                                         <tbody>
                                             <tr>
@@ -67,7 +68,6 @@
                                                 <td class="text-center">{{ date('d-M-Y',strtotime($item->coupon_exp_date)) }}</td>
                                                 @endif
                                             </tr>
-                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -77,11 +77,12 @@
                                             <th width="30%">Material</th>
                                             <th width="5%" class="text-center">Type</th>
                                             <th width="10%" class="text-center">Unit Name</th>
-                                            <th width="10%" class="text-right">Rate</th>
-                                            <th class="text-center">Received Qty</th>
                                             <th class="text-center">Used Qty</th>
-                                            <th class="text-center">Damaged Qty</th>
-                                            <th class="text-center">Odd Qty</th>
+                                            <th width="10%" class="text-right">Rate</th>
+e
+{{--                                            <th class="text-center">Used Qty</th>--}}
+{{--                                            <th class="text-center">Damaged Qty</th>--}}
+{{--                                            <th class="text-center">Odd Qty</th>--}}
                                         </thead>
                                         <tbody>
                                             @if (!$item->materials->isEmpty())
@@ -90,29 +91,35 @@
                                                         <td> {{ $value->material_name .' ('.$value->material_code.')' }} </td>
                                                         <td class="text-center">{{ MATERIAL_TYPE[$value->type] }}</td>
                                                         <td class="text-center">{{ $value->unit->unit_name.' ('.$value->unit->unit_code.')' }}</td>
-                                                        <td class="text-right">{{ number_format($value->pivot->cost,2,'.','') }} </td>
                                                         <td class="text-center"> {{ number_format($value->pivot->qty,2,'.','') }} </td>
-                                                        <td class="text-center">{{ $value->pivot->used_qty }}</td>
-                                                        <td class="text-center">{{ $value->pivot->damaged_qty }}</td>
-                                                        <td class="text-center">{{ $value->pivot->odd_qty }}</td>
+                                                        <td class="text-right">{{ number_format($value->pivot->cost,2,'.','') }} </td>
+
+{{--                                                        <td class="text-center">{{ $value->pivot->used_qty }}</td>--}}
+{{--                                                        <td class="text-center">{{ $value->pivot->damaged_qty }}</td>--}}
+{{--                                                        <td class="text-center">{{ $value->pivot->odd_qty }}</td>--}}
                                                     </tr>
                                                 @endforeach
                                                 <tr>
-                                                    <td colspan="6" class="text-right font-weight-bold">Total Cost</td>
+                                                    <td colspan="4" class="text-right font-weight-bold">Others Cost</td>
+                                                    <td colspan="2" class="text-right">{{ $item->other_cost ? number_format($item->other_cost,2,'.','') : '' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" class="text-right font-weight-bold">Total Cost</td>
                                                     <td colspan="2" class="text-right">
-                                                        @php
-                                                            if(!empty($item->per_unit_cost) && !empty($item->base_unit_qty))
-                                                            {
-                                                                $total_cost = $item->per_unit_cost * $item->base_unit_qty;
-                                                            }else{
-                                                                $total_cost = '';
-                                                            }
-                                                        @endphp
-                                                        {{ $total_cost }}
+                                                        {{ $item->sub_total ? number_format($item->sub_total,2,'.','') : '' }}
+{{--                                                        @php--}}
+{{--                                                            if(!empty($item->per_unit_cost) && !empty($item->base_unit_qty))--}}
+{{--                                                            {--}}
+{{--                                                                $total_cost = $item->per_unit_cost * $item->base_unit_qty;--}}
+{{--                                                            }else{--}}
+{{--                                                                $total_cost = '';--}}
+{{--                                                            }--}}
+{{--                                                        @endphp--}}
+{{--                                                        {{ $total_cost }}--}}
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="6" class="text-right font-weight-bold">Per Unit Cost</td>
+                                                    <td colspan="4" class="text-right font-weight-bold">Per Unit Cost</td>
                                                     <td colspan="2" class="text-right">{{ $item->per_unit_cost ? number_format($item->per_unit_cost,2,'.','') : '' }}</td>
                                                 </tr>
                                             @endif
@@ -122,7 +129,7 @@
                             </div>
                             @endforeach
                         @endif
-                        
+
                     </div>
                 </div>
             </form>

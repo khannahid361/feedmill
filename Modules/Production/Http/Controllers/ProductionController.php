@@ -200,9 +200,9 @@ class ProductionController extends BaseController
         }
     }
 
-    public function store(ProductionRequest $request)
+    public function store(Request $request)
     {
-        dd($request->all());
+//        dd($request->all());
         if ($request->ajax()) {
 
             if (permission('production-add')) {
@@ -228,7 +228,8 @@ class ProductionController extends BaseController
                                     'exp_date'        => $product['exp_date'],
                                     'other_cost'      => $product['other_cost'],
                                     'sub_total'       => $product['sub_total'],
-                                    'per_unit_cost'   => $product['cost_per_unit'],
+                                    'per_unit_cost'   => $product['per_unit_cost'],
+                                    'base_unit_qty'   => $product['base_unit_qty'],
                                 ];
                                 $productData = ProductionProduct::create($product_data);
                                 if($product){
@@ -238,7 +239,7 @@ class ProductionController extends BaseController
                                         foreach ($product['materials'] as $value) {
                                             $materials[$value['material_id']] = [
                                                 'unit_id' => $value['unit_id'],
-                                                'qty'     => $value['q_ty'],
+                                                'qty'     => $value['qty'],
                                                 'cost'    => $value['cost'],
                                                 'total'   => $value['total'],
                                             ];

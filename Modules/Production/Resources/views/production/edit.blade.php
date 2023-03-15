@@ -37,7 +37,7 @@
                 <div class="card-toolbar">
                     <!--begin::Button-->
                     <button type="button" class="btn btn-primary btn-sm mr-5" onclick="check_material_stock()" id="save-btn"><i class="fas fa-sync-alt"></i> Update</button>
-                    <a href="{{ route('production') }}" class="btn btn-warning btn-sm font-weight-bolder"> 
+                    <a href="{{ route('production') }}" class="btn btn-warning btn-sm font-weight-bolder">
                         <i class="fas fa-arrow-left"></i> Back</a>
                     <!--end::Button-->
                 </div>
@@ -75,9 +75,9 @@
                                 </li>
                                 @endforeach
                             @endif
-                            
+
                         </ul>
-                        
+
                             <input type="hidden" name="tab" id="check_tab">
                             <div class="tab-content">
                                 @if (!$production->products->isEmpty())
@@ -122,9 +122,22 @@
                                                                 <h5 class="bg-warning text-white p-3" style="width:250px;margin: 20px auto 10px auto;">Materials</h5>
                                                             </div>
                                                             <table class="table table-bordered pb-5" id="material_table_{{ $key+1 }}">
+                                                                <div class="col-md-12 text-center">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6"></div>
+                                                                        <div class="col-md-2">
+                                                                            <label style="padding-top: 10px;">Total Finished Quantity</label>
+                                                                        </div>
+                                                                        <div class="col-md-4 mb-4">
+                                                                            <input type="text" class="form-control text-center finishedQty" value="" name="production[{{ $key+1 }}][base_unit_qty]" id="finished_qty" >
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
                                                                 <thead class="bg-primary">
                                                                     <th width="30%">Material</th>
-                                                                    <th width="5%" class="text-center">Type</th>
+{{--                                                                    <th width="5%" class="text-center">Type</th>--}}
+                                                                    <th width="15%" class="text-center">QTY</th>
                                                                     <th width="10%" class="text-center">Unit Name</th>
                                                                     <th width="10%" class="text-right">Rate</th>
                                                                     <th width="15%" class="text-center">Stk. Avl. Qty</th>
@@ -140,12 +153,13 @@
                                                                                 <input type="hidden" class="form-control text-center" value="{{ $value->id }}" name="production[{{ $key+1 }}][materials][{{ $index+1 }}][material_id]" id="production_{{ $key+1 }}_materials_{{ $index+1 }}_material_id" data-id="{{ $index+1 }}" readonly>
                                                                             </td>
                                                                             <td class="text-center">
-                                                                                {{ MATERIAL_TYPE[$value->type] }}
+{{--                                                                                {{ MATERIAL_TYPE[$value->type] }}--}}
+                                                                                {{ $value->pivot->qty }} {{$value->unit_name}}
                                                                             </td>
                                                                             <td class="text-center">
                                                                                 {{ $value->unit->unit_name.' ('.$value->unit->unit_code.')' }}
                                                                                 <input type="hidden" class="form-control" value="{{ $value->unit_id }}" name="production[{{ $key+1 }}][materials][{{ $index+1 }}][unit_id]" id="production_{{ $key+1 }}_materials_{{ $index+1 }}_unit_id" data-id="{{ $index+1 }}">
-                                                                                
+
                                                                             </td>
                                                                             <td class="text-right">
                                                                                 {{ number_format($value->pivot->cost,2,'.','') }}
@@ -165,10 +179,10 @@
                                                                     @endforeach
                                                                 </tbody>
                                                             </table>
-                                                        </div> 
+                                                        </div>
                                                     @endif
                                                 </div>
-                                            </div>   
+                                            </div>
                                         </div>
                                     </div>
                                     @endforeach

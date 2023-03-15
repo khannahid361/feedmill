@@ -19,25 +19,25 @@ class ProductionRequest extends FormRequest
         $this->rules['start_date']   = ['required','date','date_format:Y-m-d'];
         $this->rules['warehouse_id'] = ['required'];
 
-        $collection = collect(request());
-        if($collection->has('production')){
+//        $collection = collect(request());
+//        if($collection->has('production')){
 
-            foreach (request()->production as $key => $value) {
+//            foreach (request()->production as $key => $value) {
 
-                $this->rules['production.'.$key.'.product_id'] = ['required'];
-                $this->rules['production.'.$key.'.year']       = ['required'];
-                $this->rules['production.'.$key.'.mfg_date']   = ['required','date','date_format:Y-m-d'];
-                $this->rules['production.'.$key.'.exp_date']   = ['required','date','date_format:Y-m-d','after_or_equal:production.'.$key.'.mfg_date'];
-
-                $this->messages['production.'.$key.'.product_id.required']     = 'This product name field is required';
-                $this->messages['production.'.$key.'.year.required']           = 'This year field is required';
-                $this->messages['production.'.$key.'.mfg_date.required']       = 'This mfg date field is required';
-                $this->messages['production.'.$key.'.mfg_date.date']           = 'This mfg date value must be date';
-                $this->messages['production.'.$key.'.mfg_date.date_format']    = 'This mfg date value format must be '.date('Y-m-d');
-                $this->messages['production.'.$key.'.end_date.required']       = 'This end date field is required';
-                $this->messages['production.'.$key.'.end_date.date']           = 'This end date value must be date';
-                $this->messages['production.'.$key.'.end_date.date_format']    = 'This end date format must be '.date('Y-m-d');
-                $this->messages['production.'.$key.'.end_date.after_or_equal'] = 'This end date must be equal or greater than mfg date';
+//                $this->rules['production.'.$key.'.product_id'] = ['required'];
+//                $this->rules['production.'.$key.'.year']       = ['required'];
+//                $this->rules['production.'.$key.'.mfg_date']   = ['required','date','date_format:Y-m-d'];
+//                $this->rules['production.'.$key.'.exp_date']   = ['required','date','date_format:Y-m-d','after_or_equal:production.'.$key.'.mfg_date'];
+//
+//                $this->messages['production.'.$key.'.product_id.required']     = 'This product name field is required';
+//                $this->messages['production.'.$key.'.year.required']           = 'This year field is required';
+//                $this->messages['production.'.$key.'.mfg_date.required']       = 'This mfg date field is required';
+//                $this->messages['production.'.$key.'.mfg_date.date']           = 'This mfg date value must be date';
+//                $this->messages['production.'.$key.'.mfg_date.date_format']    = 'This mfg date value format must be '.date('Y-m-d');
+//                $this->messages['production.'.$key.'.end_date.required']       = 'This end date field is required';
+//                $this->messages['production.'.$key.'.end_date.date']           = 'This end date value must be date';
+//                $this->messages['production.'.$key.'.end_date.date_format']    = 'This end date format must be '.date('Y-m-d');
+//                $this->messages['production.'.$key.'.end_date.after_or_equal'] = 'This end date must be equal or greater than mfg date';
 
 
 //                if(!empty($value['materials']) && count($value['materials']) > 0)
@@ -50,8 +50,8 @@ class ProductionRequest extends FormRequest
 //                        $this->messages['production.'.$key.'.materials.'.$index.'.qty.gt']              = 'This quantity field value must be greater than 0 ';
 //                    }
 //                }
-            }
-        }
+//            }
+//        }
 
         return $this->rules;
     }
