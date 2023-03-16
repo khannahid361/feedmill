@@ -20,9 +20,11 @@
 
         <thead class="bg-primary">
             <th width="30%">Material</th>
-            <th width="5%" class="text-center">QTY</th>
+            <th width="5%" class="text-center">Material QTY</th>
             <th width="10%" class="text-right">Rate</th>
             <th width="15%" class="text-center">Stk. Avl. Qty</th>
+            <th width="15%" class="text-center">Use Qty</th>
+
             <th width="17%" class="text-right">Total</th>
         </thead>
         <tbody>
@@ -36,13 +38,15 @@
                         <input type="hidden" class="form-control" value="<?php echo e($item->unit_id); ?>" name="production[<?php echo e($tab); ?>][materials][<?php echo e($key+1); ?>][unit_id]" id="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_unit_id" data-id="<?php echo e($key+1); ?>">
                         <input type="hidden" class="form-control text-right" value="<?php echo e($item->cost); ?>" name="production[<?php echo e($tab); ?>][materials][<?php echo e($key+1); ?>][cost]" id="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_cost" data-id="<?php echo e($key+1); ?>" readonly>
                         <input type="hidden" class="form-control text-right stock_qty" value="<?php echo e($item->qty); ?>" name="production[<?php echo e($tab); ?>][materials][<?php echo e($key+1); ?>][stock_qty]" id="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_stock_qty" data-id="<?php echo e($key+1); ?>">
-                        <input type="hidden" class="form-control text-right" value="<?php echo e($item->q_ty); ?>" name="production[<?php echo e($tab); ?>][materials][<?php echo e($key+1); ?>][qty]" id="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_q_ty" data-id="<?php echo e($key+1); ?>" readonly>
+                        <input type="hidden" class="form-control text-right q_ty" value="<?php echo e($item->q_ty); ?>"  id="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_q_ty" data-id="<?php echo e($key+1); ?>" readonly>
 
 
-                        <input type="hidden" class="track" data-qty="<?php echo e($item->q_ty); ?>" data-cost="<?php echo e($item->cost); ?>" data-stock_qty="<?php echo e($item->qty); ?>" data-total="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_total" data-tab="<?php echo e($tab); ?>"/>
+                        <input type="hidden" class="track" data-qtys="<?php echo e($item->q_ty); ?>" data-cost="<?php echo e($item->cost); ?>" data-stock_qty="<?php echo e($item->qty); ?>" data-total="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_total" data-tab="<?php echo e($tab); ?>"/>
+                        <input type="hidden" class="track_qty" data-qtys="<?php echo e($item->q_ty); ?>" data-cost="<?php echo e($item->cost); ?>" data-stock_qty="<?php echo e($item->qty); ?>"  data-qty="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_qty" data-tab="<?php echo e($tab); ?>"/>
+
                     </td>
                     <td class="text-center ">
-                        <?php echo e($item->q_ty); ?> <?php echo e($item->unit_name); ?>
+                        <?php echo e($item->q_ty); ?> <?php echo e($item->unit_code); ?>
 
 
                     </td>
@@ -56,6 +60,12 @@
 
 
                     </td>
+                    <td>
+                        <input type="text" class="form-control text-right qty" value="<?php echo e($item->q_ty); ?>" name="production[<?php echo e($tab); ?>][materials][<?php echo e($key+1); ?>][qty]" id="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_qty" data-id="<?php echo e($key+1); ?>" readonly>
+                    </td>
+
+
+
 
                     <td class="">
                         <input type="text" class="form-control text-right total" name="production[<?php echo e($tab); ?>][materials][<?php echo e($key+1); ?>][total]" id="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_total" data-id="<?php echo e($key+1); ?>" readonly>
@@ -66,22 +76,22 @@
         </tbody>
     </table>
 </div>
-<div class="col-md-8"></div>
-<div class="col-md-4">
-    <table class="table">
-        <tr>
-            <td><button type="button" class="btn btn-primary btn-block"><?php echo e(__('Other Cost')); ?></button></td>
-            <td><input type="text" class="form-control bg-primary text-white text-center other_cost" id="other_cost" name="production[<?php echo e($tab); ?>][other_cost]" /></td>
-        </tr>
-        <tr>
-            <td><button type="button" class="btn btn-primary btn-block"><?php echo e(__('Grand Total')); ?></button></td>
-            <td><input type="text" class="form-control bg-primary text-white text-center grand_total" id="grand_total" name="production[<?php echo e($tab); ?>][sub_total]" readonly/></td>
-            <td><input type="hidden" class="form-control bg-primary text-white text-center g_tl" id="g_tl"  readonly/></td>
-        </tr>
-        <tr>
-            <td><button type="button" class="btn btn-primary btn-block"><?php echo e(__('Cost Per Unit')); ?></button></td>
-            <td><input type="text" class="form-control bg-primary text-white text-center cost_per_unit" id="cost_per_unit" name="production[<?php echo e($tab); ?>][per_unit_cost]" readonly/></td>
-        </tr>
-    </table>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <?php /**PATH C:\laragon\www\insaf\Modules/Production\Resources/views/production/materials.blade.php ENDPATH**/ ?>

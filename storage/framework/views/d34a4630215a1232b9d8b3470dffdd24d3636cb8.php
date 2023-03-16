@@ -67,7 +67,6 @@
                                                 <td class="text-center"><?php echo e(date('d-M-Y',strtotime($item->coupon_exp_date))); ?></td>
                                                 <?php endif; ?>
                                             </tr>
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -78,8 +77,8 @@
                                             <th width="5%" class="text-center">Type</th>
                                             <th width="10%" class="text-center">Unit Name</th>
                                             <th class="text-center">Used Qty</th>
+                                            <th class="text-center">Damaged Qty</th>
                                             <th width="10%" class="text-right">Rate</th>
-
 
 
 
@@ -92,6 +91,7 @@
                                                         <td class="text-center"><?php echo e(MATERIAL_TYPE[$value->type]); ?></td>
                                                         <td class="text-center"><?php echo e($value->unit->unit_name.' ('.$value->unit->unit_code.')'); ?></td>
                                                         <td class="text-center"> <?php echo e(number_format($value->pivot->qty,2,'.','')); ?> </td>
+                                                        <td class="text-center"><?php echo e($value->pivot->damaged_qty); ?></td>
                                                         <td class="text-right"><?php echo e(number_format($value->pivot->cost,2,'.','')); ?> </td>
 
 
@@ -100,11 +100,11 @@
                                                     </tr>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
-                                                    <td colspan="4" class="text-right font-weight-bold">Others Cost</td>
+                                                    <td colspan="5" class="text-right font-weight-bold">Others Cost</td>
                                                     <td colspan="2" class="text-right"><?php echo e($item->other_cost ? number_format($item->other_cost,2,'.','') : ''); ?></td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="4" class="text-right font-weight-bold">Total Cost</td>
+                                                    <td colspan="5" class="text-right font-weight-bold">Total Cost</td>
                                                     <td colspan="2" class="text-right">
                                                         <?php echo e($item->sub_total ? number_format($item->sub_total,2,'.','') : ''); ?>
 
@@ -113,7 +113,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="4" class="text-right font-weight-bold">Per Unit Cost</td>
+                                                    <td colspan="5" class="text-right font-weight-bold">Per Unit Cost</td>
                                                     <td colspan="2" class="text-right"><?php echo e($item->per_unit_cost ? number_format($item->per_unit_cost,2,'.','') : ''); ?></td>
                                                 </tr>
                                             <?php endif; ?>

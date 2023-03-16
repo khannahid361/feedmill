@@ -312,7 +312,7 @@ function check_material_stock()
                     '<small class="error text-danger">' + value + '</small>');
                 });
             } else {
-                console.log(data);
+                // console.log(data);
                 if (data.status == 'success') {
                     store_data();
                 }else{
@@ -376,25 +376,28 @@ function store_data(){
 
         _('grand_total').value = + _('g_tl').value + + other_cost;
         let a = $('#grand_total').val();
-
         _('cost_per_unit').value = a  / finishedqty;
     });
 
     $(document).on('input','.finishedQty',function(){
+
+        // console.log(qty);
         let finishedQty = $(this).val();
         $('.track').each(function(i, k){
             let s_qt    = $(this).data('stock_qty') ? $(this).data('stock_qty') : 0;
-            let qty     = $(this).data('qty');
-            if(s_qt > qty){
-                document.getElementById($(this).data('total')).value = $(this).data('qty') * $(this).data('cost') * finishedQty;
-            }else if(s_qt < qty) {
-                $(`#material_table_1 tbody tr:eq(${i})`).css({'background': '#F64E60'});
-            }
+            let qtys    = $(this).data('qtys');
+            document.getElementById($(this).data('total')).value = $(this).data('qtys') * $(this).data('cost') * finishedQty;
+
+        });
+        $('.track_qty').each(function(i, k){
+            let s_qt    = $(this).data('stock_qty') ? $(this).data('stock_qty') : 0;
+            let qty     = $(this).data('qtys');
+            document.getElementById($(this).data('qty')).value = $(this).data('qtys') * finishedQty;
         })
         calculation();
     });
     function calculation(){
-        let total      = 0;
+        let total       = 0;
         $('.total').each(function(){
             if($(this).val() == ''){
                 total += + 0;
@@ -404,6 +407,17 @@ function store_data(){
         })
     _('g_tl').value  = total;
     }
+    // function calculations(){
+    //     let s_qt        = $('.stock_qty').val();
+    //     let qty         = $('.qty').val();
+    //
+    //     $('.total').each(function(){
+    //         if(s_qt < qty){
+    //             alert('ss');
+    //             $(`#material_table_1 tbody tr:eq(${i})`).css({'background': '#F64E60'});
+    //         }
+    //     });
+    // }
 </script>
 
 <?php $__env->stopPush(); ?>

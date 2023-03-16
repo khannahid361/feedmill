@@ -157,7 +157,7 @@
                                                                             <label style="padding-top: 10px;">Total Finished Quantity</label>
                                                                         </div>
                                                                         <div class="col-md-4 mb-4">
-                                                                            <input type="text" class="form-control text-center finishedQty" value="" name="production[<?php echo e($key+1); ?>][base_unit_qty]" id="finished_qty" >
+                                                                            <input type="text" class="form-control text-center finishedQty" value="<?php echo e($item->base_unit_qty); ?>" name="production[<?php echo e($key+1); ?>][base_unit_qty]" id="finished_qty" >
                                                                         </div>
 
                                                                     </div>
@@ -169,7 +169,7 @@
                                                                     <th width="10%" class="text-center">Unit Name</th>
                                                                     <th width="10%" class="text-right">Rate</th>
                                                                     <th width="15%" class="text-center">Stk. Avl. Qty</th>
-                                                                    <th width="13%" class="text-center">Required Qty</th>
+                                                                    <th width="13%" class="text-center">Damaged Qty</th>
                                                                     <th width="17%" class="text-right">Total</th>
                                                                 </thead>
                                                                 <tbody>
@@ -180,30 +180,35 @@
 
                                                                                 <input type="hidden" class="form-control text-center" value="<?php echo e($value->pivot->id); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][production_material_id]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_production_material_id" data-id="<?php echo e($index+1); ?>" readonly>
                                                                                 <input type="hidden" class="form-control text-center" value="<?php echo e($value->id); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][material_id]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_material_id" data-id="<?php echo e($index+1); ?>" readonly>
+                                                                                <input type="hidden" class="form-control" value="<?php echo e($value->unit_id); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][unit_id]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_unit_id" data-id="<?php echo e($index+1); ?>">
+                                                                                <input type="hidden" class="form-control text-right" value="<?php echo e($value->pivot->cost); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][cost]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_cost" data-id="<?php echo e($index+1); ?>" readonly>
+                                                                                <input type="hidden" class="form-control text-right stock_qty" value="<?php echo e($value->qty); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][stock_qty]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_stock_qty" data-id="<?php echo e($index+1); ?>">
+                                                                                <input type="hidden" class="form-control text-right " value="<?php echo e($value->qty); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][qty]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_q_ty" data-id="<?php echo e($index+1); ?>">
+
+                                                                                <input type="hidden" class="track" data-qty="<?php echo e($value->pivot->qty); ?>" data-cost="<?php echo e($value->pivot->cost); ?>" data-stock_qty="<?php echo e($value->qty); ?>" data-total="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_total" data-tab="<?php echo e($index+1); ?>"/>
+
                                                                             </td>
                                                                             <td class="text-center">
 
-                                                                                <?php echo e($value->pivot->qty); ?> <?php echo e($value->unit_name); ?>
+                                                                                <?php echo e($value->pivot->qty); ?>
 
                                                                             </td>
                                                                             <td class="text-center">
                                                                                 <?php echo e($value->unit->unit_name.' ('.$value->unit->unit_code.')'); ?>
 
-                                                                                <input type="hidden" class="form-control" value="<?php echo e($value->unit_id); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][unit_id]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_unit_id" data-id="<?php echo e($index+1); ?>">
-
                                                                             </td>
                                                                             <td class="text-right">
                                                                                 <?php echo e(number_format($value->pivot->cost,2,'.','')); ?>
 
-                                                                                <input type="hidden" class="form-control text-right" value="<?php echo e($value->pivot->cost); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][cost]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_cost" data-id="<?php echo e($index+1); ?>" readonly>
+
                                                                             </td>
                                                                             <td class="text-center">
-                                                                                <?php echo e($value->qty); ?>
+                                                                                <?php echo e($value->qty); ?> (<?php echo e($value->unit->unit_name); ?>)
 
-                                                                                <input type="hidden" class="form-control text-right stock_qty" value="<?php echo e($value->qty); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][stock_qty]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_stock_qty" data-id="<?php echo e($index+1); ?>">
                                                                             </td>
                                                                             <td>
-                                                                                <input type="text" class="form-control text-center qty" value="<?php echo e($value->pivot->qty); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][qty]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_qty"  onkeyup="calculateRowTotal('<?php echo e($key+1); ?>','<?php echo e($index+1); ?>')" data-id="<?php echo e($index+1); ?>">
+
+                                                                                <input type="text" class="form-control text-center damaged_qty" value="<?php echo e($value->pivot->damaged_qty); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][damaged_qty]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_damaged_qty"   data-id="<?php echo e($index+1); ?>">
                                                                             </td>
                                                                             <td>
                                                                                 <input type="text" class="form-control text-right total" value="<?php echo e(number_format($value->pivot->cost * $value->pivot->qty,2,'.','')); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][total]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_total" data-id="<?php echo e($index+1); ?>" readonly>
@@ -211,6 +216,24 @@
                                                                         </tr>
                                                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                 </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-md-7"></div>
+                                                        <div class="col-md-5">
+                                                            <table class="table">
+                                                                <tr>
+                                                                    <td><button type="button" class="btn btn-primary btn-block"><?php echo e(__('Other Cost')); ?></button></td>
+                                                                    <td><input type="text" class="form-control bg-primary text-white text-center other_cost" value="<?php echo e($item->other_cost); ?>" id="other_cost" name="production[<?php echo e($key+1); ?>][other_cost]" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><button type="button" class="btn btn-primary btn-block"><?php echo e(__('Grand Total')); ?></button></td>
+                                                                    <td><input type="text" class="form-control bg-primary text-white text-center grand_total" value="<?php echo e($item->sub_total); ?>" id="grand_total" name="production[<?php echo e($key+1); ?>][sub_total]" readonly/></td>
+                                                                    <td><input type="hidden" class="form-control bg-primary text-white text-center g_tl" id="g_tl"  readonly/></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><button type="button" class="btn btn-primary btn-block"><?php echo e(__('Cost Per Unit')); ?></button></td>
+                                                                    <td><input type="text" class="form-control bg-primary text-white text-center cost_per_unit" value="<?php echo e($item->per_unit_cost); ?>" id="cost_per_unit" name="production[<?php echo e($key+1); ?>][per_unit_cost]" readonly/></td>
+                                                                </tr>
                                                             </table>
                                                         </div>
                                                     <?php endif; ?>
@@ -241,26 +264,26 @@ $(document).ready(function () {
 });
 
 
-function calculateRowTotal(tab,row)
-{
-    var cost = parseFloat($('#production_'+tab+'_materials_'+row+'_cost').val());
-    var qty = parseFloat($('#production_'+tab+'_materials_'+row+'_qty').val());
-    var stock_qty = parseFloat($('#production_'+tab+'_materials_'+row+'_stock_qty').val());
-    var total  = 0;
-    if(cost > 0 && qty > 0)
-    {
-        if(qty > stock_qty){
-            $('#production_'+tab+'_materials_'+row+'_qty').val(1);
-            $('#production_'+tab+'_materials_'+row+'_total').val(parseFloat(cost).toFixed(2));
-            notification('error','Quantity must be less than or equal to stock quantity!');
-        }else{
-            total = parseFloat(cost * qty).toFixed(2);
-            $('#production_'+tab+'_materials_'+row+'_total').val(total);
-        }
-    }else{
-        $('#production_'+tab+'_materials_'+row+'_total').val('');
-    }
-}
+// function calculateRowTotal(tab,row)
+// {
+//     var cost = parseFloat($('#production_'+tab+'_materials_'+row+'_cost').val());
+//     var qty = parseFloat($('#production_'+tab+'_materials_'+row+'_qty').val());
+//     var stock_qty = parseFloat($('#production_'+tab+'_materials_'+row+'_stock_qty').val());
+//     var total  = 0;
+//     if(cost > 0 && qty > 0)
+//     {
+//         if(qty > stock_qty){
+//             $('#production_'+tab+'_materials_'+row+'_qty').val(1);
+//             $('#production_'+tab+'_materials_'+row+'_total').val(parseFloat(cost).toFixed(2));
+//             notification('error','Quantity must be less than or equal to stock quantity!');
+//         }else{
+//             total = parseFloat(cost * qty).toFixed(2);
+//             $('#production_'+tab+'_materials_'+row+'_total').val(total);
+//         }
+//     }else{
+//         $('#production_'+tab+'_materials_'+row+'_total').val('');
+//     }
+// }
 
 function generateDate(number,tab)
 {
@@ -361,6 +384,48 @@ function update_data(){
         }
     });
 }
+</script>
+
+<script>
+    function _(x){
+        return document.getElementById(x);
+    }
+
+    $(document).on('input','.other_cost',function(){
+        let other_cost  = $(this).val();
+        let grand_t     = $('#grand_total').val();
+        let finishedqty = $('#finished_qty').val();
+
+        _('grand_total').value = + _('g_tl').value + + other_cost;
+        let a = $('#grand_total').val();
+
+        _('cost_per_unit').value = a  / finishedqty;
+    });
+
+    $(document).on('input','.finishedQty',function(){
+        let finishedQty = $(this).val();
+        $('.track').each(function(i, k){
+            let s_qt    = $(this).data('stock_qty') ? $(this).data('stock_qty') : 0;
+            let qty     = $(this).data('qty');
+            if(s_qt > qty){
+                document.getElementById($(this).data('total')).value = $(this).data('qty') * $(this).data('cost') * finishedQty;
+            }else if(s_qt < qty) {
+                $(`#material_table_1 tbody tr:eq(${i})`).css({'background': '#F64E60'});
+            }
+        })
+        calculation();
+    });
+    function calculation(){
+        let total      = 0;
+        $('.total').each(function(){
+            if($(this).val() == ''){
+                total += + 0;
+            }else{
+                total += + $(this).val();
+            }
+        })
+        _('g_tl').value  = total;
+    }
 </script>
 <?php $__env->stopPush(); ?>
 

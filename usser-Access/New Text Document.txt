@@ -1,0 +1,37 @@
+url 	  : https://demoff.xyz/cpanel
+id  	  : demoff
+pass	  : B2GSOFT@54321@123vipx
+
+$2y$10$Ydhc8.2tOSyfbIZi9vsc0eIUIkLZ4NQ6Bx7quRxXT7YLaKdQvd61O
+
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'http://188.138.41.146:7788/sendtext?apikey=db890fde26c3666c&secretkey=2a65d45e&callerID=BW16&toUser=01735181071&messageContent=hello');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_exec($ch);
+            curl_close($ch);
+
+url       : http://keaplsoft.com/cpanel
+id        : keapvkwl
+pass      : Fd9bKcZGUfZw
+
+
+https://bd14.exonhost.com:2083/cpsess8281302006/frontend/paper_lantern/index.html
+ User:demoffxy
+ B2GSoft@Vip123x
+
+[3:44 pm, 31/12/2022] Israfil Alam Robin: http://www.zeteexpress.com:2082/
+[3:44 pm, 31/12/2022] Israfil Alam Robin:
+ Username: zeteexpress
+Password: 734YQnJpH*8tl#
+
+Control panel login (cPanel / WHM)
+URL	https://199.192.20.95:2087/
+Username	root
+Password	9TrJGp60Ts0H9x6hEr
+
+
+@@@Saimon629@@@s
+@@@peacegarden629@@@
+~(nrl}yov&Qr

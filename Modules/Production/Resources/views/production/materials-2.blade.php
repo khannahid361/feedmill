@@ -24,7 +24,7 @@
             <th width="10%" class="text-right">Rate</th>
             <th width="15%" class="text-center">Stk. Avl. Qty</th>
             <th width="15%" class="text-center">Use Qty</th>
-{{--            <th width="15%" class="text-center">Damaged Qty</th>--}}
+            <th width="15%" class="text-center">Damaged Qty</th>
             <th width="17%" class="text-right">Total</th>
         </thead>
         <tbody>
@@ -60,9 +60,9 @@
                         <input type="text" class="form-control text-right qty" value="{{$item->q_ty}}" name="production[{{ $tab }}][materials][{{ $key+1 }}][qty]" id="production_{{ $tab }}_materials_{{ $key+1 }}_qty" data-id="{{ $key+1 }}" readonly>
                     </td>
 
-{{--                    <td class="">--}}
-{{--                        <input type="text" class="form-control text-right damaged_qty " name="production[{{ $tab }}][materials][{{ $key+1 }}][damaged_qty]" id="production_{{ $tab }}_materials_{{ $key+1 }}_damaged_qty" data-id="{{ $key+1 }}">--}}
-{{--                    </td>--}}
+                    <td class="">
+                        <input type="text" class="form-control text-right damaged_qty " name="production[{{ $tab }}][materials][{{ $key+1 }}][damaged_qty]" id="production_{{ $tab }}_materials_{{ $key+1 }}_damaged_qty" data-id="{{ $key+1 }}">
+                    </td>
                     <td class="">
                         <input type="text" class="form-control text-right total" name="production[{{ $tab }}][materials][{{ $key+1 }}][total]" id="production_{{ $tab }}_materials_{{ $key+1 }}_total" data-id="{{ $key+1 }}" readonly>
                     </td>
@@ -72,21 +72,21 @@
         </tbody>
     </table>
 </div>
-{{--<div class="col-md-7"></div>--}}
-{{--<div class="col-md-5">--}}
-{{--    <table class="table">--}}
-{{--        <tr>--}}
-{{--            <td><button type="button" class="btn btn-primary btn-block">{{__('Other Cost')}}</button></td>--}}
-{{--            <td><input type="text" class="form-control bg-primary text-white text-center other_cost" id="other_cost" name="production[{{ $tab }}][other_cost]" /></td>--}}
-{{--        </tr>--}}
-{{--        <tr>--}}
-{{--            <td><button type="button" class="btn btn-primary btn-block">{{__('Grand Total')}}</button></td>--}}
-{{--            <td><input type="text" class="form-control bg-primary text-white text-center grand_total" id="grand_total" name="production[{{ $tab }}][sub_total]" readonly/></td>--}}
-{{--            <td><input type="hidden" class="form-control bg-primary text-white text-center g_tl" id="g_tl"  readonly/></td>--}}
-{{--        </tr>--}}
-{{--        <tr>--}}
-{{--            <td><button type="button" class="btn btn-primary btn-block">{{__('Cost Per Unit')}}</button></td>--}}
-{{--            <td><input type="text" class="form-control bg-primary text-white text-center cost_per_unit" id="cost_per_unit" name="production[{{ $tab }}][per_unit_cost]" readonly/></td>--}}
-{{--        </tr>--}}
-{{--    </table>--}}
-{{--</div>--}}
+<div class="col-md-7"></div>
+<div class="col-md-5">
+    <table class="table">
+        <tr>
+            <td><button type="button" class="btn btn-primary btn-block">{{__('Other Cost')}}</button></td>
+            <td><input type="text" class="form-control bg-primary text-white text-center other_cost" id="other_cost" name="production[{{ $tab }}][other_cost]" /></td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-primary btn-block">{{__('Grand Total')}}</button></td>
+            <td><input type="text" class="form-control bg-primary text-white text-center grand_total" id="grand_total" name="production[{{ $tab }}][sub_total]" readonly/></td>
+            <td><input type="hidden" class="form-control bg-primary text-white text-center g_tl" id="g_tl"  readonly/></td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-primary btn-block">{{__('Cost Per Unit')}}</button></td>
+            <td><input type="text" class="form-control bg-primary text-white text-center cost_per_unit" id="cost_per_unit" name="production[{{ $tab }}][per_unit_cost]" readonly/></td>
+        </tr>
+    </table>
+</div>
