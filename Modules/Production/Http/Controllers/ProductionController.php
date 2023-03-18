@@ -226,9 +226,6 @@ class ProductionController extends BaseController
                                     'year'            => $product['year'],
                                     'mfg_date'        => $product['mfg_date'],
                                     'exp_date'        => $product['exp_date'],
-                                    'other_cost'      => $product['other_cost'],
-                                    'sub_total'       => $product['sub_total'],
-                                    'per_unit_cost'   => $product['per_unit_cost'],
                                     'base_unit_qty'   => $product['base_unit_qty'],
                                 ];
                                 $productData = ProductionProduct::create($product_data);
@@ -242,7 +239,6 @@ class ProductionController extends BaseController
                                                 'qty'           => $value['qty'],
                                                 'cost'          => $value['cost'],
                                                 'total'         => $value['total'],
-                                                'damaged_qty'   => $value['damaged_qty'],
                                             ];
                                         }
                                         $production_product->materials()->sync($materials);
@@ -326,9 +322,6 @@ class ProductionController extends BaseController
                                         'year'            => $product['year'],
                                         'mfg_date'        => $product['mfg_date'],
                                         'exp_date'        => $product['exp_date'],
-                                        'other_cost'      => $product['other_cost'],
-                                        'sub_total'       => $product['sub_total'],
-                                        'per_unit_cost'   => $product['per_unit_cost'],
                                         'base_unit_qty'   => $product['base_unit_qty'],
                                     ]);
 
@@ -341,7 +334,6 @@ class ProductionController extends BaseController
                                                     'qty'           => $material['qty'],
                                                     'cost'          => $material['cost'],
                                                     'total'         => $material['total'],
-                                                    'damaged_qty'   => $material['damaged_qty'],
                                                 ]);
                                             }
                                         }

@@ -274,33 +274,6 @@ function materialData(product_id,tab)
         },
     });
 }
-function calculateRowTotal(tab,row)
-{
-    var finishedQty = parseFloat($('#finished_qty_'+tab+'').val());
-    var q_ty = parseFloat($('#production_'+tab+'_materials_'+row+'_q_ty').val());
-
-
-    var cost        = parseFloat($('#production_'+tab+'_materials_'+row+'_cost').val());
-    console.log(cost);
-    var qty         = parseFloat($('#production_'+tab+'_materials_'+row+'_qty').val());
-    var stock_qty   = parseFloat($('#production_'+tab+'_materials_'+row+'_stock_qty').val());
-    var total       = 0;
-
-    // if(cost > 0 && q_ty > 0) {
-    //     if(q_ty > stock_qty){
-            $('#production_'+tab+'_materials_'+row+'_qty').val(1);
-            total = parseFloat(cost * q_ty).toFixed(2);
-            $('#production_'+tab+'_materials_'+row+'_total').val(parseFloat(total).toFixed(2));
-            notification('error','Quantity must be less than or equal to stock quantity!');
-        // }else{
-        //     total = parseFloat(cost * q_ty).toFixed(2);
-        //     $('#production_'+tab+'_materials_'+row+'_total').val(parseFloat(total).toFixed(2));
-        //     // $('#production_'+tab+'_materials_'+row+'_total').val(total);
-        // }
-    // }else{
-    //     $('#production_'+tab+'_materials_'+row+'_total').val('');
-    // }
-}
 
 function generateDate(number,tab)
 {
@@ -341,7 +314,7 @@ function check_material_stock()
                     '<small class="error text-danger">' + value + '</small>');
                 });
             } else {
-                console.log(data);
+                // console.log(data);
                 if (data.status == 'success') {
                     store_data();
                 }else{
@@ -405,29 +378,28 @@ function store_data(){
 
         _('grand_total').value = + _('g_tl').value + + other_cost;
         let a = $('#grand_total').val();
-
         _('cost_per_unit').value = a  / finishedqty;
     });
 
     $(document).on('input','.finishedQty',function(){
+
+        // console.log(qty);
         let finishedQty = $(this).val();
         $('.track').each(function(i, k){
             let s_qt    = $(this).data('stock_qty') ? $(this).data('stock_qty') : 0;
-            let qty     = $(this).data('qty');
-            if(s_qt > qty){
-                document.getElementById($(this).data('total')).value = $(this).data('qty') * $(this).data('cost') * finishedQty;
-            }else if(s_qt < qty) {
-                $(`#material_table_1 tbody tr:eq(${i})`).css({'background': 'red'});
-                // $(this).addClass('active-bg');
-                // $('.active-bg').style('color', 'red');
-                // $(".active-bg").css("color", "red");
+            let qtys    = $(this).data('qtys');
+            document.getElementById($(this).data('total')).value = $(this).data('qtys') * $(this).data('cost') * finishedQty;
 
-            }
+        });
+        $('.track_qty').each(function(i, k){
+            let s_qt    = $(this).data('stock_qty') ? $(this).data('stock_qty') : 0;
+            let qty     = $(this).data('qtys');
+            document.getElementById($(this).data('qty')).value = $(this).data('qtys') * finishedQty;
         })
         calculation();
     });
     function calculation(){
-        let total      = 0;
+        let total       = 0;
         $('.total').each(function(){
             if($(this).val() == ''){
                 total += + 0;
@@ -435,8 +407,19 @@ function store_data(){
                 total += + $(this).val();
             }
         })
-    _('g_tl').value                     = total;
+    _('g_tl').value  = total;
     }
+    // function calculations(){
+    //     let s_qt        = $('.stock_qty').val();
+    //     let qty         = $('.qty').val();
+    //
+    //     $('.total').each(function(){
+    //         if(s_qt < qty){
+    //             alert('ss');
+    //             $(`#material_table_1 tbody tr:eq(${i})`).css({'background': '#F64E60'});
+    //         }
+    //     });
+    // }
 </script>
 
 <?php $__env->stopPush(); ?>

@@ -23,7 +23,7 @@
             <th width="5%" class="text-center">Material QTY</th>
             <th width="10%" class="text-right">Rate</th>
             <th width="15%" class="text-center">Stk. Avl. Qty</th>
-            <th width="15%" class="text-center">Use Qty</th>
+            <th width="15%" class="text-center">Received Qty</th>
 {{--            <th width="15%" class="text-center">Damaged Qty</th>--}}
             <th width="17%" class="text-right">Total</th>
         </thead>
@@ -57,7 +57,8 @@
 
                     </td>
                     <td>
-                        <input type="text" class="form-control text-right qty" value="{{$item->q_ty}}" name="production[{{ $tab }}][materials][{{ $key+1 }}][qty]" id="production_{{ $tab }}_materials_{{ $key+1 }}_qty" data-id="{{ $key+1 }}" readonly>
+                        <input type="text" class="form-control text-right qty" value="" name="production[{{ $tab }}][materials][{{ $key+1 }}][qty]" id="production_{{ $tab }}_materials_{{ $key+1 }}_qty" data-id="{{ $key+1 }}" readonly>
+
                     </td>
 
 {{--                    <td class="">--}}
