@@ -31,7 +31,10 @@
                             @foreach ($production->products as $key => $item)
                             <div class="row pt-5">
                                 <div class="col-md-12 text-center">
+<<<<<<< HEAD
 {{--                                    <h3 class="py-3 bg-warning text-white" style="margin: 10px auto 10px auto;">{{ ($key+1).' - '.$item->product->name }}</h3>--}}
+=======
+>>>>>>> ad3b689 (ss)
                                     <h3 class="py-3 bg-warning text-white" style="margin: 10px auto 10px auto;">{{$item->product->name }}</h3>
                                 </div>
                                 <div class="col-md-12">

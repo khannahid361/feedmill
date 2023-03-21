@@ -100,7 +100,7 @@
                                         <th class="text-center">Quantity</th>
                                         <th class="text-center d-none received-material-qty">Received</th>
                                         <th class="text-right">Net Unit Cost</th>
-                                        <th class="text-right">Discount</th>
+
                                         <th class="text-right">Tax</th>
                                         <th class="text-right">Subtotal</th>
                                         <th class="text-center"><i class="fas fa-trash text-white"></i></th>
@@ -121,14 +121,14 @@
                                         <td><input type="text" class="form-control qty text-center" name="materials[1][qty]" id="materials_qty_1" value="1"  data-row="1"></td>
                                         <td class="received-material-qty d-none"><input type="text" class="form-control received text-center" name="materials[1][received]" value="1" data-row="1"></td>
                                         <td><input type="text" class="text-right form-control net_unit_cost" name="materials[1][net_unit_cost]" id="materials_net_unit_cost_1" data-row="1"></td>
-                                        <td class="discount text-right" data-row="1"></td>
+
                                         <td class="tax text-right" data-row="1"></td>
                                         <td class="sub-total text-right" data-row="1"></td>
-                                        <td class="text-center" data-row="1"><button type="button" class="edit-material btn btn-sm small-btn btn-primary mr-2 small-btn d-none"  id="edit_modal_1" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></button></td>
+
                                         <input type="hidden" class="material-id_1" id="material_id_1" name="materials[1][id]" data-row="1">
                                         <input type="hidden" class="material-code_1" id="material_code_1" name="materials[1][code]" data-row="1">
                                         <input type="hidden" class="material-unit_1" id="material_unit_1" name="materials[1][unit]" data-row="1">
-                                        <input type="hidden" class="discount-value" id="discount_value_1" name="materials[1][discount]" data-row="1">
+
                                         <input type="hidden" class="tax-rate" id="tax_rate_1" name="materials[1][tax_rate]" data-row="1">
                                         <input type="hidden" class="tax-value" id="tax_value_1" name="materials[1][tax]" data-row="1">
                                         <input type="hidden" class="subtotal-value" id="subtotal_value_1" name="materials[1][subtotal]" data-row="1">
@@ -138,7 +138,7 @@
                                         <th id="total-qty" class="text-center font-weight-bolder">0</th>
                                         <th class="d-none received-material-qty font-weight-bolder"></th>
                                         <th></th>
-                                        <th id="total-discount" class="text-right font-weight-bolder">0.00</th>
+
                                         <th id="total-tax" class="text-right font-weight-bolder">0.00</th>
                                         <th id="total" class="text-right font-weight-bolder">0.00</th>
                                         <th class="text-center"><button type="button" class="btn btn-success btn-sm small-btn btn-md add-material"><i class="fas fa-plus"></i></button></th>

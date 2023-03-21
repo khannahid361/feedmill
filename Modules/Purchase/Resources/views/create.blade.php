@@ -84,7 +84,7 @@
                                         <td class="discount text-right" data-row="1"></td>
                                         <td class="tax text-right" data-row="1"></td>
                                         <td class="sub-total text-right" data-row="1"></td>
-                                        <td class="text-center" data-row="1"><button type="button" class="edit-material btn btn-sm small-btn btn-primary mr-2 small-btn d-none"  id="edit_modal_1" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></button></td>
+{{--                                        <td class="text-center" data-row="1"><button type="button" class="edit-material btn btn-sm small-btn btn-primary mr-2 small-btn d-none"  id="edit_modal_1" data-toggle="modal" data-target="#editModal"><i class="fas fa-edit"></i></button></td>--}}
                                         <input type="hidden" class="material-id_1" id="material_id_1" name="materials[1][id]" data-row="1">
                                         <input type="hidden" class="material-code_1" id="material_code_1" name="materials[1][code]" data-row="1">
                                         <input type="hidden" class="material-unit_1" id="material_unit_1" name="materials[1][unit]" data-row="1">

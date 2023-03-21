@@ -226,6 +226,12 @@ class ProductionController extends BaseController
                                     'year'            => $product['year'],
                                     'mfg_date'        => $product['mfg_date'],
                                     'exp_date'        => $product['exp_date'],
+<<<<<<< HEAD
+=======
+//                                    'other_cost'      => $product['other_cost'],
+//                                    'sub_total'       => $product['sub_total'],
+//                                    'per_unit_cost'   => $product['per_unit_cost'],
+>>>>>>> ad3b689 (ss)
                                     'base_unit_qty'   => $product['base_unit_qty'],
                                 ];
                                 $productData = ProductionProduct::create($product_data);
@@ -239,6 +245,10 @@ class ProductionController extends BaseController
                                                 'qty'           => $value['qty'],
                                                 'cost'          => $value['cost'],
                                                 'total'         => $value['total'],
+<<<<<<< HEAD
+=======
+//                                                'damaged_qty'   => $value['damaged_qty'],
+>>>>>>> ad3b689 (ss)
                                             ];
                                         }
                                         $production_product->materials()->sync($materials);

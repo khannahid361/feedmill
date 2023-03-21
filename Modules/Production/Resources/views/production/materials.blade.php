@@ -38,23 +38,17 @@
                         <input type="hidden" class="form-control text-right" value="{{ $item->cost }}" name="production[{{ $tab }}][materials][{{ $key+1 }}][cost]" id="production_{{ $tab }}_materials_{{ $key+1 }}_cost" data-id="{{ $key+1 }}" readonly>
                         <input type="hidden" class="form-control text-right stock_qty" value="{{ $item->qty }}" name="production[{{ $tab }}][materials][{{ $key+1 }}][stock_qty]" id="production_{{ $tab }}_materials_{{ $key+1 }}_stock_qty" data-id="{{ $key+1 }}">
                         <input type="hidden" class="form-control text-right q_ty" value="{{ $item->q_ty }}"  id="production_{{ $tab }}_materials_{{ $key+1 }}_q_ty" data-id="{{ $key+1 }}" readonly>
-
-
                         <input type="hidden" class="track" data-qtys="{{ $item->q_ty }}" data-cost="{{ $item->cost }}" data-stock_qty="{{$item->qty}}" data-total="production_{{ $tab }}_materials_{{ $key+1 }}_total" data-tab="{{$tab}}"/>
                         <input type="hidden" class="track_qty" data-qtys="{{ $item->q_ty }}" data-cost="{{ $item->cost }}" data-stock_qty="{{$item->qty}}"  data-qty="production_{{ $tab }}_materials_{{ $key+1 }}_qty" data-tab="{{$tab}}"/>
-
                     </td>
-                    <td class="text-center ">
+                    <td class="text-center">
                         {{ $item->q_ty }} {{$item->unit_code}}
-
                     </td>
                     <td class="text-right ">
                         {{ number_format($item->cost,2,'.','') }}
-
                     </td>
                     <td class="text-center ">
                         {{ $item->qty ? $item->qty : 0}} {{$item->unit_name}}
-
                     </td>
                     <td>
                         <input type="text" class="form-control text-right qty" value="" name="production[{{ $tab }}][materials][{{ $key+1 }}][qty]" id="production_{{ $tab }}_materials_{{ $key+1 }}_qty" data-id="{{ $key+1 }}" readonly>

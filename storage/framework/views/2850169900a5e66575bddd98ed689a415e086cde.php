@@ -1,4 +1,3 @@
-
 <?php $__env->startSection('title', $page_title); ?>
 <?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column-fluid">
@@ -32,7 +31,7 @@
                             <?php $__currentLoopData = $production->products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="row pt-5">
                                 <div class="col-md-12 text-center">
-                                    <h3 class="py-3 bg-warning text-white" style="margin: 10px auto 10px auto;"><?php echo e(($key+1).' - '.$item->product->name); ?></h3>
+                                    <h3 class="py-3 bg-warning text-white" style="margin: 10px auto 10px auto;"><?php echo e($item->product->name); ?></h3>
                                 </div>
                                 <div class="col-md-12">
                                     <table class="table table-bordered pb-5" id="material_table_<?php echo e($key + 1); ?>">

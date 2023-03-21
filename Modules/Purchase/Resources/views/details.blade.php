@@ -376,7 +376,7 @@
                                                     {
                                                         $unit_name = DB::table('units')->where('id',$item->pivot->purchase_unit_id)->value('unit_name');
                                                     }
-                                                @endphp
+{{--                                                @endphp--}}
                                                 <tr>
                                                     <td class="text-center no">{{ $key+1 }}</td>
                                                     <td class="text-left">{{ $item->material_name }}</td>
@@ -481,9 +481,11 @@
                                             <td colspan="2"  class="text-right">DUE AMOUNT</td>
                                             <td class="text-right">
                                                 @if (config('settings.currency_position') == 2)
-                                                    {{ number_format(($purchase->total_cost - $purchase->paid_amount - $purchase->order_discount),2) }} {{ config('settings.currency_symbol') }}
+{{--                                                    {{ number_format(($purchase->total_cost - $purchase->paid_amount - $purchase->order_discount),2) }} {{ config('settings.currency_symbol') }}--}}
+                                                    {{ number_format(($purchase->grand_total - $purchase->paid_amount),2) }} {{ config('settings.currency_symbol') }}
                                                 @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format(($purchase->total_cost - $purchase->paid_amount - $purchase->order_discount),2) }}
+{{--                                                    {{ config('settings.currency_symbol') }} {{ number_format(($purchase->total_cost - $purchase->paid_amount - $purchase->order_discount),2) }}--}}
+                                                    {{ config('settings.currency_symbol') }} {{ number_format(($purchase->grand_totalt - $purchase->paid_amount),2) }}
                                                 @endif
                                             </td>
                                         </tr>

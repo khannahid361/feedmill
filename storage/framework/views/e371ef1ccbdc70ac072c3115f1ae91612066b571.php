@@ -23,7 +23,7 @@
             <th width="5%" class="text-center">Material QTY</th>
             <th width="10%" class="text-right">Rate</th>
             <th width="15%" class="text-center">Stk. Avl. Qty</th>
-            <th width="15%" class="text-center">Use Qty</th>
+            <th width="15%" class="text-center">Received Qty</th>
 
             <th width="17%" class="text-right">Total</th>
         </thead>
@@ -39,25 +39,19 @@
                         <input type="hidden" class="form-control text-right" value="<?php echo e($item->cost); ?>" name="production[<?php echo e($tab); ?>][materials][<?php echo e($key+1); ?>][cost]" id="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_cost" data-id="<?php echo e($key+1); ?>" readonly>
                         <input type="hidden" class="form-control text-right stock_qty" value="<?php echo e($item->qty); ?>" name="production[<?php echo e($tab); ?>][materials][<?php echo e($key+1); ?>][stock_qty]" id="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_stock_qty" data-id="<?php echo e($key+1); ?>">
                         <input type="hidden" class="form-control text-right q_ty" value="<?php echo e($item->q_ty); ?>"  id="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_q_ty" data-id="<?php echo e($key+1); ?>" readonly>
-
-
                         <input type="hidden" class="track" data-qtys="<?php echo e($item->q_ty); ?>" data-cost="<?php echo e($item->cost); ?>" data-stock_qty="<?php echo e($item->qty); ?>" data-total="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_total" data-tab="<?php echo e($tab); ?>"/>
                         <input type="hidden" class="track_qty" data-qtys="<?php echo e($item->q_ty); ?>" data-cost="<?php echo e($item->cost); ?>" data-stock_qty="<?php echo e($item->qty); ?>"  data-qty="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_qty" data-tab="<?php echo e($tab); ?>"/>
-
                     </td>
-                    <td class="text-center ">
+                    <td class="text-center">
                         <?php echo e($item->q_ty); ?> <?php echo e($item->unit_code); ?>
-
 
                     </td>
                     <td class="text-right ">
                         <?php echo e(number_format($item->cost,2,'.','')); ?>
 
-
                     </td>
                     <td class="text-center ">
                         <?php echo e($item->qty ? $item->qty : 0); ?> <?php echo e($item->unit_name); ?>
-
 
                     </td>
                     <td>
