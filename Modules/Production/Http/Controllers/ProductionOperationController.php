@@ -67,8 +67,8 @@ class ProductionOperationController extends BaseController{
                                         if($production_material) {
                                             $production_material->update([
                                                 "used_qty"    => $material['used_qty'],
-                                                "damaged_qty" => $material['damaged_qty'] ? $material['damaged_qty'] : 0,
-                                                "odd_qty"     => $material['odd_qty'] ? $material['odd_qty'] : 0
+//                                                "damaged_qty" => $material['damaged_qty'] ? $material['damaged_qty'] : 0,
+//                                                "odd_qty"     => $material['odd_qty'] ? $material['odd_qty'] : 0
                                             ]);
                                         }
                                     }

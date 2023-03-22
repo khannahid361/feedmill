@@ -176,8 +176,9 @@ class ProductController extends BaseController
                 'categories' => Category::allProductCategories(),
                 'units'      => Unit::all(),
                 'taxes'      => Tax::activeTaxes(),
-                'product' => Product::with('product_material')->find($id)
+                'product' => Product::with('product_materials')->find($id)
             ];
+//            return $data;
             return view('product::edit',$data);
         }else{
             return $this->access_blocked();

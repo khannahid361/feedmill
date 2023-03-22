@@ -42,6 +42,10 @@ class Product extends BaseModel
                     ->withTimestamps();
     }
 
+    public function product_materials(){
+        return $this->hasMany(ProductMaterial::class,'product_id','id');
+    }
+
     public function warehouse_product()
     {
         return $this->hasMany(WarehouseProduct::class,'product_id','id')

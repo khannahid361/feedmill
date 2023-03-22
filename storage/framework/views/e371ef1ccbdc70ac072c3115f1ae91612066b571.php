@@ -55,7 +55,8 @@
 
                     </td>
                     <td>
-                        <input type="text" class="form-control text-right qty" value="<?php echo e($item->q_ty); ?>" name="production[<?php echo e($tab); ?>][materials][<?php echo e($key+1); ?>][qty]" id="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_qty" data-id="<?php echo e($key+1); ?>" readonly>
+                        <input type="text" class="form-control text-right qty" value="" name="production[<?php echo e($tab); ?>][materials][<?php echo e($key+1); ?>][qty]" id="production_<?php echo e($tab); ?>_materials_<?php echo e($key+1); ?>_qty" data-id="<?php echo e($key+1); ?>" readonly>
+
                     </td>
 
 

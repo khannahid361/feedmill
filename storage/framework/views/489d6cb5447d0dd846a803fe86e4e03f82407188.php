@@ -161,7 +161,6 @@
                                     <label for="logo" class="form-control-label">Product Image</label>
                                     <div class="col=md-12 px-0  text-center">
                                         <div id="image">
-
                                         </div>
                                     </div>
                                     <div class="text-center"><span class="text-muted">Maximum Allowed File Size 2MB and Format (png,jpg,jpeg,svg,webp)</span></div>
@@ -196,7 +195,6 @@
                                         </div>
                                         <div class="form-group col-md-5 required">
                                             <label for="materials_qty_1" class="form-control-label">Material Quantity</label>
-
                                             <input type="text" class="form-control qty text-center" name="materials[1][qty]" id="materials_qty_1" required  data-row="1">
                                         </div>
 

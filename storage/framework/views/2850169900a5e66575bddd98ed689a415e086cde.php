@@ -31,6 +31,7 @@
                             <?php $__currentLoopData = $production->products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="row pt-5">
                                 <div class="col-md-12 text-center">
+
                                     <h3 class="py-3 bg-warning text-white" style="margin: 10px auto 10px auto;"><?php echo e($item->product->name); ?></h3>
                                 </div>
                                 <div class="col-md-12">
@@ -47,7 +48,7 @@
                                                 <td class="text-center"><?php echo e(date('d-M-Y',strtotime($item->exp_date))); ?></td>
                                                 <td class="text-center"><?php echo e($item->product->unit->unit_name.' ('.$item->product->unit->unit_code.')'); ?></td>
                                                 <td>
-                                                    <input type="text" class="form-control text-center" value="<?php echo e($item->base_unit_qty); ?>" name="production[<?php echo e($key+1); ?>][fg_qty]" id="production_<?php echo e($key+1); ?>_fg_qty" onkeyup="per_unit_cost('<?php echo e($key+1); ?>')">
+                                                    <input type="text" class="form-control text-center" value="<?php echo e($item->base_unit_qty); ?>" name="production[<?php echo e($key+1); ?>][fg_qty]" id="production_<?php echo e($key+1); ?>_fg_qty" onkeyup="per_unit_cost('<?php echo e($key+1); ?>')" readonly>
                                                     <input type="hidden" class="form-control" name="production[<?php echo e($key+1); ?>][production_product_id]" value="<?php echo e($item->id); ?>">
                                                 </td>
                                             </tr>
@@ -61,12 +62,16 @@
                                             <th width="5%" class="text-center">Type</th>
                                             <th width="10%" class="text-center">Unit Name</th>
                                             <th width="10%" class="text-right">Rate</th>
-                                            <th class="text-center">Received Qty</th>
+                                            <th class="text-center" hidden></th>
                                             <th class="text-center">Used Qty <sup class="text-danger font-weight-bolder">*</sup></th>
-                                            <th class="text-center">Damaged Qty</th>
-                                            <th class="text-center">Odd Qty</th>
+
+                                            <th class="text-center">Total</th>
+
                                         </thead>
                                         <tbody>
+                                        <?php
+                                            $a = 0;
+                                        ?>
                                             <?php if(!$item->materials->isEmpty()): ?>
                                                 <?php $__currentLoopData = $item->materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <tr>
@@ -82,33 +87,39 @@
 
                                                             <input type="hidden" class="form-control text-right material_<?php echo e($key+1); ?>_cost" value="<?php echo e($value->pivot->cost); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][cost]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_cost" data-id="<?php echo e($index+1); ?>">
                                                         </td>
-                                                        <td class="text-center">
-                                                            <?php echo e(number_format($value->pivot->qty,2,'.','')); ?>
+                                                        <td class="text-center" hidden>
 
                                                             <input type="hidden" class="form-control text-right material_<?php echo e($key+1); ?>_qty" value="<?php echo e($value->pivot->qty); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][qty]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_qty" data-id="<?php echo e($index+1); ?>">
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control text-center material_<?php echo e($key+1); ?>_used_qty" value="<?php echo e($value->pivot->used_qty ?? ''); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][used_qty]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_used_qty"  onkeyup="calculateRowData('<?php echo e($key+1); ?>','<?php echo e($index+1); ?>')" data-id="<?php echo e($index+1); ?>">
+                                                            <input type="text" class="form-control text-center material_<?php echo e($key+1); ?>_used_qty" value="<?php echo e($value->pivot->used_qty ?? ''); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][used_qty]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_used_qty"  onkeyup="calculateRowData('<?php echo e($key+1); ?>','<?php echo e($index+1); ?>')" data-id="<?php echo e($index+1); ?>" readonly>
                                                         </td>
-                                                        <td>
-                                                            <input type="text" class="form-control text-center material_<?php echo e($key+1); ?>_damaged_qty" value="<?php echo e($value->pivot->damaged_qty ?? ''); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][damaged_qty]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_damaged_qty"  onkeyup="calculateRowData('<?php echo e($key+1); ?>','<?php echo e($index+1); ?>')" data-id="<?php echo e($index+1); ?>">
+
+
+
+                                                        <td class="text-right">
+                                                            <?php echo e(number_format($value->pivot->total,2,'.','')); ?>
+
+                                                            <?php
+                                                                $a += $value->pivot->total;
+                                                            ?>
                                                         </td>
-                                                        <td>
-                                                            <input readonly type="text" class="form-control bg-secondary text-center material_<?php echo e($key+1); ?>_odd_qty" value="<?php echo e($value->pivot->odd_qty ?? ''); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][odd_qty]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_odd_qty"  data-id="<?php echo e($index+1); ?>">
-                                                        </td>
+
+
+
                                                     </tr>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
-                                                    <td colspan="6" class="text-right font-weight-bold">Labor Cost</td>
-                                                    <td colspan="2" class="text-right font-weight-bold"><input type="text" class="form-control material_<?php echo e($key+1); ?>_labor_cost" id="production_<?php echo e($key+1); ?>_labor_cost" name="production[<?php echo e($key+1); ?>][labor_cost]" value="<?php echo e($item->labor_cost ? number_format($item->labor_cost,2,'.','') : ''); ?>" onkeyup="per_unit_cost('<?php echo e($key+1); ?>')"  data-id="<?php echo e($key+1); ?>"></td>
+                                                    <td colspan="5" class="text-right font-weight-bold">Labor Cost</td>
+                                                    <td colspan="1" class="text-right font-weight-bold"><input type="text" class="form-control material_<?php echo e($key+1); ?>_labor_cost" id="production_<?php echo e($key+1); ?>_labor_cost" name="production[<?php echo e($key+1); ?>][labor_cost]" value="<?php echo e($item->labor_cost ? number_format($item->labor_cost,2,'.','') : ''); ?>" onkeyup="per_unit_cost('<?php echo e($key+1); ?>')"  data-id="<?php echo e($key+1); ?>"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="6" class="text-right font-weight-bold">Other Cost</td>
-                                                    <td colspan="2" class="text-right font-weight-bold"><input type="text" class="form-control material_<?php echo e($key+1); ?>_other_cost" id="production_<?php echo e($key+1); ?>_other_cost" name="production[<?php echo e($key+1); ?>][other_cost]" value="<?php echo e($item->labor_cost ? number_format($item->other_cost,2,'.','') : ''); ?>" onkeyup="per_unit_cost('<?php echo e($key+1); ?>')"  data-id="<?php echo e($key+1); ?>"></td>
+                                                    <td colspan="5" class="text-right font-weight-bold">Other Cost</td>
+                                                    <td colspan="1" class="text-right font-weight-bold"><input type="text" class="form-control material_<?php echo e($key+1); ?>_other_cost" id="production_<?php echo e($key+1); ?>_other_cost" name="production[<?php echo e($key+1); ?>][other_cost]" value="<?php echo e($item->labor_cost ? number_format($item->other_cost,2,'.','') : ''); ?>" onkeyup="per_unit_cost('<?php echo e($key+1); ?>')"  data-id="<?php echo e($key+1); ?>"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="6" class="text-right font-weight-bold">Total Cost</td>
-                                                    <td colspan="2">
+                                                    <td colspan="5" class="text-right font-weight-bold">Total Cost</td>
+                                                    <td colspan="1">
                                                         <?php
                                                             if(!empty($item->per_unit_cost) && !empty($item->base_unit_qty)) {
                                                                 $total_cost = $item->per_unit_cost * $item->base_unit_qty;
@@ -116,13 +127,13 @@
                                                                 $total_cost = '';
                                                             }
                                                         ?>
-                                                        <input readonly type="text" class="form-control text-white bg-primary text-right material_<?php echo e($key+1); ?>_total_cost" value="<?php echo e($total_cost); ?>" name="production[<?php echo e($key+1); ?>][materials_total_cost]" id="production_<?php echo e($key+1); ?>_materials_total_cost"  data-id="<?php echo e($key+1); ?>">
+                                                        <input readonly type="text" class="form-control text-white bg-primary text-right material_<?php echo e($key+1); ?>_total_cost" value="<?php echo e($a); ?>" name="production[<?php echo e($key+1); ?>][materials_total_cost]" id="production_<?php echo e($key+1); ?>_materials_total_cost"  data-id="<?php echo e($key+1); ?>">
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="6" class="text-right font-weight-bold">Per Unit Cost</td>
-                                                    <td colspan="2">
-                                                        <input readonly type="text" class="form-control text-white bg-primary text-right material_<?php echo e($key+1); ?>_per_unit_cost" value="<?php echo e($item->per_unit_cost ? number_format($item->per_unit_cost,2,'.','') : ''); ?>" name="production[<?php echo e($key+1); ?>][materials_per_unit_cost]" id="production_<?php echo e($key+1); ?>_materials_per_unit_cost"  data-id="<?php echo e($key+1); ?>">
+                                                    <td colspan="5" class="text-right font-weight-bold">Per Unit Cost</td>
+                                                    <td colspan="1">
+                                                        <input readonly type="text" class="form-control text-white bg-primary text-right material_<?php echo e($key+1); ?>_per_unit_cost" value="<?php echo e($item->per_unit_cost ? number_format($item->per_unit_cost,2,'.','') : $a/$item->base_unit_qty); ?>" name="production[<?php echo e($key+1); ?>][materials_per_unit_cost]" id="production_<?php echo e($key+1); ?>_materials_per_unit_cost"  data-id="<?php echo e($key+1); ?>">
                                                     </td>
                                                 </tr>
                                             <?php endif; ?>
