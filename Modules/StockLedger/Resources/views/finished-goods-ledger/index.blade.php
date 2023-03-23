@@ -39,9 +39,9 @@
                                 <input type="hidden" id="end_date" name="end_date" value="">
                             </div>
                         </div>
-                        
+
                         <div class="col-md-4">
-                            <div style="margin-top:28px;">      
+                            <div style="margin-top:28px;">
                                 <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                 data-toggle="tooltip" data-theme="dark" title="Reset">
                                 <i class="fas fa-undo-alt"></i></button>
@@ -65,13 +65,13 @@
                                         <th class="text-center">Date</th>
                                         <th>Product</th>
                                         <th class="text-center">Unit</th>
-                                        
+
                                         <th class="text-right">Prev. Qty</th>
                                         @if(permission('finish-goods-stock-price-view'))
                                         <th class="text-right">Prev. Rate</th>
                                         <th class="text-right">Prev. Value</th>
                                         @endif
-                                        
+
                                         <th class="text-center">Batch No.</th>
                                         <th class="text-center">SRINV No.</th>
                                         <th class="text-right">Stock In Qty</th>
@@ -86,7 +86,7 @@
                                         <th class="text-right">Stock Out Rate</th>
                                         <th class="text-right">Stock Out Value</th>
                                         @endif
-                                       
+
                                         <th class="text-right">Curr. Qty</th>
                                         {{-- @if(permission('finish-goods-stock-price-view')) --}}
                                         <th class="text-right">Curr. Rate</th>
@@ -138,8 +138,6 @@
     });
     var table;
     $(document).ready(function(){
-
-    
         $('#btn-filter').click(function () {
             let start_date = $('#start_date').val();
             let end_date   = $('#end_date').val();
@@ -173,7 +171,7 @@
                 notification('error','Please select material');
             }
         });
-    
+
         $('#btn-reset').click(function () {
             $('#form-filter')[0].reset();
             $('#form-filter .selectpicker').selectpicker('refresh');
@@ -181,7 +179,7 @@
             $('#form-filter #end_date').val('');
             $('#dataTable tbody').html('');
         });
- 
+
     });
     </script>
 @endpush

@@ -64,9 +64,9 @@ class TransferController extends BaseController{
                 if(permission('transfer-inventory-view')){
                     $action .= ' <a class="dropdown-item view_data" href="'.route("transfer.inventory.view",$value->id).'">'.self::ACTION_BUTTON['View'].'</a>';
                 }
-                if(permission('transfer-inventory-edit') /*&& (auth()->user()->id == $value->receiver_id) */&& ($value->receive_status == 3) && ($value->transfer_status == 1)){
-                    $action .= ' <a class="dropdown-item receive_data"  data-id="' . $value->id . '" data-name="' . $value->challan_no . '"><i class="fas fa-truck-loading text-info mr-2"></i> Receive</a>';
-                }
+//                if(permission('transfer-inventory-edit') /*&& (auth()->user()->id == $value->receiver_id) */&& ($value->receive_status == 3) && ($value->transfer_status == 1)){
+//                    $action .= ' <a class="dropdown-item receive_data"  data-id="' . $value->id . '" data-name="' . $value->challan_no . '"><i class="fas fa-truck-loading text-info mr-2"></i> Receive</a>';
+//                }
                 if(permission('transfer-inventory-delete') && empty(auth()->user()->warehouse_id)){
                     $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->challan_no . '">'.self::ACTION_BUTTON['Delete'].'</a>';
                 }
@@ -226,6 +226,7 @@ class TransferController extends BaseController{
             return response()->json($this->unauthorized());
         }
     }
+
     public function transfer_product_data(int $id){
         $transfer = $this->model->with('hasManyProducts')->find($id);
         return view('transfer::transfer-data',compact('transfer'))->render();

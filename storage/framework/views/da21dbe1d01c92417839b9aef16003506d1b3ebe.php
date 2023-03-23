@@ -1,17 +1,33 @@
-@extends('dealerpanel::layouts.master')
-@section('title', $page_title)
-@section('content')
+
+
+<?php $__env->startSection('title', $page_title); ?>
+
+<?php $__env->startPush('styles'); ?>
+<style>
+</style>
+<?php $__env->stopPush(); ?>
+
+<?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
+        <!--begin::Notice-->
         <div class="card card-custom gutter-b">
             <div class="card-header flex-wrap py-5">
-                <div class="card-title"><h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3></div>
+                <div class="card-title">
+                    <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
+                </div>
                 <div class="card-toolbar">
+                    <!--begin::Button-->
                     <button type="button" class="btn btn-primary btn-sm mr-3" id="print-invoice"> <i class="fas fa-print"></i> Print</button>
-                    <a href="{{ route('dealer.panel.sale.index') }}" class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
+
+                    <a href="<?php echo e(route('purchase')); ?>" class="btn btn-warning btn-sm font-weight-bolder">
+                        <i class="fas fa-arrow-left"></i> Back</a>
+                    <!--end::Button-->
                 </div>
             </div>
         </div>
+        <!--end::Notice-->
+        <!--begin::Card-->
         <div class="card card-custom" style="padding-bottom: 100px !important;">
             <div class="card-body" style="padding-bottom: 100px !important;">
                 <div class="col-md-12 col-lg-12"  style="width: 100%;">
@@ -90,12 +106,12 @@
                             .invoice table th {
                                 background: #036;
                                 color: #fff;
-                                padding: 10px;
+                                padding: 15px;
                                 border-bottom: 1px solid #fff
                             }
 
                             .invoice table td {
-                                padding: 5px;
+                                padding: 15px;
                                 border-bottom: 1px solid #fff
                             }
 
@@ -138,7 +154,7 @@
                                 border-bottom: none;
                                 white-space: nowrap;
                                 text-align: right;
-                                padding: 5px;
+                                padding: 10px 20px;
                                 border-top: 1px solid #aaa;
                                 font-weight: bold;
                             }
@@ -205,7 +221,7 @@
                                 width:180px;height:2px;margin:0 auto;padding:0;border-top:1px dashed #454d55 !important;
                             }
 
-                            @media screen {
+                            @media  screen {
                                 .no_screen {display: none;}
                                 .no_print {display: block;}
                                 thead {display: table-header-group;}
@@ -214,7 +230,7 @@
                                 body {margin: 0;}
                             }
 
-                            @media print {
+                            @media  print {
 
                                 body,
                                 html {
@@ -223,7 +239,6 @@
                                     font-family: sans-serif;
                                     /* font-size: 12px !important; */
                                     margin-bottom: 100px !important;
-
                                 }
 
                                 .m-0 {
@@ -280,9 +295,8 @@
                                 .invoice {
                                     /* font-size: 11px!important; */
                                     overflow: hidden !important;
-                                    /* background: #fff !important; */
+                                    background: #fff !important;
                                     margin-bottom: 100px !important;
-                                    position: relative;
                                 }
 
                                 .invoice footer {
@@ -303,34 +317,40 @@
                                 }
                             }
 
-                            @page {
+                            @page  {
                                 /* size: auto; */
                                 margin: 5mm 5mm;
 
                             }
                         </style>
-                        <div class="invoice" style="position: relative;">
+                        <div class="invoice overflow-auto">
                             <div>
                                 <table>
                                     <tr>
                                         <td class="text-center">
-                                            <img src="{{asset('./images/mfbl-logo.png')}}" style="width: 60px;" alt="Logo" />
-                                            <h1 class="name m-0" style="text-transform: uppercase;"><b>{{ config('settings.title') ? config('settings.title') : env('APP_NAME') }}</b></h1>
-                                            @if(config('settings.address'))<p style="font-weight: normal;margin:0;"><b>Address: </b>{{ config('settings.address') }}</p>@endif
-                                            @if(config('settings.contact_no'))<p style="font-weight: normal;margin:0;"><b>Contact No.: </b>{{ config('settings.contact_no') }}, @if(config('settings.email'))<b>Email: </b>{{ config('settings.email') }}@endif</p>@endif
-
-                                            <p style="font-weight: normal;margin:0;"><b>Factory Address: </b>Bakua, Ullapara-6760, Sirajganj</p>
+                                            <h2 class="name m-0" style="text-transform: uppercase;"><b><?php echo e(config('settings.title') ? config('settings.title') : env('APP_NAME')); ?></b></h2>
+                                            <?php if(config('settings.contact_no')): ?><p style="font-weight: normal;margin:0;"><b>Contact No.: </b><?php echo e(config('settings.contact_no')); ?>, <?php if(config('settings.email')): ?><b>Email: </b><?php echo e(config('settings.email')); ?><?php endif; ?></p><?php endif; ?>
+                                            <?php if(config('settings.address')): ?><p style="font-weight: normal;margin:0;"><?php echo e(config('settings.address')); ?></p><?php endif; ?>
+                                            <p style="font-weight: normal;margin:0;"><b>Date: </b><?php echo e(date('d-M-Y')); ?></p>
                                         </td>
                                     </tr>
                                 </table>
-                                <div style="width: 100%;height:3px;border-top:2px solid #036;"></div>
+                                <div style="width: 100%;height:3px;border-top:1px solid #036;border-bottom:1px solid #036;"></div>
                                 <table>
                                     <tr>
+                                        <td width="50%">
+                                            <div class="invoice-to">
+                                                <div class="text-grey-light"><b>BILLING TO</b></div>
+                                                <div class="to"><?php echo e($purchase->supplier->name); ?></div>
+                                                <div class="phone"><?php echo e($purchase->supplier->mobile); ?></div>
+                                                <?php if($purchase->supplier->email): ?><div class="email"><?php echo e($purchase->supplier->email); ?></div><?php endif; ?>
+                                                <?php if($purchase->supplier->address): ?><div class="address"><?php echo e($purchase->supplier->address); ?></div><?php endif; ?>
+                                            </div>
+                                        </td>
                                         <td width="50%" class="text-right">
-                                            <h4 class="name m-0">Memo No: #{{ $sale->memo_no }}</h4>
-                                            <div class="m-0 date"><b>Date: </b>{{ date('d-M-Y',strtotime($sale->sale_date)) }}</div>
-                                            <div class="m-0 date"><b>Payment Status: </b>{{ $sale->payment_status ? PAYMENT_STATUS[$sale->payment_status] : 'N/A' }}</div>
-                                            <div class="m-0 date"><b>Payment Method: </b>{{ $sale->payment_method ? PAYMENT_METHOD[$sale->payment_method] : 'N/A' }}</div>
+                                            <h4 class="name m-0"><?php echo e($purchase->memo_no); ?></h4>
+                                            <div class="m-0 date"><b>Date:</b><?php echo e(date('d-M-Y',strtotime($purchase->purchase_date))); ?></div>
+                                            <div class="m-0 date"><b>Status:</b><?php echo e($purchase->purchase_status ? PURCHASE_STATUS[$purchase->purchase_status] : 'N/A'); ?></div>
                                         </td>
                                     </tr>
                                 </table>
@@ -340,190 +360,199 @@
                                             <th class="text-center">SL</th>
                                             <th class="text-left">DESCRIPTION</th>
                                             <th class="text-center">QUANTITY</th>
-                                            <th class="text-center">FREE QUANTITY</th>
                                             <th class="text-right">PRICE</th>
+                                            <th class="text-right">DISCOUNT</th>
+                                            
                                             <th class="text-right">TAX</th>
                                             <th class="text-right">SUBTOTAL</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (!$sale->sale_products->isEmpty())
-                                            @foreach ($sale->sale_products as $key => $item)
-                                                @php
+                                        <?php if(!$purchase->purchase_materials->isEmpty()): ?>
+                                            <?php $__currentLoopData = $purchase->purchase_materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php
                                                     $unit_name = '';
-                                                    if($item->pivot->sale_unit_id)
+                                                    if($item->pivot->purchase_unit_id)
                                                     {
-                                                        $unit_name = DB::table('units')->where('id',$item->pivot->sale_unit_id)->value('unit_name');
+                                                        $unit_name = DB::table('units')->where('id',$item->pivot->purchase_unit_id)->value('unit_name');
                                                     }
-                                                @endphp
+{{--                                                ?>--}}
                                                 <tr>
-                                                    <td class="text-center no">{{ $key+1 }}</td>
-                                                    <td class="text-left">{{ $item->name }}</td>
-                                                    <td class="text-center qty">{{ $item->pivot->qty.' '.$unit_name }}</td>
-                                                    <td class="text-center qty">{{ $item->pivot->free_qty.' '.$unit_name }}</td>
-                                                    <td class="text-right price">{{ number_format($item->pivot->net_unit_price,2,'.','') }}</td>
-                                                    <td class="text-right tax">{{ number_format($item->pivot->tax,2,'.','') }}</td>
+                                                    <td class="text-center no"><?php echo e($key+1); ?></td>
+                                                    <td class="text-left"><?php echo e($item->material_name); ?></td>
+                                                    <td class="text-center qty"><?php echo e($item->pivot->qty.' '.$unit_name); ?></td>
+                                                    <td class="text-right price"><?php echo e(number_format($item->pivot->net_unit_cost,2)); ?></td>
+                                                    <td class="text-right discount"><?php echo e(number_format($item->pivot->discount,2)); ?></td>
+                                                    
+                                                    <td class="text-right tax"><?php echo e(number_format($item->pivot->tax,2)); ?></td>
                                                     <td class="text-right total">
-                                                        @if (config('settings.currency_position') == 2)
-                                                            {{ number_format($item->pivot->total,2,'.','') }} {{ config('settings.currency_symbol') }}
-                                                        @else
-                                                            {{ config('settings.currency_symbol') }} {{ number_format($item->pivot->total,2,'.','') }}
-                                                        @endif
+                                                        <?php if(config('settings.currency_position') == 2): ?>
+                                                            <?php echo e(number_format($item->pivot->total,2)); ?> <?php echo e(config('settings.currency_symbol')); ?>
+
+                                                        <?php else: ?>
+                                                            <?php echo e(config('settings.currency_symbol')); ?> <?php echo e(number_format($item->pivot->total,2)); ?>
+
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
-                                            @endforeach
-                                        @endif
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endif; ?>
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td colspan="5"></td>
-                                            <td  class="text-right">TOTAL</td>
+                                            <td colspan="4"></td>
+                                            <td colspan="2"  class="text-right">TOTAL</td>
                                             <td class="text-right">
-                                                @if (config('settings.currency_position') == 2)
-                                                    {{ number_format($sale->total_price,2,'.','') }} {{ config('settings.currency_symbol') }}
-                                                @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format($sale->total_price,2,'.','') }}
-                                                @endif
+                                                <?php if(config('settings.currency_position') == 2): ?>
+                                                    <?php echo e(number_format($purchase->total_cost,2)); ?> <?php echo e(config('settings.currency_symbol')); ?>
+
+                                                <?php else: ?>
+                                                    <?php echo e(config('settings.currency_symbol')); ?> <?php echo e(number_format($purchase->total_cost,2)); ?>
+
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="5" class="text-left"></td>
-                                            <td  class="text-right">DISCOUNT</td>
+                                            <td colspan="4"></td>
+                                            <td colspan="2"  class="text-right">DISCOUNT</td>
                                             <td class="text-right">
-                                                @if (config('settings.currency_position') == 2)
-                                                    {{ number_format($sale->order_discount,2,'.','') }} {{ config('settings.currency_symbol') }}
-                                                @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format($sale->order_discount,2,'.','') }}
-                                                @endif
+                                                <?php if(config('settings.currency_position') == 2): ?>
+                                                    <?php echo e(number_format($purchase->order_discount,2)); ?> <?php echo e(config('settings.currency_symbol')); ?>
+
+                                                <?php else: ?>
+                                                    <?php echo e(config('settings.currency_symbol')); ?> <?php echo e(number_format($purchase->order_discount,2)); ?>
+
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="5" class="text-left"></td>
-                                            <td  class="text-right">TAX {{ $sale->order_tax_rate }}%</td>
+                                            <td colspan="4"></td>
+                                            <td colspan="2"  class="text-right">TAX <?php echo e($purchase->order_tax_rate); ?>%</td>
                                             <td class="text-right">
-                                                @if (config('settings.currency_position') == 2)
-                                                    {{ number_format($sale->order_tax,2,'.','') }} {{ config('settings.currency_symbol') }}
-                                                @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format($sale->order_tax,2,'.','') }}
-                                                @endif
+                                                <?php if(config('settings.currency_position') == 2): ?>
+                                                    <?php echo e(number_format($purchase->order_tax,2)); ?> <?php echo e(config('settings.currency_symbol')); ?>
+
+                                                <?php else: ?>
+                                                    <?php echo e(config('settings.currency_symbol')); ?> <?php echo e(number_format($purchase->order_tax,2)); ?>
+
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="5" class="text-left"></td>
-                                            <td  class="text-right">SHIPPING COST</td>
+                                            <td colspan="4"></td>
+                                            <td colspan="2"  class="text-right">SHIPPING COST</td>
                                             <td class="text-right">
-                                                @if (config('settings.currency_position') == 2)
-                                                    {{ number_format($sale->shipping_cost,2,'.','') }} {{ config('settings.currency_symbol') }}
-                                                @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format($sale->shipping_cost,2,'.','') }}
-                                                @endif
+                                                <?php if(config('settings.currency_position') == 2): ?>
+                                                    <?php echo e(number_format($purchase->shipping_cost,2)); ?> <?php echo e(config('settings.currency_symbol')); ?>
+
+                                                <?php else: ?>
+                                                    <?php echo e(config('settings.currency_symbol')); ?> <?php echo e(number_format($purchase->shipping_cost,2)); ?>
+
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="5" class="text-left"></td>
-                                            <td  class="text-right">LABOR COST</td>
+                                            <td colspan="4"></td>
+                                            <td colspan="2"  class="text-right">LABOR COST</td>
                                             <td class="text-right">
-                                                @if (config('settings.currency_position') == 2)
-                                                    {{ number_format($sale->labor_cost,2,'.','') }} {{ config('settings.currency_symbol') }}
-                                                @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format($sale->labor_cost,2,'.','') }}
-                                                @endif
+                                                <?php if(config('settings.currency_position') == 2): ?>
+                                                    <?php echo e(number_format($purchase->total_labor_cost,2)); ?> <?php echo e(config('settings.currency_symbol')); ?>
+
+                                                <?php else: ?>
+                                                    <?php echo e(config('settings.currency_symbol')); ?> <?php echo e(number_format($purchase->total_labor_cost,2)); ?>
+
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
 
                                         <tr>
-                                            <td colspan="5"></td>
-                                            <td  class="text-right">GRAND TOTAL</td>
+                                            <td colspan="4"></td>
+                                            <td colspan="2"  class="text-right">GRAND TOTAL</td>
                                             <td class="text-right">
-                                                @if (config('settings.currency_position') == 2)
-                                                    {{ number_format($sale->grand_total,2,'.','') }} {{ config('settings.currency_symbol') }}
-                                                @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format($sale->grand_total,2,'.','') }}
-                                                @endif
+                                                <?php if(config('settings.currency_position') == 2): ?>
+                                                    <?php echo e(number_format($purchase->grand_total,2)); ?> <?php echo e(config('settings.currency_symbol')); ?>
+
+                                                <?php else: ?>
+                                                    <?php echo e(config('settings.currency_symbol')); ?> <?php echo e(number_format($purchase->grand_total,2)); ?>
+
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="4"></td>
+                                            <td colspan="2"  class="text-right">PAID AMOUNT</td>
+                                            <td class="text-right">
+                                                <?php if(config('settings.currency_position') == 2): ?>
+                                                    <?php echo e(number_format($purchase->paid_amount,2)); ?> <?php echo e(config('settings.currency_symbol')); ?>
+
+                                                <?php else: ?>
+                                                    <?php echo e(config('settings.currency_symbol')); ?> <?php echo e(number_format($purchase->paid_amount,2)); ?>
+
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="5"></td>
-                                            <td  class="text-right">PREVIOUS DUE</td>
+                                            <td colspan="4"></td>
+                                            <td colspan="2"  class="text-right">DUE AMOUNT</td>
                                             <td class="text-right">
-                                                @if (config('settings.currency_position') == 2)
-                                                    {{ number_format($sale->previous_due,2,'.','') }} {{ config('settings.currency_symbol') }}
-                                                @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format($sale->previous_due,2,'.','') }}
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="5"></td>
-                                            <td  class="text-right">NET TOTAL</td>
-                                            <td class="text-right">
-                                                @if (config('settings.currency_position') == 2)
-                                                    {{ number_format($sale->net_total,2,'.','') }} {{ config('settings.currency_symbol') }}
-                                                @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format(($sale->grand_total + $sale->previous_due),2,'.','') }}
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="5"></td>
-                                            <td  class="text-right">PAID AMOUNT</td>
-                                            <td class="text-right">
-                                                @if (config('settings.currency_position') == 2)
-                                                    {{ number_format($sale->paid_amount,2,'.','') }} {{ config('settings.currency_symbol') }}
-                                                @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format($sale->paid_amount,2,'.','') }}
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="5"></td>
-                                            <td  class="text-right">DUE AMOUNT</td>
-                                            <td class="text-right">
-                                                @if (config('settings.currency_position') == 2)
-                                                    {{ number_format($sale->due_amount,2,'.','') }} {{ config('settings.currency_symbol') }}
-                                                @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format($sale->due_amount,2,'.','') }}
-                                                @endif
+                                                <?php if(config('settings.currency_position') == 2): ?>
+
+                                                    <?php echo e(number_format(($purchase->grand_total - $purchase->paid_amount),2)); ?> <?php echo e(config('settings.currency_symbol')); ?>
+
+                                                <?php else: ?>
+
+                                                    <?php echo e(config('settings.currency_symbol')); ?> <?php echo e(number_format(($purchase->grand_totalt - $purchase->paid_amount),2)); ?>
+
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                     </tfoot>
                                 </table>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <div class="thanks"><h4>Thank you!</h4></div>
+                                            <div class="notices">
+                                                <div>Note:</div>
+                                                <div class="notice"><?php echo e($purchase->note); ?></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
                                 <table style="width: 100%;">
                                     <tr>
                                         <td class="text-center">
-                                            <div class="font-size-10" style="width:250px;float:left;padding-top:75px;">
-                                                <p style="margin:0;padding:0;"></p>
+                                            <div class="font-size-10" style="width:250px;float:left;">
+                                                <p style="margin:0;padding:0;"><b class="text-uppercase"><?php echo e($purchase->created_by); ?></b>
+                                                    <br> <?php echo e(date('d-M-Y h:i:s A',strtotime($purchase->created_at))); ?></p>
                                                 <p class="dashed-border"></p>
-                                                <p style="margin:0;padding:0;text-transform: capitalize;font-weight:normal;">Customer Signature & Date</p>
+                                                <p style="margin:0;padding:0;">Created By</p>
                                             </div>
                                         </td>
+
                                         <td class="text-center">
                                             <div class="font-size-10" style="width:250px;float:right;">
-                                                <p style="margin:35px 0 0 0;padding:0;text-transform: capitalize;font-weight:normal;">{{ $sale->created_by }}<br> {{ date('d-M-Y h:i:s A',strtotime($sale->created_at)) }}</p>
+                                                <p style="margin:0;padding:0;"><b class="text-uppercase"><?php echo e($purchase->received_by); ?></b></p>
                                                 <p class="dashed-border"></p>
-                                                <p style="margin:0;padding:0;text-transform: capitalize;font-weight:normal;">Authorised By</p>
+                                                <p style="margin:0;padding:0;">Received By</p>
                                             </div>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
-
-                            <div class="no_screen" style="position: absolute;top:40%;left:10%;opacity:0.2;">
-                                <img src="{{ asset('storage/'.LOGO_PATH.config('settings.logo'))}}" style="width: 80%;" alt="Logo" />
-                            </div>
                         </div>
-
-                        <!--***********************-->
                     </div>
+
                 </div>
             </div>
         </div>
         <!--end::Card-->
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script src="js/jquery.printarea.js"></script>
 <script>
 $(document).ready(function () {
@@ -540,4 +569,6 @@ $(document).ready(function () {
 });
 
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\insaf\Modules/Purchase\Resources/views/details.blade.php ENDPATH**/ ?>

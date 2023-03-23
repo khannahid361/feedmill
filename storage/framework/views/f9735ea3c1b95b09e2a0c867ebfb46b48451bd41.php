@@ -1,13 +1,13 @@
 <div class="aside aside-left  aside-fixed  d-flex flex-column flex-row-auto" id="kt_aside">
     <div class="brand flex-column-auto " id="kt_brand">
         <div class="brand-logo">
-            @if (config('settings.logo'))
-            <a href="{{ route('dealer.panel.dashboard') }}">
-                <img src="{{ asset('storage/'.LOGO_PATH.config('settings.logo'))}}" style="max-width: 80px;" alt="Logo" />
+            <?php if(config('settings.logo')): ?>
+            <a href="<?php echo e(route('dealer.panel.dashboard')); ?>">
+                <img src="<?php echo e(asset('storage/'.LOGO_PATH.config('settings.logo'))); ?>" style="max-width: 80px;" alt="Logo" />
             </a>
-            @else
-            <h3 class="text-white">{{ config('settings.title') ? config('settings.title') : env('APP_NAME') }}</h3>
-            @endif
+            <?php else: ?>
+            <h3 class="text-white"><?php echo e(config('settings.title') ? config('settings.title') : env('APP_NAME')); ?></h3>
+            <?php endif; ?>
         </div>
         <button class="brand-toggle btn btn-sm px-0" id="kt_aside_toggle">
             <span class="svg-icon svg-icon-xl">
@@ -33,7 +33,7 @@
         <div id="kt_aside_menu" class="aside-menu my-4 " data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
             <ul class="menu-nav ">
                 <li class="menu-item" aria-haspopup="true">
-                    <a href="{{route('dealer.panel.dashboard')}}" class="menu-link" target="">
+                    <a href="<?php echo e(route('dealer.panel.dashboard')); ?>" class="menu-link" target="">
                         <span class="svg-icon menu-icon"><i class="fas fa-home"></i></span>
                         <span class="menu-text">Dashboard</span>
                     </a>
@@ -42,13 +42,13 @@
                     <h4 class="menu-text">Menu</h4>
                 </li>
                 <li class="menu-item" aria-haspopup="true">
-                    <a href="{{route('dealer.panel.product.index')}}" class="menu-link" target="">
+                    <a href="<?php echo e(route('dealer.panel.product.index')); ?>" class="menu-link" target="">
                         <span class="svg-icon menu-icon"><i class="fas fa-exchange-alt"></i></span>
                         <span class="menu-text">Manage Product</span>
                     </a>
                 </li>
                 <li class="menu-item" aria-haspopup="true">
-                    <a href="{{route('dealer.panel.sale.index')}}" class="menu-link" target="">
+                    <a href="<?php echo e(route('dealer.panel.sale.index')); ?>" class="menu-link" target="">
                         <span class="svg-icon menu-icon"><i class="fas fa-cart-arrow-down"></i></span>
                         <span class="menu-text">Manage Sale</span>
                     </a>
@@ -57,3 +57,4 @@
         </div>
     </div>
 </div>
+<?php /**PATH C:\laragon\www\insaf\Modules/DealerPanel\Resources/views/includes/sidebar.blade.php ENDPATH**/ ?>

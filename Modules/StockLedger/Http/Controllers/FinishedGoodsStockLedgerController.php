@@ -26,22 +26,23 @@ class FinishedGoodsStockLedgerController extends BaseController
     public function get_datatable_data(Request $request)
     {
         if ($request->ajax()) {
-            if (permission('product-ledger-access')) {
+//            if (permission('product-ledger-access')) {
 
-                $product = Product::with('base_unit', 'category')->find($request->product_id);
-                $start_date = $request->start_date ? $request->start_date . ' 00:00:01' : date('Y-m-01') . ' 00:00:01';
-                $end_date = $request->end_date ? $request->end_date . ' 23:59:59' : date('Y-m-d') . ' 23:59:59';
-                $date_period = new DatePeriod(new DateTime($start_date), new DateInterval('P1D'), new DateTime($end_date));
-                $ledger_data = [];
+                $product        = Product::with('base_unit', 'category')->find($request->product_id);
+                    $start_date  = $request->start_date ? $request->start_date . ' 00:00:01' : date('Y-m-01') . ' 00:00:01';
+                    $end_date    = $request->end_date ? $request->end_date . ' 23:59:59' : date('Y-m-d') . ' 23:59:59';
+                    $date_period = new DatePeriod(new DateTime($start_date), new DateInterval('P1D'), new DateTime($end_date));
+
+                $ledger_data    = [];
                 $total_sold_qty = $total_sold_value = 0;
                 $total_production_qty = $total_production_value = 0;
                 $total_current_qty = $total_current_value = 0;
                 foreach ($date_period as $key => $date) {
-                    $previous_qty = $this->previous_data($request->product_id, $date->format('Y-m-d'));
-                    $sold_data   = $this->sold_data($request->product_id,$date->format('Y-m-d'));
-                    $production = $this->production_data($request->product_id,$date->format('Y-m-d'));
+                    $previous_qty   = $this->previous_data($request->product_id, $date->format('Y-m-d'));
+                    $sold_data      = $this->sold_data($request->product_id,$date->format('Y-m-d'));
+                    $production     = $this->production_data($request->product_id,$date->format('Y-m-d'));
                     // $current_qty = $this->current_data($request->product_id,$date->format('Y-m-d'));
-                    $current_qty = (($previous_qty + $production['qty']) - $sold_data['qty']);
+                    $current_qty    = (($previous_qty + $production['qty']) - $sold_data['qty']);
                     $total_sold_qty += $sold_data['qty'];
                     $total_sold_value += $sold_data['value'];
                     $total_production_qty += $production['qty'];
@@ -75,8 +76,6 @@ class FinishedGoodsStockLedgerController extends BaseController
                         'current_qty'      => $current_qty,
                         'current_value'    => $product->base_unit_price * $current_qty,
                     ];
-                    
-                    
                 }
                 // dd($ledger_data);
                 $data = [
@@ -90,7 +89,7 @@ class FinishedGoodsStockLedgerController extends BaseController
                 ];
                 // dd($ledger_data);
                 return view('stockledger::finished-goods-ledger.data',$data)->render();
-            }
+//            }
         } else {
             return response()->json($this->unauthorized());
         }
@@ -107,9 +106,9 @@ class FinishedGoodsStockLedgerController extends BaseController
             $opening_stock_qty = $opening_stock->base_unit_qty ? $opening_stock->base_unit_qty : 0;
             $opening_price = $opening_stock->base_unit_price ? $opening_stock->base_unit_price : 0;
             if($opening_stock_qty){
-              $opening_date = date('Y-m-d',strtotime($opening_stock->created_at));  
+              $opening_date = date('Y-m-d',strtotime($opening_stock->created_at));
             }
-            
+
         }
         $productionProducts = DB::table('productions as pro')
             ->selectRaw('pro.*,u.operator,u.operation_value,p.base_unit_price,pr.product_id')
@@ -121,7 +120,7 @@ class FinishedGoodsStockLedgerController extends BaseController
             ->where('pro.production_status', 2)
             ->whereDate('pro.created_at', '<', $date)
             ->get();
-        
+
         $total_product_old_qty = 0;
         if (!$productionProducts->isEmpty()) {
             foreach ($productionProducts as $product) {
@@ -137,7 +136,7 @@ class FinishedGoodsStockLedgerController extends BaseController
             ->where('sp.product_id', $id)
             ->whereDate('sp.created_at', '<', $date)
             ->get();
-        
+
         $total_sold_qty = 0;
         if (!$saleProducts->isEmpty()) {
             foreach ($saleProducts as $product) {
@@ -158,7 +157,7 @@ class FinishedGoodsStockLedgerController extends BaseController
             ->where('srp.product_id', $id)
             ->whereDate('sr.created_at', '<', $date)
             ->get();
-        
+
         $total_returned_product_qty = 0;
         if (!$saleReturnProduct->isEmpty()) {
             foreach ($saleReturnProduct as $product) {
@@ -175,7 +174,7 @@ class FinishedGoodsStockLedgerController extends BaseController
         }elseif ($date >= $opening_date) {
             $total_qty =($opening_stock_qty + $total_product_old_qty + $total_returned_product_qty) - $total_sold_qty;
         }else{
-            $total_qty     = 0; 
+            $total_qty     = 0;
         }
         return $total_qty;
     }
@@ -192,7 +191,7 @@ class FinishedGoodsStockLedgerController extends BaseController
             ->where('sp.product_id', $id)
             ->whereDate('sp.created_at',  $date)
             ->get();
-        
+
         $total_product_old_price = $total_product_old_qty = 0;
         if (!$soldProducts->isEmpty()) {
             foreach ($soldProducts as $product) {
@@ -247,7 +246,7 @@ class FinishedGoodsStockLedgerController extends BaseController
             ->where('pro.production_status', 2)
             ->whereDate('pro.created_at',  $date)
             ->get();
-        
+
         $total_production_qty = 0;
         if (!$soldProducts->isEmpty()) {
             foreach ($soldProducts as $product) {
@@ -263,7 +262,7 @@ class FinishedGoodsStockLedgerController extends BaseController
             ->where('srp.product_id', $id)
             ->whereDate('sr.created_at',  $date)
             ->get();
-        
+
         $total_returned_product_qty = 0;
         if (!$saleReturnProduct->isEmpty()) {
             foreach ($saleReturnProduct as $product) {
@@ -296,7 +295,7 @@ class FinishedGoodsStockLedgerController extends BaseController
             $opening_stock_qty = $opening_stock->base_unit_qty ? $opening_stock->base_unit_qty : 0;
             $opening_price = $opening_stock->base_unit_price ? $opening_stock->base_unit_price : 0;
             if($opening_stock_qty){
-              $opening_date = date('Y-m-d',strtotime($opening_stock->created_at));  
+              $opening_date = date('Y-m-d',strtotime($opening_stock->created_at));
             }
         }
         $currentStockProduct = DB::table('productions as pro')
@@ -309,7 +308,7 @@ class FinishedGoodsStockLedgerController extends BaseController
             ->where('pro.production_status', 2)
             ->whereDate('pro.created_at', '<=', $date)
             ->get();
-        
+
         $total_product_current_qty = 0;
         if (!$currentStockProduct->isEmpty()) {
             foreach ($currentStockProduct as $product) {
@@ -325,7 +324,7 @@ class FinishedGoodsStockLedgerController extends BaseController
             ->where('sp.product_id', $id)
             ->whereDate('sp.created_at', '<=', $date)
             ->get();
-        
+
         $total_sold_qty = 0;
         if (!$saleProducts->isEmpty()) {
             foreach ($saleProducts as $product) {
@@ -346,7 +345,7 @@ class FinishedGoodsStockLedgerController extends BaseController
             ->where('srp.product_id', $id)
             ->whereDate('sr.created_at', '<=', $date)
             ->get();
-        
+
         $total_returned_product_qty = 0;
         if (!$saleReturnProduct->isEmpty()) {
             foreach ($saleReturnProduct as $product) {
@@ -363,7 +362,7 @@ class FinishedGoodsStockLedgerController extends BaseController
         }elseif ($date >= $opening_date) {
             $total_qty =($opening_stock_qty + $total_product_current_qty + $total_returned_product_qty) - $total_sold_qty;
         }else{
-            $total_qty     = 0; 
+            $total_qty     = 0;
         }
         return $total_qty;
     }

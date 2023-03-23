@@ -1,20 +1,22 @@
 <?php
 
-namespace Modules\Transfer\Entities;
+namespace Modules\DealerPanel\Entities;
 
-use App\Models\User;
 use App\Models\BaseModel;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
 use Modules\Product\Entities\Product;
-use Modules\Setting\Entities\Warehouse;
 use Modules\Product\Entities\WarehouseProduct;
+use Modules\Setting\Entities\Warehouse;
 use Modules\Transfer\Entities\TransferProduct;
 
-class Transfer extends BaseModel
+class DealerProduct extends BaseModel
 {
     protected $table = 'transfers';
     protected $fillable = [
-       'challan_no','from_warehouse_id','to_warehouse_id','item','total_qty',
+        'challan_no','from_warehouse_id','to_warehouse_id','item','total_qty',
         'receive_qty','damage_qty','shipping_cost','received_cost','grand_total',
         'transfer_date','transfer_status','receiver_id','receive_date','receive_status',
         'note', 'created_by','modified_by','driver_name','dmobile_no'
@@ -36,8 +38,8 @@ class Transfer extends BaseModel
     public function products()
     {
         return $this->belongsToMany(Product::class,'transfer_products','transfer_id','product_id','id','id')
-        ->withPivot('id','transfer_qty','receive_qty','damage_qty','unit_id','net_unit_cost','total')
-        ->withTimestamps();
+            ->withPivot('id','transfer_qty','receive_qty','damage_qty','unit_id','net_unit_cost','total')
+            ->withTimestamps();
     }
 
     public function hasManyProducts()
@@ -47,7 +49,7 @@ class Transfer extends BaseModel
 
     /******************************************
      * * * Begin :: Custom Datatable Code * * *
-    *******************************************/
+     *******************************************/
     protected $order = ['t.id' => 'desc'];
     //custom search column property
     protected $_challan_no;
@@ -91,66 +93,24 @@ class Transfer extends BaseModel
 
     private function get_datatable_query()
     {
+      $user =  auth()->guard('dealer')->user()->warehouse_id;
+        $this->column_order = [null,'challan_no','from_warehouse_id','to_warehouse_id','item','total_qty',
+            'receive_qty','damage_qty','shipping_cost','received_cost','grand_total',
+            'transfer_date','transfer_status','receiver_id','receive_date','receive_status',
+            'note', 'created_by','modified_by','driver_name','dmobile_no', null];
         //set column sorting index table column name wise (should match with frontend table header)
-        if (permission('transfer-inventory-bulk-delete')){
-            if(auth()->user()->warehouse_id)
-            {
-                $this->column_order = [
-                null,'t.id','t.challan_no','t.transfer_date','t.item','t.grand_total',
-                't.receive_date','t.receive_status', null];
-            }else{
-                $this->column_order = [null,'t.id','t.challan_no','t.transfer_date','t.from_warehouse_id','t.to_warehouse_id','t.item',
-                't.grand_total','t.transfer_status','t.receiver_id',
-                't.receive_date','t.receive_status','t.created_by', null];
-            }
-        }else{
-            if(auth()->user()->warehouse_id)
-            {
-                $this->column_order = ['t.id','t.challan_no','t.transfer_date','t.item','t.grand_total',
-                't.receive_date','t.receive_status', null];
-            }else{
-                $this->column_order = ['t.id','t.challan_no','t.transfer_date','t.from_warehouse_id','t.to_warehouse_id','t.item',
-                't.grand_total','t.transfer_status','t.receiver_id',
-                't.receive_date','t.receive_status','t.created_by', null];
-            }
-        }
-
         $query = DB::table('transfers as t')
-                ->leftJoin('warehouses as fw','t.from_warehouse_id','=','fw.id')
-                ->leftJoin('warehouses as tw','t.to_warehouse_id','=','tw.id')
-                ->leftJoin('users as u','t.receiver_id','=','u.id')
-                ->select('t.*','fw.name as fw_name','tw.name as tw_name','u.name as receiver_name');
-        if(auth()->user()->warehouse_id)
-        {
-            $query->where('t.to_warehouse_id',auth()->user()->warehouse_id);
-        }
-        //search query
-        if (!empty($this->_challan_no)) {
-            $query->where('t.challan_no', 'like', '%' . $this->_challan_no . '%');
-        }
+            ->leftJoin('warehouses as fw', 't.from_warehouse_id', '=', 'fw.id')
+            ->leftJoin('warehouses as tw', 't.to_warehouse_id', '=', 'tw.id')
+            ->leftJoin('users as u', 't.receiver_id', '=', 'u.id')
+            ->select('t.*', 'fw.name as fw_name', 'tw.name as tw_name', 'u.name as receiver_name')->where('to_warehouse_id',$user);
 
-        if (!empty($this->_from_date)) {
-            $query->where('t.transfer_date', '>=',$this->_from_date);
-        }
-        if (!empty($this->_to_date)) {
-            $query->where('t.transfer_date', '<=',$this->_to_date);
-        }
-        if (!empty($this->_from_warehouse_id)) {
-            $query->where('t.from_warehouse_id', $this->_from_warehouse_id);
-        }
-        if (!empty($this->_to_warehouse_id)) {
-            $query->where('t.to_warehouse_id', $this->_to_warehouse_id);
-        }
-        if (!empty($this->_transfer_status)) {
-            $query->where('t.transfer_status', $this->_transfer_status);
-        }
-        if (!empty($this->_receive_status)) {
-            $query->where('t.receive_status', $this->_receive_status);
-        }
+        //search query
+
 
         //order by data fetching code
-        if (isset($this->orderValue) && isset($this->dirValue)) { //orderValue is the index number of table header and dirValue is asc or desc
-            $query->orderBy($this->column_order[$this->orderValue], $this->dirValue); //fetch data order by matching column
+        if (isset($this->orderValue) && isset($this->dirValue)) {
+            $query->orderBy($this->column_order[$this->orderValue], $this->dirValue);
         } else if (isset($this->order)) {
             $query->orderBy(key($this->order), $this->order[key($this->order)]);
         }
@@ -174,16 +134,12 @@ class Transfer extends BaseModel
 
     public function count_all()
     {
-        $query = DB::table('transfers');
-        if(auth()->user()->warehouse_id)
-        {
-            $query->where('to_warehouse_id',auth()->user()->warehouse_id);
-        }
-        return $query->get()->count();
+        return DB::table('transfers')->get()->count();
     }
     /******************************************
      * * * End :: Custom Datatable Code * * *
-    *******************************************/
+     *******************************************/
+
     public function transfer_data($collection)
     {
         $collection = $collection->merge($collection->all()['transfer_id'] ? ['modified_by'=>auth()->user()->name] : ['created_by'=>auth()->user()->name]);
@@ -322,4 +278,5 @@ class Transfer extends BaseModel
             return $delete ? true : false;
         }
     }
+
 }

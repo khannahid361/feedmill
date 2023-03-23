@@ -145,11 +145,11 @@ class DealerPanelController extends BaseController {
     public function saleEdit(int $id){
         $this->setPageData('Edit Dealer Sale','Edit Dealer Sale','fas fa-edit',[['name'=>'Dealer Sale','link' => route('dealer.sale')],['name' => 'Edit Dealer Sale']]);
         $products = DB::table('warehouse_product as wp')
-            ->join('products as p','wp.product_id','=','p.id')
-            ->selectRaw('wp.*,p.name')
-            ->groupBy('product_id')
-            ->orderBy('p.name','asc')
-            ->get();
+                    ->join('products as p','wp.product_id','=','p.id')
+                    ->selectRaw('wp.*,p.name')
+                    ->groupBy('product_id')
+                    ->orderBy('p.name','asc')
+                    ->get();
         $data = [
             'products'     => $products,
             'sale'         => $this->model->with('sale_products')->find($id),
