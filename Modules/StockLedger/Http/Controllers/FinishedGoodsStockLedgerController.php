@@ -28,17 +28,20 @@ class FinishedGoodsStockLedgerController extends BaseController
         if ($request->ajax()) {
 //            if (permission('product-ledger-access')) {
 
-                $product        = Product::with('base_unit', 'category')->find($request->product_id);
+                 $product        = Product::with('base_unit', 'category')->find($request->product_id);
                     $start_date  = $request->start_date ? $request->start_date . ' 00:00:01' : date('Y-m-01') . ' 00:00:01';
                     $end_date    = $request->end_date ? $request->end_date . ' 23:59:59' : date('Y-m-d') . ' 23:59:59';
                     $date_period = new DatePeriod(new DateTime($start_date), new DateInterval('P1D'), new DateTime($end_date));
 
-                $ledger_data    = [];
-                $total_sold_qty = $total_sold_value = 0;
-                $total_production_qty = $total_production_value = 0;
-                $total_current_qty = $total_current_value = 0;
+                $ledger_data            = [];
+                $total_sold_qty         = $total_sold_value = 0;
+                $total_production_qty   = $total_production_value = 0;
+                $total_current_qty      = $total_current_value = 0;
+
                 foreach ($date_period as $key => $date) {
+
                     $previous_qty   = $this->previous_data($request->product_id, $date->format('Y-m-d'));
+
                     $sold_data      = $this->sold_data($request->product_id,$date->format('Y-m-d'));
                     $production     = $this->production_data($request->product_id,$date->format('Y-m-d'));
                     // $current_qty = $this->current_data($request->product_id,$date->format('Y-m-d'));
@@ -97,7 +100,6 @@ class FinishedGoodsStockLedgerController extends BaseController
 
     protected function previous_data(int $id, $date)
     {
-
         $opening_stock_qty = 0;
         $opening_price = 0;
         $opening_date = '';

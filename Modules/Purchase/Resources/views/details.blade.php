@@ -376,7 +376,7 @@
                                                     {
                                                         $unit_name = DB::table('units')->where('id',$item->pivot->purchase_unit_id)->value('unit_name');
                                                     }
-{{--                                                @endphp--}}
+                                                @endphp
                                                 <tr>
                                                     <td class="text-center no">{{ $key+1 }}</td>
                                                     <td class="text-left">{{ $item->material_name }}</td>

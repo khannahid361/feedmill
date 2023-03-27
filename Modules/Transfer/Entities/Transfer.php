@@ -5,6 +5,7 @@ namespace Modules\Transfer\Entities;
 use App\Models\User;
 use App\Models\BaseModel;
 use Illuminate\Support\Facades\DB;
+use Modules\Dealer\Entities\Dealer;
 use Modules\Product\Entities\Product;
 use Modules\Setting\Entities\Warehouse;
 use Modules\Product\Entities\WarehouseProduct;
@@ -31,6 +32,10 @@ class Transfer extends BaseModel
     public function receiver()
     {
         return $this->belongsTo(User::class,'receiver_id','id');
+    }
+    public function receive_dealer()
+    {
+        return $this->belongsTo(Dealer::class,'receiver_id','id');
     }
 
     public function products()

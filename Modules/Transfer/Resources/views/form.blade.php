@@ -19,15 +19,15 @@
                         @csrf
                         <input type="hidden" name="transfer_id" value="{{ isset($transfer) ? $transfer->id : '' }}">
                         <div class="row">
-                            <div class="form-group col-md-3 required">
+                            <div class="form-group col-md-4 required">
                                 <label for="challan_no">Challan No.</label>
                                 <input type="text" class="form-control" name="challan_no" id="challan_no" value="{{ isset($transfer) ? $transfer->challan_no :  $challan_no }}" readonly />
                             </div>
-                            <x-form.textbox labelName="Transfer Date" name="transfer_date" value="{{ isset($transfer) ? $transfer->transfer_date : date('Y-m-d') }}" required="required" class="date" col="col-md-3"/>
+                            <x-form.textbox labelName="Transfer Date" name="transfer_date" value="{{ isset($transfer) ? $transfer->transfer_date : date('Y-m-d') }}" required="required" class="date" col="col-md-4"/>
                             @if(Auth::user()->warehouse_id)
                             <input type="hidden" name="from_warehouse_id" id="from_warehouse_id" value="{{ Auth::user()->warehouse_id }}">
                             @else
-                            <x-form.selectbox labelName="From Warehouse" name="from_warehouse_id" required="required" col="col-md-3" class="selectpicker">
+                            <x-form.selectbox labelName="From Warehouse" name="from_warehouse_id" required="required" col="col-md-4" class="selectpicker">
                               @if (!$warehouses->isEmpty())
                                   @foreach ($warehouses as $value)
                                   <option value="{{ $value->id }}" {{ isset($transfer) ? ($transfer->from_warehouse_id == $value->id ? 'selected' : 'disabled') : ''  }}>{{ $value->name }}</option>
@@ -35,7 +35,7 @@
                               @endif
                             </x-form.selectbox>
                             @endif
-                            <x-form.selectbox labelName="To Warehouse" name="to_warehouse_id" required="required" col="col-md-3" class="selectpicker">
+                            <x-form.selectbox labelName="To Warehouse" name="to_warehouse_id" required="required" col="col-md-4" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $value)
                                 <option value="{{ $value->id }}" {{ isset($transfer) ? ($transfer->to_warehouse_id == $value->id ? 'selected' : '') : ''  }}>{{ $value->name }}</option>
@@ -50,10 +50,10 @@
                                 <label for="dmobile_no">Driver Mobile No.</label>
                                 <input type="text" class="form-control" name="dmobile_no" id="dmobile_no" value="{{ isset($transfer) ? $transfer->dmobile_no :  '' }}"  />
                             </div>
-                            <div class="form-group col-md-4">
-                                <label for="shipping_cost">Shipping Cost</label>
-                                <input type="text" class="form-control" name="shipping_cost" id="shipping_cost" value="{{ isset($transfer) ? $transfer->shipping_cost :  '' }}"  />
-                            </div>
+{{--                            <div class="form-group col-md-4">--}}
+{{--                                <label for="shipping_cost">Shipping Cost</label>--}}
+{{--                                <input type="text" class="form-control" name="shipping_cost" id="shipping_cost" value="{{ isset($transfer) ? $transfer->shipping_cost :  '' }}"  />--}}
+{{--                            </div>--}}
                             <div class="col-md-12">
                                 <table class="table table-bordered" id="product_table">
                                     <thead class="bg-primary">

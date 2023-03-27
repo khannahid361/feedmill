@@ -81,7 +81,7 @@ class TransferController extends BaseController{
                 $row[]  = $value->fw_name;
                 $row[]  = $value->tw_name;
                 }
-                $row[]  = $value->item.'('.$value->total_qty.')';
+                $row[]  = $value->total_qty;
                 if(empty(auth()->user()->warehouse_id)) {
                 $row[]  = number_format($value->grand_total,2,'.',',');
                 $row[]  = $value->transfer_status == 1 ? 'Transferred' : 'Pending';

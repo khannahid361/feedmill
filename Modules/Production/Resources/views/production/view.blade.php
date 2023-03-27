@@ -80,8 +80,8 @@
                                                 <th width="10%" class="text-right">Rate</th>
                                                 <th class="text-center">Received Qty</th>
                                                 <th class="text-center">Used Qty</th>
-                                                <th class="text-center">Damaged Qty</th>
-                                                <th class="text-center">Odd Qty</th>
+{{--                                                <th class="text-center">Damaged Qty</th>--}}
+{{--                                                <th class="text-center">Odd Qty</th>--}}
                                                 </thead>
                                                 <tbody>
                                                 @if (!$item->materials->isEmpty())
@@ -93,13 +93,13 @@
                                                             <td class="text-right">{{ number_format($value->pivot->cost,2,'.','') }} </td>
                                                             <td class="text-center"> {{ number_format($value->pivot->qty,2,'.','') }} </td>
                                                             <td class="text-center">{{ $value->pivot->used_qty }}</td>
-                                                            <td class="text-center">{{ $value->pivot->damaged_qty }}</td>
-                                                            <td class="text-center">{{ $value->pivot->odd_qty }}</td>
+{{--                                                            <td class="text-center">{{ $value->pivot->damaged_qty }}</td>--}}
+{{--                                                            <td class="text-center">{{ $value->pivot->odd_qty }}</td>--}}
                                                         </tr>
                                                     @endforeach
                                                     <tr>
-                                                        <td colspan="6" class="text-right font-weight-bold">Total Cost</td>
-                                                        <td colspan="2" class="text-right">
+                                                        <td colspan="5" class="text-right font-weight-bold">Total Cost</td>
+                                                        <td colspan="1" class="text-right">
                                                             @php
                                                                 if(!empty($item->per_unit_cost) && !empty($item->base_unit_qty))
                                                                 {
@@ -112,8 +112,8 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="6" class="text-right font-weight-bold">Per Unit Cost</td>
-                                                        <td colspan="2" class="text-right">{{ $item->per_unit_cost ? number_format($item->per_unit_cost,2,'.','') : '' }}</td>
+                                                        <td colspan="5" class="text-right font-weight-bold">Per Unit Cost</td>
+                                                        <td colspan="1" class="text-right">{{ $item->per_unit_cost ? number_format($item->per_unit_cost,2,'.','') : '' }}</td>
                                                     </tr>
                                                 @endif
                                                 </tbody>

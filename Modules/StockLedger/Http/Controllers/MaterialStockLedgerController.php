@@ -53,7 +53,7 @@ class MaterialStockLedgerController extends BaseController
                     $after_stock_out_current_qty = $previous_data['qty'] - ($production_data['qty']['production_material_qty'] + $production_data['qty']['returned_material_qty'] + $production_data['qty']['damage_material_qty']);
                     $after_stock_out_current_cost = $previous_data['qty'] * $previous_data['cost'];
                     $current_qty = $after_stock_out_current_qty + $purchase_data['qty'];
-                    
+
                     if(!empty($production_data['datetime']) && !empty($purchase_data['datetime']))
                     {
                         if($purchase_data['datetime'] > $production_data['datetime'])
@@ -131,9 +131,9 @@ class MaterialStockLedgerController extends BaseController
             $opening_stock_qty = $opening_stock->opening_stock_qty ? $opening_stock->opening_stock_qty : 0;
             $opening_cost = $opening_stock->opening_cost ? $opening_stock->opening_cost : 0;
             if($opening_stock_qty){
-              $opening_date = date('Y-m-d',strtotime($opening_stock->created_at));  
+              $opening_date = date('Y-m-d',strtotime($opening_stock->created_at));
             }
-            
+
         }
         $last_date = date('Y-m-d',strtotime('-2 day',strtotime($date)));
         $on_Date = date('Y-m-d',strtotime('-1 day',strtotime($date)));
@@ -147,7 +147,7 @@ class MaterialStockLedgerController extends BaseController
             ->where('pm.material_id', $id)
             ->whereDate('p.purchase_date', '<', $date)
             ->get();
-            
+
         $total_material_purchased_cost = $total_purchased_net_cost = $total_purchased_material_qty = 0;
         $after_purchase_datetime = '';
         if (!$purchaseMaterial->isEmpty()) {
@@ -171,14 +171,14 @@ class MaterialStockLedgerController extends BaseController
                 } else {
                     $old_qty = $material->received / $material->operation_value;
                 }
-               
+
                 $total_material_purchased_cost += ($material_old_cost * $old_qty);
                 $total_purchased_material_qty += $old_qty;
                 $total_purchased_net_cost = $material->new_unit_cost ? $material->new_unit_cost : $material->net_unit_cost;
                 $after_purchase_datetime = $material->created_at;
             }
-        }        
-       
+        }
+
 
         //Production calculation
         $productionMaterial = DB::table('production_product_materials as pm')
@@ -188,7 +188,7 @@ class MaterialStockLedgerController extends BaseController
             ->where('p.status', 1)
             ->whereDate('p.start_date', '<',$date)
             ->get();
-        
+
         $total_production_material_cost = $total_production_material_qty = $total_production_material_value = $total_damage_material_qty =  0;
         if (!$productionMaterial->isEmpty()) {
             foreach ($productionMaterial as $material) {
@@ -199,7 +199,7 @@ class MaterialStockLedgerController extends BaseController
             }
         }
 
-        
+
 
         //Purchase Return Calculation
         $purchaseReturnMaterial = DB::table('purchase_return_materials as pm')
@@ -210,7 +210,7 @@ class MaterialStockLedgerController extends BaseController
             ->where('pm.material_id', $id)
             ->whereDate('p.return_date', '<',$date)
             ->get();
-        
+
         $total_returned_material_qty = $after_return_cost  = 0;
         $after_return_datetime = '';
         if (!$purchaseReturnMaterial->isEmpty()) {
@@ -238,7 +238,7 @@ class MaterialStockLedgerController extends BaseController
             }
         }else{
             $material_cost = 0;
-            $total_qty     = 0; 
+            $total_qty     = 0;
         }
         $cost = 0;
         if(!empty($after_return_datetime) && !empty($after_purchase_datetime))
@@ -252,8 +252,8 @@ class MaterialStockLedgerController extends BaseController
         }else{
             $cost = $material_cost;
         }
-    
-        
+
+
         $material_data = [
             'cost' => $cost,
             'qty' => $total_qty,
@@ -334,7 +334,7 @@ class MaterialStockLedgerController extends BaseController
             ->where('p.status', 1)
             ->whereDate('p.start_date',  $date)
             ->get();
-        
+
         $total_production_material_cost = $total_production_material_qty = $total_production_material_value =  0;
         $total_damage_material_qty = $total_damage_material_cost = $total_damage_material_value = 0;
         if (!$productionMaterial->isEmpty()) {
@@ -382,7 +382,7 @@ class MaterialStockLedgerController extends BaseController
         $batch_numbers = !empty($batch_number_list) ? array_unique($batch_number_list) : '';
         $return_numbers = !empty($return_number_list) ? array_unique($return_number_list) : '';
         $damage_numbers = !empty($damage_number_list) ? array_unique($damage_number_list) : '';
-        
+
 
         $material_data = [
             'cost' => [
@@ -390,7 +390,7 @@ class MaterialStockLedgerController extends BaseController
                 'returned_material_cost' => $total_returned_material_cost,
                 'damage_material_cost'         => $total_damage_material_cost,
             ],
-            
+
             'qty' => [
                 'production_material_qty'     => $total_production_material_qty,
                 'returned_material_qty'       => $total_returned_material_qty,
@@ -412,5 +412,5 @@ class MaterialStockLedgerController extends BaseController
         return $material_data;
     }
 
-    
+
 }

@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', $page_title); ?>
 
 <?php $__env->startPush('styles'); ?>
@@ -376,7 +374,7 @@
                                                     {
                                                         $unit_name = DB::table('units')->where('id',$item->pivot->purchase_unit_id)->value('unit_name');
                                                     }
-{{--                                                ?>--}}
+                                                ?>
                                                 <tr>
                                                     <td class="text-center no"><?php echo e($key+1); ?></td>
                                                     <td class="text-left"><?php echo e($item->material_name); ?></td>

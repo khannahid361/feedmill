@@ -1,4 +1,3 @@
-
 <?php $__env->startSection('title', $page_title); ?>
 <?php $__env->startPush('styles'); ?>
 <link href="<?php echo e(asset('css/bootstrap-datetimepicker.min.css')); ?>" rel="stylesheet" type="text/css" />
@@ -19,16 +18,16 @@
                         <?php echo csrf_field(); ?>
                         <input type="hidden" name="transfer_id" value="<?php echo e(isset($transfer) ? $transfer->id : ''); ?>">
                         <div class="row">
-                            <div class="form-group col-md-3 required">
+                            <div class="form-group col-md-4 required">
                                 <label for="challan_no">Challan No.</label>
                                 <input type="text" class="form-control" name="challan_no" id="challan_no" value="<?php echo e(isset($transfer) ? $transfer->challan_no :  $challan_no); ?>" readonly />
                             </div>
                             <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Transfer Date','name' => 'transfer_date','value' => ''.e(isset($transfer) ? $transfer->transfer_date : date('Y-m-d')).'','required' => 'required','class' => 'date','col' => 'col-md-3']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Transfer Date','name' => 'transfer_date','value' => ''.e(isset($transfer) ? $transfer->transfer_date : date('Y-m-d')).'','required' => 'required','class' => 'date','col' => 'col-md-4']]); ?>
 <?php $component->withName('form.textbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Transfer Date','name' => 'transfer_date','value' => ''.e(isset($transfer) ? $transfer->transfer_date : date('Y-m-d')).'','required' => 'required','class' => 'date','col' => 'col-md-3']); ?>
+<?php $component->withAttributes(['labelName' => 'Transfer Date','name' => 'transfer_date','value' => ''.e(isset($transfer) ? $transfer->transfer_date : date('Y-m-d')).'','required' => 'required','class' => 'date','col' => 'col-md-4']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
@@ -39,11 +38,11 @@
                             <input type="hidden" name="from_warehouse_id" id="from_warehouse_id" value="<?php echo e(Auth::user()->warehouse_id); ?>">
                             <?php else: ?>
                             <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'From Warehouse','name' => 'from_warehouse_id','required' => 'required','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'From Warehouse','name' => 'from_warehouse_id','required' => 'required','col' => 'col-md-4','class' => 'selectpicker']]); ?>
 <?php $component->withName('form.selectbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'From Warehouse','name' => 'from_warehouse_id','required' => 'required','col' => 'col-md-3','class' => 'selectpicker']); ?>
+<?php $component->withAttributes(['labelName' => 'From Warehouse','name' => 'from_warehouse_id','required' => 'required','col' => 'col-md-4','class' => 'selectpicker']); ?>
                               <?php if(!$warehouses->isEmpty()): ?>
                                   <?php $__currentLoopData = $warehouses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                   <option value="<?php echo e($value->id); ?>" <?php echo e(isset($transfer) ? ($transfer->from_warehouse_id == $value->id ? 'selected' : 'disabled') : ''); ?>><?php echo e($value->name); ?></option>
@@ -57,11 +56,11 @@
 <?php endif; ?>
                             <?php endif; ?>
                             <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'To Warehouse','name' => 'to_warehouse_id','required' => 'required','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'To Warehouse','name' => 'to_warehouse_id','required' => 'required','col' => 'col-md-4','class' => 'selectpicker']]); ?>
 <?php $component->withName('form.selectbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'To Warehouse','name' => 'to_warehouse_id','required' => 'required','col' => 'col-md-3','class' => 'selectpicker']); ?>
+<?php $component->withAttributes(['labelName' => 'To Warehouse','name' => 'to_warehouse_id','required' => 'required','col' => 'col-md-4','class' => 'selectpicker']); ?>
                             <?php if(!$warehouses->isEmpty()): ?>
                                 <?php $__currentLoopData = $warehouses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($value->id); ?>" <?php echo e(isset($transfer) ? ($transfer->to_warehouse_id == $value->id ? 'selected' : '') : ''); ?>><?php echo e($value->name); ?></option>
@@ -81,10 +80,10 @@
                                 <label for="dmobile_no">Driver Mobile No.</label>
                                 <input type="text" class="form-control" name="dmobile_no" id="dmobile_no" value="<?php echo e(isset($transfer) ? $transfer->dmobile_no :  ''); ?>"  />
                             </div>
-                            <div class="form-group col-md-4">
-                                <label for="shipping_cost">Shipping Cost</label>
-                                <input type="text" class="form-control" name="shipping_cost" id="shipping_cost" value="<?php echo e(isset($transfer) ? $transfer->shipping_cost :  ''); ?>"  />
-                            </div>
+
+
+
+
                             <div class="col-md-12">
                                 <table class="table table-bordered" id="product_table">
                                     <thead class="bg-primary">

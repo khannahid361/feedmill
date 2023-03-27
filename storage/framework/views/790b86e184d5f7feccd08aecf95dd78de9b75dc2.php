@@ -1,4 +1,3 @@
-
 <?php $__env->startSection('title', $page_title); ?>
 <?php $__env->startPush('styles'); ?>
     <link href="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.css')); ?>" rel="stylesheet" type="text/css" />
@@ -85,10 +84,10 @@
                                         <th>Product Name</th>
                                         <th>Product Code</th>
                                         <th>Category</th>
-                                        <th>Unit</th>
-                                        <th>Cost</th>
+                                        <th> Unit</th>
+                                        <th>Per Unit Cost</th>
                                         <th>Quantity</th>
-                                        <th>Balance</th>
+                                        <th>Total Unit Cost</th>
                                     </tr>
                                     </thead>
                                     <tbody></tbody>
