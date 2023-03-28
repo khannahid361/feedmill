@@ -121,7 +121,7 @@
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
 
             "buttons": [
-               
+
                 {
                     "extend": 'print',
                     'text':'Print',

@@ -31,6 +31,7 @@ class WarehouseProduct extends BaseModel{
     }
     private function get_datatable_query(){
         $this->column_order = ['p.id','w.name','p.name','p.code','c.category_name','u.unit_name','p.base_unit_price','wp.qty',null];
+
         $query              = DB::table('warehouse_product as wp')
                             ->selectRaw('w.name as warehouse_name,p.name as product_name,p.code as product_code,c.name as category_name,u.unit_name as unit_name,p.base_unit_price,p.cost,wp.qty')
                             ->join('warehouses as w','wp.warehouse_id','=','w.id')
