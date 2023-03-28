@@ -50,14 +50,14 @@ class CustomerReceipt extends BaseModel{
     }
     private function get_datatable_query(){
         $this->column_order = ['transaction.id','transactions.voucher_date','c.customer_id','c.district_id','c.upazila_id','c.area_id','transactions.description', 'transactions.credit',null];
-        $query = self::selectRaw('transactions.*,coa.id as coa_id,coa.code,coa.name,coa.parent_name,c.id as customer_id,c.shop_name,c.name as customer_name,w.name as warehouse_name,d.name as district_name,u.name as upazila_name,a.name as area_name')
-        ->join('chart_of_accounts as coa','transactions.chart_of_account_id','=','coa.id')
-        ->join('customers as c','coa.customer_id','c.id')
-        ->join('warehouses as w','transactions.warehouse_id','=','w.id')
-        ->join('locations as d', 'c.district_id', '=', 'd.id')
-        ->join('locations as u', 'c.upazila_id', '=', 'u.id')
+        $query = self::selectRaw('transactions.*,coa.id as coa_id,coa.code,coa.name,coa.parent_name,c.id as customer_id,c.shop_name,c.name as customer_name,w.name as warehouse_name')
+                ->join('chart_of_accounts as coa','transactions.chart_of_account_id','=','coa.id')
+                ->join('customers as c','coa.customer_id','c.id')
+                ->join('warehouses as w','transactions.warehouse_id','=','w.id')
+//        ->join('locations as d', 'c.district_id', '=', 'd.id')
+//        ->join('locations as u', 'c.upazila_id', '=', 'u.id')
 //        ->join('locations as r', 'c.route_id', '=', 'r.id')
-        ->join('locations as a', 'c.area_id', '=', 'a.id')
+//        ->join('locations as a', 'c.area_id', '=', 'a.id')
         ->where([['transactions.credit','>',0], ['transactions.approve',1],
         ]);
         if (!empty($this->_from_date) && !empty($this->_to_date)) {
@@ -106,10 +106,10 @@ class CustomerReceipt extends BaseModel{
     }
     public function count_all(){
         $query = self::select('transactions.*','coa.id as coa_id','coa.code','coa.name','coa.parent_name','c.id as customer_id','c.shop_name','c.name')
-        ->join('chart_of_accounts as coa','transactions.chart_of_account_id','=','coa.id')
-        ->join('customers as c','coa.customer_id','c.id')
-        ->where([['transactions.credit','>',0], ['transactions.approve',1],
-        ]);
+                ->join('chart_of_accounts as coa','transactions.chart_of_account_id','=','coa.id')
+                ->join('customers as c','coa.customer_id','c.id')
+                ->where([['transactions.credit','>',0], ['transactions.approve',1],
+                ]);
 //        if (!empty($this->_warehouse_id)) {
 //            $query->where('transactions.warehouse_id', $this->_warehouse_id);
 //        }

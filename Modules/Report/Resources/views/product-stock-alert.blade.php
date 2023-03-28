@@ -121,9 +121,7 @@
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
 
             "buttons": [
-                {
-                    'extend':'colvis','className':'btn btn-secondary btn-sm text-white','text':'Column','columns': ':gt(0)'
-                },
+               
                 {
                     "extend": 'print',
                     'text':'Print',

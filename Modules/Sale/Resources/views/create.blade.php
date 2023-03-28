@@ -104,6 +104,7 @@
                                         </tfoot>
                                     </table>
                                 </div>
+
                                 <div class="col-md-12">
                                     <div class="row justify-content-between">
                                         <x-form.selectbox labelName="Order Tax" name="order_tax_rate" col="col-md-2" class="fcs">

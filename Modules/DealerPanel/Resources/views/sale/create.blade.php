@@ -266,7 +266,7 @@
                 notification('error','Please select Dealer');
             }else {
                 $.ajax({
-                    url: '{{ route("sale.product.search.with.id") }}',
+                    url: '{{ route("dealer.panel.product.search.with.id") }}',
                     type: 'POST',
                     data: {data: data, _token: "{{ csrf_token() }}"},
                     success: function (data) {

@@ -57,19 +57,18 @@ class SalesReport extends BaseModel{
         $this->column_order = ['s.id','s.memo_no', 's.salesmen_id','s.custoemr_id', 's.item','s.total_price','s.order_tax_rate','s.order_tax',
             's.order_discount','s.labor_cost','s.shipping_cost','s.grand_total','s.previous_due','s.net_total', 's.paid_amount', 's.due_amount','s.sr_commission_rate','s.total_commission', 's.sale_date',
             's.payment_status','s.payment_method','s,delivery_status','s.delivery_date', null];
+
         $query = DB::table('sales as s')
-            ->selectRaw('s.*,sm.name as salesmen_name,sm.phone,c.name as customer_name,c.shop_name,a.name as area_name')
-            ->join('salesmen as sm','s.salesmen_id','=','sm.id')
-            ->join('customers as c','s.customer_id','=','c.id')
-            ->join('locations as a', 'c.area_id', '=', 'a.id');
+                ->selectRaw('s.*,c.name as customer_name,c.shop_name')
+                ->join('customers as c','s.customer_id','=','c.id');
+
+//        return response()->json($query);
+
         if (!empty($this->_memo_no)) {
             $query->where('s.memo_no', $this->_memo_no);
         }
         if (!empty($this->_from_date) && !empty($this->_to_date)) {
             $query->whereDate('s.sale_date', '>=',$this->_from_date)->whereDate('s.sale_date', '<=',$this->_to_date);
-        }
-        if (!empty($this->_salesmen_id)) {
-            $query->where('s.salesmen_id', $this->_salesmen_id);
         }
         if (!empty($this->_customer_id)) {
             $query->where('s.customer_id', $this->_customer_id);

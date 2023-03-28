@@ -40,6 +40,7 @@ class CustomerReceiptController extends BaseController{
 
             $this->set_datatable_default_properties($request);//set datatable default properties
             $list = $this->model->getDatatableList();//get table data
+//            return response()->json($list);
             $data = [];
             $no = $request->input('start');
             foreach ($list as $value) {
@@ -48,9 +49,9 @@ class CustomerReceiptController extends BaseController{
                 $row[] = $no;
                 $row[] = date('d-m-Y',strtotime($value->voucher_date));
                 $row[] = $value->shop_name.' - '.$value->customer_name;
-                $row[] = $value->district_name;
-                $row[] = $value->upazila_name;
-                $row[] = $value->area_name;
+                $row[] = 1;
+                $row[] = 1;
+                $row[] = 1;
                 $row[] = $value->description;
                 $row[] = number_format($value->credit,2);
                 $data[] = $row;

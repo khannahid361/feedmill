@@ -113,6 +113,7 @@
                                         </tfoot>
                                     </table>
                                 </div>
+
                                 <div class="col-md-12">
                                     <div class="row justify-content-between">
                                         <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>

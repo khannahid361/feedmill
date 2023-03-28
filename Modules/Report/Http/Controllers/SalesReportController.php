@@ -25,7 +25,7 @@ class SalesReportController extends BaseController{
     }
     public function get_datatable_data(Request $request){
         if($request->ajax()){
-            if(permission('sales-report-access')){
+//            if(permission('sales-report-access')){
                 if (!empty($request->memo_no)) {
                     $this->model->setMemoNo($request->memo_no);
                 }
@@ -35,21 +35,20 @@ class SalesReportController extends BaseController{
                 if (!empty($request->end_date)) {
                     $this->model->setToDate($request->end_date);
                 }
-                if (!empty($request->salesmen_id)) {
-                    $this->model->setSalesmenID($request->salesmen_id);
-                }
                 if (!empty($request->customer_id)) {
                     $this->model->setCustomerID($request->customer_id);
                 }
                 $this->set_datatable_default_properties($request);
                 $list = $this->model->getDatatableList();
+
+//                return response()->json($list);
+
                 $data = [];
                 $no = $request->input('start');
                 foreach ($list as $value) {
                     $no++;
                     $row    = [];
                     $row[]  = $value->memo_no;
-                    $row[]  = $value->salesmen_name;
                     $row[]  = $value->customer_name;
                     $row[]  = $value->sale_date;
                     $row[]  = $value->item;
@@ -64,9 +63,9 @@ class SalesReportController extends BaseController{
                 }
                 return $this->datatable_draw($request->input('draw'),$this->model->count_all(), $this->model->count_filtered(), $data);
             }
-        }else{
-            return response()->json($this->unauthorized());
-        }
+//        }else{
+//            return response()->json($this->unauthorized());
+//        }
     }
     protected function products($sale_id){
         $return_products = DB::table('sale_products as sp')

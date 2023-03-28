@@ -65,11 +65,13 @@ class CollectionReport extends BaseModel{
     }
     private function get_datatable_query(){
         $this->column_order = ['s.id','s.sale_date', 's.salesmen_id','s.memo_no','s.district_id','s.upazila_id','s.route_id','s.area_id','s.custoemr_id', 's.paid_amount'];
+
         $query = DB::table('sales as s')
-        ->selectRaw('s.*,sm.name as salesman_name,sm.phone,c.name,c.shop_name')
-        ->join('salesmen as sm','s.salesmen_id','=','sm.id')
-        ->join('customers as c','s.customer_id','=','c.id')
-        ->where('s.paid_amount','>',0);
+                ->selectRaw('s.*,sm.name as salesman_name,sm.phone,c.name,c.shop_name')
+                ->join('salesmen as sm','s.salesmen_id','=','sm.id')
+                ->join('customers as c','s.customer_id','=','c.id')
+                ->where('s.paid_amount','>',0);
+
         if (!empty($this->_customer_id)) {
             $query->where('s.customer_id', $this->_customer_id);
         }

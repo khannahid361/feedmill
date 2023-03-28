@@ -27,42 +27,25 @@ class TodaySalesReportController extends BaseController{
             if (!empty($request->memo_no)) {
                 $this->model->setMemoNo($request->memo_no);
             }
-            if (!empty($request->warehouse_id)) {
-                $this->model->setWarehouseID($request->warehouse_id);
-            }
-            if (!empty($request->salesmen_id)) {
-                $this->model->setSalesmenID($request->salesmen_id);
-            }
-            if (!empty($request->customer_id)) {
-                $this->model->setCustomerID($request->customer_id);
-            }
-            if (!empty($request->area_id)) {
-                $this->model->setAreaID($request->area_id);
-            }
-            if (!empty($request->upazila_id)) {
-                $this->model->setUpazilaID($request->upazila_id);
-            }
-            if (!empty($request->payment_status)) {
-                $this->model->setPaymentStatus($request->payment_status);
-            }
             $this->set_datatable_default_properties($request);//set datatable default properties
             $list = $this->model->getDatatableList();//get table data
+//            return response()->json($list);
             $data = [];
             $no   = $request->input('start');
             foreach ($list as $value) {
                 $no++;
                 $row = [];
                 $row[] = $no;
-                $row[] = $value->memo_no;
-                $row[] = $value->salesman_name;
-                $row[] = $value->upazila_name;
-                $row[] = $value->area_name;
-                $row[] = $value->shop_name.' - '.$value->name;
-                $row[] = number_format($value->grand_total,2);
+                $row[] = $value->id;
+                $row[] = 1;
+                $row[] = 1;
+                $row[] = 1;
+                $row[] = 1;
+                $row[] = 1;
                 $data[] = $row;
             }
-            return $this->datatable_draw($request->input('draw'),$this->model->count_all(), $this->model->count_filtered(), $data);
-
+            return $this->datatable_draw($request->input('draw'),$this->model->count_all(),
+                $this->model->count_filtered(), $data);
         }else{
             return response()->json($this->unauthorized());
         }

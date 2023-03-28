@@ -1,4 +1,3 @@
-
 <?php $__env->startSection('title', $page_title); ?>
 <?php $__env->startPush('styles'); ?>
     <link rel="stylesheet" href="<?php echo e(asset('css/jquery-ui.css')); ?>" />
@@ -266,7 +265,7 @@
                 notification('error','Please select Dealer');
             }else {
                 $.ajax({
-                    url: '<?php echo e(route("sale.product.search.with.id")); ?>',
+                    url: '<?php echo e(route("dealer.panel.product.search.with.id")); ?>',
                     type: 'POST',
                     data: {data: data, _token: "<?php echo e(csrf_token()); ?>"},
                     success: function (data) {

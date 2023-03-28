@@ -47,12 +47,12 @@
                         <span class="menu-text">Manage Product</span>
                     </a>
                 </li>
-                <li class="menu-item" aria-haspopup="true">
-                    <a href="{{route('dealer.panel.sale.index')}}" class="menu-link" target="">
-                        <span class="svg-icon menu-icon"><i class="fas fa-cart-arrow-down"></i></span>
-                        <span class="menu-text">Manage Sale</span>
-                    </a>
-                </li>
+{{--                <li class="menu-item" aria-haspopup="true">--}}
+{{--                    <a href="{{route('dealer.panel.sale.index')}}" class="menu-link" target="">--}}
+{{--                        <span class="svg-icon menu-icon"><i class="fas fa-cart-arrow-down"></i></span>--}}
+{{--                        <span class="menu-text">Manage Sale</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
             </ul>
         </div>
     </div>

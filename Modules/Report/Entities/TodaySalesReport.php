@@ -86,14 +86,11 @@ class TodaySalesReport extends BaseModel{
 //        ->join('locations as a', 'c.area_id', '=', 'a.id')
 //        ->where([['s.warehouse_id',$this->_warehouse_id],['s.sale_date',date('Y-m-d')]]);
         $this->column_order = ['s.id','s.memo_no', 's.salesmen_id','s.upazila_id','s.area_id','s.custoemr_id', 's.grand_total'];
+
         $query = DB::table('sales as s')
-        ->selectRaw('s.*,sm.name as salesman_name,sm.phone,c.name,c.shop_name, d.name as district_name,u.name as upazila_name,a.name as area_name')
-        ->join('salesmen as sm','s.salesmen_id','=','sm.id')
-        ->join('customers as c','s.customer_id','=','c.id')
-        ->join('locations as d', 'c.district_id', '=', 'd.id')
-        ->join('locations as u', 'c.upazila_id', '=', 'u.id')
-        ->join('locations as a', 'c.area_id', '=', 'a.id')
+        ->selectRaw('s.*')
         ->where([['s.sale_date',date('Y-m-d')]]);
+
         if (!empty($this->_memo_no)) {
             $query->where('s.memo_no', $this->_memo_no);
         }
@@ -103,15 +100,7 @@ class TodaySalesReport extends BaseModel{
         if (!empty($this->_customer_id)) {
             $query->where('s.customer_id', $this->_customer_id);
         }
-        if (!empty($this->_district_id)) {
-            $query->where('c.district_id', $this->_district_id);
-        }
-        if (!empty($this->_upazila_id)) {
-            $query->where('c.upazila_id', $this->_upazila_id);
-        }
-        if (!empty($this->_area_id)) {
-            $query->where('c.area_id', $this->_area_id);
-        }
+
         if (!empty($this->_payment_status)) {
             $query->where('payment_status', $this->_payment_status);
         }

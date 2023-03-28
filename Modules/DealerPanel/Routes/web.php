@@ -16,9 +16,12 @@ Route::group(['prefix' => 'dealer-panel', 'as'=>'dealer.panel.'], function () {
     Route::get('edit/{id}', 'DealerPanelController@saleEdit')->name('sale.edit');
     Route::post('update', 'DealerPanelController@saleUpdate')->name('sale.update');
     Route::post('delete', 'DealerPanelController@saleDelete')->name('sale.delete');
+    Route::post('product-search-with-id', 'DealerPanelController@product_search_with_id')->name('product.search.with.id');
 
     Route::get('product-index', 'DealerProductController@productIndex')->name('product.index');
     Route::post('product-datatable-data', 'DealerProductController@get_datatable_data')->name('product.datatable.data');
     Route::post('receive', 'DealerProductController@receive_transfered_products')->name('receive');
     Route::get('data/{id}', 'DealerProductController@transfer_product_data')->name('data');
+
+
 });
