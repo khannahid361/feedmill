@@ -149,9 +149,9 @@
                                                             <option value="{{ $row->id }}">{{ $row->name }}</option>
                                                         @endforeach
                                                     </x-form.selectbox>
-                                                    <x-form.textarea labelName="{{__('file.Academic Qualification')}}" name="academic_qualification" required="required" col="col-md-12" placeholder="Enter Academic Qualification"/>
-                                                    <x-form.textarea labelName="{{__('file.Professional Qualification')}}" name="professional_qualification" required="required" col="col-md-12" placeholder="Enter Professional Qualification"/>
-                                                    <x-form.textarea labelName="{{__('file.Experience')}}" name="experience" required="experience" col="col-md-12" placeholder="Enter Experience"/>
+                                                    <x-form.textarea labelName="{{__('file.Academic Qualification')}}" name="academic_qualification" required required="required" col="col-md-12" placeholder="Enter Academic Qualification"/>
+                                                    <x-form.textarea labelName="{{__('file.Professional Qualification')}}" name="professional_qualification"  col="col-md-12" placeholder="Enter Professional Qualification"/>
+                                                    <x-form.textarea labelName="{{__('file.Experience')}}" name="experience" required required="required" col="col-md-12" placeholder="Enter Experience"/>
                                                     <div class="col-sm-12">
                                                         <div class="card">
                                                             <h3>Upload Resume</h3>
@@ -169,7 +169,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">{{__('file.Close')}}</button>
+                                        <button type="button" class="btn btn-danger btn-sm mr-3" onclick="window.location.replace('{{ route("employee") }}');"><i class="fas fa-sync-alt"></i> Close</button>
                                         <button type="button" class="btn btn-primary btn-sm mr-3" id="save-btn" onclick="storeData()"><i class="fas fa-save"></i>{{__('file.Save')}}</button>
                                     </div>
                                 </form>

@@ -19,3 +19,5 @@ Route::post('material-stock-ledger/data', 'MaterialStockLedgerController@get_dat
 Route::get('product-stock-ledger', 'FinishedGoodsStockLedgerController@index')->name('product.stock.ledger');
 Route::post('product-stock-ledger/data', 'FinishedGoodsStockLedgerController@get_datatable_data')->name('product.stock.ledger.data');
 
+Route::get('product-ledger', 'ProductLedgerController@index')->name('product.ledger');
+Route::post('product-ledger/data', 'ProductLedgerController@productLedgerData')->name('product.ledger.data');

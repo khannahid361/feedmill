@@ -83,6 +83,7 @@
 @include('hrm::allowances.modal')
 @endsection
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
 <script>
     var table;
     $(document).ready(function(){
@@ -106,7 +107,7 @@
                 zeroRecords: '<strong class="text-danger">No Data Found</strong>'
             },
             "ajax": {
-                "url": "{{route('allowances.datatable.data')}}",
+                "url": "{{route('labourAllowances.datatable.data')}}",
                 "type": "POST",
                 "data": function (data) {
                     data.allowances_name   = $("#form-filter #allowances_name").val();
@@ -136,7 +137,7 @@
         $(document).on('click', '#save-btn', function () {
             let form        = document.getElementById('store_or_update_form');
             let formData    = new FormData(form);
-            let url         = "{{route('allowances.store.or.update')}}";
+            let url         = "{{route('labourAllowances.store.or.update')}}";
             let id          = $('#update_id').val();
             let method;
             if (id) {
@@ -155,7 +156,7 @@
             $('#store_or_update_form').find('.error').remove();
             if (id) {
                 $.ajax({
-                    url: "{{route('allowances.edit')}}",
+                    url: "{{route('labourAllowances.edit')}}",
                     type: "POST",
                     data: { id: id,_token: _token},
                     dataType: "JSON",

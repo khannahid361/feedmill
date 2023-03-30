@@ -11,7 +11,7 @@ use Modules\Product\Entities\Product;
 use Modules\Setting\Entities\Warehouse;
 
 class DealerSale extends BaseModel {
-    protected $fillable = ['memo_no','dealer_id','sale_date','document','item','total_qty','total_free_qty','total_tax','total_price','total_commission',
+    protected $fillable = ['memo_no','dealer_id','sale_date','document','item','total_qty','total_free_qty','total_tax','total_price','total_commission','total_delivery_quantity',
                            'order_tax','order_tax_rate','order_discount','shipping_cost','labor_cost', 'previous_due','net_total','paid_amount','grand_total',
                            'due_amount','payment_status','payment_method','reference_no', 'account_id','note','status','order_type','created_by','modified_by'];
     protected $table = 'dealer_sales';

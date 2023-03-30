@@ -29,7 +29,6 @@ class EmployeeFormRequest extends FormRequest
         $rules['marital_status']            = ['required'];
         $rules['date_of_birth']             = ['required'];
         $rules['academic_qualification']    = ['required'];
-        $rules['professional_qualification']= ['required'];
         $rules['experience']                = ['required'];
 //        if(request()->update_id)
 //        {

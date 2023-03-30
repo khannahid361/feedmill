@@ -40,6 +40,18 @@ define('VOUCHER_APPROVE_STATUS',[
     '2' => 'Rejected',
     '3' => 'Pending',
 ]);
+define('EMPLOYEE_TYPE_LABEL',[
+    '1' => '<span class="label label-success label-pill label-inline" style="min-width:70px !important;">Provision</span>',
+    '2' => '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Permanent</span>',
+    '3' => '<span class="label label-info label-pill label-inline" style="min-width:70px !important;">Full Time</span>',
+    '4' => '<span class="label label-info label-pill label-inline" style="min-width:70px !important;">Part Time</span>',
+]);
+define('EMPLOYE_TYPE_STATUS',([
+    '1' => 'Provision',
+    '2' => 'Permanent',
+    '3' => 'Full Time',
+    '4' => 'Part Time',
+]));
 define('TYPE_LABEL',[
     '1'=>'<span class="label label-success label-pill label-inline" style="min-width:70px !important;">Standard</span>',
     '2'=>'<span class="label label-primary label-pill label-inline" style="min-width:70px !important;">Variant</span>',

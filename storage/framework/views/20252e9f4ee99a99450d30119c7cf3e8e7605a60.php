@@ -128,7 +128,9 @@
 </div>
 <?php $__env->stopSection(); ?>
 <?php $__env->startPush('scripts'); ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
 <script>
+
     var table;
     $(document).ready(function(){
 
@@ -189,7 +191,6 @@
         });
 
     });
-    // Month datepicker
     var dp=$("#datepicker").datepicker( {
         format: "yyyy-mm",
         startView: "months",

@@ -14,14 +14,14 @@ class SalaryAdvanceFormRequest extends FormRequest
     public function rules()
     {
         $rules['employee_id']           = ['required'];
-        $rules['advance_months']        = ['required'];
+        $rules['advance_month']         = ['required'];
         $rules['advance_amount']        = ['required'];
         $rules['advance_description']   = ['required'];
         $rules['status']                = ['required'];
         if(request()->update_id)
         {
             $rules['employee_id']        = ['required'];
-            $rules['advance_months']     = ['required'];
+            $rules['advance_month']     = ['required'];
             $rules['advance_amount']     = ['required'];
             $rules['advance_description']= ['required'];
             $rules['status']             = ['required'];

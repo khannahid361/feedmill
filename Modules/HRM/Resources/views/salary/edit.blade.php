@@ -241,7 +241,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">{{__('file.Close')}}</button>
+                                        <button type="button" class="btn btn-danger btn-sm mr-3" onclick="window.location.replace('{{ route("salary") }}');"><i class="fas fa-sync-alt"></i> Close</button>
                                         <button type="button" class="btn btn-primary btn-sm mr-3" id="save-btn" onclick="storeData()"><i class="fas fa-save"></i>{{__('file.Save')}}</button>
                                     </div>
                                 </div>

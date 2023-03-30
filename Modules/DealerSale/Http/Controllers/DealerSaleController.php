@@ -7,6 +7,7 @@ use Exception;
 use App\Models\Tax;
 use App\Traits\UploadAble;
 use App\Http\Controllers\BaseController;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Account\Entities\ChartOfAccount;
@@ -48,13 +49,14 @@ class DealerSaleController extends BaseController{
                 $this->model->setToDate($request->end_date);
             }
             if (!empty($request->dealer_id)) {
-                $this->model->setDealerID($request->salesmen_id);
+                $this->model->setDealerID($request->dealer_id);
             }
             if (!empty($request->payment_status)) {
                 $this->model->setPaymentStatus($request->payment_status);
             }
             $this->set_datatable_default_properties($request);
             $list = $this->model->getDatatableList();
+//            return response()->json($list);
             $data = [];
             $no = $request->input('start');
             foreach ($list as $value) {
@@ -85,7 +87,8 @@ class DealerSaleController extends BaseController{
                 $row    = [];
                 $row[]  = $value->memo_no;
                 $row[]  = $value->dealer_name;
-                $row[]  = $value->item.'('.$value->total_qty + $value->total_free_qty.')';
+//                $row[]  = $value->item.'('.$value->total_qty + $value->total_free_qty.')';
+                $row[]  = $value->item;
                 $row[]  = $value->total_delivery_quantity;
                 $row[]  = number_format($value->total_price,2,'.','');
                 $row[]  = number_format($value->grand_total,2,'.','');

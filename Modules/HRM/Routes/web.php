@@ -129,7 +129,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Labour Deduction Setup Routes
     Route::get('manage-labour-deductions', 'LabourDeductionController@index')->name('deduction');
-    Route::group(['prefix' => 'deduction', 'as' => 'deduction.'], function (){
+    Route::group(['prefix' => 'labourDeduction', 'as' => 'labourDeduction.'], function (){
         Route::post('datatable-data', 'LabourDeductionController@get_datatable_data')->name('datatable.data');
         Route::post('store-or-update', 'LabourDeductionController@store_or_update_data')->name('store.or.update');
         Route::post('edit', 'LabourDeductionController@edit')->name('edit');
@@ -145,7 +145,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Labour Allowances Setup Routes
     Route::get('manage-labour-allowance', 'LabourAllowancesController@index')->name('allowances');
-    Route::group(['prefix' => 'allowances', 'as' => 'allowances.'], function (){
+    Route::group(['prefix' => 'labourAllowances', 'as' => 'labourAllowances.'], function (){
         Route::post('datatable-data', 'LabourAllowancesController@get_datatable_data')->name('datatable.data');
         Route::post('store-or-update', 'LabourAllowancesController@store_or_update_data')->name('store.or.update');
         Route::post('edit', 'LabourAllowancesController@edit')->name('edit');

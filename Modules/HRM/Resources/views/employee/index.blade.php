@@ -4,7 +4,6 @@
 @push('styles')
 @endpush
 @section('content')
-
     <div class="d-flex flex-column-fluid">
         <div class="container-fluid">
             <!--begin::Notice-->

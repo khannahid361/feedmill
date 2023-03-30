@@ -71,7 +71,7 @@ class LabourDeductionController extends BaseController
     public function store_or_update_data(DeductionFormRequest $request) {
         if($request->ajax()){
             if(permission('deduction-add')){
-                $collection   = collect($request->all())->merge(['created_by' => Auth::user()->id]);
+                $collection   = collect($request->all())->merge(['created_by' => Auth::user()->id,'type' => 2]);
                 $collection   = $this->track_data($collection,$request->update_id);
                 $result       = $this->model->updateOrCreate(['id'=>$request->update_id],$collection->all());
                 $output       = $this->store_message($result, $request->update_id);

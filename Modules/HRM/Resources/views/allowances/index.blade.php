@@ -2,7 +2,9 @@
 
 @section('title', $page_title)
 @push('styles')
-    <link href="{{asset('plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
+<style>
+
+</style>
 @endpush
 @section('content')
 
@@ -81,9 +83,9 @@
 @include('hrm::allowances.modal')
 @endsection
 @push('scripts')
-    <script src="{{asset('plugins/custom/datatables/datatables.bundle.js')}}" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
 <script>
-    let table;
+    var table;
     $(document).ready(function(){
 
         table = $('#dataTable').DataTable({

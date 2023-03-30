@@ -9,7 +9,6 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-
 use Modules\Department\Entities\Department;
 use Modules\Designation\Entities\Designation;
 use Modules\HRM\Entities\Branch;
@@ -87,9 +86,7 @@ class EmployeeController extends BaseController
     }
 
     public function store_or_update_data(EmployeeFormRequest $request) {
-
         if($request->ajax()){
-//            return response()->json($request->all());
             $user_id = Auth::user()->id;
             if(permission('employee-add')){
                 $joining_month = date('Y-m', strtotime($request->joining_date));

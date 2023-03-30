@@ -104,6 +104,7 @@ class SalaryController extends BaseController
                 $date        = date('Y-m-d');
                 $month       = date('Y-m');
                 $collection  = collect($request->all())->merge(['date'=>$date,'month'=>$month,'created_by' => Auth::user()->id,'house_rent_allowance' => $request->house_rent_allowance ?? 0,'medical_allowance' => $request->medical_allowance ?? 0,'transport_allowance' => $request->transport_allowance ?? 0,'mobile_allowance' => $request->mobile_allowance ?? 0,'other_allowance' => $request->other_allowance ?? 0,'provident_fund_contribution' => $request->provident_fund_contribution ?? 0,'total_provident_fund' => $request->total_provident_fund ?? 0,'tax_deduction' => $request->tax_deduction ?? 0,'provident_fund_deduction' => $request->provident_fund_deduction ?? 0,'other_deduction' => $request->other_deduction ?? 0,]);
+//                return response()->json($collection);
                 $salary      = $this->model->create($collection->all());
                 $output      = $this->store_message($salary);
             }else{

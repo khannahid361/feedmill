@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+
 use Illuminate\Support\Facades\Auth;
 use Modules\HRM\Entities\Allowances;
 use Modules\HRM\Entities\Employee;
@@ -49,7 +50,7 @@ class AllowancesController extends BaseController
                     $row    = [];
                     $row[]  = $no;
                     $row[]  = $value->allowances_name;
-                    $row[]  = $value->employee->name;
+                    $row[]  = $value->employee ? $value->employee->name : '' ;
                     $row[]  =  date('F-Y', strtotime($value->allowances_month));
                     $row[]  = $value->allowances_amount;
                     $row[]  = $value->allowances_description;
@@ -69,7 +70,7 @@ class AllowancesController extends BaseController
     public function store_or_update_data(AllowanceFormRequest $request) {
         if($request->ajax()){
             if(permission('allowances-add')){
-                $user = Auth::user()->id;
+                $user         = Auth::user()->id;
                 $collection   = collect($request->all())->merge(['created_by' => $user,'type' => 1]);
                 $collection   = $this->track_data($collection,$request->update_id);
                 $result       = $this->model->updateOrCreate(['id'=>$request->update_id],$collection->all());

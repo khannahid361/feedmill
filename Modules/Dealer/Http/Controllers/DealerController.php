@@ -224,7 +224,6 @@ class DealerController extends BaseController
             }else{
                 return redirect()->back()->with('error','No Data Found!');
             }
-
         }else{
             return $this->access_blocked();
         }

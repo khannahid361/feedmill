@@ -134,19 +134,19 @@
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <div class="row">
-                                                            <div class="col-md-12 form-group required">
+                                                            <div class="col-md-12 form-group ">
                                                                 <label for="title">{{__('Tax Deduction')}}</label>
                                                                 <div class="input-group" >
                                                                     <input type="text" class="form-control number-only"  name="tax_deduction" id="tax_deduction" placeholder="0.00">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-12 form-group required">
+                                                            <div class="col-md-12 form-group ">
                                                                 <label for="title">{{__('Provident Fund Deduction')}}</label>
                                                                 <div class="input-group" >
                                                                     <input type="text" class="form-control number-only"  name="provident_fund_deduction" id="provident_fund_deduction" placeholder="0.00">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-12 form-group required">
+                                                            <div class="col-md-12 form-group ">
                                                                 <label for="title">{{__('Other Deduction')}}</label>
                                                                 <div class="input-group" >
                                                                     <input type="text" class="form-control number-only"  name="other_deduction" id="other_deduction" placeholder="0.00">
@@ -243,7 +243,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">{{__('file.Close')}}</button>
+                                        <button type="button" class="btn btn-danger btn-sm mr-3" onclick="window.location.replace('{{ route("salary") }}');"><i class="fas fa-sync-alt"></i> Close</button>
                                         <button type="button" class="btn btn-primary btn-sm mr-3" id="save-btn" onclick="storeData()"><i class="fas fa-save"></i>{{__('file.Save')}}</button>
                                     </div>
                                 </div>

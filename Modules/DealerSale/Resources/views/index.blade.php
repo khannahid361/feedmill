@@ -132,7 +132,7 @@ $(document).ready(function(){
                 data.memo_no        = $("#form-filter #memo_no").val();
                 data.start_date     = $("#form-filter #start_date").val();
                 data.end_date       = $("#form-filter #end_date").val();
-                data.dealer_id    = $("#form-filter #customer_id").val();
+                data.dealer_id    = $("#form-filter #dealer_id").val();
                 data.payment_status = $("#form-filter #payment_status").val();
                 data._token         = _token;
             }

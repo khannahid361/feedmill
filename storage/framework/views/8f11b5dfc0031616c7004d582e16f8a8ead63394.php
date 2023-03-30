@@ -111,6 +111,7 @@
 <?php echo $__env->make('hrm::salary-advance.modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 <?php $__env->startPush('scripts'); ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
 
 <script>
     var table;
@@ -196,7 +197,7 @@
                         }else{
                             $('#store_or_update_form #update_id').val(data.id);
                             $('#store_or_update_form #employee_id').val(data.employee_id);
-                            $('#store_or_update_form #advance_month').val(data.advance_month);
+                            $('#store_or_update_form #advance_months').val(data.advance_month);
                             $('#store_or_update_form #advance_amount').val(data.advance_amount);
                             $('#store_or_update_form #advance_description').val(data.advance_description);
                             $('#store_or_update_form #status').val(data.status);

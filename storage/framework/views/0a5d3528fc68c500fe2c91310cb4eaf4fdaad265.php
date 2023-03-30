@@ -94,7 +94,9 @@
 <?php $__env->stopSection(); ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+
 <?php $__env->startPush('scripts'); ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
 <script>
     var table;
     $(document).ready(function(){
@@ -118,7 +120,7 @@
                 zeroRecords: '<strong class="text-danger">No Data Found</strong>'
             },
             "ajax": {
-                "url": "<?php echo e(route('deduction.datatable.data')); ?>",
+                "url": "<?php echo e(route('labourDeduction.datatable.data')); ?>",
                 "type": "POST",
                 "data": function (data) {
                     data.deduction_name      = $("#form-filter #deduction_name").val();
@@ -148,7 +150,7 @@
         $(document).on('click', '#save-btn', function () {
             let form        = document.getElementById('store_or_update_form');
             let formData    = new FormData(form);
-            let url         = "<?php echo e(route('deduction.store.or.update')); ?>";
+            let url         = "<?php echo e(route('labourDeduction.store.or.update')); ?>";
             let id          = $('#update_id').val();
             let method;
             if (id) {
@@ -167,7 +169,7 @@
             $('#store_or_update_form').find('.error').remove();
             if (id) {
                 $.ajax({
-                    url: "<?php echo e(route('deduction.edit')); ?>",
+                    url: "<?php echo e(route('labourDeduction.edit')); ?>",
                     type: "POST",
                     data: { id: id,_token: _token},
                     dataType: "JSON",

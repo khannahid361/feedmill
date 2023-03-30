@@ -300,7 +300,7 @@
 <?php $component->withName('form.textarea'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => ''.e(__('file.Academic Qualification')).'','name' => 'academic_qualification','required' => 'required','col' => 'col-md-12','placeholder' => 'Enter Academic Qualification']); ?>
+<?php $component->withAttributes(['labelName' => ''.e(__('file.Academic Qualification')).'','name' => 'academic_qualification','required' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute('required'),'col' => 'col-md-12','placeholder' => 'Enter Academic Qualification']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
@@ -308,11 +308,11 @@
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
                                                     <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textarea','data' => ['labelName' => ''.e(__('file.Professional Qualification')).'','name' => 'professional_qualification','required' => 'required','col' => 'col-md-12','placeholder' => 'Enter Professional Qualification']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textarea','data' => ['labelName' => ''.e(__('file.Professional Qualification')).'','name' => 'professional_qualification','col' => 'col-md-12','placeholder' => 'Enter Professional Qualification']]); ?>
 <?php $component->withName('form.textarea'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => ''.e(__('file.Professional Qualification')).'','name' => 'professional_qualification','required' => 'required','col' => 'col-md-12','placeholder' => 'Enter Professional Qualification']); ?>
+<?php $component->withAttributes(['labelName' => ''.e(__('file.Professional Qualification')).'','name' => 'professional_qualification','col' => 'col-md-12','placeholder' => 'Enter Professional Qualification']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
@@ -320,11 +320,11 @@
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
                                                     <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textarea','data' => ['labelName' => ''.e(__('file.Experience')).'','name' => 'experience','required' => 'experience','col' => 'col-md-12','placeholder' => 'Enter Experience']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textarea','data' => ['labelName' => ''.e(__('file.Experience')).'','name' => 'experience','required' => 'required','col' => 'col-md-12','placeholder' => 'Enter Experience']]); ?>
 <?php $component->withName('form.textarea'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => ''.e(__('file.Experience')).'','name' => 'experience','required' => 'experience','col' => 'col-md-12','placeholder' => 'Enter Experience']); ?>
+<?php $component->withAttributes(['labelName' => ''.e(__('file.Experience')).'','name' => 'experience','required' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute('required'),'col' => 'col-md-12','placeholder' => 'Enter Experience']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
@@ -348,7 +348,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><?php echo e(__('file.Close')); ?></button>
+                                        <button type="button" class="btn btn-danger btn-sm mr-3" onclick="window.location.replace('<?php echo e(route("employee")); ?>');"><i class="fas fa-sync-alt"></i> Close</button>
                                         <button type="button" class="btn btn-primary btn-sm mr-3" id="save-btn" onclick="storeData()"><i class="fas fa-save"></i><?php echo e(__('file.Save')); ?></button>
                                     </div>
                                 </form>
