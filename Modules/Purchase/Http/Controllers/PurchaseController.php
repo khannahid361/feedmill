@@ -86,7 +86,7 @@ class PurchaseController extends BaseController{
                 }
                 $row   = [];
                 $row[] = $value->memo_no;
-                $row[] = $value->supplier->name.($value->supplier->mobile ? ' - '.$value->supplier->mobile : '');
+                $row[] = $value->supplier->name.''.($value->supplier->mobile ? ' - '.$value->supplier->mobile : '');
                 $row[] = $value->item.'('.$value->total_qty.')';
                 $row[] = number_format($value->total_cost,2);
                 $row[] = number_format($value->grand_total,2);
@@ -110,7 +110,7 @@ class PurchaseController extends BaseController{
             $material = Material::get();
             $data = [
                 'warehouses' => Warehouse::all(),
-                'suppliers'  => Supplier::allSuppliers(),
+                'suppliers'  => Supplier::all(),
                 'taxes'      => Tax::activeTaxes(),
                 'materials'  => $material,
                 'memo_no'    => 'PINV-'.($purchase ? explode('PINV-',$purchase->memo_no)[1] + 1 : self::MEMO_NO)
