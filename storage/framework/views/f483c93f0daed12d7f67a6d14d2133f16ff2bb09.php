@@ -810,7 +810,7 @@ function store_data(){
                     });
                     $('html, body').animate({
                         scrollTop: ($('.is-invalid').offset().top - 300)
-                        }, 2000);
+                        }, 1000);
 
                 } else {
                     notification(data.status, data.message);

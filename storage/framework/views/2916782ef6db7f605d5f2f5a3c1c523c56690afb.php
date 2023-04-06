@@ -1,23 +1,22 @@
-@extends('layouts.app')
-@section('title', $page_title)
-@push('styles')
-    <link rel="stylesheet" href="{{asset('css/jquery-ui.css')}}" />
-    <link href="{{asset('css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet" type="text/css" />
+<?php $__env->startSection('title', $page_title); ?>
+<?php $__env->startPush('styles'); ?>
+    <link rel="stylesheet" href="<?php echo e(asset('css/jquery-ui.css')); ?>" />
+    <link href="<?php echo e(asset('css/bootstrap-datetimepicker.min.css')); ?>" rel="stylesheet" type="text/css" />
     <style>
         .customer.table td{
             vertical-align: top !important;
             padding: 0 !important;
         }
     </style>
-@endpush
-@section('content')
+<?php $__env->stopPush(); ?>
+<?php $__env->startSection('content'); ?>
     <div class="d-flex flex-column-fluid">
         <div class="container-fluid">
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-5">
-                    <div class="card-title"><h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3></div>
+                    <div class="card-title"><h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3></div>
                     <div class="card-toolbar">
-                        <a href="{{ route('sale') }}" class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
+                        <a href="<?php echo e(route('sale')); ?>" class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
                     </div>
                 </div>
             </div>
@@ -25,23 +24,33 @@
                 <div class="card-body">
                     <div id="kt_datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <form action="" id="sale_store_form" method="post" enctype="multipart/form-data">
-                            @csrf
+                            <?php echo csrf_field(); ?>
                             <div class="row">
                                 <div class="form-group col-md-3 required">
                                     <label for="memo_no">Memo No.</label>
-                                    <input type="text" class="fcs form-control" name="memo_no" id="memo_no" value="{{  $memo_no }}"/>
+                                    <input type="text" class="fcs form-control" name="memo_no" id="memo_no" value="<?php echo e($memo_no); ?>"/>
                                 </div>
                                 <div class="form-group col-md-3 required">
                                     <label for="sale_date">Sale Date</label>
-                                    <input type="text" class="fcs form-control date" name="sale_date" id="sale_date" value="{{ date('Y-m-d') }}" readonly />
+                                    <input type="text" class="fcs form-control date" name="sale_date" id="sale_date" value="<?php echo e(date('Y-m-d')); ?>" readonly />
                                 </div>
-                                <x-form.selectbox labelName="Customer" name="customer_id" col="col-md-3" class="fcs selectpicker">
-                                    @if (!$customer->isEmpty())
-                                        @foreach ($customer as $value)
-                                            <option value="{{ $value->id }}">{{ $value->name}}</option>
-                                        @endforeach
-                                    @endif
-                                </x-form.selectbox>
+                                <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Customer','name' => 'customer_id','col' => 'col-md-3','class' => 'fcs selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Customer','name' => 'customer_id','col' => 'col-md-3','class' => 'fcs selectpicker']); ?>
+                                    <?php if(!$customer->isEmpty()): ?>
+                                        <?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($value->id); ?>"><?php echo e($value->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endif; ?>
+                                 <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
 
                                 <div class="form-group col-md-3">
                                     <label for="document">Attach Document <i class="fas fa-info-circle" data-toggle="tooltip" data-theme="dark" title="Maximum Allowed File Size 5MB and Format (png,jpg,jpeg,svg,webp,pdf,csv,xlxs)"></i></label>
@@ -65,12 +74,12 @@
                                         <tr>
                                             <td class="col-md-3">
                                                 <select name="products[1][pro_id]" id="product_list_1" class="fcs col-md-12 product_name form-control" onchange="getProductDetails(this,1)"  data-live-search="true" data-row="1">
-                                                    @if (!$products->isEmpty())
+                                                    <?php if(!$products->isEmpty()): ?>
                                                         <option value="0">Please Select</option>
-                                                        @foreach ($products as $product)
-                                                            <option value="{{ $product->product_id }}">{{ $product->name }}</option>
-                                                        @endforeach
-                                                    @endif
+                                                        <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <option value="<?php echo e($product->product_id); ?>"><?php echo e($product->name); ?></option>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    <?php endif; ?>
                                                 </select>
                                             </td>
                                             <td class="product-code_tx_1 text-center" id="products_code_1" data-row="1"></td>
@@ -107,14 +116,24 @@
 
                                 <div class="col-md-12">
                                     <div class="row justify-content-between">
-                                        <x-form.selectbox labelName="Order Tax" name="order_tax_rate" col="col-md-2" class="fcs">
+                                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Order Tax','name' => 'order_tax_rate','col' => 'col-md-2','class' => 'fcs']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Order Tax','name' => 'order_tax_rate','col' => 'col-md-2','class' => 'fcs']); ?>
                                             <option value="0" selected>No Tax</option>
-                                            @if (!$taxes->isEmpty())
-                                                @foreach ($taxes as $tax)
-                                                    <option value="{{ $tax->rate }}">{{ $tax->name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </x-form.selectbox>
+                                            <?php if(!$taxes->isEmpty()): ?>
+                                                <?php $__currentLoopData = $taxes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tax): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value="<?php echo e($tax->rate); ?>"><?php echo e($tax->name); ?></option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php endif; ?>
+                                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                                         <div class="form-group col-md-2">
                                             <label for="order_discount">Order Discount</label>
                                             <input type="text" class="fcs form-control" name="order_discount" id="order_discount">
@@ -127,11 +146,21 @@
                                             <label for="labor_cost">Labor Cost</label>
                                             <input type="text" class="fcs form-control" name="labor_cost" id="labor_cost"/>
                                         </div>
-                                        <x-form.selectbox labelName="Payment Status" name="payment_status" required="required"  col="col-md-2" class="fcs">
-                                            @foreach (PAYMENT_STATUS as $key => $value)
-                                                <option value="{{ $key }}">{{ $value }}</option>
-                                            @endforeach
-                                        </x-form.selectbox>
+                                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Payment Status','name' => 'payment_status','required' => 'required','col' => 'col-md-2','class' => 'fcs']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Payment Status','name' => 'payment_status','required' => 'required','col' => 'col-md-2','class' => 'fcs']); ?>
+                                            <?php $__currentLoopData = PAYMENT_STATUS; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-12">
@@ -178,12 +207,33 @@
                                             <label for="due_amount">Due Amount</label>
                                             <input type="text" class="fcs form-control" name="due_amount" id="due_amount" readonly>
                                         </div>
-                                        <x-form.selectbox labelName="Payment Method" name="payment_method" onchange="account_list(this.value)" required="required"  col="col-md-4">
-                                            @foreach (SALE_PAYMENT_METHOD as $key => $value)
-                                                <option value="{{ $key }}">{{ $value }}</option>
-                                            @endforeach
-                                        </x-form.selectbox>
-                                        <x-form.selectbox labelName="Account" name="account_id" required="required"  col="col-md-4" class="fcs"/>
+                                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Payment Method','name' => 'payment_method','onchange' => 'account_list(this.value)','required' => 'required','col' => 'col-md-4']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Payment Method','name' => 'payment_method','onchange' => 'account_list(this.value)','required' => 'required','col' => 'col-md-4']); ?>
+                                            <?php $__currentLoopData = SALE_PAYMENT_METHOD; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Account','name' => 'account_id','required' => 'required','col' => 'col-md-4','class' => 'fcs']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Account','name' => 'account_id','required' => 'required','col' => 'col-md-4','class' => 'fcs']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                                         <div class="form-group required col-md-4 d-none reference_no">
                                             <label for="reference_no">Reference No</label>
                                             <input type="text" class="fcs form-control" name="reference_no" id="reference_no">
@@ -191,7 +241,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-12 text-center pt-5">
-                                    <button type="button" class="btn btn-danger btn-sm mr-3" onclick="window.location.replace('{{ route("sale.add") }}');"><i class="fas fa-sync-alt"></i> Reset</button>
+                                    <button type="button" class="btn btn-danger btn-sm mr-3" onclick="window.location.replace('<?php echo e(route("sale.add")); ?>');"><i class="fas fa-sync-alt"></i> Reset</button>
                                     <button type="button" class="btn btn-primary btn-sm mr-3" id="save-btn" onclick="store_data()"><i class="fas fa-save"></i> Save</button>
                                 </div>
                             </div>
@@ -201,11 +251,11 @@
             </div>
         </div>
     </div>
-@endsection
-@push('scripts')
-    <script src="{{asset('js/jquery-ui.js')}}"></script>
-    <script src="{{asset('js/moment.js')}}"></script>
-    <script src="{{asset('js/bootstrap-datetimepicker.min.js')}}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+    <script src="<?php echo e(asset('js/jquery-ui.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/moment.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/bootstrap-datetimepicker.min.js')); ?>"></script>
     <script>
         var product_array             = [];
         var product_code              = [];
@@ -237,10 +287,10 @@
             $('.date').datetimepicker({format: 'YYYY-MM-DD',ignoreReadonly: true});
             $('#customer_id').on('change',function(){
                 var id = $(this).val();
-                $.get('{{ url("customer/group-data") }}/'+id,function(data){
+                $.get('<?php echo e(url("customer/group-data")); ?>/'+id,function(data){
                     customer_group_rate = (data/100);
                 });
-                $.get('{{ url("customer/previous-balance") }}/'+id,function(data){
+                $.get('<?php echo e(url("customer/previous-balance")); ?>/'+id,function(data){
                     $('#previous_due').val(parseFloat(data).toFixed(2));
                 });
             });
@@ -299,12 +349,12 @@
                 var cols = '';
                 cols += `<td>
                     <select name="products[${count}][pro_id]" id="product_list_${count}" class="fcs selectpicker col-md-12  products-alls product_details_${count} form-control" onchange="getProductDetails(this,${count})" data-live-search="true" data-row="${count}">
-                    @if (!$products->isEmpty())
+                    <?php if(!$products->isEmpty()): ?>
                 <option value="0">Please Select</option>
-@foreach ($products as $product)
-                <option value="{{ $product->product_id }}">{{ $product->name }}</option>
-                    @endforeach
-                @endif
+<?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($product->product_id); ?>"><?php echo e($product->name); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endif; ?>
                 </select>
              </td>`;
                 cols += `<td class="product-code_tx_${count} text-center" id="products_code_${count}" data-row="${count}"></td>`
@@ -339,7 +389,7 @@
                 notification('error','Please select customer');
             }else{
                 $.ajax({
-                    url    : '{{ route("sale.product.search.with.id") }}',
+                    url    : '<?php echo e(route("sale.product.search.with.id")); ?>',
                     type   : 'POST',
                     data   : {data : data,_token : _token},
                     success: function(data) {
@@ -566,7 +616,7 @@
         }
         function loadProduct(warehouse_id=null,rowcount){
             $.ajax({
-                url:"{{url('sale/product-select-search')}}",
+                url:"<?php echo e(url('sale/product-select-search')); ?>",
                 type: 'post',
                 data: { _token: _token,warehouse_id:warehouse_id},
                 success: function( data ) {
@@ -585,7 +635,7 @@
         $(document).on('change','#salesmen_id',function(){
             let id = $(this).val();
             $.ajax({
-                url     : "{{url('salesmen-area-list')}}/" + id,
+                url     : "<?php echo e(url('salesmen-area-list')); ?>/" + id,
                 type    : "GET",
                 dataType: "JSON",
                 success : function(data){
@@ -598,7 +648,7 @@
         });
         function getAreaList(route_id){
             $.ajax({
-                url     :"{{ url('route-id-wise-area-list') }}/"+route_id,
+                url     :"<?php echo e(url('route-id-wise-area-list')); ?>/"+route_id,
                 type    :"GET",
                 dataType:"JSON",
                 success :function(data){
@@ -613,7 +663,7 @@
         }
         function customer_list(area_id) {
             $.ajax({
-                url     :"{{ url('customer-list') }}",
+                url     :"<?php echo e(url('customer-list')); ?>",
                 type    :"POST",
                 data    :{area_id:area_id,_token:_token},
                 dataType:"JSON",
@@ -629,7 +679,7 @@
         }
         function account_list(payment_method) {
             $.ajax({
-                url    : "{{route('account.list')}}",
+                url    : "<?php echo e(route('account.list')); ?>",
                 type   : "POST",
                 data   : { payment_method: payment_method,_token: _token},
                 success: function (data) {
@@ -646,7 +696,7 @@
             }else{
                 let form = document.getElementById('sale_store_form');
                 let formData = new FormData(form);
-                let url = "{{route('sale.store')}}";
+                let url = "<?php echo e(route('sale.store')); ?>";
                 $.ajax({
                     url: url,
                     type: "POST",
@@ -679,7 +729,7 @@
                         } else {
                             notification(data.status, data.message);
                             if (data.status == 'success') {
-                                window.location.replace("{{ route('sale') }}");
+                                window.location.replace("<?php echo e(route('sale')); ?>");
                             }
                         }
                     },
@@ -688,4 +738,6 @@
             }
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Sale\Resources/views/create.blade.php ENDPATH**/ ?>

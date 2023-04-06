@@ -710,6 +710,9 @@
                             $('#purchase_store_form #' + key).parent().append(
                                 '<small class="error text-danger">' + value + '</small>');
                         });
+                        $('html, body').animate({
+                            scrollTop: ($('.is-invalid').offset().top - 300)
+                            }, 1000);
                     } else {
                         notification(data.status, data.message);
                         if (data.status == 'success') {window.location.replace("{{ route('purchase') }}"); }
