@@ -25,19 +25,19 @@ class ProductionController extends BaseController
 
     public function index()
     {
-        if(permission('production-access')){
-            $this->setPageData('Manage Production','Manage Production','fas fa-industry',[['name' => 'Manage Production']]);
-            $warehouses = DB::table('warehouses')->where('status',1)->pluck('name','id');
-            return view('production::production.index',compact('warehouses'));
-        }else{
+        if (permission('production-access')) {
+            $this->setPageData('Manage Production', 'Manage Production', 'fas fa-industry', [['name' => 'Manage Production']]);
+            $warehouses = DB::table('warehouses')->where('status', 1)->pluck('name', 'id');
+            return view('production::production.index', compact('warehouses'));
+        } else {
             return $this->access_blocked();
         }
     }
 
     public function get_datatable_data(Request $request)
     {
-        if($request->ajax()){
-            if(permission('production-access')){
+        if ($request->ajax()) {
+            if (permission('production-access')) {
 
                 if (!empty($request->batch_no)) {
                     $this->model->setBatchNo($request->batch_no);
@@ -61,27 +61,27 @@ class ProductionController extends BaseController
                     $this->model->setTransferStatus($request->transfer_status);
                 }
 
-                $this->set_datatable_default_properties($request);//set datatable default properties
-                $list = $this->model->getDatatableList();//get table data
+                $this->set_datatable_default_properties($request); //set datatable default properties
+                $list = $this->model->getDatatableList(); //get table data
                 $data = [];
                 $no = $request->input('start');
                 foreach ($list as $value) {
                     $no++;
                     $action = '';
-                    if(permission('production-approve')  && $value->status == 2){
+                    if (permission('production-approve')  && $value->status == 2) {
                         $action .= ' <a class="dropdown-item change_status"  data-id="' . $value->id . '" data-name="' . $value->batch_no . '" data-status="' . $value->status . '"><i class="fas fa-toggle-on text-info mr-2"></i> Approve Status</a>';
                     }
-                    if(permission('production-edit') && $value->status == 2){
-                        $action .= ' <a class="dropdown-item" href="'.route("production.edit",$value->id).'">'.self::ACTION_BUTTON['Edit'].'</a>';
+                    if (permission('production-edit') && $value->status == 2) {
+                        $action .= ' <a class="dropdown-item" href="' . route("production.edit", $value->id) . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
                     }
-                    if(permission('production-operation') && $value->status == 1 && $value->production_status != 3 ){
-                        $action .= ' <a class="dropdown-item" href="'.url("production/operation/".$value->id).'"><i class="fas fa-toolbox text-success mr-2"></i> Operation</a>';
+                    if (permission('production-operation') && $value->status == 1 && $value->production_status != 3) {
+                        $action .= ' <a class="dropdown-item" href="' . url("production/operation/" . $value->id) . '"><i class="fas fa-toolbox text-success mr-2"></i> Operation</a>';
                     }
-                    if(permission('production-view')){
-                        $action .= ' <a class="dropdown-item" href="'.url("production/view/".$value->id).'">'.self::ACTION_BUTTON['View'].'</a>';
+                    if (permission('production-view')) {
+                        $action .= ' <a class="dropdown-item" href="' . url("production/view/" . $value->id) . '">' . self::ACTION_BUTTON['View'] . '</a>';
                     }
-                    if(permission('production-delete') && $value->production_status != 3 && $value->transfer_status == 1){
-                        $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->name . '">'.self::ACTION_BUTTON['Delete'].'</a>';
+                    if (permission('production-delete') && $value->production_status != 3 && $value->transfer_status == 1) {
+                        $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->name . '">' . self::ACTION_BUTTON['Delete'] . '</a>';
                     }
 
                     // if(permission('production-transfer') && $value->status == 1 && $value->production_status == 3 && $value->transfer_status == 1){
@@ -91,122 +91,146 @@ class ProductionController extends BaseController
                     $row = [];
                     $row[] = $no;
                     $row[] = $value->batch_no;
+                    foreach ($value->products as $key => $item) {
+                        $itemName = $item->product->name;
+                    }
+                    $row[] = $itemName;
                     $row[] = $value->warehouse->name;
-                    $row[] = date('d-M-Y',strtotime($value->start_date));
-                    $row[] = $value->end_date ? date('j-F-Y',strtotime($value->end_date)) : '-';
+                    $row[] = date('d-M-Y', strtotime($value->start_date));
+                    $row[] = $value->end_date ? date('j-F-Y', strtotime($value->end_date)) : '-';
+                    $diff = strtotime($value->end_date) - strtotime(date('Y-m-d'));
+                    if ($diff > 0) {
+                        $years = floor($diff / (365 * 60 * 60 * 24));
+                        $months = floor(($diff - $years * 365 * 60 * 60 * 24) / (30 * 60 * 60 * 24));
+                        $days = floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24) / (60 * 60 * 24));
+                        $expireIn = '';
+                        if ($years > 0) {
+                            $expireIn .= $years . ' Year ';
+                        }
+                        if ($months > 0) {
+                            $expireIn .= $months . ' month ';
+                        }
+                        if ($days > 0) {
+                            $expireIn .= $days . ' days';
+                        }
+                        $row[] = $expireIn;
+                    } else {
+                        if ($value->production_status == 3) {
+                            $row[] = 'Already Expired';
+                        } elseif ($value->production_status == 2 || $value->production_status == 1) {
+                            $row[] = 'Complete Production First';
+                        }
+                    }
                     $row[] = $value->item;
                     $row[] = APPROVE_STATUS_LABEL[$value->status];
                     $row[] = PRODUCTION_STATUS_LABEL[$value->production_status];
-                    $row[] = action_button($action);//custom helper function for action button
+                    $row[] = action_button($action); //custom helper function for action button
                     $data[] = $row;
                 }
-                return $this->datatable_draw($request->input('draw'),$this->model->count_all(),
-                $this->model->count_filtered(), $data);
+                return $this->datatable_draw(
+                    $request->input('draw'),
+                    $this->model->count_all(),
+                    $this->model->count_filtered(),
+                    $data
+                );
             }
-        }else{
+        } else {
             return response()->json($this->unauthorized());
         }
     }
 
     public function create()
     {
-        if(permission('production-add')){
-            $this->setPageData('Add Production','Add Production','fas fa-industry',[['name' => 'Add Production']]);
-            $last_batch_no = $this->model->select('batch_no')->orderBy('id','desc')->first();
+        if (permission('production-add')) {
+            $this->setPageData('Add Production', 'Add Production', 'fas fa-industry', [['name' => 'Add Production']]);
+            $last_batch_no = $this->model->select('batch_no')->orderBy('id', 'desc')->first();
             $data = [
-                'products'   => DB::table('products')->where('status', 1)->pluck('name','id'),
+                'products'   => DB::table('products')->where('status', 1)->pluck('name', 'id'),
                 'warehouses' => Warehouse::activeWarehouses(),
                 'batch_no'   => $last_batch_no ? $last_batch_no->batch_no + 1 : '1001'
             ];
-            return view('production::production.create',$data);
-        }else{
+            return view('production::production.create', $data);
+        } else {
             return $this->access_blocked();
         }
     }
 
     public function check_material_stock(ProductionRequest $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             $production_materials = [];
             $below_qty = 0;
-            if($request->has('production')){
+            if ($request->has('production')) {
                 $materials = [];
-                foreach($request->production as $product)
-                {
+                foreach ($request->production as $product) {
                     if (!empty($product['materials']) && count($product['materials']) > 0) {
                         foreach ($product['materials'] as $value) {
-                            if(!empty($materials)){
+                            if (!empty($materials)) {
                                 $key = array_search($value['material_id'], array_column($materials, 'material_id'));
-                                if($materials[$key]['material_id'] == $value['material_id'] )
-                                {
+                                if ($materials[$key]['material_id'] == $value['material_id']) {
                                     $materials[$key]['qty'] += $value['qty'];
-                                }else{
+                                } else {
                                     $materials[] = [
                                         'material_id' => $value['material_id'],
                                         'qty' => $value['qty'],
                                     ];
                                 }
-                            }else{
+                            } else {
                                 $materials[] = [
                                     'material_id' => $value['material_id'],
                                     'qty' => $value['qty'],
                                 ];
                             }
-
                         }
-
                     }
                 }
-                if(!empty($materials)){
-                    foreach($materials as $item){
+                if (!empty($materials)) {
+                    foreach ($materials as $item) {
                         $material = Material::with('unit')->find($item['material_id']);
-                        $material_stock = WarehouseMaterial::where([['material_id',$item['material_id']],['warehouse_id',1]])->first();
+                        $material_stock = WarehouseMaterial::where([['material_id', $item['material_id']], ['warehouse_id', 1]])->first();
                         $stock_qty = 0;
                         $background = '';
-                        if($material_stock){
+                        if ($material_stock) {
                             $stock_qty = $material_stock->qty;
-                            if($stock_qty < $item['qty']){
+                            if ($stock_qty < $item['qty']) {
                                 $background = 'bg-danger';
                                 $below_qty++;
                             }
-                        }else{
+                        } else {
                             $background = 'bg-danger';
                             $below_qty++;
                         }
                         $production_materials[] = [
-                            'material_name' => $material ? $material->material_name.' ('.$material->material_code.')' : '',
+                            'material_name' => $material ? $material->material_name . ' (' . $material->material_code . ')' : '',
                             'type'          => $material ? MATERIAL_TYPE[$material->type] : '',
-                            'unit_name'     => $material ? $material->unit->unit_name.' ('.$material->unit->unit_code.')' : '',
+                            'unit_name'     => $material ? $material->unit->unit_name . ' (' . $material->unit->unit_code . ')' : '',
                             'stock_qty'     => $stock_qty,
                             'qty'           => $item['qty'],
                             'background'    => $background,
                         ];
                     }
                 }
-
             }
-            if($below_qty > 0){
+            if ($below_qty > 0) {
                 $data = [
                     'materials'    =>  $production_materials,
                     'below_qty'    => $below_qty
                 ];
 
-                return view('production::production.view-data',$data)->render();
-            }else{
-                return ['status'=>'success'];
+                return view('production::production.view-data', $data)->render();
+            } else {
+                return ['status' => 'success'];
             }
-
         }
     }
 
     public function store(Request $request)
     {
-//        dd($request->all());
+        //        dd($request->all());
         if ($request->ajax()) {
 
             if (permission('production-add')) {
-                if($request->has('production')){
+                if ($request->has('production')) {
                     DB::beginTransaction();
                     try {
                         $production = $this->model->create([
@@ -216,10 +240,10 @@ class ProductionController extends BaseController
                             'start_date'   => $request->start_date,
                             'created_by'   => auth()->user()->name
                         ]);
-                        if($production)
-                        {
-                            foreach($request->production as $product)
-                            {
+                        // dd($request->production);
+                        if ($production) {
+                            foreach ($request->production as $product) {
+                                // dd($product['exp_date']);
                                 $product_data = [
                                     'production_id'   => $production->id,
                                     'product_id'      => $product['product_id'],
@@ -227,14 +251,15 @@ class ProductionController extends BaseController
                                     'mfg_date'        => $product['mfg_date'],
                                     'exp_date'        => $product['exp_date'],
 
-//                                    'other_cost'      => $product['other_cost'],
-//                                    'sub_total'       => $product['sub_total'],
-//                                    'per_unit_cost'   => $product['per_unit_cost'],
+                                    //                                    'other_cost'      => $product['other_cost'],
+                                    //                                    'sub_total'       => $product['sub_total'],
+                                    //                                    'per_unit_cost'   => $product['per_unit_cost'],
 
                                     'base_unit_qty'   => $product['base_unit_qty'],
                                 ];
+                                // dd($product_data);
                                 $productData = ProductionProduct::create($product_data);
-                                if($product){
+                                if ($product) {
                                     $production_product = ProductionProduct::with('materials')->find($productData->id);
                                     $materials = [];
                                     if (!empty($product['materials']) && count($product['materials']) > 0) {
@@ -251,17 +276,17 @@ class ProductionController extends BaseController
                                     }
                                 }
                             }
-                            $output = ['status' => 'success','message' => 'Data has been saved successfully'];
-                        }else{
-                            $output = ['status' => 'error','message' => 'Failed to save data'];
+                            $output = ['status' => 'success', 'message' => 'Data has been saved successfully'];
+                        } else {
+                            $output = ['status' => 'error', 'message' => 'Failed to save data'];
                         }
                         DB::commit();
                     } catch (\Throwable $th) {
                         DB::rollback();
                         $output = ['status' => 'error', 'message' => $th->getMessage()];
                     }
-                }else{
-                    $output = ['status' => 'error','message' => 'Fill up the input field properly'];
+                } else {
+                    $output = ['status' => 'error', 'message' => 'Fill up the input field properly'];
                 }
                 return response()->json($output);
             } else {
@@ -272,33 +297,32 @@ class ProductionController extends BaseController
 
     public function show(int $id)
     {
-        if(permission('production-view')){
-            $production = $this->model->with(['warehouse:id,name','products'])->find($id);
-            if($production)
-            {
-                $this->setPageData('Production Details','Production Details','fas fa-industry',[['name' => 'Production Details']]);
-                return view('production::production.view',compact('production'));
-            }else{
+        if (permission('production-view')) {
+            $production = $this->model->with(['warehouse:id,name', 'products'])->find($id);
+            if ($production) {
+                $this->setPageData('Production Details', 'Production Details', 'fas fa-industry', [['name' => 'Production Details']]);
+                return view('production::production.view', compact('production'));
+            } else {
                 return redirect()->back();
             }
-        }else{
+        } else {
             return $this->access_blocked();
         }
     }
 
     public function edit(int $id)
     {
-        if(permission('production-view')){
+        if (permission('production-view')) {
             $production = $this->model->with(['products'])->find($id);
-            if($production)
-            {
-                $this->setPageData('Production Edit','Production Edit','fas fa-industry',[['name' => 'Production Edit']]);
+            if ($production) {
+                $this->setPageData('Production Edit', 'Production Edit', 'fas fa-industry', [['name' => 'Production Edit']]);
                 $warehouses = Warehouse::activeWarehouses();
-                return view('production::production.edit',compact('production','warehouses'));
-            }else{
+                // dd($production);
+                return view('production::production.edit', compact('production', 'warehouses'));
+            } else {
                 return redirect()->back();
             }
-        }else{
+        } else {
             return $this->access_blocked();
         }
     }
@@ -310,19 +334,16 @@ class ProductionController extends BaseController
             if (permission('production-edit')) {
                 DB::beginTransaction();
                 try {
-                    if($request->has('production')){
+                    if ($request->has('production')) {
                         $production = $this->model->find($request->update_id)->update([
                             'warehouse_id' => $request->warehouse_id,
                             'start_date'   => $request->start_date,
                             'modified_by'  => auth()->user()->name
                         ]);
-                        if($production)
-                        {
-                            foreach($request->production as $product)
-                            {
+                        if ($production) {
+                            foreach ($request->production as $product) {
                                 $production_product = ProductionProduct::find($product['production_product_id']);
-                                if($production_product)
-                                {
+                                if ($production_product) {
                                     $production_product->update([
                                         'product_id'      => $product['product_id'],
                                         'year'            => $product['year'],
@@ -334,8 +355,7 @@ class ProductionController extends BaseController
                                     if (!empty($product['materials']) && count($product['materials']) > 0) {
                                         foreach ($product['materials'] as $material) {
                                             $production_material = ProductionProductMaterial::find($material['production_material_id']);
-                                            if($production_material)
-                                            {
+                                            if ($production_material) {
                                                 $production_material->update([
                                                     'qty'           => $material['qty'],
                                                     'cost'          => $material['cost'],
@@ -346,12 +366,12 @@ class ProductionController extends BaseController
                                     }
                                 }
                             }
-                            $output = ['status' => 'success','message' => 'Data Updated Successfully'];
-                        }else{
-                            $output = ['status' => 'error','message' => 'Failed to Update Data'];
+                            $output = ['status' => 'success', 'message' => 'Data Updated Successfully'];
+                        } else {
+                            $output = ['status' => 'error', 'message' => 'Failed to Update Data'];
                         }
-                    }else{
-                        $output = ['status' => 'error','message' => 'Failed to Update Data'];
+                    } else {
+                        $output = ['status' => 'error', 'message' => 'Failed to Update Data'];
                     }
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -368,7 +388,7 @@ class ProductionController extends BaseController
     public function change_status(Request $request)
     {
         if ($request->ajax()) {
-//             dd($request->all());
+            //             dd($request->all());
             if (permission('production-approve')) {
                 if ($request->approve_status) {
                     DB::beginTransaction();
@@ -384,18 +404,18 @@ class ProductionController extends BaseController
                         if ($productionData->update()) {
                             if ($request->approve_status == 1) {
                                 $production_materials = DB::table('production_product_materials as ppm')
-                                                        ->join('production_products as pp','ppm.production_product_id','=','pp.id')
-                                                        ->join('productions as p','pp.production_id','=','p.id')
-                                                        ->where('p.id',$request->production_id)
-                                                        ->select('ppm.material_id','ppm.qty')
-                                                        ->get();
+                                    ->join('production_products as pp', 'ppm.production_product_id', '=', 'pp.id')
+                                    ->join('productions as p', 'pp.production_id', '=', 'p.id')
+                                    ->where('p.id', $request->production_id)
+                                    ->select('ppm.material_id', 'ppm.qty')
+                                    ->get();
 
-                                if($production_materials){
+                                if ($production_materials) {
                                     foreach ($production_materials as $material) {
 
                                         $warehouse_material = WarehouseMaterial::where([
                                             ['warehouse_id', 1],
-                                            ['material_id', $material->material_id],['qty','>',0]
+                                            ['material_id', $material->material_id], ['qty', '>', 0]
                                         ])->first();
                                         if ($warehouse_material) {
                                             $warehouse_material->qty -= $material->qty;
@@ -439,10 +459,8 @@ class ProductionController extends BaseController
                     if (!$productionData->products->isEmpty()) {
                         foreach ($productionData->products as $item) {
                             $product = ProductionProduct::with('materials')->find($item->id);
-                            if($product)
-                            {
-                                if(!$product->materials->isEmpty())
-                                {
+                            if ($product) {
+                                if (!$product->materials->isEmpty()) {
                                     if ($productionData->status == 1 && $productionData->production_status != 3) {
                                         foreach ($product->materials as $value) {
                                             $warehouse_material = WarehouseMaterial::where([
@@ -461,13 +479,12 @@ class ProductionController extends BaseController
                                                 $material_data->update();
                                             }
                                         }
-                                    }elseif ($productionData->status == 1 && $productionData->production_status == 3) {
+                                    } elseif ($productionData->status == 1 && $productionData->production_status == 3) {
                                         $warehouse_product = WarehouseProduct::where([
                                             ['warehouse_id', $productionData->warehouse_id],
                                             ['product_id', $product->product_id]
                                         ])->first();
-                                        if($warehouse_product)
-                                        {
+                                        if ($warehouse_product) {
                                             $warehouse_product->qty -= $product->base_unit_qty;
                                             $warehouse_product->update();
                                         }
@@ -516,11 +533,11 @@ class ProductionController extends BaseController
     {
         $tab = $request->tab;
         $materials = DB::table('product_material as pm')
-                    ->join('materials as m','pm.material_id','=','m.id')
-                    ->leftJoin('units as u','m.unit_id','=','u.id')
-                    ->select('pm.product_id','pm.material_id','pm.qty as q_ty','m.material_name','m.material_code','m.cost','m.qty','m.type','m.unit_id','u.unit_name','u.unit_code')
-                    ->where('pm.product_id',$request->product_id)
-                    ->get();
-        return view('production::production.materials',compact('materials','tab'))->render();
+            ->join('materials as m', 'pm.material_id', '=', 'm.id')
+            ->leftJoin('units as u', 'm.unit_id', '=', 'u.id')
+            ->select('pm.product_id', 'pm.material_id', 'pm.qty as q_ty', 'm.material_name', 'm.material_code', 'm.cost', 'm.qty', 'm.type', 'm.unit_id', 'u.unit_name', 'u.unit_code')
+            ->where('pm.product_id', $request->product_id)
+            ->get();
+        return view('production::production.materials', compact('materials', 'tab'))->render();
     }
 }

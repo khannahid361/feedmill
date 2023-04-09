@@ -84,7 +84,7 @@
                                         @endif
                                         <th>Sl</th>
                                         <th>Image</th>
-                                        <th>Product Name</th>
+                                        <th>Name</th>
                                         <th>Category</th>
                                         <th>Cost</th>
                                         <th>Unit</th>

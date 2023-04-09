@@ -97,11 +97,12 @@ class ProductionOperationController extends BaseController{
                     DB::beginTransaction();
                     try {
                         $productionData = $this->model->find($request->production_id);
+                        $productionProductdata = ProductionProduct::where('production_id',$request->production_id)->first();
                         $warehouse_id = $productionData->warehouse_id;
                         $approve_status = $productionData->status;
                         $productionData->production_status = $request->production_status;
                         if($request->production_status == 3) {
-                            $productionData->end_date = date('Y-m-d');
+                            $productionData->end_date = $productionProductdata->exp_date;
                         }
                         $productionData->modified_by = auth()->user()->name;
                         $productionData->updated_at = date('Y-m-d');

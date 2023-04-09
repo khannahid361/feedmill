@@ -130,29 +130,24 @@
                                                             </select>
                                                         </div>
                                                         <div class="form-group col-md-3 required">
-                                                            <label>Total Year</label>
-                                                            <select name="production[1][year]" id="production_1_year"
-                                                                onchange="generateDate(this.value,1)"
-                                                                class="form-control selectpicker">
-                                                                <?php for($i = 1; $i <= 3; $i++): ?>
-                                                                    <option value="<?php echo e($i); ?>"
-                                                                        <?php echo e($i == 1 ? 'selected' : ''); ?>>
-                                                                        <?php echo e($i); ?></option>
-                                                                <?php endfor; ?>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group col-md-3 required">
                                                             <label for="mfg_date">Mfg. Date</label>
-                                                            <input type="text" class="form-control date"
+                                                            <input type="text" class="form-control date total-time"
                                                                 name="production[1][mfg_date]" id="production_1_mfg_date"
-                                                                value="<?php echo e(date('Y-m-d')); ?>" readonly />
+                                                                value="<?php echo e(date('Y-m-d')); ?>" readonly
+                                                                onblur="setExpireTime();" />
                                                         </div>
                                                         <div class="form-group col-md-3 required">
                                                             <label for="exp_date">Exp. Date</label>
-                                                            <input type="text" class="form-control date"
+                                                            <input type="text" class="form-control date total-time"
                                                                 name="production[1][exp_date]" id="production_1_exp_date"
-                                                                value="<?php echo e(date('Y-m-d', strtotime('+1 year'))); ?>"
+                                                                value="<?php echo e(date('Y-m-d')); ?>" onblur="setExpireTime();"
                                                                 readonly />
+                                                        </div>
+                                                        <div class="form-group col-md-3 required">
+                                                            <label for="production_1_year">Total Months </label>
+                                                            <input type="text" name="production[1][year]"
+                                                                id="production_1_year" class="form-control " value="0"
+                                                                placeholder="" readonly>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -168,8 +163,8 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-primary btn-sm mr-5 float-right" onclick="check_material_stock()"
-                        id="save-btn"><i class="fas fa-save"></i> Save</button>
+                        <button type="button" class="btn btn-primary btn-sm mr-5 float-right"
+                            onclick="check_material_stock()" id="save-btn"><i class="fas fa-save"></i> Save</button>
                     </div>
                 </form>
             </div>
@@ -233,12 +228,14 @@
                                                     </div>
                                                     <div class="form-group col-md-3 required">
                                                         <label for="mfg_date">Mfg. Date</label>
-                                                        <input type="text" class="form-control date" name="production[` + tab + `][mfg_date]" id="production_` + tab +
+                                                        <input type="text" class="form-control date" name="production[` +
+                    tab + `][mfg_date]" id="production_` + tab +
                     `_mfg_date" value="<?php echo e(date('Y-m-d')); ?>" readonly />
                                                     </div>
                                                     <div class="form-group col-md-3 required">
                                                         <label for="exp_date">Exp. Date</label>
-                                                        <input type="text" class="form-control date" name="production[` + tab + `][exp_date]" id="production_` + tab + `_exp_date" value="<?php echo e(date('Y-m-d', strtotime('+1 year'))); ?>" readonly />
+                                                        <input type="text" class="form-control date" name="production[` +
+                    tab + `][exp_date]" id="production_` + tab + `_exp_date" value="<?php echo e(date('Y-m-d', strtotime('+1 year'))); ?>" readonly />
                                                     </div>
                                                 </div>
                                             </div>
@@ -285,7 +282,6 @@
                     }
                 });
             });
-
         });
 
 
@@ -352,7 +348,7 @@
                             });
                             $('#view_modal .modal-title').html(
                                 '<i class="fas fa-file-alt text-white"></i> <span> Material Stock Availibility Details</span>'
-                                );
+                            );
                         }
                     }
                 },
@@ -451,6 +447,17 @@
         //         }
         //     });
         // }
+
+        function setExpireTime() {
+            let expiredDate = $('#production_1_exp_date').val();
+            let mfgDate = $('#production_1_mfg_date').val();
+            mfgDate = new Date(mfgDate);
+            expiredDate = new Date(expiredDate);
+            let monthDiff = expiredDate.getMonth() - mfgDate.getMonth();
+            let yearDiff  = expiredDate.getYear() - mfgDate.getYear();
+            let months = monthDiff + yearDiff * 12;
+            $('#production_1_year').val(months);
+        }
     </script>
 <?php $__env->stopPush(); ?>
 
