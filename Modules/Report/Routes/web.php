@@ -112,4 +112,8 @@ Route::group(['middleware' => ['auth']], function () {
     //purchase Report
     Route::get('purchase-report', 'PurchaseReportController@index')->name('purchase.report');
     Route::post('purchase-report/datatable-data', 'PurchaseReportController@get_datatable_data')->name('purchase.report.datatable.data');
+
+    //Supplier Due Report
+    Route::get('supplier-due-report', 'SupplierDueReportController@index')->name('supplier.due.report');
+    Route::post('supplier-due-report/datatable-data', 'SupplierDueReportController@get_datatable_data')->name('supplier.due.report.datatable.data');
 });

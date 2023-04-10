@@ -35,8 +35,6 @@ class PurchaseReport extends BaseModel{
         $query = DB::table('purchases as p')
                 ->selectRaw('p.*,s.name as supplier_name')
                 ->join('suppliers as s','p.supplier_id','=','s.id');
-                // ->where('p.supplier_id',2);
-
 
         if (!empty($this->_memo_no)) {
             $query->where('p.memo_no', $this->_memo_no);
@@ -45,7 +43,6 @@ class PurchaseReport extends BaseModel{
             $query->whereDate('p.sale_date', '>=',$this->_from_date)->whereDate('p.sale_date', '<=',$this->_to_date);
         }
         if (!empty($this->_supplier_id)) {
-            // dd($this->_supplier_id);
             $query->where('p.supplier_id', $this->_supplier_id);
         }
         if (isset($this->orderValue) && isset($this->dirValue)) {

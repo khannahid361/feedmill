@@ -13,7 +13,7 @@ class PurchaseReportController extends BaseController{
         $this->model = $model;
     }
     public function index(){
-        if(permission('sales-report-access')){
+        if(permission('purchase-report-access')){
             $this->setPageData('Purchase Report','Purchase Report','fas fa-file',[['name' => 'Purchase Report']]);
             $data = [
                 'supplier'    => DB::table('suppliers')->where([['status',1]])->select('name','id')->get()
@@ -25,7 +25,7 @@ class PurchaseReportController extends BaseController{
     }
     public function get_datatable_data(Request $request){
         if($request->ajax()){
-//            if(permission('sales-report-access')){
+           if(permission('purchase-report-access')){
                 if (!empty($request->memo_no)) {
                     $this->model->setMemoNo($request->memo_no);
                 }
@@ -62,9 +62,9 @@ class PurchaseReportController extends BaseController{
                 }
                 return $this->datatable_draw($request->input('draw'),$this->model->count_all(), $this->model->count_filtered(), $data);
             }
-//        }else{
-//            return response()->json($this->unauthorized());
-//        }
+       }else{
+           return response()->json($this->unauthorized());
+       }
     }
     protected function products($sale_id){
         $return_products = DB::table('sale_products as sp')
