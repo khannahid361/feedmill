@@ -59,13 +59,13 @@
                             </div>
                         </div>
                         <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Customer','name' => 'customer_id','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Supplier','name' => 'supplier_id','col' => 'col-md-3','class' => 'selectpicker']]); ?>
 <?php $component->withName('form.selectbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Customer','name' => 'customer_id','col' => 'col-md-3','class' => 'selectpicker']); ?>
-                            <?php if(!$customer->isEmpty()): ?>
-                                <?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<?php $component->withAttributes(['labelName' => 'Supplier','name' => 'supplier_id','col' => 'col-md-3','class' => 'selectpicker']); ?>
+                            <?php if(!$supplier->isEmpty()): ?>
+                                <?php $__currentLoopData = $supplier; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($value->id); ?>"><?php echo e($value->name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <?php endif; ?>
@@ -92,12 +92,11 @@
                                 <thead class="bg-primary">
                                     <tr>
                                         <th>Memo No</th>
-                                        <th>Customer</th>
-                                        <th>Sale Date</th>
+                                        <th>Supplier Name</th>
+                                        <th>Purchase Date</th>
                                         <th>Item</th>
                                         <th>Total Quantity</th>
-                                        <th>Total Free Quantity</th>
-                                        <th>Total Delivery Quantity</th>
+                                        
                                         <th>Total Price</th>
                                         <th>Grand Total</th>
                                         <th>Paid Amount</th>
@@ -158,12 +157,12 @@ $(document).ready(function(){
                 data.memo_no        = $("#form-filter #memo_no").val();
                 data.start_date     = $("#form-filter #start_date").val();
                 data.end_date       = $("#form-filter #end_date").val();
-                data.customer_id    = $("#form-filter #customer_id").val();
+                data.supplier_id    = $("#form-filter #supplier_id").val();
                 data._token         = _token;
             }
         },
         "columnDefs": [{
-                "targets": [0,1,2,3,4,5,6,7,8,9,10],
+                "targets": [0,1,2,3,4,5,6,7,8],
                 "orderable": false,
                 "className": "text-center"
             }

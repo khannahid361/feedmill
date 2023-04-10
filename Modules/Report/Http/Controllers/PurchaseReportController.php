@@ -4,18 +4,19 @@ namespace Modules\Report\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\BaseController;
-use Modules\Report\Entities\SalesReport;
+use Modules\Report\Entities\PurchaseReport;
+
+// use Modules\Report\Entities\SalesReport;
 
 class PurchaseReportController extends BaseController{
-    public function __construct(SalesReport $model){
+    public function __construct(PurchaseReport $model){
         $this->model = $model;
     }
     public function index(){
         if(permission('sales-report-access')){
-            $this->setPageData('Sales Report','Sales Report','fas fa-file',[['name' => 'Sales Report']]);
+            $this->setPageData('Purchase Report','Purchase Report','fas fa-file',[['name' => 'Purchase Report']]);
             $data = [
-                'customer'    => DB::table('customers')->where([['status',1]])->select('name','id')->get(),
-                'salesmen'    => DB::table('salesmen')->where([['status',1]])->select('name','id','phone')->get(),
+                'supplier'    => DB::table('suppliers')->where([['status',1]])->select('name','id')->get()
             ];
             return view('report::purchase-report',$data);
         }else{
@@ -34,8 +35,9 @@ class PurchaseReportController extends BaseController{
                 if (!empty($request->end_date)) {
                     $this->model->setToDate($request->end_date);
                 }
-                if (!empty($request->customer_id)) {
-                    $this->model->setCustomerID($request->customer_id);
+                if (!empty($request->supplier_id)) {
+                    // return $request->supplier_id;
+                    $this->model->setSupplierID($request->supplier_id);
                 }
                 $this->set_datatable_default_properties($request);
                 $list = $this->model->getDatatableList();
@@ -48,13 +50,11 @@ class PurchaseReportController extends BaseController{
                     $no++;
                     $row    = [];
                     $row[]  = $value->memo_no;
-                    $row[]  = $value->customer_name;
-                    $row[]  = $value->sale_date;
+                    $row[]  = $value->supplier_name;
+                    $row[]  = $value->purchase_date;
                     $row[]  = $value->item;
                     $row[]  = $value->total_qty;
-                    $row[]  = $value->total_free_qty;
-                    $row[]  = !empty($value->total_delivery_quantity) ? $value->total_delivery_quantity : '<button type="button" class="btn btn-danger btn-block"></button>';
-                    $row[]  = $value->total_price;
+                    $row[]  = $value->total_cost;
                     $row[]  = $value->grand_total;
                     $row[]  = $value->paid_amount;
                     $row[]  = $value->created_by;
