@@ -1,7 +1,11 @@
+
+
 <?php $__env->startSection('title', $page_title); ?>
+
 <?php $__env->startPush('styles'); ?>
 <link href="plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 <?php $__env->stopPush(); ?>
+
 <?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
@@ -13,10 +17,10 @@
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    <?php if(permission('product-add')): ?>
-                    <a href="<?php echo e(route('product.add')); ?>"  class="btn btn-primary btn-sm font-weight-bolder">
+                    <?php if(permission('supplier-add')): ?>
+                    <a href="javascript:void(0);" onclick="showNewFormModal('Add New Supplier','Save')" class="btn btn-primary btn-sm font-weight-bolder"> 
                         <i class="fas fa-plus-circle"></i> Add New</a>
-                        <?php endif; ?>
+                    <?php endif; ?>
                     <!--end::Button-->
                 </div>
             </div>
@@ -28,11 +32,11 @@
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row">
                         <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Product Name','name' => 'name','col' => 'col-md-3']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Name','name' => 'name','col' => 'col-md-3']]); ?>
 <?php $component->withName('form.textbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Product Name','name' => 'name','col' => 'col-md-3']); ?>
+<?php $component->withAttributes(['labelName' => 'Name','name' => 'name','col' => 'col-md-3']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
@@ -40,47 +44,24 @@
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
                         <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Category','name' => 'category_id','col' => 'col-md-3','class' => 'selectpicker']]); ?>
-<?php $component->withName('form.selectbox'); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Mobile','name' => 'mobile','col' => 'col-md-3']]); ?>
+<?php $component->withName('form.textbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Category','name' => 'category_id','col' => 'col-md-3','class' => 'selectpicker']); ?>
-                            <?php if(!$categories->isEmpty()): ?>
-                                <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($category->id); ?>"><?php echo e($category->name); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            <?php endif; ?>
-                         <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['labelName' => 'Mobile','name' => 'mobile','col' => 'col-md-3']); ?>
+<?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
 <?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
                         <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Product Type','name' => 'type','col' => 'col-md-3','class' => 'selectpicker']]); ?>
-<?php $component->withName('form.selectbox'); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Email','name' => 'email','col' => 'col-md-3']]); ?>
+<?php $component->withName('form.textbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Product Type','name' => 'type','col' => 'col-md-3','class' => 'selectpicker']); ?>
-                            <?php $__currentLoopData = PRODUCT_TYPE; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                         <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
-<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
-<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
-<?php endif; ?>
-                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Type','name' => 'type','col' => 'col-md-3','class' => 'selectpicker']]); ?>
-<?php $component->withName('form.selectbox'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Type','name' => 'type','col' => 'col-md-3','class' => 'selectpicker']); ?>
-                            <?php $__currentLoopData = TYPE; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                         <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['labelName' => 'Email','name' => 'email','col' => 'col-md-3']); ?>
+<?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
 <?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
@@ -101,8 +82,8 @@
 <?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
-                        <div class="col-md-9">
-                            <div style="margin-top:28px;">
+                        <div class="col-md-12"> 
+                            <div style="margin-top:0px;">    
                                 <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                 data-toggle="tooltip" data-theme="dark" title="Reset">
                                 <i class="fas fa-undo-alt"></i></button>
@@ -110,6 +91,7 @@
                                 <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right" type="button"
                                 data-toggle="tooltip" data-theme="dark" title="Search">
                                 <i class="fas fa-search"></i></button>
+
                             </div>
                         </div>
                     </div>
@@ -123,7 +105,7 @@
                             <table id="dataTable" class="table table-bordered table-hover">
                                 <thead class="bg-primary">
                                     <tr>
-                                        <?php if(permission('product-bulk-delete')): ?>
+                                        <?php if(permission('supplier-bulk-delete')): ?>
                                         <th>
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="select_all" onchange="select_all()">
@@ -132,15 +114,14 @@
                                         </th>
                                         <?php endif; ?>
                                         <th>Sl</th>
-                                        <th>Image</th>
                                         <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Cost</th>
-                                        <th>Unit</th>
-                                        <th>Price</th>
-                                        <th>Stock Qty</th>
-                                        <th>Alert Qty</th>
+                                        <th>Address</th>
+                                        <th>Mobile</th>
+                                        <th>Email</th>
+                                        <th>City</th>
+                                        <th>Zipcode</th>
                                         <th>Status</th>
+                                        <th>Balance</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -155,6 +136,7 @@
         <!--end::Card-->
     </div>
 </div>
+<?php echo $__env->make('supplier::modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
@@ -162,7 +144,7 @@
 <script>
     var table;
     $(document).ready(function(){
-
+    
         table = $('#dataTable').DataTable({
             "processing": true, //Feature control the processing indicator
             "serverSide": true, //Feature control DataTable server side processing mode
@@ -175,57 +157,57 @@
                 [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
             ],
             "pageLength": 25, //number of data show per page
-            "language": {
+            "language": { 
                 processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
                 emptyTable: '<strong class="text-danger">No Data Found</strong>',
                 infoEmpty: '',
                 zeroRecords: '<strong class="text-danger">No Data Found</strong>'
             },
             "ajax": {
-                "url": "<?php echo e(route('product.datatable.data')); ?>",
+                "url": "<?php echo e(route('supplier.datatable.data')); ?>",
                 "type": "POST",
                 "data": function (data) {
-                    data.name = $("#form-filter #name").val();
-                    data.category_id  = $("#form-filter #category_id option:selected").val();
-                    data.status       = $("#form-filter #status option:selected").val();
-                    data.product_type       = $("#form-filter #product_type option:selected").val();
-                    data.type       = $("#form-filter #type option:selected").val();
-                    data._token       = _token;
+                    data.name   = $("#form-filter #name").val();
+                    data.mobile = $("#form-filter #mobile").val();
+                    data.email  = $("#form-filter #email").val();
+                    data.status = $("#form-filter #status").val();
+                    data._token = _token;
                 }
             },
             "columnDefs": [{
-                    <?php if(permission('product-bulk-delete')): ?>
-                    "targets": [0,11],
+
+                    <?php if(permission('supplier-bulk-delete')): ?>
+                    "targets": [0,10],
                     <?php else: ?>
-                    "targets": [10],
+                    "targets": [9],
                     <?php endif; ?>
                     "orderable": false,
                     "className": "text-center"
                 },
                 {
-                    <?php if(permission('product-bulk-delete')): ?>
-                    "targets": [1,2,4,6,8,9,10],
+                    <?php if(permission('supplier-bulk-delete')): ?>
+                    "targets": [1,4,6,7,8],
                     <?php else: ?>
-                    "targets": [0,1,3,5,7,8,9],
+                    "targets": [0,3,5,6,7],
                     <?php endif; ?>
                     "className": "text-center"
                 },
                 {
-                    <?php if(permission('product-bulk-delete')): ?>
-                    "targets": [5,7],
+                    <?php if(permission('supplier-bulk-delete')): ?>
+                    "targets": [9],
                     <?php else: ?>
-                    "targets": [4,6],
+                    "targets": [8],
                     <?php endif; ?>
-                    "className": "text-right"
-                }
-
+                    "className": "text-right",
+                    "orderable": false,
+                },
             ],
             "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
-
+    
             "buttons": [
-                <?php if(permission('product-report')): ?>
+                <?php if(permission('supplier-report')): ?>
                 {
                     'extend':'colvis','className':'btn btn-secondary btn-sm text-white','text':'Column','columns': ':gt(0)'
                 },
@@ -237,19 +219,19 @@
                     "orientation": "landscape", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
-                        <?php if(permission('product-bulk-delete')): ?>
-                        columns: ':visible:not(:eq(0),:eq(11))'
+                        <?php if(permission('supplier-bulk-delete')): ?>
+                        columns: ':visible:not(:eq(0),:eq(10))' 
                         <?php else: ?>
-                        columns: ':visible:not(:eq(10))'
+                        columns: ':visible:not(:eq(9))' 
                         <?php endif; ?>
                     },
                     customize: function (win) {
                         $(win.document.body).addClass('bg-white');
-                        $(win.document.body).find('table thead').css({'background':'#034d97'});
-                        $(win.document.body).find('table tfoot tr').css({'background-color':'#034d97'});
-                        $(win.document.body).find('h1').css('text-align', 'center');
-                        $(win.document.body).find('h1').css('font-size', '15px');
-                        $(win.document.body).find('table').css( 'font-size', 'inherit' );
+                    $(win.document.body).find('table thead').css({'background':'#034d97'});
+                    $(win.document.body).find('table tfoot tr').css({'background-color':'#034d97'});
+                    $(win.document.body).find('h1').css('text-align', 'center');
+                    $(win.document.body).find('h1').css('font-size', '15px');
+                    $(win.document.body).find('table').css( 'font-size', 'inherit' );
                     },
                 },
                 {
@@ -259,10 +241,10 @@
                     "title": "<?php echo e($page_title); ?> List",
                     "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "exportOptions": {
-                       <?php if(permission('product-bulk-delete')): ?>
-                        columns: ':visible:not(:eq(0),:eq(11))'
+                       <?php if(permission('supplier-bulk-delete')): ?>
+                        columns: ':visible:not(:eq(0),:eq(10))' 
                         <?php else: ?>
-                        columns: ':visible:not(:eq(10))'
+                        columns: ':visible:not(:eq(9))' 
                         <?php endif; ?>
                     }
                 },
@@ -273,12 +255,12 @@
                     "title": "<?php echo e($page_title); ?> List",
                     "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "exportOptions": {
-                       <?php if(permission('product-bulk-delete')): ?>
-                        columns: ':visible:not(:eq(0),:eq(11))'
+                       <?php if(permission('supplier-bulk-delete')): ?>
+                        columns: ':visible:not(:eq(0),:eq(10))' 
                         <?php else: ?>
-                        columns: ':visible:not(:eq(10))'
+                        columns: ':visible:not(:eq(9))' 
                         <?php endif; ?>
-                    },
+                    }
                 },
                 {
                     "extend": 'pdf',
@@ -289,20 +271,20 @@
                     "orientation": "landscape", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
-                       <?php if(permission('product-bulk-delete')): ?>
-                        columns: ':visible:not(:eq(0),:eq(11))'
+                       <?php if(permission('supplier-bulk-delete')): ?>
+                        columns: ':visible:not(:eq(0),:eq(10))' 
                         <?php else: ?>
-                        columns: ':visible:not(:eq(10))'
+                        columns: ':visible:not(:eq(9))' 
                         <?php endif; ?>
                     },
                     customize: function(doc) {
-                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
+                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
                         doc.styles.tableHeader.fontSize = 7;
                         doc.pageMargins = [5,5,5,5];
-                    }
+                    }  
                 },
-                <?php endif; ?>
-                <?php if(permission('product-bulk-delete')): ?>
+                <?php endif; ?> 
+                <?php if(permission('supplier-bulk-delete')): ?>
                 {
                     'className':'btn btn-danger btn-sm delete_btn d-none text-white',
                     'text':'Delete',
@@ -313,25 +295,83 @@
                 <?php endif; ?>
             ],
         });
-
+    
         $('#btn-filter').click(function () {
             table.ajax.reload();
         });
-
+    
         $('#btn-reset').click(function () {
             $('#form-filter')[0].reset();
             $('#form-filter .selectpicker').selectpicker('refresh');
             table.ajax.reload();
         });
-
+    
+        $(document).on('click', '#save-btn', function () {
+            let form = document.getElementById('store_or_update_form');
+            let formData = new FormData(form);
+            let url = "<?php echo e(route('supplier.store.or.update')); ?>";
+            let id = $('#update_id').val();
+            let method;
+            if (id) {
+                method = 'update';
+            } else {
+                method = 'add';
+            }
+            store_or_update_data(table, method, url, formData);
+        });
+    
+        $(document).on('click', '.edit_data', function () {
+            let id = $(this).data('id');
+            $('#store_or_update_form')[0].reset();
+            $('#store_or_update_form').find('.is-invalid').removeClass('is-invalid');
+            $('#store_or_update_form').find('.error').remove();
+            if (id) {
+                $.ajax({
+                    url: "<?php echo e(route('supplier.edit')); ?>",
+                    type: "POST",
+                    data: { id: id,_token: _token},
+                    dataType: "JSON",
+                    success: function (data) {
+                        if(data.status == 'error'){
+                            notification(data.status,data.message)
+                        }else{
+                            $('#store_or_update_form #update_id').val(data.id);
+                            $('#store_or_update_form #name,#store_or_update_form #old_name').val(data.name);
+                            $('#store_or_update_form #company_name').val(data.company_name);
+                            $('#store_or_update_form #mobile').val(data.mobile);
+                            $('#store_or_update_form #email').val(data.email);
+                            $('#store_or_update_form #city').val(data.city);
+                            $('#store_or_update_form #zipcode').val(data.zipcode);
+                            $('#store_or_update_form #address').val(data.address);
+                            $('#store_or_update_form #details').val(data.details);
+                            $('#store_or_update_form .pbalance').addClass('d-none');
+                            // $('#store_or_update_form #previous_balance, #store_or_update_form #old_previous_balance').val(data.previous_balance.debit);
+                            $('#store_or_update_form #type.selectpicker').selectpicker('refresh');
+                            $('#store_or_update_modal').modal({
+                                keyboard: false,
+                                backdrop: 'static',
+                            });
+                            $('#store_or_update_modal .modal-title').html(
+                                '<i class="fas fa-edit text-white"></i> <span>Edit ' + data.name + '</span>');
+                            $('#store_or_update_modal #save-btn').text('Update');
+                        }
+                        
+                    },
+                    error: function (xhr, ajaxOption, thrownError) {
+                        console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
+                    }
+                });
+            }
+        });
+    
         $(document).on('click', '.delete_data', function () {
             let id    = $(this).data('id');
             let name  = $(this).data('name');
             let row   = table.row($(this).parent('tr'));
-            let url   = "<?php echo e(route('product.delete')); ?>";
+            let url   = "<?php echo e(route('supplier.delete')); ?>";
             delete_data(id, url, table, row, name);
         });
-
+    
         function multi_delete(){
             let ids = [];
             let rows;
@@ -347,7 +387,7 @@
                     icon: 'warning',
                 });
             }else{
-                let url = "<?php echo e(route('product.bulk.delete')); ?>";
+                let url = "<?php echo e(route('supplier.bulk.delete')); ?>";
                 bulk_delete(ids,url,table,rows);
             }
         }
@@ -357,15 +397,28 @@
             let name   = $(this).data('name');
             let status = $(this).data('status');
             let row    = table.row($(this).parent('tr'));
-            let url    = "<?php echo e(route('product.change.status')); ?>";
+            let url    = "<?php echo e(route('supplier.change.status')); ?>";
             change_status(id, url, table, row, name, status);
         });
-
-
+    
+    
     });
+    function showNewFormModal(modal_title, btn_text) {
+        $('#store_or_update_form')[0].reset();
+        $('#store_or_update_form #update_id').val('');
+        $('#store_or_update_form').find('.is-invalid').removeClass('is-invalid');
+        $('#store_or_update_form').find('.error').remove();
+        $('#store_or_update_form .selectpicker').selectpicker('refresh');
+        $('#store_or_update_form .pbalance').removeClass('d-none');
 
-
+        $('#store_or_update_modal').modal({
+            keyboard: false,
+            backdrop: 'static',
+        });
+        $('#store_or_update_modal .modal-title').html('<i class="fas fa-plus-square text-white"></i> '+modal_title);
+        $('#store_or_update_modal #save-btn').text(btn_text);
+    }
     </script>
 <?php $__env->stopPush(); ?>
 
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Product\Resources/views/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Supplier\Resources/views/index.blade.php ENDPATH**/ ?>
