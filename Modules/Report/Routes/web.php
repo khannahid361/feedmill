@@ -109,4 +109,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('batch-wise-coupon-report', 'BatchWiseCouponController@index')->name('batch.wise.coupon.report');
     Route::post('batch-wise-coupon-report/datatable-data', 'BatchWiseCouponController@get_datatable_data')->name('batch.wise.coupon.report.datatable.data');
 
+    //purchase Report
+    Route::get('purchase-report', 'PurchaseReportController@index')->name('purchase.report');
+    Route::post('purchase-report/datatable-data', 'PurchaseReportController@get_datatable_data')->name('purchase.report.datatable.data');
 });

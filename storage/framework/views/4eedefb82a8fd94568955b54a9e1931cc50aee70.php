@@ -1,28 +1,26 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', $page_title); ?>
 
-@section('title', $page_title)
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
     <link href="css/tagify.css" rel="stylesheet" type="text/css" />
     <style>
         .tagsinput {
             height: calc(1.5em + 1.3rem + 2px) !important;
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="d-flex flex-column-fluid">
         <div class="container-fluid">
             <!--begin::Notice-->
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-5">
                     <div class="card-title">
-                        <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
+                        <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        <a href="{{ route('product') }}" class="btn btn-warning btn-sm font-weight-bolder">
+                        <a href="<?php echo e(route('product')); ?>" class="btn btn-warning btn-sm font-weight-bolder">
                             <i class="fas fa-arrow-left"></i> Back</a>
                         <!--end::Button-->
                     </div>
@@ -33,20 +31,30 @@
             <div class="card card-custom" style="padding-bottom: 100px !important;">
                 <div class="card-body">
                     <form id="store_or_update_form" method="post" enctype="multipart/form-data">
-                        @csrf
+                        <?php echo csrf_field(); ?>
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="row">
-                                    <input type="hidden" name="update_id" id="update_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="update_id" id="update_id" value="<?php echo e($product->id); ?>">
 
-                                    <x-form.textbox labelName="Product Name" name="name" required="required"
-                                        value="{{ $product->name }}" col="col-md-4" placeholder="Enter product name" />
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Product Name','name' => 'name','required' => 'required','value' => ''.e($product->name).'','col' => 'col-md-4','placeholder' => 'Enter product name']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Product Name','name' => 'name','required' => 'required','value' => ''.e($product->name).'','col' => 'col-md-4','placeholder' => 'Enter product name']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
 
                                     <div class="col-md-4 form-group required">
                                         <label for="code">Code</label>
                                         <div class="input-group" id="code_section">
                                             <input type="text" class="form-control" name="code" id="code"
-                                                value="{{ $product->code }}">
+                                                value="<?php echo e($product->code); ?>">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text bg-primary" id="generate-code"
                                                     data-toggle="tooltip" data-theme="dark" title="Generate Code"
@@ -57,26 +65,44 @@
                                         </div>
                                     </div>
 
-                                    <x-form.selectbox labelName="Barcode Symbol" name="barcode_symbology"
-                                        required="required" col="col-md-4" class="selectpicker">
-                                        @foreach (BARCODE_SYMBOL as $key => $value)
-                                            <option value="{{ $key }}"
-                                                {{ $key == $product->barcode_symbology ? 'selected' : '' }}>
-                                                {{ $value }}</option>
-                                        @endforeach
-                                    </x-form.selectbox>
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Barcode Symbol','name' => 'barcode_symbology','required' => 'required','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Barcode Symbol','name' => 'barcode_symbology','required' => 'required','col' => 'col-md-4','class' => 'selectpicker']); ?>
+                                        <?php $__currentLoopData = BARCODE_SYMBOL; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($key); ?>"
+                                                <?php echo e($key == $product->barcode_symbology ? 'selected' : ''); ?>>
+                                                <?php echo e($value); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                     <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
 
 
-                                    <x-form.selectbox labelName="Category" name="category_id" required="required"
-                                        col="col-md-4" class="selectpicker">
-                                        @if (!$categories->isEmpty())
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}"
-                                                    {{ $product->category_id == $category->id ? 'selected' : '' }}>
-                                                    {{ $category->name }}</option>
-                                            @endforeach
-                                        @endif
-                                    </x-form.selectbox>
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Category','name' => 'category_id','required' => 'required','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Category','name' => 'category_id','required' => 'required','col' => 'col-md-4','class' => 'selectpicker']); ?>
+                                        <?php if(!$categories->isEmpty()): ?>
+                                            <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($category->id); ?>"
+                                                    <?php echo e($product->category_id == $category->id ? 'selected' : ''); ?>>
+                                                    <?php echo e($category->name); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endif; ?>
+                                     <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
 
                                     <div class="form-group col-md-4 required">
                                         <label for="base_unit_id">Unit</label>
@@ -84,42 +110,45 @@
                                             class="form-control selectpicker" data-live-search="true"
                                             data-live-search-placeholder="Search">
                                             <option value="">Select Please</option>
-                                            @if (!$units->isEmpty())
-                                                @foreach ($units as $unit)
-                                                    @if ($unit->base_unit == null)
-                                                        <option value="{{ $unit->id }}"
-                                                            {{ $product->base_unit_id == $unit->id ? 'selected' : '' }}>
-                                                            {{ $unit->unit_name . ' (' . $unit->unit_code . ')' }}</option>
-                                                    @endif
-                                                @endforeach
-                                            @endif
+                                            <?php if(!$units->isEmpty()): ?>
+                                                <?php $__currentLoopData = $units; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $unit): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <?php if($unit->base_unit == null): ?>
+                                                        <option value="<?php echo e($unit->id); ?>"
+                                                            <?php echo e($product->base_unit_id == $unit->id ? 'selected' : ''); ?>>
+                                                            <?php echo e($unit->unit_name . ' (' . $unit->unit_code . ')'); ?></option>
+                                                    <?php endif; ?>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php endif; ?>
                                         </select>
                                     </div>
 
-                                    {{-- <div class="form-group col-md-4 required">
-                                    <label for="unit_id">Unit</label>
-                                    <select name="unit_id" id="unit_id"  class="form-control selectpicker" data-live-search="true"  data-live-search-placeholder="Search">
-                                        <option value="">Select Please</option>
-                                    @php
-                                        $sale_units = \DB::table('units')->where('base_unit',$product->unit_id)
-                                        ->orWhere('id',$product->unit_id)->get();
+                                    
 
-                                    @endphp
-                                    @if (!$sale_units->isEmpty())
-                                        @foreach ($sale_units as $unit)
-                                        <option value="{{ $unit->id }}" {{ ($product->unit_id == $unit->id) ? 'selected' : '' }}>{{ $unit->unit_name.' ('.$unit->unit_code.')' }}</option>
-                                        @endforeach
-                                    @endif
-                                    </select>
-                                </div> --}}
-
-                                    {{-- <x-form.textbox labelName="Unit Price" name="unit_price" value="{{ $product->unit_price }}" required="required" col="col-md-4 price" placeholder="Enter product price"/> --}}
-                                    <x-form.textbox labelName="Price" name="base_unit_price"
-                                        value="{{ $product->base_unit_price }}" required="required" col="col-md-4 price"
-                                        placeholder="Enter product price" />
-                                    <x-form.textbox labelName="Alert Quantity" name="alert_quantity"
-                                        value="{{ $product->alert_quantity }}" col="col-md-4 alert-qty"
-                                        placeholder="Enter product alert qty" />
+                                    
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Price','name' => 'base_unit_price','value' => ''.e($product->base_unit_price).'','required' => 'required','col' => 'col-md-4 price','placeholder' => 'Enter product price']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Price','name' => 'base_unit_price','value' => ''.e($product->base_unit_price).'','required' => 'required','col' => 'col-md-4 price','placeholder' => 'Enter product price']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Alert Quantity','name' => 'alert_quantity','value' => ''.e($product->alert_quantity).'','col' => 'col-md-4 alert-qty','placeholder' => 'Enter product alert qty']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Alert Quantity','name' => 'alert_quantity','value' => ''.e($product->alert_quantity).'','col' => 'col-md-4 alert-qty','placeholder' => 'Enter product alert qty']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
 
 
                                     <div class="col-md-4 form-group">
@@ -127,13 +156,13 @@
                                         <select name="tax_id" id="tax_id" required="required"
                                             class="form-control selectpicker">
                                             <option value="0" selected>No Tax</option>
-                                            @if (!$taxes->isEmpty())
-                                                @foreach ($taxes as $tax)
-                                                    <option value="{{ $tax->id }}"
-                                                        {{ $product->tax_id == $tax->id ? 'selected' : '' }}>
-                                                        {{ $tax->name }}</option>
-                                                @endforeach
-                                            @endif
+                                            <?php if(!$taxes->isEmpty()): ?>
+                                                <?php $__currentLoopData = $taxes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tax): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value="<?php echo e($tax->id); ?>"
+                                                        <?php echo e($product->tax_id == $tax->id ? 'selected' : ''); ?>>
+                                                        <?php echo e($tax->name); ?></option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php endif; ?>
                                         </select>
                                     </div>
 
@@ -143,11 +172,11 @@
                                                 data-theme="dark"
                                                 title="Exclusive: Poduct price = Actual product price + Tax. Inclusive: Actual product price = Product price - Tax"></i></label>
                                         <select name="tax_method" id="tax_method" class="form-control selectpicker">
-                                            @foreach (TAX_METHOD as $key => $value)
-                                                <option value="{{ $key }}"
-                                                    {{ $product->tax_method == $key ? 'selected' : '' }}>
-                                                    {{ $value }}</option>
-                                            @endforeach
+                                            <?php $__currentLoopData = TAX_METHOD; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($key); ?>"
+                                                    <?php echo e($product->tax_method == $key ? 'selected' : ''); ?>>
+                                                    <?php echo e($value); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     </div>
                                 </div>
@@ -162,7 +191,7 @@
                                             </div>
                                         </div>
                                         <input type="hidden" name="old_image" id="old_image"
-                                            value="{{ $product->image }}">
+                                            value="<?php echo e($product->image); ?>">
                                     </div>
                                 </div>
                             </div>
@@ -171,7 +200,7 @@
 
                             <div class="form-group col-md-12 mt-5">
                                 <label for="description">Description</label>
-                                <textarea class="form-control" name="description" id="description">{{ $product->description }}</textarea>
+                                <textarea class="form-control" name="description" id="description"><?php echo e($product->description); ?></textarea>
                             </div>
 
                             <div class="col-md-12 pt-5" id="material-section">
@@ -182,39 +211,39 @@
                                         Materials</div>
 
                                     <div class="col-md-12 pt-5 material_section">
-                                        @if (!$product->product_materials->isEmpty())
-                                            @foreach ($product->product_materials as $key => $value)
-                                                <div class="row {{ $key == 0 ? '' : 'row_remove' }}">
+                                        <?php if(!$product->product_materials->isEmpty()): ?>
+                                            <?php $__currentLoopData = $product->product_materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <div class="row <?php echo e($key == 0 ? '' : 'row_remove'); ?>">
                                                     <div class="form-group col-md-5 required">
-                                                        @if ($key == 0)
-                                                            <label for="materials_{{ $key + 1 }}_id"
+                                                        <?php if($key == 0): ?>
+                                                            <label for="materials_<?php echo e($key + 1); ?>_id"
                                                                 class="form-control-label">Material Name</label>
-                                                        @endif
-                                                        <select name="materials[{{ $key + 1 }}][id]"
-                                                            id="materials_{{ $key + 1 }}_id" required="required"
+                                                        <?php endif; ?>
+                                                        <select name="materials[<?php echo e($key + 1); ?>][id]"
+                                                            id="materials_<?php echo e($key + 1); ?>_id" required="required"
                                                             class="form-control selectpicker" data-live-search="true"
                                                             data-live-search-placeholder="Search">
                                                             <option value="">Select Please</option>
-                                                            @if (!$materials->isEmpty())
-                                                                @foreach ($materials as $material)
-                                                                    <option value="{{ $material->id }}"
-                                                                        {{ $value->material_id == $material->id ? 'selected' : '' }}>
-                                                                        {{ $material->material_name }}</option>
-                                                                @endforeach
-                                                            @endif
+                                                            <?php if(!$materials->isEmpty()): ?>
+                                                                <?php $__currentLoopData = $materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $material): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                    <option value="<?php echo e($material->id); ?>"
+                                                                        <?php echo e($value->material_id == $material->id ? 'selected' : ''); ?>>
+                                                                        <?php echo e($material->material_name); ?></option>
+                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                            <?php endif; ?>
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-md-5 required">
-                                                        @if ($key == 0)
-                                                            <label for="materials_{{ $key + 1 }}_id"
+                                                        <?php if($key == 0): ?>
+                                                            <label for="materials_<?php echo e($key + 1); ?>_id"
                                                                 class="form-control-label">Material Quantity</label>
-                                                        @endif
+                                                        <?php endif; ?>
                                                         <input type="text" class="form-control qty text-center"
-                                                            name="materials[{{ $key + 1 }}][qty]"
-                                                            id="materials_qty_{{ $key + 1 }}_id"
-                                                            value="{{ $value->qty }}" required data-row="1">
+                                                            name="materials[<?php echo e($key + 1); ?>][qty]"
+                                                            id="materials_qty_<?php echo e($key + 1); ?>_id"
+                                                            value="<?php echo e($value->qty); ?>" required data-row="1">
                                                     </div>
-                                                    @if ($key == 0)
+                                                    <?php if($key == 0): ?>
                                                         <div class="form-group col-md-2" style="padding-top: 28px;">
                                                             <button type="button" id="add-material"
                                                                 class="btn btn-success btn-sm" data-toggle="tooltip"
@@ -222,7 +251,7 @@
                                                                 <i class="fas fa-plus-square"></i>
                                                             </button>
                                                         </div>
-                                                    @else
+                                                    <?php else: ?>
                                                         <div class="form-group col-md-2">
                                                             <button type="button" class="btn btn-danger btn-sm remove"
                                                                 data-toggle="tooltip" data-placement="top"
@@ -230,10 +259,10 @@
                                                                 <i class="fas fa-minus-square"></i>
                                                             </button>
                                                         </div>
-                                                    @endif
+                                                    <?php endif; ?>
                                                 </div>
-                                            @endforeach
-                                        @endif
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -248,9 +277,9 @@
             <!--end::Card-->
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script src="js/spartan-multi-image-picker.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -272,41 +301,41 @@
                 $(this).parents(".col-md-12").remove();
             });
 
-            @if (!empty($product->image))
+            <?php if(!empty($product->image)): ?>
                 $('#image img').css('display', 'none');
                 $('#image .spartan_remove_row').css('display', 'block');
                 $('#image .img_').css('display', 'block');
-                $('#image .img_').attr('src', "{{ asset('storage/' . PRODUCT_IMAGE_PATH . $product->image) }}");
-            @else
+                $('#image .img_').attr('src', "<?php echo e(asset('storage/' . PRODUCT_IMAGE_PATH . $product->image)); ?>");
+            <?php else: ?>
                 $('#image img').css('display', 'block');
                 $('#image .spartan_remove_row').css('display', 'none');
                 $('#image .img_').css('display', 'none');
                 $('#image .img_').attr('src', '');
-            @endif
+            <?php endif; ?>
             /** End :: Product Image **/
 
 
             /** Start :: Add More Material Field **/
-            @if (!$product->product_material->isEmpty())
-                var material_count = "{{ count($product->product_material) }}";
-            @else
+            <?php if(!$product->product_material->isEmpty()): ?>
+                var material_count = "<?php echo e(count($product->product_material)); ?>";
+            <?php else: ?>
                 var material_count = 1;
-            @endif
+            <?php endif; ?>
             function add_more_material_field(row) {
                 html = ` <div class="row row_remove">
                     <div class="form-group col-md-5 required">
                         <select name="materials[` + row + `][id]" id="materials_` + row + `_id" required="required" class="form-control selectpicker">
                             <option value="">Select Please</option>
-                            @if (!$materials->isEmpty())
-                                @foreach ($materials as $material)
-                                    <option value="{{ $material->id }}">{{ $material->material_name }}</option>
-                                @endforeach
-                            @endif
+                            <?php if(!$materials->isEmpty()): ?>
+                                <?php $__currentLoopData = $materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $material): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($material->id); ?>"><?php echo e($material->material_name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
                         </select>
                     </div>
                      <div class="form-group col-md-5 required">
                     <input type="text" class="form-control qty text-center" name="materials[` + row +
-                    `][qty]" id="materials_qty_` + row + `_id" value="{{ $value->qty }}" required  data-row="1">
+                    `][qty]" id="materials_qty_` + row + `_id" value="<?php echo e($value->qty); ?>" required  data-row="1">
                                             </div>
                     <div class="form-group col-md-2">
                         <button type="button" class="btn btn-danger btn-sm remove" data-toggle="tooltip"
@@ -332,7 +361,7 @@
             //Generate Code
             $(document).on('click', '#generate-code', function() {
                 $.ajax({
-                    url: "{{ route('product.generate.code') }}",
+                    url: "<?php echo e(route('product.generate.code')); ?>",
                     type: "GET",
                     dataType: "JSON",
                     beforeSend: function() {
@@ -358,7 +387,7 @@
                 let formData = new FormData(form);
 
                 $.ajax({
-                    url: "{{ route('product.store.or.update') }}",
+                    url: "<?php echo e(route('product.store.or.update')); ?>",
                     type: "POST",
                     data: formData,
                     dataType: "JSON",
@@ -403,7 +432,7 @@
                         } else {
                             notification(data.status, data.message);
                             if (data.status == 'success') {
-                                window.location.replace("{{ route('product') }}");
+                                window.location.replace("<?php echo e(route('product')); ?>");
                             }
                         }
                     },
@@ -417,7 +446,7 @@
 
         function populate_unit(unit_id) {
             $.ajax({
-                url: "{{ url('populate-unit') }}/" + unit_id,
+                url: "<?php echo e(url('populate-unit')); ?>/" + unit_id,
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
@@ -431,4 +460,6 @@
             });
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Product\Resources/views/edit.blade.php ENDPATH**/ ?>
