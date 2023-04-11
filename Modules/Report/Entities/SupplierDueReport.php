@@ -12,6 +12,8 @@ class SupplierDueReport extends BaseModel
     protected $_mobile;
     protected $_email;
     protected $_status;
+    protected $_from_date;
+    protected $_to_date;
 
     public function supplier_balance(int $id)
     {
