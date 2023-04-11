@@ -200,7 +200,7 @@
                                                 <label for="materials_1_id" class="form-control-label">Material
                                                     Name</label>
                                                 <select name="materials[1][id]" id="materials_1_id" required="required"
-                                                    class="form-control selectpicker" data-live-search="true"
+                                                    class="form-control selectpicker material" data-live-search="true"
                                                     data-live-search-placeholder="Search">
                                                     <option value="">Select Please</option>
                                                     <?php if(!$materials->isEmpty()): ?>
@@ -215,9 +215,9 @@
                                             <div class="form-group col-md-5 required">
                                                 <label for="materials_qty_1" class="form-control-label">Material
                                                     Quantity</label>
-                                                <input type="text" class="form-control qty text-center"
-                                                    name="materials[1][qty]" id="materials_qty_1" required
-                                                    data-row="1">
+                                                <input type="text" class="form-control qty text-center material-qty"
+                                                    name="materials[1][qty]" id="materials_qty_1" required data-row="1"
+                                                    data-select-id="materials_1_id" onkeyup="getMaterialQuantity()">
                                             </div>
 
                                             <div class="form-group col-md-2" style="padding-top: 28px;">
@@ -228,6 +228,9 @@
                                                 </button>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-12 pt-5 text-center">
+                                        <h5 style="margin-left:50%">Total Material Quantity <span id="materialQty">0</span></h5>
                                     </div>
                                 </div>
                             </div>
@@ -250,6 +253,19 @@
 <?php $__env->startPush('scripts'); ?>
     <script src="js/spartan-multi-image-picker.min.js"></script>
     <script>
+        $(document).ready(function() {
+            $(document).on('change', '.material', function() {
+                let totalMaterial = 0;
+                $('.material-qty').each(function() {
+                    let material = $(this).attr('data-select-id');
+                    let materialQty = $('#' + material).find(":selected").val();
+                    if (materialQty != '') {
+                        totalMaterial = totalMaterial + parseFloat($(this).val()||0);
+                    }
+                });
+                $('#materialQty').text(totalMaterial);
+            });
+        });
         $(document).ready(function() {
 
             /** Start :: Product Image **/
@@ -281,7 +297,7 @@
             function add_more_material_field(row) {
                 html = ` <div class="row row_remove">
                     <div class="form-group col-md-5 required">
-                        <select name="materials[` + row + `][id]" id="materials_` + row + `_id" required="required" class="form-control selectpicker">
+                        <select name="materials[` + row + `][id]" id="materials_` + row + `_id" required="required" class="form-control selectpicker material">
                             <option value="">Select Please</option>
                             <?php if(!$materials->isEmpty()): ?>
                                 <?php $__currentLoopData = $materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $material): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -291,8 +307,9 @@
                         </select>
                     </div>
                     <div class="form-group col-md-5 required">
-                        <input type="text" class="form-control qty text-center" name="materials[` + row +
-                    `][qty]" id="materials_` + row + `_qty" value="1" data-row="${row}">
+                        <input type="text" class="form-control qty text-center material-qty" name="materials[` + row +
+                    `][qty]" id="materials_` + row +
+                    `_qty" value="1" data-row="${row}" data-select-id="materials_` + row + `_id" onkeyup="getMaterialQuantity()">
                     </div>
                     <div class="form-group col-md-2">
                         <button type="button" class="btn btn-danger btn-sm remove" data-toggle="tooltip"
@@ -417,6 +434,10 @@
 
                 },
             });
+        }
+
+        function getMaterialQuantity() {
+            $('.material').trigger('change');
         }
     </script>
 <?php $__env->stopPush(); ?>

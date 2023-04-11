@@ -163,7 +163,7 @@
                                                                             </div>
                                                                             <div class="col-md-4 mb-4">
                                                                                 <input type="text"
-                                                                                    class="form-control text-center finishedQty"
+                                                                                    class="form-control text-center finishedQty finished-qty"
                                                                                     value="{{ $item->base_unit_qty }}"
                                                                                     name="production[{{ $key + 1 }}][base_unit_qty]"
                                                                                     id="finished_qty">
@@ -183,9 +183,18 @@
                                                                             Qty</th>
                                                                         <th width="17%" class="text-right">Total</th>
                                                                     </thead>
+                                                                    @php
+                                                                        $totalMaterial = 0;
+                                                                        $totalAmnt = 0;
+                                                                    @endphp
                                                                     <tbody>
                                                                         @foreach ($item->materials as $index => $value)
                                                                             <tr>
+                                                                                @php
+                                                                                    $totalMaterial += $value->pivot->qty;
+
+                                                                                    $totalAmnt += $value->pivot->cost * $value->pivot->qty;
+                                                                                @endphp
                                                                                 <td>
                                                                                     {{ $value->material_name . ' (' . $value->material_code . ')' }}
                                                                                     <input type="hidden"
@@ -222,7 +231,7 @@
                                                                                         id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_stock_qty"
                                                                                         data-id="{{ $index + 1 }}">
                                                                                     <input type="hidden"
-                                                                                        class="form-control text-right "
+                                                                                        class="form-control text-right"
                                                                                         value="{{ $value->qty }}"
                                                                                         name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][qty]"
                                                                                         id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_q_ty"
@@ -235,10 +244,13 @@
                                                                                         data-total="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_total"
                                                                                         data-tab="{{ $index + 1 }}" />
 
+                                                                                    <input type="hidden" name=""
+                                                                                        value="{{ $value->pivot->qty }}"
+                                                                                        class="material-qty"
+                                                                                        id="">
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    {{--                                                                                {{ MATERIAL_TYPE[$value->type] }} --}}
-                                                                                    {{ $value->pivot->qty }}
+                                                                                    {{--                                                                                {{ MATERIAL_TYPE[$value->type] }} --}}                                                   {{ $value->pivot->qty }}
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $value->unit->unit_name . ' (' . $value->unit->unit_code . ')' }}
@@ -253,7 +265,7 @@
                                                                                 </td>
                                                                                 <td>
                                                                                     <input type="text"
-                                                                                        class="form-control text-right total"
+                                                                                        class="form-control text-right total material-amount"
                                                                                         value="{{ number_format($value->pivot->cost * $value->pivot->qty, 2, '.', '') }}"
                                                                                         name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][total]"
                                                                                         id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_total"
@@ -262,6 +274,15 @@
                                                                                 </td>
                                                                             </tr>
                                                                         @endforeach
+                                                                        <tr>
+                                                                            <td colspan="1">Total</td>
+                                                                            <td class="text-right"><span
+                                                                                    id="materialQty">{{ $totalMaterial }}</span>
+                                                                            </td>
+                                                                            <td colspan="4" class="text-right"><span
+                                                                                    id="materialAmnt">{{ $totalAmnt }}</span>
+                                                                            </td>
+                                                                        </tr>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -287,6 +308,23 @@
     <script src="js/moment.js"></script>
     <script src="js/bootstrap-datetimepicker.min.js"></script>
     <script>
+        $(document).on('keyup', '.finished-qty', function() {
+            // console.log('lol');
+            let totalMaterial = 0;
+            let totalMoney = 0;
+            $('.material-qty').each(function() {
+                let materialQty = $(this).val();
+                totalMaterial = totalMaterial + parseFloat(materialQty);
+            });
+            $('.material-amount').each(function() {
+                let materialAmnt = $(this).val();
+                totalMoney = totalMoney + parseFloat(materialAmnt);
+            });
+            $('#materialQty').text(totalMaterial);
+            $('#materialAmnt').text(totalMoney);
+
+        });
+
         $(document).ready(function() {
             $('.date').datetimepicker({
                 format: 'YYYY-MM-DD',

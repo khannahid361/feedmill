@@ -120,4 +120,8 @@ Route::group(['middleware' => ['auth']], function () {
     //Customer Due Report
     Route::get('customer-due-report', 'CustomerDueReportController@index')->name('customer.due.report');
     Route::post('customer-due-report/datatable-data', 'CustomerDueReportController@get_datatable_data')->name('customer.due.report.datatable.data');
+
+    //Expired Product Report
+    Route::get('expired-product-report', 'ExpiredProductReportController@index')->name('expired.product.report');
+    Route::post('expired-product-report/datatable-data', 'ExpiredProductReportController@get_datatable_data')->name('expired.product.report.datatable.data');
 });

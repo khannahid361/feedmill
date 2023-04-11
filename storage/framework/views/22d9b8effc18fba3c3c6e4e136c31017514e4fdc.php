@@ -188,7 +188,7 @@
                                                                             </div>
                                                                             <div class="col-md-4 mb-4">
                                                                                 <input type="text"
-                                                                                    class="form-control text-center finishedQty"
+                                                                                    class="form-control text-center finishedQty finished-qty"
                                                                                     value="<?php echo e($item->base_unit_qty); ?>"
                                                                                     name="production[<?php echo e($key + 1); ?>][base_unit_qty]"
                                                                                     id="finished_qty">
@@ -208,9 +208,18 @@
                                                                             Qty</th>
                                                                         <th width="17%" class="text-right">Total</th>
                                                                     </thead>
+                                                                    <?php
+                                                                        $totalMaterial = 0;
+                                                                        $totalAmnt = 0;
+                                                                    ?>
                                                                     <tbody>
                                                                         <?php $__currentLoopData = $item->materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                             <tr>
+                                                                                <?php
+                                                                                    $totalMaterial += $value->pivot->qty;
+
+                                                                                    $totalAmnt += $value->pivot->cost * $value->pivot->qty;
+                                                                                ?>
                                                                                 <td>
                                                                                     <?php echo e($value->material_name . ' (' . $value->material_code . ')'); ?>
 
@@ -248,7 +257,7 @@
                                                                                         id="production_<?php echo e($key + 1); ?>_materials_<?php echo e($index + 1); ?>_stock_qty"
                                                                                         data-id="<?php echo e($index + 1); ?>">
                                                                                     <input type="hidden"
-                                                                                        class="form-control text-right "
+                                                                                        class="form-control text-right"
                                                                                         value="<?php echo e($value->qty); ?>"
                                                                                         name="production[<?php echo e($key + 1); ?>][materials][<?php echo e($index + 1); ?>][qty]"
                                                                                         id="production_<?php echo e($key + 1); ?>_materials_<?php echo e($index + 1); ?>_q_ty"
@@ -261,6 +270,10 @@
                                                                                         data-total="production_<?php echo e($key + 1); ?>_materials_<?php echo e($index + 1); ?>_total"
                                                                                         data-tab="<?php echo e($index + 1); ?>" />
 
+                                                                                    <input type="hidden" name=""
+                                                                                        value="<?php echo e($value->pivot->qty); ?>"
+                                                                                        class="material-qty"
+                                                                                        id="">
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     
@@ -283,7 +296,7 @@
                                                                                 </td>
                                                                                 <td>
                                                                                     <input type="text"
-                                                                                        class="form-control text-right total"
+                                                                                        class="form-control text-right total material-amount"
                                                                                         value="<?php echo e(number_format($value->pivot->cost * $value->pivot->qty, 2, '.', '')); ?>"
                                                                                         name="production[<?php echo e($key + 1); ?>][materials][<?php echo e($index + 1); ?>][total]"
                                                                                         id="production_<?php echo e($key + 1); ?>_materials_<?php echo e($index + 1); ?>_total"
@@ -292,6 +305,15 @@
                                                                                 </td>
                                                                             </tr>
                                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                        <tr>
+                                                                            <td colspan="1">Total</td>
+                                                                            <td class="text-right"><span
+                                                                                    id="materialQty"><?php echo e($totalMaterial); ?></span>
+                                                                            </td>
+                                                                            <td colspan="4" class="text-right"><span
+                                                                                    id="materialAmnt"><?php echo e($totalAmnt); ?></span>
+                                                                            </td>
+                                                                        </tr>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -317,6 +339,23 @@
     <script src="js/moment.js"></script>
     <script src="js/bootstrap-datetimepicker.min.js"></script>
     <script>
+        $(document).on('keyup', '.finished-qty', function() {
+            // console.log('lol');
+            let totalMaterial = 0;
+            let totalMoney = 0;
+            $('.material-qty').each(function() {
+                let materialQty = $(this).val();
+                totalMaterial = totalMaterial + parseFloat(materialQty);
+            });
+            $('.material-amount').each(function() {
+                let materialAmnt = $(this).val();
+                totalMoney = totalMoney + parseFloat(materialAmnt);
+            });
+            $('#materialQty').text(totalMaterial);
+            $('#materialAmnt').text(totalMoney);
+
+        });
+
         $(document).ready(function() {
             $('.date').datetimepicker({
                 format: 'YYYY-MM-DD',

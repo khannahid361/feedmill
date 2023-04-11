@@ -392,6 +392,23 @@
     </script>
 
     <script>
+        $(document).ready(function() {
+            $(document).on('keyup', '.finished-qty', function() {
+                let totalMaterial = 0;
+                let totalMoney = 0;
+                $('.material-qty').each(function() {
+                    let materialQty = $(this).val();
+                    totalMaterial = totalMaterial + parseFloat(materialQty);
+                });
+                $('.material-amount').each(function() {
+                    let materialAmnt = $(this).val();
+                    totalMoney = totalMoney + parseFloat(materialAmnt);
+                });
+                $('#materialQty').text(totalMaterial);
+                $('#materialAmnt').text(totalMoney);
+            });
+        });
+
         function _(x) {
             return document.getElementById(x);
         }
@@ -454,7 +471,7 @@
             mfgDate = new Date(mfgDate);
             expiredDate = new Date(expiredDate);
             let monthDiff = expiredDate.getMonth() - mfgDate.getMonth();
-            let yearDiff  = expiredDate.getYear() - mfgDate.getYear();
+            let yearDiff = expiredDate.getYear() - mfgDate.getYear();
             let months = monthDiff + yearDiff * 12;
             $('#production_1_year').val(months);
         }

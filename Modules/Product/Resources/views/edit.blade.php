@@ -182,6 +182,9 @@
                                         Materials</div>
 
                                     <div class="col-md-12 pt-5 material_section">
+                                        @php
+                                            $totalMaterials = 0;
+                                        @endphp
                                         @if (!$product->product_materials->isEmpty())
                                             @foreach ($product->product_materials as $key => $value)
                                                 <div class="row {{ $key == 0 ? '' : 'row_remove' }}">
@@ -192,8 +195,8 @@
                                                         @endif
                                                         <select name="materials[{{ $key + 1 }}][id]"
                                                             id="materials_{{ $key + 1 }}_id" required="required"
-                                                            class="form-control selectpicker" data-live-search="true"
-                                                            data-live-search-placeholder="Search">
+                                                            class="form-control selectpicker material"
+                                                            data-live-search="true" data-live-search-placeholder="Search">
                                                             <option value="">Select Please</option>
                                                             @if (!$materials->isEmpty())
                                                                 @foreach ($materials as $material)
@@ -204,15 +207,21 @@
                                                             @endif
                                                         </select>
                                                     </div>
+                                                    @php
+                                                        $totalMaterials += $value->qty;
+                                                    @endphp
                                                     <div class="form-group col-md-5 required">
                                                         @if ($key == 0)
                                                             <label for="materials_{{ $key + 1 }}_id"
                                                                 class="form-control-label">Material Quantity</label>
                                                         @endif
-                                                        <input type="text" class="form-control qty text-center"
+                                                        <input type="text"
+                                                            class="form-control qty text-center material-qty"
                                                             name="materials[{{ $key + 1 }}][qty]"
                                                             id="materials_qty_{{ $key + 1 }}_id"
-                                                            value="{{ $value->qty }}" required data-row="1">
+                                                            value="{{ $value->qty }}" required data-row="1"
+                                                            data-select-id="materials_{{ $key + 1 }}_id"
+                                                            onkeyup="getMaterialQuantity()">
                                                     </div>
                                                     @if ($key == 0)
                                                         <div class="form-group col-md-2" style="padding-top: 28px;">
@@ -235,6 +244,10 @@
                                             @endforeach
                                         @endif
                                     </div>
+                                    <div class="col-md-12 pt-5 text-center">
+                                        <h5 style="margin-left:50%">Total Material Quantity <span
+                                                id="materialQty">{{ $totalMaterials }}</span></h5>
+                                    </div>
                                 </div>
                             </div>
 
@@ -253,6 +266,20 @@
 @push('scripts')
     <script src="js/spartan-multi-image-picker.min.js"></script>
     <script>
+        $(document).ready(function() {
+            $(document).on('change', '.material', function() {
+                let totalMaterial = 0;
+                $('.material-qty').each(function() {
+                    let material = $(this).attr('data-select-id');
+                    let materialQty = $('#' + material).find(":selected").val();
+                    if (materialQty != '') {
+                        totalMaterial = totalMaterial + parseFloat($(this).val() || 0);
+                    }
+                });
+                $('#materialQty').text(totalMaterial);
+            });
+        });
+
         $(document).ready(function() {
 
             /** Start :: Product Image **/
@@ -295,7 +322,7 @@
             function add_more_material_field(row) {
                 html = ` <div class="row row_remove">
                     <div class="form-group col-md-5 required">
-                        <select name="materials[` + row + `][id]" id="materials_` + row + `_id" required="required" class="form-control selectpicker">
+                        <select name="materials[` + row + `][id]" id="materials_` + row + `_id" required="required" class="form-control selectpicker material">
                             <option value="">Select Please</option>
                             @if (!$materials->isEmpty())
                                 @foreach ($materials as $material)
@@ -305,8 +332,9 @@
                         </select>
                     </div>
                      <div class="form-group col-md-5 required">
-                    <input type="text" class="form-control qty text-center" name="materials[` + row +
-                    `][qty]" id="materials_qty_` + row + `_id" value="{{ $value->qty }}" required  data-row="1">
+                    <input type="text" class="form-control qty text-center material-qty" name="materials[` + row +
+                    `][qty]" id="materials_qty_` + row +
+                    `_id" value="{{ $value->qty }}" required  data-row="1" data-select-id="materials_` + row + `_id" onkeyup="getMaterialQuantity()">
                                             </div>
                     <div class="form-group col-md-2">
                         <button type="button" class="btn btn-danger btn-sm remove" data-toggle="tooltip"
@@ -326,6 +354,7 @@
             $(document).on('click', '.remove', function() {
                 material_count--;
                 $(this).closest('.row_remove').remove();
+                getMaterialQuantity();
             });
 
 
@@ -373,7 +402,7 @@
                     },
                     success: function(data) {
                         $('#store_or_update_form').find('.is-invalid').removeClass(
-                        'is-invalid');
+                            'is-invalid');
                         $('#store_or_update_form').find('.error').remove();
                         if (data.status == false) {
                             $.each(data.errors, function(key, value) {
@@ -429,6 +458,10 @@
                     $('#purchase_unit_id.selectpicker,#sale_unit_id.selectpicker').selectpicker('refresh');
                 },
             });
+        }
+
+        function getMaterialQuantity() {
+            $('.material').trigger('change');
         }
     </script>
 @endpush

@@ -40,6 +40,7 @@ class DealerLedgerController extends BaseController
 
             $this->set_datatable_default_properties($request);//set datatable default properties
             $list = $this->model->getDatatableList();//get table data
+            // dd($list);
             $data = [];
             $debit = $credit = $balance = 0;
             foreach ($list as $value) {
@@ -57,7 +58,7 @@ class DealerLedgerController extends BaseController
             }
             return $this->datatable_draw($request->input('draw'),$this->model->count_all(),
             $this->model->count_filtered(), $data);
-            
+
         }else{
             return response()->json($this->unauthorized());
         }

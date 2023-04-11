@@ -254,7 +254,7 @@ class DealerSaleController extends BaseController{
                         'account_id' => $sale->account_id ? $sale->account_id : null,
                         'paid_amount' => $sale->paid_amount ? $sale->paid_amount : 0,
                     ];
-                $this->dealerAccounts($dealerAccountId, $sale->memo_no, $sale->sale_date, $dealer->name, $sale->grand_total, $sale->total_tax, $paymentData);
+                $this->dealerAccounts($dealerAccountId->id, $sale->memo_no, $sale->sale_date, $dealer->name, $sale->grand_total, $sale->total_tax, $paymentData);
                 }
                 $sale->update(['status' => $request->sale_status]);
                 $output = ['status' => 'success','message' => 'Status Changed Successfully'];
