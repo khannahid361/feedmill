@@ -38,8 +38,6 @@
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        <button type="button" class="btn btn-primary btn-sm mr-5" onclick="check_material_stock()"
-                            id="save-btn"><i class="fas fa-sync-alt"></i> Update</button>
                         <a href="{{ route('production') }}" class="btn btn-warning btn-sm font-weight-bolder">
                             <i class="fas fa-arrow-left"></i> Back</a>
                         <!--end::Button-->
@@ -250,7 +248,8 @@
                                                                                         id="">
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    {{--                                                                                {{ MATERIAL_TYPE[$value->type] }} --}}                                                   {{ $value->pivot->qty }}
+                                                                                    {{--                                                                                {{ MATERIAL_TYPE[$value->type] }} --}}
+                                                                                    {{ $value->pivot->qty }}
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $value->unit->unit_name . ' (' . $value->unit->unit_code . ')' }}
@@ -295,6 +294,8 @@
                                 @endif
                             </div>
                         </div>
+                        <button type="button" class="btn btn-primary btn-sm mr-5 float-right"
+                            onclick="check_material_stock()" id="save-btn"><i class="fas fa-sync-alt"></i> Update</button>
                     </div>
                 </form>
             </div>

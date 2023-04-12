@@ -36,8 +36,7 @@
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        <button type="button" class="btn btn-primary btn-sm mr-5" onclick="check_material_stock()"
-                            id="save-btn"><i class="fas fa-sync-alt"></i> Update</button>
+                        
                         <a href="<?php echo e(route('production')); ?>" class="btn btn-warning btn-sm font-weight-bolder">
                             <i class="fas fa-arrow-left"></i> Back</a>
                         <!--end::Button-->
@@ -326,6 +325,8 @@
                                 <?php endif; ?>
                             </div>
                         </div>
+                        <button type="button" class="btn btn-primary btn-sm mr-5 float-right"
+                            onclick="check_material_stock()" id="save-btn"><i class="fas fa-sync-alt"></i> Update</button>
                     </div>
                 </form>
             </div>
