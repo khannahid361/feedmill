@@ -185,4 +185,56 @@ class ProductController extends Controller
             }
             return $output;
     }
+
+    public function dealerProductSearch(Request $request){
+        if($request->ajax()) {
+            $product = DB::table('warehouse_product as wp')
+            ->join('products as p','wp.product_id','=','p.id')
+            ->leftjoin('taxes as t','p.tax_id','=','t.id')
+            ->where(['wp.product_id' => $request->data])
+            ->selectRaw('wp.*,p.name,p.code,p.base_unit_id,p.base_unit_price as price,p.tax_method,t.name as tax_name,t.rate as tax_rate')
+            ->first();
+            $discount = DB::table('dealers')->join('dealer_products as dp','dp.dealer_id','dealers.id')->where('dp.product_id',$request->data)->where('dealers.id',$request->dealer_id)->first();
+            if(empty($discount))
+            {
+                $commissionRate = 0;
+            }
+            else{
+                $commissionRate = $discount->commission_rate;
+            }
+            $qty = WarehouseProduct::where(['product_id' => $request->data])->sum('qty');
+            if($product) {
+                $output['id']         = $product->product_id;
+                $output['name']       = $product->name;
+                $output['code']       = $product->code;
+                $output['price']      = $product->price - $commissionRate;
+                $output['qty']        = $qty;
+                $output['tax_name']   = $product->tax_name ?? 'No Tax';
+                $output['tax_rate']   = $product->tax_rate ?? 0;
+                $output['tax_method'] = $product->tax_method;
+                $units = Unit::where('base_unit',$product->base_unit_id)->orWhere('id',$product->base_unit_id)->get();
+                $unit_name            = [];
+                $unit_operator        = [];
+                $unit_operation_value = [];
+                if($units) {
+                    foreach ($units as $unit) {
+                        if($product->base_unit_id == $unit->id)
+                        {
+                            array_unshift($unit_name,$unit->unit_name);
+                            array_unshift($unit_operator,$unit->operator);
+                            array_unshift($unit_operation_value,$unit->operation_value);
+                        }else{
+                            $unit_name           [] = $unit->unit_name;
+                            $unit_operator       [] = $unit->operator;
+                            $unit_operation_value[] = $unit->operation_value;
+                        }
+                    }
+                }
+                $output['unit_name'] = implode(',',$unit_name).',';
+                $output['unit_operator'] = implode(',',$unit_operator).',';
+                $output['unit_operation_value'] = implode(',',$unit_operation_value).',';
+                return $output;
+            }
+        }
+    }
 }

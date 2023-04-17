@@ -1,4 +1,3 @@
-
 <?php $__env->startSection('title', $page_title); ?>
 <?php $__env->startPush('styles'); ?>
 <link rel="stylesheet" href="<?php echo e(asset('css/jquery-ui.css')); ?>" />
@@ -385,9 +384,9 @@
             notification('error','Please select Dealer');
         }else {
             $.ajax({
-                url: '<?php echo e(route("sale.product.search.with.id")); ?>',
+                url: '<?php echo e(route("sale.product.search.with.dealer.id")); ?>',
                 type: 'POST',
-                data: {data: data, _token: _token},
+                data: {data: data, _token: _token,dealer_id:dealer_id},
                 success: function (data) {
                     console.log(data);
                     temp_unit_name = data.unit_name.split(',');
