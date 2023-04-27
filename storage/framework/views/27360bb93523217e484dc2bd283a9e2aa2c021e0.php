@@ -9,7 +9,7 @@
                 <div class="card-toolbar">
                     <button type="button" class="btn btn-primary btn-sm mr-3" id="print-invoice"> <i class="fas fa-print"></i> Print</button>
                     <?php if(permission('customer-receive-access')): ?>
-                    <a href="<?php echo e(url('customer-receive')); ?>" class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
+                    <a href="<?php echo e(url('dealer-receive')); ?>" class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
                     <?php endif; ?>
                 </div>
             </div>
