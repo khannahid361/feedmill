@@ -312,5 +312,16 @@ class DealerController extends BaseController
             return $output;
         }
     }
-
+    public function warehouseWiseDealerList(Request $request){
+        if($request->ajax()){
+            $warehouseId = $request->warehouse_id;
+            $data = DB::table('dealers')
+                ->select('id','name','shop_name','mobile')
+                ->when($warehouseId, function($q) use ($warehouseId){
+                    $q->where('warehouse_id',$warehouseId);
+                })
+                ->get();
+            return response()->json($data);
+        }
+    }
 }

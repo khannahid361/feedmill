@@ -52,7 +52,7 @@ class DealerLedger extends BaseModel{
         // }
         // search query
         if (!empty($this->_dealer_id)) {
-            $query->where('c.id', $this->_dealer_id);
+            $query->where('d.id', $this->_dealer_id);
         }
         if (!empty($this->_start_date)) {
             $query->where('t.voucher_date', '>=',$this->_start_date);

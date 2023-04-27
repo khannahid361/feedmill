@@ -363,7 +363,7 @@ class DealerSaleController extends BaseController{
         $productSaleChartOfAccountId               = DB::table('chart_of_accounts')->where('code', $this->coa_head_code('product_sale'))->value('id');
         $taxChartOfAccountId                       = DB::table('chart_of_accounts')->where('code', $this->coa_head_code('tax'))->value('id');
         $saleChartOfAccountTransaction             = collect(['chart_of_account_id' => $dealerAccountId,'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
-            'description' => 'Customer debit For Invoice No -  ' . $invoiceNo . ' Dealer ' .$dealerName,'debit' => $grandTotal,
+            'description' => 'Dealer debit For Invoice No -  ' . $invoiceNo . ' Dealer ' .$dealerName,'debit' => $grandTotal,
             'credit' => 0,'posted' => 1,'approve' => 1,'created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s')]);
         $productSaleChartOfAccountTransaction      = collect(['chart_of_account_id' => $productSaleChartOfAccountId,'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
             'description' => 'Sale Income For Invoice NO - ' . $invoiceNo . ' Dealer ' .$dealerName,'debit' => 0,'credit' => $grandTotal,
@@ -377,15 +377,15 @@ class DealerSaleController extends BaseController{
         }
         if(!empty($paymentData['paid_amount'])){
             $customerCredit                            = collect(['chart_of_account_id' => $dealerAccountId,'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
-                'description' => 'Customer credit for Paid Amount For Customer Invoice NO- ' . $invoiceNo . ' Customer- ' . $dealerName,'debit' => 0,
+                'description' => 'Dealer credit for Paid Amount For Dealer Invoice NO- ' . $invoiceNo . ' Dealer- ' . $dealerName,'debit' => 0,
                 'credit' => $paymentData['paid_amount'],'posted' => 1,'approve' => 1,'Created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s') ]);
             if($paymentData['payment_method'] == 1){
                 $payment                               = collect(['chart_of_account_id' => $paymentData['account_id'],'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
-                    'description' => 'Cash in Hand in Sale for Invoice No - ' . $invoiceNo . ' customer- ' .$dealerName,'debit' => $paymentData['paid_amount'],
+                    'description' => 'Cash in Hand in Sale for Invoice No - ' . $invoiceNo . ' Dealer- ' .$dealerName,'debit' => $paymentData['paid_amount'],
                     'credit' => 0,'posted' => 1,'approve' => 1,'created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s')]);
             }else{
                 $payment                               = collect(['chart_of_account_id' => $paymentData['account_id'],'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
-                    'description' => 'Paid amount for customer  Invoice No  - ' . $invoiceNo . ' customer- ' .$dealerName,'debit' => $paymentData['paid_amount'],
+                    'description' => 'Paid amount for Dealer  Invoice No  - ' . $invoiceNo . ' Dealer- ' .$dealerName,'debit' => $paymentData['paid_amount'],
                     'credit' => 0,'posted' => 1,'approve' => 1,'created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s')]);
             }
             Transaction::insert([$customerCredit->all(),$payment->all()]);

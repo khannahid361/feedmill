@@ -163,4 +163,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('balance-sheet', 'Report\BalanceSheetController@index');
     Route::post('balance-sheet/report', 'Report\BalanceSheetController@report');
 
+    //Dealer Recieve
+    Route::get('dealer-receive', 'DealerRecieveController@index')->name('dealer.receive');
+    Route::group(['prefix' => 'dealer-receive', 'as'=>'dealer.receive.'], function () {
+        Route::get('create', 'DealerRecieveController@create')->name('create');
+        Route::post('store', 'DealerRecieveController@store')->name('store');
+        Route::get('show/{id}', 'DealerRecieveController@show')->name('show');
+        Route::post('delete', 'DealerRecieveController@delete')->name('delete');
+        Route::post('datatable-data', 'DealerRecieveController@get_datatable_data')->name('datatable.data');
+    });
+
 });

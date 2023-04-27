@@ -8,6 +8,7 @@ use Modules\Customer\Entities\Customer;
 use Modules\SalesMen\Entities\Salesmen;
 use Modules\Supplier\Entities\Supplier;
 use Modules\Account\Entities\Transaction;
+use Modules\Dealer\Entities\Dealer;
 
 class ChartOfAccount extends BaseModel
 {
@@ -46,6 +47,10 @@ class ChartOfAccount extends BaseModel
     public function salesmen()
     {
         return $this->belongsTo(Salesmen::class,'salesmen_id','id');
+    }
+    public function dealer()
+    {
+        return $this->belongsTo(Dealer::class,'dealer_id','id');
     }
 
 
