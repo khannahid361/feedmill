@@ -30,7 +30,7 @@ class SalesReportController extends BaseController
     public function get_datatable_data(Request $request)
     {
         if ($request->ajax()) {
-            if (permission('purchase-report-access')) {
+            if (permission('sales-report-access')) {
                 if (!empty($request->memo_no)) {
                     $this->model->setMemoNo($request->memo_no);
                 }
