@@ -37,9 +37,9 @@ class Sale extends BaseModel{
 //    public function area(){
 //        return $this->belongsTo(Area::class,'area_id','id');
 //    }
-//    public function salesmen(){
-//        return $this->belongsTo(Salesmen::class,'salesmen_id','id');
-//    }
+   public function salesmen(){
+       return $this->belongsTo(Salesmen::class,'salesmen_id','id');
+   }
     public function customer(){
         return $this->belongsTo(Customer::class,'customer_id','id');
     }

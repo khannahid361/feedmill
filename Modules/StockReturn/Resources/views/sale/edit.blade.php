@@ -44,12 +44,12 @@
                                 <label for="return_date">Return Date</label>
                                 <input type="text" class="form-control date" name="return_date" id="return_date" value="{{ date('Y-m-d') }}" readonly />
                             </div>
-                            <div class="form-group col-md-4 required">
+                            {{-- <div class="form-group col-md-4 required">
                                 <label>Order Received By</label>
                                 <input type="text" class="form-control" value="{{ $sale->salesmen->name }}" readonly />
                                 <input type="hidden" class="form-control" name="sr_commission_rate" value="{{ $sale->sr_commission_rate }}" />
                                 <input type="hidden" class="form-control" name="salesmen_id" value="{{ $sale->salesmen_id }}" />
-                            </div>
+                            </div> --}}
                             <div class="form-group col-md-4 required">
                                 <label for="customer_name">Customer Name</label>
                                 <input type="text" class="form-control" name="customer_name" id="customer_name" value="{{ $sale->customer->shop_name.' - '.$sale->customer->name }}" readonly />

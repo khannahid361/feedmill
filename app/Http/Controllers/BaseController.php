@@ -242,6 +242,43 @@ class BaseController extends Controller
                 break;
         }
     }
-
-
+    public function responseMessage($response){
+        $message = [
+            'Data Saved'                    => __('file.Data Has Been Saved Successfully'),
+            'Data Update'                   => __('file.Data Has Been Updated Successfully'),
+            'Failed Save'                   => __('file.Failed To Save Data'),
+            'Failed Update'                 => __('file.Failed To Update Data'),
+            'Data Delete'                   => __('file.Data Has Been Delete Successfully'),
+            'Data Delete Failed'            => __('file.Failed To Delete Data'),
+            'Select Data Delete'            => __('file.Selected Data Has Been Delete Successfully'),
+            'Select Data Delete Failed'     => __('file.Failed To Delete Selected Data'),
+            'Unauthorized Blocked'          => __('file.Unauthorized Access Blocked!'),
+            'No Data'                       => __('file.No data found'),
+            'Status Changed'                => __('file.Status Has Been Changed Successfully'),
+            'Status Changed Failed'         => __('file.Failed To Change Status'),
+            'Hold'                          => __('file.Data Hold Successfully'),
+            'Hold Failed'                   => __('file.Failed to Hold Purchase Data'),
+            'Select Status'                 => __('file.Please select status'),
+            'Approval Status'               => __('file.Approval Status Changed Successfully'),
+            'Approval Status Failed'        => __('file.Failed To Change Approval Status'),
+            'Unauthorized'                  => __('file.Unauthorized Access Blocked!'),
+            'Related Data'                  => __('file.This data cannot delete because it is related with others data.'),
+            'Associated Data'               => __('file.can\'t delete because they are associated with others data.'),
+            'Expected Menu'                 => __('file.Except these menus'),
+            'Associated Other Data'         => __('file.because they are associated with others data.'),
+            'Customer'                      => __('file.These customers'),
+            'Payment Data'                  => __('file.Payment Data Saved Successfully'),
+            'Payment Data Delete'           => __('file.Failed to Save Payment Data'),
+            'Account Deleted Transaction'   => __('file.This account cannot delete because it is related with many transactions.'),
+            'Selected Data Delete'          => __('file.Selected Data Has Been Deleted Successfully.'),
+            'Expected Role'                 => __('file.Except these roles'),
+            'Roles'                         => __('file.These roles'),
+            'Except'                        => __('file.Except these'),
+            'Current Password'              => __('file.Current password does not match!'),
+            'Changed Password'              => __('file.Password changed successfully'),
+            'Failed Password'               => __('file.Failed to change password. Try Again!'),
+            'Warehouse Choose'              => __('file.Please Choose An Warehouse')
+        ];
+        return $message[$response];
+    }
 }
