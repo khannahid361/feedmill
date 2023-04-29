@@ -20,7 +20,7 @@ class DealerRecieveController extends BaseController
     }
     public function index()
     {
-        if (permission('customer-receive-access')) {
+        if (permission('dealer-receive-access')) {
             $setTitle    = 'Accounts';
             $setSubTitle = 'Dealer Receive';
             $this->setPageData($setSubTitle, $setSubTitle, 'far fa-money-bill-alt', [['name' => $setTitle], ['name' => $setSubTitle]]);
@@ -33,7 +33,7 @@ class DealerRecieveController extends BaseController
     public function get_datatable_data(Request $request)
     {
         if ($request->ajax()) {
-            if (permission('customer-receive-access')) {
+            if (permission('dealer-receive-access')) {
                 if (!empty($request->start_date)) {
                     $this->model->setStartDate($request->start_date);
                 }
@@ -50,10 +50,10 @@ class DealerRecieveController extends BaseController
                 foreach ($list as $value) {
                     $no++;
                     $action = '';
-                    if (permission('customer-receive-details')) {
+                    if (permission('dealer-receive-details')) {
                         $action .= ' <a class="dropdown-item" href="' . route('dealer.receive.show', ['id' => $value->id]) . '">' . self::ACTION_BUTTON['View'] . '</a>';
                     }
-                    if (permission('customer-receive-delete')) {
+                    if (permission('dealer-receive-delete')) {
                         $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->voucher_no . '" data-name="' . $value->voucher_no . '">' . self::ACTION_BUTTON['Delete'] . '</a>';
                     }
                     $row    = [];
@@ -76,7 +76,7 @@ class DealerRecieveController extends BaseController
     }
     public function create()
     {
-        if (permission('customer-receive-access')) {
+        if (permission('dealer-receive-access')) {
             $this->setPageData('Dealer Receive', 'Dealer Receive', 'far fa-money-bill-alt', [['name' => 'Accounts'], ['name' => 'Dealer Receive']]);
             $voucher_no = 'DR-' . date('ymd') . rand(1, 999);
             $warehouses = DB::table('warehouses')->where('status', 1)->pluck('name', 'id');
@@ -88,7 +88,7 @@ class DealerRecieveController extends BaseController
     public function store(Request $request)
     {
         if ($request->ajax()) {
-            if (permission('customer-receive-access')) {
+            if (permission('dealer-receive-access')) {
                 DB::beginTransaction();
                 try {
                     $dealer = Dealer::with('coa')->find($request->dealer_id);
@@ -160,7 +160,7 @@ class DealerRecieveController extends BaseController
     }
     public function show(int $id)
     {
-        if (permission('customer-receive-details')) {
+        if (permission('dealer-receive-details')) {
             $setTitle = 'Dealer Receive Voucher Print';
             $this->setPageData($setTitle, $setTitle, 'far fa-money-bill-alt', [['name' => $setTitle]]);
             $data = $this->model->with('coa')->find($id);
@@ -171,7 +171,7 @@ class DealerRecieveController extends BaseController
     }
     public function delete(Request $request)
     {
-        if ($request->ajax() && permission('customer-receive-delete')) {
+        if ($request->ajax() && permission('dealer-receive-delete')) {
             DB::beginTransaction();
             try {
                 $this->model->where('voucher_no', $request->id)->delete();
