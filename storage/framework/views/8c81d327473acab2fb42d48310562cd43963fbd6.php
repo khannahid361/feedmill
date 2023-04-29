@@ -38,9 +38,9 @@
                                         <tr>
                                             <th><span style="color:black;"><?php echo e($item['sl']); ?></span></th>
                                             <th><span style="color:black;"><?php echo e($item['name']); ?></span></th>
+                                            <th><span style="color:black;"><?php echo e($item['group']); ?></span></th>
                                             <th><span style="color:black;"><?php echo e($item['mobile']); ?></span></th>
                                             <th><span style="color:black;"><?php echo e($item['address']); ?></span></th>
-                                            <th><span style="color:black;"><?php echo e($item['group']); ?></span></th>
                                             <th><span style="color:black;float:right"><?php echo e($item['balance']); ?></span></th>
                                         </tr>
 

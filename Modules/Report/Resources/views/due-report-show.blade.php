@@ -39,9 +39,9 @@
                                         <tr>
                                             <th><span style="color:black;">{{ $item['sl'] }}</span></th>
                                             <th><span style="color:black;">{{ $item['name'] }}</span></th>
+                                            <th><span style="color:black;">{{ $item['group'] }}</span></th>
                                             <th><span style="color:black;">{{ $item['mobile'] }}</span></th>
                                             <th><span style="color:black;">{{ $item['address'] }}</span></th>
-                                            <th><span style="color:black;">{{ $item['group'] }}</span></th>
                                             <th><span style="color:black;float:right">{{ $item['balance'] }}</span></th>
                                         </tr>
 
