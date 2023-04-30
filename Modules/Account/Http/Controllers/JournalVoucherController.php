@@ -61,7 +61,7 @@ class JournalVoucherController extends BaseController
                     if(permission('journal-voucher-delete') && $value->approve != 1){
                         $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->voucher_no . '" data-name="' . $value->voucher_no . '">'.self::ACTION_BUTTON['Delete'].'</a>';
                     }
-                    
+
                     $row = [];
                     $row[] = $no;
                     $row[] = $value->warehouse_name;
@@ -102,24 +102,26 @@ class JournalVoucherController extends BaseController
     {
         if($request->ajax()){
             if(permission('journal-voucher-add')){
-                // dd($request->all());
                 DB::beginTransaction();
                 try {
                     $journal_voucher_transaction = [];
                     if ($request->has('journal_account')) {
+                        // dd($request->journal_account);
                         foreach ($request->journal_account as $key => $value) {
                             //Credit Insert
-                            if(!empty($value['debit_amount']) || !empty($value['credit_amount'] ))
+                            // dd($value['debitAmount']);
+                            $chartOfAccountId = $value['debitId'] == 0 ? $value['creditId'] : $value['debitId'] ;
+                            if(!empty($value['debitAmount']) || !empty($value['creditAmount'] ))
                             {
                                 $journal_voucher_transaction[] = array(
-                                    'chart_of_account_id' => $value['id'],
+                                    'chart_of_account_id' => $chartOfAccountId,
                                     'warehouse_id'        => $request->warehouse_id,
                                     'voucher_no'          => $request->voucher_no,
                                     'voucher_type'        => self::VOUCHER_PREFIX,
                                     'voucher_date'        => $request->voucher_date,
                                     'description'         => $request->remarks,
-                                    'debit'               => $value['debit_amount'] ? $value['debit_amount'] : 0,
-                                    'credit'              => $value['credit_amount'] ? $value['credit_amount'] : 0,
+                                    'debit'               => $value['debitAmount'] ? $value['debitAmount'] : 0,
+                                    'credit'              => $value['creditAmount'] ? $value['creditAmount'] : 0,
                                     'posted'              => 1,
                                     'approve'             => 3,
                                     'created_by'          => auth()->user()->name,
@@ -128,6 +130,7 @@ class JournalVoucherController extends BaseController
                             }
                         }
                     }
+                    // dd($journal_voucher_transaction);
 
                     $result = $this->model->insert($journal_voucher_transaction);
                     $output = $this->store_message($result, null);
