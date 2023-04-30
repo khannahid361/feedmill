@@ -271,6 +271,7 @@ class SaleController extends BaseController{
         }
     }
     public function changeStatus(Request $request){
+
         if($request->ajax() && permission('sale-status-change')){
             DB::beginTransaction();
             try{
@@ -280,7 +281,7 @@ class SaleController extends BaseController{
                     $customer              = Customer::find($sale->customer_id);
 
                     $customerAccountId     = ChartOfAccount::where(['customer_id' => $sale->customer_id])->first();
-//                    return response()->json($customerAccountId);
+
                     $paymentData = [
                         'payment_method' => $sale->payment_method ? $sale->payment_method : null,
                         'account_id'     => $sale->account_id ? $sale->account_id : null,
@@ -289,6 +290,7 @@ class SaleController extends BaseController{
 
                     $this->customerAccounts($customerAccountId, $sale->memo_no, $sale->sale_date, $customer->name, $sale->grand_total, $sale->total_tax, $paymentData);
                 }
+
                 $sale->update(['status' => $request->sale_status]);
                 $output = ['status' => 'success','message' => 'Status Changed Successfully'];
                 DB::commit();
@@ -417,15 +419,19 @@ class SaleController extends BaseController{
                 'description' => 'Customer credit for Paid Amount For Customer Invoice NO- ' . $invoiceNo . ' Customer- ' . $customerName,'debit' => 0,
                 'credit' => $paymentData['paid_amount'],'posted' => 1,'approve' => 1,'Created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s') ]);
             if($paymentData['payment_method'] == 1){
-                $payment                                   = collect(['chart_of_account_id' => $paymentData['account_id'],'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
+                // dd('lol');
+                $payment = collect(['chart_of_account_id' => $paymentData['account_id'],'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
                     'description' => 'Cash in Hand in Sale for Invoice No - ' . $invoiceNo . ' customer- ' .$customerName,'debit' => $paymentData['paid_amount'],
                     'credit' => 0,'posted' => 1,'approve' => 1,'created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s')]);
-            }else{
-                $payment                                   = collect(['chart_of_account_id' => $paymentData['account_id'],'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
+                Transaction::create($payment->all());
+                }else{
+                // dd('lol2');
+                $payment  = collect(['chart_of_account_id' => $paymentData['account_id'],'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
                     'description' => 'Paid amount for customer  Invoice No  - ' . $invoiceNo . ' customer- ' .$customerName,'debit' => $paymentData['paid_amount'],
                     'credit' => 0,'posted' => 1,'approve' => 1,'created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s')]);
+                Transaction::create($payment->all());
             }
-            Transaction::insert([$customerCredit->all(),$payment->all()]);
+            Transaction::insert($customerCredit->all());
         }
     }
     private function warehouseAccounts($warehouseId,$invoiceNo,$saleDate,$cost){

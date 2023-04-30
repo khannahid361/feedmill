@@ -388,7 +388,8 @@ class DealerSaleController extends BaseController{
                     'description' => 'Paid amount for Dealer  Invoice No  - ' . $invoiceNo . ' Dealer- ' .$dealerName,'debit' => $paymentData['paid_amount'],
                     'credit' => 0,'posted' => 1,'approve' => 1,'created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s')]);
             }
-            Transaction::insert([$customerCredit->all(),$payment->all()]);
+            Transaction::create($payment->all());
+            Transaction::insert($customerCredit->all());
         }
     }
     private function warehouseAccounts($warehouseId,$invoiceNo,$saleDate,$cost){
