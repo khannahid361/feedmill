@@ -1,22 +1,21 @@
 <?php
+
 namespace Modules\Report\Http\Controllers;
 
+use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\BaseController;
-use Modules\Report\Entities\PurchaseReport;
+use Modules\Report\Entities\DealerReport;
 
-// use Modules\Report\Entities\SalesReport;
-
-class PurchaseReportController extends BaseController{
-    public function __construct(PurchaseReport $model){
+class DealerReportController extends BaseController{
+    public function __construct(DealerReport $model){
         $this->model = $model;
     }
     public function index(){
         if(permission('purchase-report-access')){
-            $this->setPageData('Purchase Report','Purchase Report','fas fa-file',[['name' => 'Purchase Report']]);
+            $this->setPageData('Dealer Report','Dealer Report','fas fa-file',[['name' => 'Dealer Report']]);
             $data = [
-                'supplier'    => DB::table('suppliers')->where([['status',1]])->select('name','id')->get()
+                'dealers'    => DB::table('dealers')->where([['status',1]])->select('name','id')->get()
             ];
             return view('report::purchase-report',$data);
         }else{

@@ -128,4 +128,8 @@ Route::group(['middleware' => ['auth']], function () {
     //Due Report
     Route::get('due-report', 'DueReportController@index')->name('due.report');
     Route::post('get-due-report-data', 'DueReportController@get_due_data')->name('get.due.report.data');
+
+    //Dealer Report
+    Route::get('dealer-report', 'DealerReportController@index')->name('dealer.report');
+    Route::post('dealer-report/datatable-data', 'DealerReportController@get_datatable_data')->name('dealer.report.datatable.data');
 });
