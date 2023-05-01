@@ -132,4 +132,7 @@ Route::group(['middleware' => ['auth']], function () {
     //Dealer Report
     Route::get('dealer-report', 'DealerReportController@index')->name('dealer.report');
     Route::post('dealer-report/datatable-data', 'DealerReportController@get_datatable_data')->name('dealer.report.datatable.data');
+
+    //Income Statement
+    Route::get('income-statement-report','IncomeStatementReportController@report')->name('income.statement.report');
 });

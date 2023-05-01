@@ -155,9 +155,7 @@ class ChartOfAccount extends BaseModel
                     $module .= "</option>";
                 }
 
-                // $module .= "<li>".$value->name."<b style='float:right'> Bl: ".$amount."</b>";
-                // $module .= "<ul>".$this->coa($value->name)."</ul>";
-                // $module .= "</li>";
+
             }
         }
         return $module;
