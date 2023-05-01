@@ -40,8 +40,7 @@ class DealerReport extends BaseModel
         $query = DB::table('dealers as d')
             ->leftjoin('chart_of_accounts as coa', 'd.id', '=', 'coa.dealer_id')
             ->leftjoin('transactions as t', 'coa.id', '=', 't.chart_of_account_id')->where('t.approve', 1)->select('d.*',DB::raw("SUM(t.debit) as delaerDebit"),DB::raw("SUM(t.credit) as delaerCredit"))->groupBy('d.id');
-        // dd($query);
-
+            
         if (!empty($this->_dealer_id)) {
             $query->where('d.id', $this->_dealer_id);
         }
