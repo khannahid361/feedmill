@@ -1,14 +1,13 @@
-@extends('layouts.app')
-@section('title', $page_title)
-@section('content')
+<?php $__env->startSection('title', $page_title); ?>
+<?php $__env->startSection('content'); ?>
     <div class="d-flex flex-column-fluid">
         <div class="container-fluid">
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-5">
-                    <div class="card-title"><h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3></div>
+                    <div class="card-title"><h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3></div>
                     <div class="card-toolbar">
                         <button type="button" class="btn btn-primary btn-sm mr-3" id="print-invoice"> <i class="fas fa-print"></i> Print</button>
-                        <a href="{{ route('sale') }}" class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
+                        <a href="<?php echo e(route('sale')); ?>" class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
                     </div>
                 </div>
             </div>
@@ -164,7 +163,7 @@
                                 .dashed-border{
                                     width:180px;height:2px;margin:0 auto;padding:0;border-top:1px dashed #454d55 !important;
                                 }
-                                @media screen {
+                                @media  screen {
                                     .no_screen {display: none;}
                                     .no_print {display: block;}
                                     thead {display: table-header-group;}
@@ -172,7 +171,7 @@
                                     button {display: none;}
                                     body {margin: 0;}
                                 }
-                                @media print {
+                                @media  print {
                                     body,
                                     html {
                                         -webkit-print-color-adjust: exact !important;
@@ -236,7 +235,7 @@
                                         width:180px;height:2px;margin:0 auto;padding:0;border-top:1px dashed #454d55 !important;
                                     }
                                 }
-                                @page {
+                                @page  {
                                     margin: 5mm 5mm;
                                 }
                             </style>
@@ -245,10 +244,10 @@
                                     <table>
                                         <tr>
                                             <td class="text-center">
-{{--                                                <img src="{{asset('./images/mfbl-logo.png')}}" style="width: 60px;" alt="Logo" />--}}
-                                                <h1 class="name m-0" style="text-transform: uppercase;"><b>{{ config('settings.title') ? config('settings.title') : env('APP_NAME') }}</b></h1>
-                                                @if(config('settings.address'))<p style="font-weight: normal;margin:0;"><b>Address: </b>{{ config('settings.address') }}</p>@endif
-                                                @if(config('settings.contact_no'))<p style="font-weight: normal;margin:0;"><b>Contact No.: </b>{{ config('settings.contact_no') }}, @if(config('settings.email'))<b>Email: </b>{{ config('settings.email') }}@endif</p>@endif
+
+                                                <h1 class="name m-0" style="text-transform: uppercase;"><b><?php echo e(config('settings.title') ? config('settings.title') : env('APP_NAME')); ?></b></h1>
+                                                <?php if(config('settings.address')): ?><p style="font-weight: normal;margin:0;"><b>Address: </b><?php echo e(config('settings.address')); ?></p><?php endif; ?>
+                                                <?php if(config('settings.contact_no')): ?><p style="font-weight: normal;margin:0;"><b>Contact No.: </b><?php echo e(config('settings.contact_no')); ?>, <?php if(config('settings.email')): ?><b>Email: </b><?php echo e(config('settings.email')); ?><?php endif; ?></p><?php endif; ?>
                                                 <p style="font-weight: normal;margin:0;"><b>Factory Address: </b>Bakua, Ullapara-6760, Sirajganj</p>
                                             </td>
                                         </tr>
@@ -261,9 +260,9 @@
                                             <td>Delivery Date</td>
                                         </tr>
                                         <tr>
-                                            <td>{{$details->warehouse->name}}</td>
-                                            <td>{{$details->customer->name}}</td>
-                                            <td>{{$details->delivery_date}}</td>
+                                            <td><?php echo e($details->warehouse->name); ?></td>
+                                            <td><?php echo e($details->customer->name); ?></td>
+                                            <td><?php echo e($details->delivery_date); ?></td>
                                         </tr>
                                     </table>
                                     <table border="0" cellspacing="0" cellpadding="0">
@@ -276,22 +275,22 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @if(!$details->deliveryProduct->isEmpty())
-                                            @foreach($details->deliveryProduct as $value)
+                                        <?php if(!$details->deliveryProduct->isEmpty()): ?>
+                                            <?php $__currentLoopData = $details->deliveryProduct; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <tr class="text-center">
-                                            <td>{{$loop->index + 1}}</td>
-                                            <td>{{$value->product->name}}</td>
-                                            <td>{{$value->delivered_qty}}</td>
-                                            <td>{{$value->delivery_qty}}</td>
+                                            <td><?php echo e($loop->index + 1); ?></td>
+                                            <td><?php echo e($value->product->name); ?></td>
+                                            <td><?php echo e($value->delivered_qty); ?></td>
+                                            <td><?php echo e($value->delivery_qty); ?></td>
                                         </tr>
-                                            @endforeach
-                                        @endif
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endif; ?>
                                         </tbody>
                                         <tfoot>
                                         <tr>
                                             <td colspan="2"></td>
                                             <td><button type="button" class="btn btn-primary btn-block text-right">Total Delivery Quantity</button></td>
-                                            <td><button type="button" class="btn btn-primary btn-block text-left">{{$details->total_delivery_quantity}}</button></td>
+                                            <td><button type="button" class="btn btn-primary btn-block text-left"><?php echo e($details->total_delivery_quantity); ?></button></td>
                                         </tr>
                                         </tfoot>
                                     </table>
@@ -314,7 +313,7 @@
                                     </table>
                                 </div>
                                 <div class="no_screen" style="position: absolute;top:40%;left:10%;opacity:0.2;">
-                                    <img src="{{ asset('storage/'.LOGO_PATH.config('settings.logo'))}}" style="width: 80%;" alt="Logo" />
+                                    <img src="<?php echo e(asset('storage/'.LOGO_PATH.config('settings.logo'))); ?>" style="width: 80%;" alt="Logo" />
                                 </div>
                             </div>
                         </div>
@@ -323,9 +322,9 @@
             </div>
         </div>
     </div>
-@endsection
-@push('scripts')
-    <script src="{{asset('js/jquery.printarea.js')}}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+    <script src="<?php echo e(asset('js/jquery.printarea.js')); ?>"></script>
     <script>
         $(document).ready(function () {
             //QR Code Print
@@ -341,4 +340,6 @@
         });
 
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Sale\Resources/views/invoice.blade.php ENDPATH**/ ?>

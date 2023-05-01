@@ -1,26 +1,24 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', $page_title); ?>
 
-@section('title', $page_title)
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
 <style>
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
         <!--begin::Notice-->
         <div class="card card-custom gutter-b">
             <div class="card-header flex-wrap py-5">
                 <div class="card-title">
-                    <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
+                    <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
                     <button type="button" class="btn btn-primary btn-sm mr-3" id="print-invoice"> <i class="fas fa-print"></i> Print</button>
 
-                    <a href="{{ route('sale.return') }}" class="btn btn-warning btn-sm font-weight-bolder">
+                    <a href="<?php echo e(route('sale.return')); ?>" class="btn btn-warning btn-sm font-weight-bolder">
                         <i class="fas fa-arrow-left"></i> Back</a>
                     <!--end::Button-->
                 </div>
@@ -221,7 +219,7 @@
                                 width:180px;height:2px;margin:0 auto;padding:0;border-top:1px dashed #454d55 !important;
                             }
 
-                            @media screen {
+                            @media  screen {
                                 .no_screen {display: none;}
                                 .no_print {display: block;}
                                 thead {display: table-header-group;}
@@ -230,7 +228,7 @@
                                 body {margin: 0;}
                             }
 
-                            @media print {
+                            @media  print {
 
                                 body,
                                 html {
@@ -317,7 +315,7 @@
                                 }
                             }
 
-                            @page {
+                            @page  {
                                 /* size: auto; */
                                 margin: 5mm 5mm;
 
@@ -328,10 +326,10 @@
                                 <table>
                                     <tr>
                                         <td class="text-center">
-                                            <h2 class="name m-0" style="text-transform: uppercase;"><b>{{ config('settings.title') ? config('settings.title') : env('APP_NAME') }}</b></h2>
-                                            @if(config('settings.contact_no'))<p style="font-weight: normal;margin:0;"><b>Contact No.: </b>{{ config('settings.contact_no') }}, @if(config('settings.email'))<b>Email: </b>{{ config('settings.email') }}@endif</p>@endif
-                                            @if(config('settings.address'))<p style="font-weight: normal;margin:0;">{{ config('settings.address') }}</p>@endif
-                                            <p style="font-weight: normal;margin:0;"><b>Date: </b>{{ date('d-M-Y') }}</p>
+                                            <h2 class="name m-0" style="text-transform: uppercase;"><b><?php echo e(config('settings.title') ? config('settings.title') : env('APP_NAME')); ?></b></h2>
+                                            <?php if(config('settings.contact_no')): ?><p style="font-weight: normal;margin:0;"><b>Contact No.: </b><?php echo e(config('settings.contact_no')); ?>, <?php if(config('settings.email')): ?><b>Email: </b><?php echo e(config('settings.email')); ?><?php endif; ?></p><?php endif; ?>
+                                            <?php if(config('settings.address')): ?><p style="font-weight: normal;margin:0;"><?php echo e(config('settings.address')); ?></p><?php endif; ?>
+                                            <p style="font-weight: normal;margin:0;"><b>Date: </b><?php echo e(date('d-M-Y')); ?></p>
                                         </td>
                                     </tr>
                                 </table>
@@ -341,18 +339,18 @@
                                         <td width="50%">
                                             <div class="invoice-to">
                                                 <div class="text-grey-light"><b>INVOICE TO</b></div>
-                                                <div class="to"><b>{{ $sale->customer->shop_name }}</b></div>
-                                                <div class="to">{{ $sale->customer->name }}</div>
-                                                <div class="phone">{{ $sale->customer->mobile }}</div>
-                                                @if($sale->customer->email)<div class="email">{{ $sale->customer->email }}</div>@endif
-                                                @if($sale->customer->address)<div class="address">{{ $sale->customer->address }}</div>@endif
+                                                <div class="to"><b><?php echo e($sale->customer->shop_name); ?></b></div>
+                                                <div class="to"><?php echo e($sale->customer->name); ?></div>
+                                                <div class="phone"><?php echo e($sale->customer->mobile); ?></div>
+                                                <?php if($sale->customer->email): ?><div class="email"><?php echo e($sale->customer->email); ?></div><?php endif; ?>
+                                                <?php if($sale->customer->address): ?><div class="address"><?php echo e($sale->customer->address); ?></div><?php endif; ?>
                                             </div>
                                         </td>
                                         <td width="50%" class="text-right">
                                             <h4 class="name m-0">Return</h4>
-                                            <div class="m-0 date"><b>Return No.: {{ $sale->return_no }}</b></div>
-                                            <div class="m-0 date"><b>Memo No.: </b>{{ $sale->memo_no }}</div>
-                                            <div class="m-0 date"><b>Return Date:</b>{{ date('d-M-Y',strtotime($sale->return_date)) }}</div>
+                                            <div class="m-0 date"><b>Return No.: <?php echo e($sale->return_no); ?></b></div>
+                                            <div class="m-0 date"><b>Memo No.: </b><?php echo e($sale->memo_no); ?></div>
+                                            <div class="m-0 date"><b>Return Date:</b><?php echo e(date('d-M-Y',strtotime($sale->return_date))); ?></div>
                                         </td>
                                     </tr>
                                 </table>
@@ -369,66 +367,74 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (!$sale->return_products->isEmpty())
-                                            @foreach ($sale->return_products as $key => $item)
-                                                @php
+                                        <?php if(!$sale->return_products->isEmpty()): ?>
+                                            <?php $__currentLoopData = $sale->return_products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php
                                                     $unit_name = '';
                                                     if($item->unit_id)
                                                     {
                                                         $unit_name = DB::table('units')->where('id',$item->unit_id)->value('unit_name');
                                                     }
-                                                @endphp
+                                                ?>
                                                 <tr>
-                                                    <td class="text-center no">{{ $key+1 }}</td>
-                                                    <td class="text-left">{{ $item->product->name }}</td>
-                                                    <td class="text-center">{{ $item->product->code }}</td>
-                                                    <td class="text-center qty">{{ $item->return_qty.' '.$unit_name }}</td>
-                                                    <td class="text-right price">{{ number_format($item->product_rate,2) }}</td>
-                                                    <td class="text-right discount">{{ number_format($item->deduction_rate,2) }}</td>
+                                                    <td class="text-center no"><?php echo e($key+1); ?></td>
+                                                    <td class="text-left"><?php echo e($item->product->name); ?></td>
+                                                    <td class="text-center"><?php echo e($item->product->code); ?></td>
+                                                    <td class="text-center qty"><?php echo e($item->return_qty.' '.$unit_name); ?></td>
+                                                    <td class="text-right price"><?php echo e(number_format($item->product_rate,2)); ?></td>
+                                                    <td class="text-right discount"><?php echo e(number_format($item->deduction_rate,2)); ?></td>
                                                     <td class="text-right total">
-                                                        @if (config('settings.currency_position') == 2)
-                                                            {{ number_format($item->total,2) }} {{ config('settings.currency_symbol') }}
-                                                        @else
-                                                            {{ config('settings.currency_symbol') }} {{ number_format($item->total,2) }}
-                                                        @endif
+                                                        <?php if(config('settings.currency_position') == 2): ?>
+                                                            <?php echo e(number_format($item->total,2)); ?> <?php echo e(config('settings.currency_symbol')); ?>
+
+                                                        <?php else: ?>
+                                                            <?php echo e(config('settings.currency_symbol')); ?> <?php echo e(number_format($item->total,2)); ?>
+
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
-                                            @endforeach
-                                        @endif
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endif; ?>
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <td colspan="5" rowspan="3" class="text-left">
                                                 <h6><b>Reason:</b></h6>
-                                                <p class="text-justify font-weight-normal">{{ $sale->reason }}</p>
+                                                <p class="text-justify font-weight-normal"><?php echo e($sale->reason); ?></p>
                                             </td>
                                             <td  class="text-right">TOTAL DEDUCTION</td>
                                             <td class="text-right">
-                                                @if (config('settings.currency_position') == 2)
-                                                    {{ number_format($sale->total_deduction,2) }} {{ config('settings.currency_symbol') }}
-                                                @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format($sale->total_deduction,2) }}
-                                                @endif
+                                                <?php if(config('settings.currency_position') == 2): ?>
+                                                    <?php echo e(number_format($sale->total_deduction,2)); ?> <?php echo e(config('settings.currency_symbol')); ?>
+
+                                                <?php else: ?>
+                                                    <?php echo e(config('settings.currency_symbol')); ?> <?php echo e(number_format($sale->total_deduction,2)); ?>
+
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                         <tr class="d-none">
-                                            <td colspan="1"  class="text-right">TAX {{ $sale->tax_rate ? $sale->tax_rate : '' }}%</td>
+                                            <td colspan="1"  class="text-right">TAX <?php echo e($sale->tax_rate ? $sale->tax_rate : ''); ?>%</td>
                                             <td class="text-right">
-                                                @if (config('settings.currency_position') == 2)
-                                                    {{ number_format($sale->total_tax,2) }} {{ config('settings.currency_symbol') }}
-                                                @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format($sale->total_tax,2) }}
-                                                @endif
+                                                <?php if(config('settings.currency_position') == 2): ?>
+                                                    <?php echo e(number_format($sale->total_tax,2)); ?> <?php echo e(config('settings.currency_symbol')); ?>
+
+                                                <?php else: ?>
+                                                    <?php echo e(config('settings.currency_symbol')); ?> <?php echo e(number_format($sale->total_tax,2)); ?>
+
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="1"  class="text-right">TOTAL RETURN AMOUNT</td>
                                             <td class="text-right">
-                                                @if (config('settings.currency_position') == 2)
-                                                    {{ number_format($sale->grand_total,2) }} {{ config('settings.currency_symbol') }}
-                                                @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format($sale->grand_total,2) }}
-                                                @endif
+                                                <?php if(config('settings.currency_position') == 2): ?>
+                                                    <?php echo e(number_format($sale->grand_total,2)); ?> <?php echo e(config('settings.currency_symbol')); ?>
+
+                                                <?php else: ?>
+                                                    <?php echo e(config('settings.currency_symbol')); ?> <?php echo e(number_format($sale->grand_total,2)); ?>
+
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -444,7 +450,7 @@
                                         </td>
                                         <td class="text-center">
                                             <div class="font-size-10" style="width:250px;float:right;">
-                                                <p style="margin:35px 0 0 0;padding:0;">{{ $sale->created_by }}<br> {{ date('d-M-Y h:i:s A',strtotime($sale->created_at)) }}</p>
+                                                <p style="margin:35px 0 0 0;padding:0;"><?php echo e($sale->created_by); ?><br> <?php echo e(date('d-M-Y h:i:s A',strtotime($sale->created_at))); ?></p>
                                                 <p class="dashed-border"></p>
                                                 <p style="margin:0;padding:0;">Authorised By</p>
                                             </div>
@@ -466,9 +472,9 @@
         <!--end::Card-->
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script src="js/jquery.printarea.js"></script>
 <script>
 $(document).ready(function () {
@@ -485,4 +491,6 @@ $(document).ready(function () {
 });
 
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/StockReturn\Resources/views/sale/details.blade.php ENDPATH**/ ?>
