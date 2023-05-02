@@ -14,7 +14,7 @@
         <!-- /modal header -->
         <!-- Modal Body -->
         <form id="approve_status_form" method="POST">
-            @csrf
+            <?php echo csrf_field(); ?>
             <div class="modal-body">
                 <input type="hidden" name="production_id" id="production_id">
                 <input type="hidden" name="warehouse_id" id="warehouse_id">
@@ -43,3 +43,4 @@
 
     </div>
   </div>
+<?php /**PATH D:\laragon\www\insaf\Modules/Production\Resources/views/production/status-modal.blade.php ENDPATH**/ ?>

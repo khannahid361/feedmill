@@ -69,7 +69,7 @@ class ProductionController extends BaseController
                     $no++;
                     $action = '';
                     if (permission('production-approve')  && $value->status == 2) {
-                        $action .= ' <a class="dropdown-item change_status"  data-id="' . $value->id . '" data-name="' . $value->batch_no . '" data-status="' . $value->status . '"><i class="fas fa-toggle-on text-info mr-2"></i> Approve Status</a>';
+                        $action .= ' <a class="dropdown-item change_status"  data-id="' . $value->id . '" data-name="' . $value->batch_no . '" data-status="' . $value->status . '" data-warehouseID="' . $value->warehouse_id . '"><i class="fas fa-toggle-on text-info mr-2"></i> Approve Status</a>';
                     }
                     if (permission('production-edit') && $value->status == 2) {
                         $action .= ' <a class="dropdown-item" href="' . route("production.edit", $value->id) . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
@@ -187,7 +187,7 @@ class ProductionController extends BaseController
                 if (!empty($materials)) {
                     foreach ($materials as $item) {
                         $material = Material::with('unit')->find($item['material_id']);
-                        $material_stock = WarehouseMaterial::where([['material_id', $item['material_id']], ['warehouse_id', 1]])->first();
+                        $material_stock = WarehouseMaterial::where('material_id',$item['material_id'])->where('warehouse_id',$request->warehouse_id)->first();
                         $stock_qty = 0;
                         $background = '';
                         if ($material_stock) {
@@ -414,7 +414,7 @@ class ProductionController extends BaseController
                                     foreach ($production_materials as $material) {
 
                                         $warehouse_material = WarehouseMaterial::where([
-                                            ['warehouse_id', 1],
+                                            ['warehouse_id', $request->warehouse_id],
                                             ['material_id', $material->material_id], ['qty', '>', 0]
                                         ])->first();
                                         if ($warehouse_material) {

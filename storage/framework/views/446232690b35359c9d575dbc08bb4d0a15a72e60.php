@@ -1,25 +1,23 @@
-@extends('layouts.app')
-
-@section('title', $page_title)
-@push('styles')
+<?php $__env->startSection('title', $page_title); ?>
+<?php $__env->startPush('styles'); ?>
     <link href="plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <link href="css/daterangepicker.min.css" rel="stylesheet" type="text/css" />
-@endpush
-@section('content')
+<?php $__env->stopPush(); ?>
+<?php $__env->startSection('content'); ?>
     <div class="d-flex flex-column-fluid">
         <div class="container-fluid">
             <!--begin::Notice-->
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-5">
                     <div class="card-title">
-                        <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
+                        <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        @if (permission('production-add'))
-                            <a href="{{ route('production.add') }}" class="btn btn-primary btn-sm font-weight-bolder">
+                        <?php if(permission('production-add')): ?>
+                            <a href="<?php echo e(route('production.add')); ?>" class="btn btn-primary btn-sm font-weight-bolder">
                                 <i class="fas fa-plus-circle"></i> Add New</a>
-                        @endif
+                        <?php endif; ?>
                         <!--end::Button-->
                     </div>
                 </div>
@@ -30,7 +28,18 @@
                 <div class="card-header flex-wrap py-5">
                     <form method="POST" id="form-filter" class="col-md-12 px-0">
                         <div class="row">
-                            <x-form.textbox labelName="Batch No." name="batch_no" col="col-md-3" />
+                            <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Batch No.','name' => 'batch_no','col' => 'col-md-3']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Batch No.','name' => 'batch_no','col' => 'col-md-3']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                             <div class="form-group col-md-3">
                                 <label for="name">Choose Date</label>
                                 <div class="input-group">
@@ -39,26 +48,55 @@
                                     <input type="hidden" id="end_date" name="end_date">
                                 </div>
                             </div>
-                            <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-3" class="selectpicker">
-                                @if (!$warehouses->isEmpty())
-                                    @foreach ($warehouses as $id => $name)
-                                        <option value="{{ $id }}">{{ $name }}</option>
-                                    @endforeach
-                                @endif
-                            </x-form.selectbox>
+                            <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Warehouse','name' => 'warehouse_id','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Warehouse','name' => 'warehouse_id','col' => 'col-md-3','class' => 'selectpicker']); ?>
+                                <?php if(!$warehouses->isEmpty()): ?>
+                                    <?php $__currentLoopData = $warehouses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endif; ?>
+                             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
 
 
-                            <x-form.selectbox labelName="Status" name="status" col="col-md-3" class="selectpicker">
-                                @foreach (APPROVE_STATUS as $key => $value)
-                                    <option value="{{ $key }}">{{ $value }}</option>
-                                @endforeach
-                            </x-form.selectbox>
-                            <x-form.selectbox labelName="Production Status" name="production_status" col="col-md-3"
-                                class="selectpicker">
-                                @foreach (PRODUCTION_STATUS as $key => $value)
-                                    <option value="{{ $key }}">{{ $value }}</option>
-                                @endforeach
-                            </x-form.selectbox>
+                            <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Status','name' => 'status','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Status','name' => 'status','col' => 'col-md-3','class' => 'selectpicker']); ?>
+                                <?php $__currentLoopData = APPROVE_STATUS; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                            <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Production Status','name' => 'production_status','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Production Status','name' => 'production_status','col' => 'col-md-3','class' => 'selectpicker']); ?>
+                                <?php $__currentLoopData = PRODUCTION_STATUS; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
 
                             <div class="col-md-9">
                                 <div style="margin-top:28px;">
@@ -107,10 +145,10 @@
             <!--end::Card-->
         </div>
     </div>
-    @include('production::production.status-modal')
-@endsection
+    <?php echo $__env->make('production::production.status-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script src="plugins/custom/datatables/datatables.bundle.js" type="text/javascript"></script>
     <script src="js/moment.js"></script>
     <script src="js/knockout-3.4.2.js"></script>
@@ -147,7 +185,7 @@
                     zeroRecords: '<strong class="text-danger">No Data Found</strong>'
                 },
                 "ajax": {
-                    "url": "{{ route('production.datatable.data') }}",
+                    "url": "<?php echo e(route('production.datatable.data')); ?>",
                     "type": "POST",
                     "data": function(data) {
                         data.batch_no = $("#form-filter #batch_no").val();
@@ -176,7 +214,7 @@
                     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
 
                 "buttons": [
-                    @if (permission('production-report'))
+                    <?php if(permission('production-report')): ?>
                         {
                             'extend': 'colvis',
                             'className': 'btn btn-secondary btn-sm text-white',
@@ -186,7 +224,7 @@
                             "extend": 'print',
                             'text': 'Print',
                             'className': 'btn btn-secondary btn-sm text-white',
-                            "title": "{{ $page_title }} List",
+                            "title": "<?php echo e($page_title); ?> List",
                             "orientation": "landscape", //portrait
                             "pageSize": "A4", //A3,A5,A6,legal,letter
                             "exportOptions": {
@@ -208,8 +246,8 @@
                             "extend": 'csv',
                             'text': 'CSV',
                             'className': 'btn btn-secondary btn-sm text-white',
-                            "title": "{{ $page_title }} List",
-                            "filename": "{{ strtolower(str_replace(' ', '-', $page_title)) }}-list",
+                            "title": "<?php echo e($page_title); ?> List",
+                            "filename": "<?php echo e(strtolower(str_replace(' ', '-', $page_title))); ?>-list",
                             "exportOptions": {
                                 columns: ':visible:not(:eq(8))'
                             }
@@ -217,8 +255,8 @@
                             "extend": 'excel',
                             'text': 'Excel',
                             'className': 'btn btn-secondary btn-sm text-white',
-                            "title": "{{ $page_title }} List",
-                            "filename": "{{ strtolower(str_replace(' ', '-', $page_title)) }}-list",
+                            "title": "<?php echo e($page_title); ?> List",
+                            "filename": "<?php echo e(strtolower(str_replace(' ', '-', $page_title))); ?>-list",
                             "exportOptions": {
                                 columns: ':visible:not(:eq(8))'
                             },
@@ -226,8 +264,8 @@
                             "extend": 'pdf',
                             'text': 'PDF',
                             'className': 'btn btn-secondary btn-sm text-white',
-                            "title": "{{ $page_title }} List",
-                            "filename": "{{ strtolower(str_replace(' ', '-', $page_title)) }}-list",
+                            "title": "<?php echo e($page_title); ?> List",
+                            "filename": "<?php echo e(strtolower(str_replace(' ', '-', $page_title))); ?>-list",
                             "orientation": "landscape", //portrait
                             "pageSize": "A4", //A3,A5,A6,legal,letter
                             "exportOptions": {
@@ -240,7 +278,7 @@
                                 doc.pageMargins = [5, 5, 5, 5];
                             }
                         },
-                    @endif
+                    <?php endif; ?>
                 ],
             });
 
@@ -260,7 +298,7 @@
                 let id = $(this).data('id');
                 let name = $(this).data('name');
                 let row = table.row($(this).parent('tr'));
-                let url = "{{ route('production.delete') }}";
+                let url = "<?php echo e(route('production.delete')); ?>";
                 delete_data(id, url, table, row, name);
             });
 
@@ -279,7 +317,7 @@
                         icon: 'warning',
                     });
                 } else {
-                    let url = "{{ route('production.bulk.delete') }}";
+                    let url = "<?php echo e(route('production.bulk.delete')); ?>";
                     bulk_delete(ids, url, table, rows);
                 }
             }
@@ -306,7 +344,7 @@
                 var approve_status = $('#approve_status_form #approve_status option:selected').val();
                 if (production_id && approve_status) {
                     $.ajax({
-                        url: "{{ route('production.change.status') }}",
+                        url: "<?php echo e(route('production.change.status')); ?>",
                         type: "POST",
                         data: {
                             production_id: production_id,
@@ -341,4 +379,6 @@
 
         });
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Production\Resources/views/production/index.blade.php ENDPATH**/ ?>
