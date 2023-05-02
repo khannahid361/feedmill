@@ -161,6 +161,20 @@ class ChartOfAccount extends BaseModel
         return $module;
     }
 
+    public function calculation($date,$id){
+        $data = Transaction::where('created_at','LIKE','%'.$date.'%')->where('chart_of_account_id',$id)->get();
+        $debit = 0 ; $credit = 0;
+        foreach ($data as $value){
+            if($value->debit == 0){
+                $credit = $credit + $value->credit;
+            }else{
+                $debit  = $debit + $value->debit;
+            }
+        }
+        $netBalance = $debit - $credit;
+        return $netBalance;
+    }
+
     private function children($item)
     {
         $amount = 0;

@@ -23,7 +23,6 @@ class IncomeStatementReportController extends BaseController
             }else{
                 $date = date('Y-m-d');
             }
-            dd('lol');
             $data = [
               'date'                     => $date,
               'sales'                    => $this->model->sale($date)[0],

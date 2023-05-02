@@ -16,7 +16,7 @@
                     <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
                 </div>
                 <div class="card-toolbar">
-                    <button type="button" id="print-report" class="btn btn-primary btn-sm font-weight-bolder"> 
+                    <button type="button" id="print-report" class="btn btn-primary btn-sm font-weight-bolder">
                         <i class="fas fa-print"></i> Print</button>
 
                 </div>
@@ -46,16 +46,16 @@
                         </x-form.selectbox>
 
                         <x-form.selectbox labelName="Transaction Head" name="transaction_head"  col="col-md-3" class="selectpicker"/>
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-3" class="selectpicker">
+                        {{-- <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-3" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                             @foreach ($warehouses as $id => $name)
                                 <option value="{{ $id }}">{{ $name }}</option>
                             @endforeach
                             @endif
-                        </x-form.selectbox>
-                        
+                        </x-form.selectbox> --}}
+
                         <div class="col-md-12">
-                            <div style="margin-top:28px;">    
+                            <div style="margin-top:28px;">
                                     <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Search" onclick="report()">
                                     <i class="fas fa-search"></i></button>
@@ -160,14 +160,14 @@ function report()
     var general_head = $('#general_head option:selected').val();
     var transaction_head = $('#transaction_head option:selected').val();
     var bank_name = $('#transaction_head option:selected').data('name');
-    var warehouse_id = document.getElementById('warehouse_id').value;
+    // var warehouse_id = document.getElementById('warehouse_id').value;
     if(transaction_head){
-        if(warehouse_id){
+        // if(warehouse_id){
             $.ajax({
                 url:"{{ url('general-ledger/report') }}",
                 type:"POST",
                 data:{start_date:start_date,end_date:end_date,general_head:general_head,transaction_head:transaction_head,
-                    bank_name:bank_name,warehouse_id:warehouse_id,_token:_token},
+                    bank_name:bank_name,_token:_token},
                 success:function(data){
                     $('#report').empty();
                     $('#report').append(data);
@@ -176,13 +176,13 @@ function report()
                     console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
                 }
             });
-        }else{
-            notification('error','Please select warehouse!');
-        }
+        // }else{
+        //     notification('error','Please select warehouse!');
+        // }
     }else{
         notification('error','Please select a transaction head');
     }
-    
+
 }
 
 $(document).on('change','#general_head',function(){

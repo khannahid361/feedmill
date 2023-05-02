@@ -119,7 +119,7 @@
     <thead class="bg-primary">
         <tr>
             <th class="text-center">SL.</th>
-            <th class="text-center">Warehouse</th>
+            {{-- <th class="text-center">Warehouse</th> --}}
             <th class="text-center">Transaction Date</th>
             <th class="text-center">Particulars</th>
             <th class="text-right">Debit</th>
@@ -144,20 +144,20 @@
             ?>
             <tr>
                 <td class="text-center">{{ $key + 1 }}</td>
-                <td class="text-center">{{ $value->warehouse_name }}</td>
+                {{-- <td class="text-center">{{ $value->warehouse_name }}</td> --}}
                 <td class="text-center">{{ $value->voucher_date }}</td>
                 <td>{{ $value->description }}</td>
                 <td class="text-right"> {{ number_format($value->debit,2) }}</td>
                 <td class="text-right"> {{ number_format($value->credit,2)  }}</td>
                 <td class="text-right">{{ number_format($CurBalance,2)  }}</td>
             </tr>
-            
+
             @endforeach
         @endif
     </tbody>
     <tfoot>
         <tr class="bg-primary">
-            <td colspan="4" class="text-right text-white font-weight-bolder">Total</td>
+            <td colspan="3" class="text-right text-white font-weight-bolder">Total</td>
             <td class="text-right text-white font-weight-bolder">{{ number_format($TotalDebit,2)  }}</td>
             <td class="text-right text-white font-weight-bolder">{{ number_format($TotalCredit,2)  }}</td>
             <td class="text-right text-white font-weight-bolder">{{ number_format($CurBalance,2)  }}</td>

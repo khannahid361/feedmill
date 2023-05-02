@@ -119,7 +119,7 @@
     <thead class="bg-primary">
         <tr>
             <th class="text-center">SL.</th>
-            <th class="text-center">Warehouse</th>
+            
             <th class="text-center">Transaction Date</th>
             <th class="text-center">Particulars</th>
             <th class="text-right">Debit</th>
@@ -144,23 +144,24 @@
             ?>
             <tr>
                 <td class="text-center"><?php echo e($key + 1); ?></td>
-                <td class="text-center"><?php echo e($value->warehouse_name); ?></td>
+                
                 <td class="text-center"><?php echo e($value->voucher_date); ?></td>
                 <td><?php echo e($value->description); ?></td>
                 <td class="text-right"> <?php echo e(number_format($value->debit,2)); ?></td>
                 <td class="text-right"> <?php echo e(number_format($value->credit,2)); ?></td>
                 <td class="text-right"><?php echo e(number_format($CurBalance,2)); ?></td>
             </tr>
-            
+
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         <?php endif; ?>
     </tbody>
     <tfoot>
         <tr class="bg-primary">
-            <td colspan="4" class="text-right text-white font-weight-bolder">Total</td>
+            <td colspan="3" class="text-right text-white font-weight-bolder">Total</td>
             <td class="text-right text-white font-weight-bolder"><?php echo e(number_format($TotalDebit,2)); ?></td>
             <td class="text-right text-white font-weight-bolder"><?php echo e(number_format($TotalCredit,2)); ?></td>
             <td class="text-right text-white font-weight-bolder"><?php echo e(number_format($CurBalance,2)); ?></td>
         </tr>
     </tfoot>
-</table><?php /**PATH D:\laragon\www\insaf\Modules/Account\Resources/views/report/general-ledger/report.blade.php ENDPATH**/ ?>
+</table>
+<?php /**PATH D:\laragon\www\insaf\Modules/Account\Resources/views/report/general-ledger/report.blade.php ENDPATH**/ ?>

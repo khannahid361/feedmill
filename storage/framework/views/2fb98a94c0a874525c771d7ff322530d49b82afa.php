@@ -27,22 +27,25 @@
             </div>
             <form action="<?php echo e(route('income.statement.report')); ?>" method="GET">
                 <?php echo csrf_field(); ?>
-            <div class="card card-custom gutter-b">
-                <div class="card-header flex-wrap py-5">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <input type="date" class="form-control" name="date">
-                            </div>
-                            <div class="col-md-2">
-                                <button type="submit" class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right" data-toggle="tooltip" data-theme="dark" title="<?php echo e(__('Search')); ?>"><i class="fas fa-search"></i></button>
+                <div class="card card-custom gutter-b">
+                    <div class="card-header flex-wrap py-5">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <input type="date" class="form-control" name="date">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit"
+                                        class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right"
+                                        data-toggle="tooltip" data-theme="dark" title="<?php echo e(__('Search')); ?>"><i
+                                            class="fas fa-search"></i></button>
+                                </div>
                             </div>
                         </div>
+                        <div class="col-md-4"></div>
                     </div>
-                    <div class="col-md-4"></div>
                 </div>
-            </div>
             </form>
             <div class="card card-custom">
                 <div class="card-body">
@@ -61,9 +64,11 @@
                                         background: #fff !important;
                                         /* min-height: 680px; */
                                     }
+
                                     #print-labor-bill:last-child {
                                         page-break-after: auto !important;
                                     }
+
                                     .invoice header {
                                         padding: 10px 0;
                                         margin-bottom: 20px;
@@ -184,9 +189,9 @@
                                     }
 
                                     /* .invoice table tfoot tr:last-child td {
-                                                            color: #036;
-                                                            border-top: 1px solid #036
-                                                        } */
+                                                                color: #036;
+                                                                border-top: 1px solid #036
+                                                            } */
                                     .invoice table tfoot tr td:first-child {
                                         border: none
                                     }
@@ -243,9 +248,11 @@
                                         padding: 0;
                                         border-top: 1px dashed #454d55 !important;
                                     }
-                                    .double-border{
+
+                                    .double-border {
                                         border-top: double black !important;
                                     }
+
                                     @media  screen {
                                         .no_screen {
                                             display: none;
@@ -331,6 +338,7 @@
                                         .text-bold {
                                             font-weight: bold !important;
                                         }
+
                                         .invoice {
                                             overflow: hidden !important;
                                             background: #fff !important;
@@ -342,6 +350,7 @@
                                             bottom: 0;
                                             left: 0;
                                         }
+
                                         .hidden-print {
                                             display: none !important;
                                         }
@@ -367,15 +376,33 @@
                                                 <td class="text-left" style="width: 20%;">
                                                 </td>
                                                 <td class="text-center" style="width: 60%;">
-                                                    <h2 class="name m-0" style="text-transform: uppercase;"><b><?php echo e(config('settings.title') ? config('settings.title') : env('APP_NAME')); ?></b></h2>
-                                                    <?php if(config('settings.address')): ?> <h3 style="font-weight: normal;margin:0;"><?php echo e(config('settings.address')); ?></h3><?php endif; ?>
-                                                    <div style="width: 250px;background:#036;color:white;font-weight:bolder;margin:5px auto 0 auto;padding: 5px 0;border-radius: 15px;text-align:center;"><?php echo e(__('Income Statement Report')); ?></div>
+                                                    <h2 class="name m-0" style="text-transform: uppercase;">
+                                                        <b><?php echo e(config('settings.title') ? config('settings.title') : env('APP_NAME')); ?></b>
+                                                    </h2>
+                                                    <?php if(config('settings.address')): ?>
+                                                        <h3 style="font-weight: normal;margin:0;">
+                                                            <?php echo e(config('settings.address')); ?></h3>
+                                                    <?php endif; ?>
+                                                    <div
+                                                        style="width: 250px;background:#036;color:white;font-weight:bolder;margin:5px auto 0 auto;padding: 5px 0;border-radius: 15px;text-align:center;">
+                                                        <?php echo e(__('Income Statement Report')); ?></div>
                                                 </td>
                                                 <td class="text-right" style="width: 20%;">
-                                                    <?php if(config('settings.contact_no')): ?><div><span><?php echo e(__('Pro')); ?>:</span><span><?php echo e(config('settings.contact_no')); ?></span></div> <?php endif; ?>
-                                                    <div><span><?php echo e(__('Office')); ?>:</span><span><?php echo e('01716447882'); ?></span></div>
-                                                    <div><span><?php echo e(__('Director')); ?>:</span><span><?php echo e('01734657951'); ?></span></div>
-                                                    <?php if(config('settings.email')): ?><div><span><?php echo e(__('Email')); ?>:</span><span><?php echo e(config('settings.email')); ?></span></div><?php endif; ?>
+                                                    <?php if(config('settings.contact_no')): ?>
+                                                        <div>
+                                                            <span><?php echo e(__('Pro')); ?>:</span><span><?php echo e(config('settings.contact_no')); ?></span>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                    <div><span><?php echo e(__('Office')); ?>:</span><span><?php echo e('01716447882'); ?></span>
+                                                    </div>
+                                                    <div>
+                                                        <span><?php echo e(__('Director')); ?>:</span><span><?php echo e('01734657951'); ?></span>
+                                                    </div>
+                                                    <?php if(config('settings.email')): ?>
+                                                        <div>
+                                                            <span><?php echo e(__('Email')); ?>:</span><span><?php echo e(config('settings.email')); ?></span>
+                                                        </div>
+                                                    <?php endif; ?>
                                                 </td>
                                             </tr>
                                         </table>
@@ -386,8 +413,10 @@
                                             <?php $__currentLoopData = $sales; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td colspan="3" class="text-left">
-                                                        <div><span><?php echo e(__('Memo No')); ?> : </span><span><?php echo e($value->voucher_no); ?></span></div>
-                                                        <div><span><?php echo e(__('Description')); ?> : </span><span><?php echo e($value->description); ?></span></div>
+                                                        <div><span><?php echo e(__('Memo No')); ?> :
+                                                            </span><span><?php echo e($value->voucher_no); ?></span></div>
+                                                        <div><span><?php echo e(__('Description')); ?> :
+                                                            </span><span><?php echo e($value->description); ?></span></div>
                                                     </td>
                                                     <td colspan="2" class="text-left">
                                                         <div>
@@ -398,13 +427,16 @@
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td colspan="4" class="text-left"><?php echo e(__('Sale')); ?></td>
-                                                <td colspan="1" class="text-right double-border"><?php echo e(number_format($totalSale)); ?> TK</td>
+                                                <td colspan="1" class="text-right double-border">
+                                                    <?php echo e(number_format($totalSale)); ?> TK</td>
                                             </tr>
                                             <?php $__currentLoopData = $tenant; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td colspan="3" class="text-left">
-                                                        <div><span><?php echo e(__('Memo No')); ?> : </span><span><?php echo e($value->voucher_no); ?></span></div>
-                                                        <div><span><?php echo e(__('Description')); ?> : </span><span><?php echo e($value->description); ?></span></div>
+                                                        <div><span><?php echo e(__('Memo No')); ?> :
+                                                            </span><span><?php echo e($value->voucher_no); ?></span></div>
+                                                        <div><span><?php echo e(__('Description')); ?> :
+                                                            </span><span><?php echo e($value->description); ?></span></div>
                                                     </td>
                                                     <td colspan="2" class="text-left">
                                                         <div>
@@ -415,13 +447,16 @@
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td colspan="4" class="text-left"><?php echo e(__('Tenant')); ?></td>
-                                                <td colspan="1" class="text-right double-border"><?php echo e(number_format($totalTenant)); ?> TK</td>
+                                                <td colspan="1" class="text-right double-border">
+                                                    <?php echo e(number_format($totalTenant)); ?> TK</td>
                                             </tr>
                                             <?php $__currentLoopData = $incomePersonalLoan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td colspan="3" class="text-left">
-                                                        <div><span><?php echo e(__('Voucher No')); ?> : </span><span><?php echo e($value->voucher_no); ?></span></div>
-                                                        <div><span><?php echo e(__('Description')); ?> : </span><span><?php echo e($value->description); ?></span></div>
+                                                        <div><span><?php echo e(__('Voucher No')); ?> :
+                                                            </span><span><?php echo e($value->voucher_no); ?></span></div>
+                                                        <div><span><?php echo e(__('Description')); ?> :
+                                                            </span><span><?php echo e($value->description); ?></span></div>
                                                     </td>
                                                     <td colspan="2" class="text-left">
                                                         <div>
@@ -433,8 +468,10 @@
                                             <?php $__currentLoopData = $incomeOfficialLoan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td colspan="3" class="text-left">
-                                                        <div><span><?php echo e(__('Voucher No')); ?> : </span><span><?php echo e($value->voucher_no); ?></span></div>
-                                                        <div><span><?php echo e(__('Description')); ?> : </span><span><?php echo e($value->description); ?></span></div>
+                                                        <div><span><?php echo e(__('Voucher No')); ?> :
+                                                            </span><span><?php echo e($value->voucher_no); ?></span></div>
+                                                        <div><span><?php echo e(__('Description')); ?> :
+                                                            </span><span><?php echo e($value->description); ?></span></div>
                                                     </td>
                                                     <td colspan="2" class="text-left">
                                                         <div>
@@ -445,13 +482,18 @@
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td colspan="4" class="text-left"><?php echo e(__('Loan')); ?></td>
-                                                <td colspan="1" class="text-right double-border"><?php echo e(number_format($totalIncomePersonalLoan + $totalExpenseOfficialLoan)); ?> TK</td>
+                                                <td colspan="1" class="text-right double-border">
+                                                    <?php echo e(number_format($totalIncomePersonalLoan + $totalExpenseOfficialLoan)); ?>
+
+                                                    TK</td>
                                             </tr>
                                             <?php $__currentLoopData = $machineService; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td colspan="3" class="text-left">
-                                                        <div><span><?php echo e(__('Voucher No')); ?> : </span><span><?php echo e($value->voucher_no); ?></span></div>
-                                                        <div><span><?php echo e(__('Description')); ?> : </span><span><?php echo e($value->description); ?></span></div>
+                                                        <div><span><?php echo e(__('Voucher No')); ?> :
+                                                            </span><span><?php echo e($value->voucher_no); ?></span></div>
+                                                        <div><span><?php echo e(__('Description')); ?> :
+                                                            </span><span><?php echo e($value->description); ?></span></div>
                                                     </td>
                                                     <td colspan="2" class="text-left">
                                                         <div>
@@ -462,13 +504,16 @@
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td colspan="4" class="text-left"><?php echo e(__('Machine Service')); ?></td>
-                                                <td colspan="1" class="text-right double-border"><?php echo e(number_format($totalMachineService)); ?> TK</td>
+                                                <td colspan="1" class="text-right double-border">
+                                                    <?php echo e(number_format($totalMachineService)); ?> TK</td>
                                             </tr>
                                             <?php $__currentLoopData = $transportService; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td colspan="3" class="text-left">
-                                                        <div><span><?php echo e(__('Voucher No')); ?> : </span><span><?php echo e($value->voucher_no); ?></span></div>
-                                                        <div><span><?php echo e(__('Description')); ?> : </span><span><?php echo e($value->description); ?></span></div>
+                                                        <div><span><?php echo e(__('Voucher No')); ?> :
+                                                            </span><span><?php echo e($value->voucher_no); ?></span></div>
+                                                        <div><span><?php echo e(__('Description')); ?> :
+                                                            </span><span><?php echo e($value->description); ?></span></div>
                                                     </td>
                                                     <td colspan="2" class="text-left">
                                                         <div>
@@ -479,7 +524,8 @@
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td colspan="4" class="text-left"><?php echo e(__('Transport Service')); ?></td>
-                                                <td colspan="1" class="text-right double-border"><?php echo e(number_format($totalTransportService)); ?> TK</td>
+                                                <td colspan="1" class="text-right double-border">
+                                                    <?php echo e(number_format($totalTransportService)); ?> TK</td>
                                             </tr>
                                             <tr>
                                                 <th colspan="5" class="text-center"><?php echo e(__('Expense')); ?></th>
@@ -487,8 +533,10 @@
                                             <?php $__currentLoopData = $purchases; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td colspan="3" class="text-left">
-                                                        <div><span><?php echo e(__('Memo No')); ?> : </span><span><?php echo e($value->voucher_no); ?></span></div>
-                                                        <div><span><?php echo e(__('Description')); ?> : </span><span><?php echo e($value->description); ?></span></div>
+                                                        <div><span><?php echo e(__('Memo No')); ?> :
+                                                            </span><span><?php echo e($value->voucher_no); ?></span></div>
+                                                        <div><span><?php echo e(__('Description')); ?> :
+                                                            </span><span><?php echo e($value->description); ?></span></div>
                                                     </td>
                                                     <td colspan="2" class="text-left">
                                                         <div>
@@ -499,13 +547,16 @@
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td colspan="4" class="text-left"><?php echo e(__('Purchase')); ?></td>
-                                                <td colspan="1" class="text-right double-border"><?php echo e(number_format($totalPurchase)); ?> TK</td>
+                                                <td colspan="1" class="text-right double-border">
+                                                    <?php echo e(number_format($totalPurchase)); ?> TK</td>
                                             </tr>
                                             <?php $__currentLoopData = $expensePersonalLoan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td colspan="3" class="text-left">
-                                                        <div><span><?php echo e(__('Voucher No')); ?> : </span><span><?php echo e($value->voucher_no); ?></span></div>
-                                                        <div><span><?php echo e(__('Description')); ?> : </span><span><?php echo e($value->description); ?></span></div>
+                                                        <div><span><?php echo e(__('Voucher No')); ?> :
+                                                            </span><span><?php echo e($value->voucher_no); ?></span></div>
+                                                        <div><span><?php echo e(__('Description')); ?> :
+                                                            </span><span><?php echo e($value->description); ?></span></div>
                                                     </td>
                                                     <td colspan="2" class="text-left">
                                                         <div>
@@ -517,8 +568,10 @@
                                             <?php $__currentLoopData = $expenseOfficialLoan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td colspan="3" class="text-left">
-                                                        <div><span><?php echo e(__('Voucher No')); ?> : </span><span><?php echo e($value->voucher_no); ?></span></div>
-                                                        <div><span><?php echo e(__('Description')); ?> : </span><span><?php echo e($value->description); ?></span></div>
+                                                        <div><span><?php echo e(__('Voucher No')); ?> :
+                                                            </span><span><?php echo e($value->voucher_no); ?></span></div>
+                                                        <div><span><?php echo e(__('Description')); ?> :
+                                                            </span><span><?php echo e($value->description); ?></span></div>
                                                     </td>
                                                     <td colspan="2" class="text-left">
                                                         <div>
@@ -529,13 +582,18 @@
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td colspan="4" class="text-left"><?php echo e(__('Loan')); ?></td>
-                                                <td colspan="1" class="text-right double-border"><?php echo e(number_format($totalExpensePersonalLoan + $totalExpenseOfficialLoan)); ?> TK</td>
+                                                <td colspan="1" class="text-right double-border">
+                                                    <?php echo e(number_format($totalExpensePersonalLoan + $totalExpenseOfficialLoan)); ?>
+
+                                                    TK</td>
                                             </tr>
                                             <?php $__currentLoopData = $machinePurchase; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td colspan="3" class="text-left">
-                                                        <div><span><?php echo e(__('Voucher No')); ?> : </span><span><?php echo e($value->voucher_no); ?></span></div>
-                                                        <div><span><?php echo e(__('Description')); ?> : </span><span><?php echo e($value->description); ?></span></div>
+                                                        <div><span><?php echo e(__('Voucher No')); ?> :
+                                                            </span><span><?php echo e($value->voucher_no); ?></span></div>
+                                                        <div><span><?php echo e(__('Description')); ?> :
+                                                            </span><span><?php echo e($value->description); ?></span></div>
                                                     </td>
                                                     <td colspan="2" class="text-left">
                                                         <div>
@@ -546,13 +604,16 @@
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td colspan="4" class="text-left"><?php echo e(__('Machine Purchase')); ?></td>
-                                                <td colspan="1" class="text-right double-border"><?php echo e(number_format($totalMachinePurchase)); ?> TK</td>
+                                                <td colspan="1" class="text-right double-border">
+                                                    <?php echo e(number_format($totalMachinePurchase)); ?> TK</td>
                                             </tr>
                                             <?php $__currentLoopData = $laborBill; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td colspan="3" class="text-left">
-                                                        <div><span><?php echo e(__('Voucher No')); ?> : </span><span><?php echo e($value->voucher_no); ?></span></div>
-                                                        <div><span><?php echo e(__('Description')); ?> : </span><span><?php echo e($value->description); ?></span></div>
+                                                        <div><span><?php echo e(__('Voucher No')); ?> :
+                                                            </span><span><?php echo e($value->voucher_no); ?></span></div>
+                                                        <div><span><?php echo e(__('Description')); ?> :
+                                                            </span><span><?php echo e($value->description); ?></span></div>
                                                     </td>
                                                     <td colspan="2" class="text-left">
                                                         <div>
@@ -563,13 +624,16 @@
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td colspan="4" class="text-left"><?php echo e(__('Labor Bill')); ?></td>
-                                                <td colspan="1" class="text-right double-border"><?php echo e(number_format($totalLaborBill)); ?> TK</td>
+                                                <td colspan="1" class="text-right double-border">
+                                                    <?php echo e(number_format($totalLaborBill)); ?> TK</td>
                                             </tr>
                                             <?php $__currentLoopData = $expense; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td colspan="3" class="text-left">
-                                                        <div><span><?php echo e(__('Voucher No')); ?> : </span><span><?php echo e($value->voucher_no); ?></span></div>
-                                                        <div><span><?php echo e(__('Description')); ?> : </span><span><?php echo e($value->description); ?></span></div>
+                                                        <div><span><?php echo e(__('Voucher No')); ?> :
+                                                            </span><span><?php echo e($value->voucher_no); ?></span></div>
+                                                        <div><span><?php echo e(__('Description')); ?> :
+                                                            </span><span><?php echo e($value->description); ?></span></div>
                                                     </td>
                                                     <td colspan="2" class="text-left">
                                                         <div>
@@ -580,19 +644,29 @@
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td colspan="4" class="text-left"><?php echo e(__('Other Expense')); ?></td>
-                                                <td colspan="1" class="text-right double-border"><?php echo e(number_format($totalExpense)); ?> TK</td>
+                                                <td colspan="1" class="text-right double-border">
+                                                    <?php echo e(number_format($totalExpense)); ?> TK</td>
                                             </tr>
                                             <tr>
-                                                <th colspan="5" class="text-right"><?php echo e(__('Cash In Hand')); ?> : <?php echo e($cash); ?> tk</th>
+                                                <th colspan="5" class="text-right"><?php echo e(__('Cash In Hand')); ?> :
+                                                    <?php echo e($cash); ?> tk</th>
                                             </tr>
                                             <?php $__currentLoopData = $banks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bank): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <tr>
-                                               <th colspan="5" class="text-right"><?php echo e(__('Bank')); ?> <?php echo e($bank->name); ?>: <?php echo e($bank->calculation($date,$bank->id)); ?> tk</th>
-                                            </tr>
+                                                <tr>
+                                                    <th colspan="5" class="text-right"><?php echo e(__('Bank')); ?>
+
+                                                        <?php echo e($bank->name); ?>: <?php echo e($bank->calculation($date, $bank->id)); ?>
+
+                                                        tk</th>
+                                                </tr>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             <?php $__currentLoopData = $mobileBanks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bank): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
-                                                    <th colspan="5" class="text-right"><?php echo e(__('Bank')); ?> <?php echo e($bank->name); ?>: <?php echo e($bank->calculation($date,$bank->id)); ?> tk</th>
+                                                    <th colspan="5" class="text-right"><?php echo e(__('Bank')); ?>
+
+                                                        <?php echo e($bank->name); ?>: <?php echo e($bank->calculation($date, $bank->id)); ?>
+
+                                                        tk</th>
                                                 </tr>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </table>
@@ -609,8 +683,8 @@
 <?php $__env->startPush('scripts'); ?>
     <script src="<?php echo e(asset('js/jquery.printarea.js')); ?>"></script>
     <script>
-        $(document).ready(function () {
-            $(document).on('click','#print-labor-bill',function(){
+        $(document).ready(function() {
+            $(document).on('click', '#print-labor-bill', function() {
                 var mode = 'iframe'; // popup
                 var close = mode == "popup";
                 var options = {
@@ -623,6 +697,5 @@
         });
     </script>
 <?php $__env->stopPush(); ?>
-
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Report\Resources/views/incomeStatement/index.blade.php ENDPATH**/ ?>

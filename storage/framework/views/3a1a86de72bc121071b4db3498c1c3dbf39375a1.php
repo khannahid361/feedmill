@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', $page_title); ?>
 
 <?php $__env->startPush('styles'); ?>
@@ -16,7 +14,7 @@
                     <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
                 </div>
                 <div class="card-toolbar">
-                    <button type="button" id="print-report" class="btn btn-primary btn-sm font-weight-bolder"> 
+                    <button type="button" id="print-report" class="btn btn-primary btn-sm font-weight-bolder">
                         <i class="fas fa-print"></i> Print</button>
 
                 </div>
@@ -67,26 +65,10 @@
 <?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
-                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Warehouse','name' => 'warehouse_id','col' => 'col-md-3','class' => 'selectpicker']]); ?>
-<?php $component->withName('form.selectbox'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Warehouse','name' => 'warehouse_id','col' => 'col-md-3','class' => 'selectpicker']); ?>
-                            <?php if(!$warehouses->isEmpty()): ?>
-                            <?php $__currentLoopData = $warehouses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            <?php endif; ?>
-                         <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
-<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
-<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
-<?php endif; ?>
                         
+
                         <div class="col-md-12">
-                            <div style="margin-top:28px;">    
+                            <div style="margin-top:28px;">
                                     <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Search" onclick="report()">
                                     <i class="fas fa-search"></i></button>
@@ -191,14 +173,14 @@ function report()
     var general_head = $('#general_head option:selected').val();
     var transaction_head = $('#transaction_head option:selected').val();
     var bank_name = $('#transaction_head option:selected').data('name');
-    var warehouse_id = document.getElementById('warehouse_id').value;
+    // var warehouse_id = document.getElementById('warehouse_id').value;
     if(transaction_head){
-        if(warehouse_id){
+        // if(warehouse_id){
             $.ajax({
                 url:"<?php echo e(url('general-ledger/report')); ?>",
                 type:"POST",
                 data:{start_date:start_date,end_date:end_date,general_head:general_head,transaction_head:transaction_head,
-                    bank_name:bank_name,warehouse_id:warehouse_id,_token:_token},
+                    bank_name:bank_name,_token:_token},
                 success:function(data){
                     $('#report').empty();
                     $('#report').append(data);
@@ -207,13 +189,13 @@ function report()
                     console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
                 }
             });
-        }else{
-            notification('error','Please select warehouse!');
-        }
+        // }else{
+        //     notification('error','Please select warehouse!');
+        // }
     }else{
         notification('error','Please select a transaction head');
     }
-    
+
 }
 
 $(document).on('change','#general_head',function(){
@@ -235,4 +217,5 @@ $(document).on('change','#general_head',function(){
 
 </script>
 <?php $__env->stopPush(); ?>
+
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Account\Resources/views/report/general-ledger/index.blade.php ENDPATH**/ ?>
