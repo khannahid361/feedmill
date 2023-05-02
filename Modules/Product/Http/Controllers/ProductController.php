@@ -13,6 +13,7 @@ use Modules\Product\Entities\Product;
 use Modules\Material\Entities\Material;
 use App\Http\Controllers\BaseController;
 use Modules\Product\Http\Requests\ProductFormRequest;
+use Modules\Sale\Entities\SaleProduct;
 
 class ProductController extends BaseController
 {
@@ -122,8 +123,6 @@ class ProductController extends BaseController
     public function store_or_update(ProductFormRequest $request)
     {
         if($request->ajax()){
-//            dd($request->all());
-//            return response()->json($request->all());
             if(permission('product-add')){
                 DB::beginTransaction();
                 try {

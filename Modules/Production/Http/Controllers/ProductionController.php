@@ -187,7 +187,7 @@ class ProductionController extends BaseController
                 if (!empty($materials)) {
                     foreach ($materials as $item) {
                         $material = Material::with('unit')->find($item['material_id']);
-                        $material_stock = WarehouseMaterial::where('material_id',$item['material_id'])->where('warehouse_id',$request->warehouse_id)->first();
+                        $material_stock = WarehouseMaterial::where('material_id', $item['material_id'])->where('warehouse_id', $request->warehouse_id)->first();
                         $stock_qty = 0;
                         $background = '';
                         if ($material_stock) {
@@ -226,7 +226,6 @@ class ProductionController extends BaseController
 
     public function store(Request $request)
     {
-        //        dd($request->all());
         if ($request->ajax()) {
 
             if (permission('production-add')) {
@@ -240,10 +239,8 @@ class ProductionController extends BaseController
                             'start_date'   => $request->start_date,
                             'created_by'   => auth()->user()->name
                         ]);
-                        // dd($request->production);
                         if ($production) {
                             foreach ($request->production as $product) {
-                                // dd($product['exp_date']);
                                 $product_data = [
                                     'production_id'   => $production->id,
                                     'product_id'      => $product['product_id'],
@@ -251,13 +248,12 @@ class ProductionController extends BaseController
                                     'mfg_date'        => $product['mfg_date'],
                                     'exp_date'        => $product['exp_date'],
 
-                                    //                                    'other_cost'      => $product['other_cost'],
-                                    //                                    'sub_total'       => $product['sub_total'],
-                                    //                                    'per_unit_cost'   => $product['per_unit_cost'],
+                                    // 'other_cost'      => $product['other_cost'],
+                                    // 'sub_total'       => $product['sub_total'],
+                                    // 'per_unit_cost'   => $product['per_unit_cost'],
 
                                     'base_unit_qty'   => $product['base_unit_qty'],
                                 ];
-                                // dd($product_data);
                                 $productData = ProductionProduct::create($product_data);
                                 if ($product) {
                                     $production_product = ProductionProduct::with('materials')->find($productData->id);

@@ -47,6 +47,7 @@ class ProductionOperationController extends BaseController{
         }
     }
     public function store(OperationRequest $request){
+        // dd($request->production);
         if ($request->ajax()) {
             if (permission('production-operation')) {
                 DB::beginTransaction();
@@ -91,6 +92,7 @@ class ProductionOperationController extends BaseController{
         }
     }
     public function change_production_status(Request $request){
+        // dd($request->all());
         if ($request->ajax()) {
             if (permission('production-operation')) {
                 if ($request->production_status) {
@@ -129,6 +131,7 @@ class ProductionOperationController extends BaseController{
                                     }
                                 }
                                 $production_products = DB::table('production_products')->where('production_id',$request->production_id)->get();
+                                // dd($production_products);
                                 if(!$production_products->isEmpty()) {
                                     foreach ($production_products as  $value) {
                                         $product                  = Product::find($value->product_id);
