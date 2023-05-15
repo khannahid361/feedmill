@@ -23,7 +23,7 @@ class ExpenseController extends BaseController
         if(permission('expense-access')){
             $this->setPageData('Expense','Expense','fas fa-money-check-alt',[['name'=>'Expense','link'=>'javascript::void();'],['name' => 'Expense']]);
             $expense_items = ExpenseItem::toBase()->get();
-            $warehouses = Warehouse::activeWarehouses();
+            $warehouses =  Warehouse::where('sataus',1)->get();
             return view('expense::expense.index',compact('expense_items','warehouses'));
         }else{
             return $this->access_blocked();
@@ -87,7 +87,7 @@ class ExpenseController extends BaseController
             if(permission('expense-add')){
                 DB::beginTransaction();
                 try {
-                    
+
                     $collection   = collect($request->validated());
                     if($request->update_id){
                         $voucher_no = DB::table('expenses')->where('id',$request->update_id)->value('voucher_no');
@@ -95,7 +95,7 @@ class ExpenseController extends BaseController
                         $voucher_no = 'EXP-'.date('YmdHis').rand(1,999);
                         $collection = $collection->merge(['voucher_no' => $voucher_no]);
                     }
-                    
+
                     $collection   = $this->track_data($collection,$request->update_id);
                     $result       = $this->model->updateOrCreate(['id'=>$request->update_id],$collection->all());
                     $output       = $this->store_message($result, $request->update_id);
@@ -133,7 +133,7 @@ class ExpenseController extends BaseController
 
     private function expense_balance_add(array $data) {
         $voucher_type = 'Expense';
-      
+
         $expense_acc = array(
             'chart_of_account_id' => $data['expense_coa_id'],
             'warehouse_id'        => $data['warehouse_id'],
@@ -148,7 +148,7 @@ class ExpenseController extends BaseController
             'created_by'          => auth()->user()->name,
             'created_at'          => date('Y-m-d H:i:s')
         );
-        
+
 
 
         if($data['payment_type'] == 1){
@@ -166,7 +166,7 @@ class ExpenseController extends BaseController
                 'approve'             => 1,
                 'created_by'          => auth()->user()->name,
                 'created_at'          => date('Y-m-d H:i:s')
-                
+
             );
         }else{
             // Bank Ledger

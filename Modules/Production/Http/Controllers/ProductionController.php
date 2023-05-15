@@ -146,7 +146,7 @@ class ProductionController extends BaseController
             $last_batch_no = $this->model->select('batch_no')->orderBy('id', 'desc')->first();
             $data = [
                 'products'   => DB::table('products')->where('status', 1)->pluck('name', 'id'),
-                'warehouses' => Warehouse::activeWarehouses(),
+                'warehouses' =>  Warehouse::where('sataus',1)->get(),
                 'batch_no'   => $last_batch_no ? $last_batch_no->batch_no + 1 : '1001'
             ];
             return view('production::production.create', $data);
@@ -312,7 +312,7 @@ class ProductionController extends BaseController
             $production = $this->model->with(['products'])->find($id);
             if ($production) {
                 $this->setPageData('Production Edit', 'Production Edit', 'fas fa-industry', [['name' => 'Production Edit']]);
-                $warehouses = Warehouse::activeWarehouses();
+                $warehouses =  Warehouse::where('sataus',1)->get();
                 // dd($production);
                 return view('production::production.edit', compact('production', 'warehouses'));
             } else {

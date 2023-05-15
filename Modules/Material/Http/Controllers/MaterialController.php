@@ -30,7 +30,7 @@ class MaterialController extends BaseController
             $data = [
                 'units'      => Unit::where('status',1)->get(),
                 'taxes'      => Tax::activeTaxes(),
-                'warehouses' => Warehouse::activeWarehouses(),
+                'warehouses' =>  Warehouse::where('sataus',1)->get(),
                 'categories' => Category::allMaterialCategories(),
             ];
             return view('material::index',$data);
@@ -121,7 +121,7 @@ class MaterialController extends BaseController
                         $material_image  = $this->upload_file($request->file('material_image'),MATERIAL_IMAGE_PATH);
                         if(!empty($request->old_material_image)){
                             $this->delete_file($request->old_material_image, MATERIAL_IMAGE_PATH);
-                        }  
+                        }
                     }
                     $collection = $collection->merge(compact('material_image','has_opening_stock','opening_cost','alert_qty','tax_id'));
                     $collection = $this->track_data($collection,$request->update_id);
@@ -142,7 +142,7 @@ class MaterialController extends BaseController
                                     $old_warehouse_material->update();
                                 }
 
-                                $material_old_data->qty -= $material_old_data->opening_stock_qty; 
+                                $material_old_data->qty -= $material_old_data->opening_stock_qty;
                                 $material_old_data->update();
 
                                 $material_new_data = $this->model->find($request->update_id);
@@ -162,7 +162,7 @@ class MaterialController extends BaseController
                                     ]);
                                 }
                             }else{
-                                $material_old_data->qty += $request->opening_stock_qty; 
+                                $material_old_data->qty += $request->opening_stock_qty;
                                 $material_old_data->update();
 
                                 $new_warehouse_material = WarehouseMaterial::where(['warehouse_id' =>$request->opening_warehouse_id,'material_id' => $request->update_id])->first();
@@ -190,13 +190,13 @@ class MaterialController extends BaseController
                                     $old_warehouse_material->qty -= $material_old_data->opening_stock_qty;
                                     $old_warehouse_material->update();
                                 }
-                                $material_old_data->qty -= $material_old_data->opening_stock_qty; 
+                                $material_old_data->qty -= $material_old_data->opening_stock_qty;
                                 $material_old_data->update();
                             }
                         }
                         $result     = $this->model->updateOrCreate(['id'=>$request->update_id],$collection->all());
                     }else{
-                        
+
                         $result     = $this->model->updateOrCreate(['id'=>$request->update_id],$collection->all());
                         if($has_opening_stock == 1)
                         {
@@ -345,7 +345,7 @@ class MaterialController extends BaseController
                 $output['value']            = '';
                 $output['label']            = 'No Record Found';
             }
-            return $output; 
+            return $output;
         }
     }
 
@@ -442,7 +442,7 @@ class MaterialController extends BaseController
             {
                 $output .= '<option value="">Select Please</option>';
                 foreach ($materials as $key => $value) {
-                    $output .= '<option value="'.$value->material_id.'" data-unitid="'.$value->material->unit_id.'" 
+                    $output .= '<option value="'.$value->material_id.'" data-unitid="'.$value->material->unit_id.'"
                     data-unitname="'.$value->material->unit->unit_name.'"  data-qty="'.$value->qty.'">'.$value->material->material_name.'</option>';
                 }
             }

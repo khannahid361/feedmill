@@ -82,16 +82,16 @@ class Warehouse extends BaseModel{
         Cache::forget(self::ALL_WAREHOUSES);
         Cache::forget(self::ACTIVE_WAREHOUSES);
     }
-    public static function boot(){
-        parent::boot();
-        static::updated(function () {
-            self::flushCache();
-        });
-        static::created(function() {
-            self::flushCache();
-        });
-        static::deleted(function() {
-            self::flushCache();
-        });
-    }
+    // public static function boot(){
+    //     parent::boot();
+    //     static::updated(function () {
+    //         self::flushCache();
+    //     });
+    //     static::created(function() {
+    //         self::flushCache();
+    //     });
+    //     static::deleted(function() {
+    //         self::flushCache();
+    //     });
+    // }
 }

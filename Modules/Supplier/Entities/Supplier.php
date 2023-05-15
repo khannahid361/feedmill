@@ -40,10 +40,10 @@ class Supplier extends BaseModel
      * * * Begin :: Custom Datatable Code * * *
     *******************************************/
     //custom search column property
-    protected $_name; 
-    protected $_mobile; 
-    protected $_email; 
-    protected $_status; 
+    protected $_name;
+    protected $_mobile;
+    protected $_email;
+    protected $_status;
 
     //methods to set custom search property value
     public function setName($name)
@@ -71,7 +71,7 @@ class Supplier extends BaseModel
         }else{
             $this->column_order = ['id','name', 'address','mobile', 'email', 'city', 'country','status', null, null];
         }
-        
+
         $query = self::toBase();
 
         //search query
