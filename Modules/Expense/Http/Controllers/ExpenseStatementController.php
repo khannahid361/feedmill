@@ -20,7 +20,7 @@ class ExpenseStatementController extends BaseController
         if(permission('expense-access')){
             $this->setPageData('Expense Statement','Expense Statement','fas fa-money-check-alt',[['name'=>'Expense','link'=>'javascript::void();'],['name' => 'Expense Statement']]);
             $expense_items = ExpenseItem::toBase()->get();
-            $warehouses =  Warehouse::where('sataus',1)->get();
+            $warehouses =  Warehouse::where('status',1)->get();
             return view('expense::expense-statement.index',compact('expense_items','warehouses'));
         }else{
             return $this->access_blocked();

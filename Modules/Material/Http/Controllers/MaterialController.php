@@ -30,7 +30,7 @@ class MaterialController extends BaseController
             $data = [
                 'units'      => Unit::where('status',1)->get(),
                 'taxes'      => Tax::activeTaxes(),
-                'warehouses' =>  Warehouse::where('sataus',1)->get(),
+                'warehouses' =>  Warehouse::where('status',1)->get(),
                 'categories' => Category::allMaterialCategories(),
             ];
             return view('material::index',$data);

@@ -307,7 +307,7 @@ class SaleController extends BaseController{
         if(permission('sale-product-delivery')){
             $this->setPageData('Product Delivery','Product Delivery','fab fa-opencart',[['name' => 'Product Delivery']]);
             $details     = $this->model->with('customer')->find($id);
-            $warehouses  =  Warehouse::where('sataus',1)->get();
+            $warehouses  =  Warehouse::where('status',1)->get();
             return view('sale::delivery',compact('details','warehouses'));
         }else{
             return $this->access_blocked();

@@ -272,7 +272,7 @@ class DealerSaleController extends BaseController{
         if(permission('dealer-sale-product-delivery')){
             $this->setPageData('Dealer Product Delivery','Dealer Product Delivery','fab fa-opencart',[['name' => 'Dealer Product Delivery']]);
             $details     = $this->model->with('dealer')->find($id);
-            $warehouses  = Warehouse::where('sataus',1)->get();
+            $warehouses  = Warehouse::where('status',1)->get();
             return view('dealersale::delivery',compact('details','warehouses'));
         }else{
             return $this->access_blocked();
