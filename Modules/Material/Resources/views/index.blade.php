@@ -18,7 +18,7 @@
                 <div class="card-toolbar">
                     <!--begin::Button-->
                     @if (permission('material-add'))
-                    <a href="javascript:void(0);" onclick="showNewFormModal('Add New Material','Save')" class="btn btn-primary btn-sm font-weight-bolder"> 
+                    <a href="javascript:void(0);" onclick="showNewFormModal('Add New Material','Save')" class="btn btn-primary btn-sm font-weight-bolder">
                         <i class="fas fa-plus-circle"></i> Add New</a>
                         @endif
                     <!--end::Button-->
@@ -43,7 +43,7 @@
                                 <option value="{{ $key }}">{{ $value }}</option>
                             @endforeach
                         </x-form.selectbox>
-                        <div class="col-md-12">      
+                        <div class="col-md-12">
                             <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                             data-toggle="tooltip" data-theme="dark" title="Reset">
                             <i class="fas fa-undo-alt"></i></button>
@@ -107,7 +107,7 @@
 <script>
     var table;
     $(document).ready(function(){
-    
+
         table = $('#dataTable').DataTable({
             "processing": true, //Feature control the processing indicator
             "serverSide": true, //Feature control DataTable server side processing mode
@@ -120,7 +120,7 @@
                 [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
             ],
             "pageLength": 25, //number of data show per page
-            "language": { 
+            "language": {
                 processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
                 emptyTable: '<strong class="text-danger">No Data Found</strong>',
                 infoEmpty: '',
@@ -140,7 +140,7 @@
             "columnDefs": [{
                     @if (permission('material-bulk-delete'))
                     "targets": [0,13],
-                    @else 
+                    @else
                     "targets": [12],
                     @endif
                     "orderable": false,
@@ -149,7 +149,7 @@
                 {
                     @if (permission('material-bulk-delete'))
                     "targets": [1,2,4,5,6,8,9,10,11,12],
-                    @else 
+                    @else
                     "targets": [0,1,3,4,5,7,8,9,10,11],
                     @endif
                     "className": "text-center"
@@ -157,7 +157,7 @@
                 {
                     @if (permission('material-bulk-delete'))
                     "targets": [7],
-                    @else 
+                    @else
                     "targets": [6],
                     @endif
                     "className": "text-right"
@@ -166,7 +166,7 @@
             "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
-    
+
             "buttons": [
                 @if (permission('material-report'))
                 {
@@ -181,9 +181,9 @@
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
                         @if (permission('material-bulk-delete'))
-                        columns: ':visible:not(:eq(0),:eq(13))' 
-                        @else 
-                        columns: ':visible:not(:eq(12))' 
+                        columns: ':visible:not(:eq(0),:eq(13))'
+                        @else
+                        columns: ':visible:not(:eq(12))'
                         @endif
                     },
                     customize: function (win) {
@@ -203,9 +203,9 @@
                     "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
                     "exportOptions": {
                         @if (permission('material-bulk-delete'))
-                        columns: ':visible:not(:eq(0),:eq(13))' 
-                        @else 
-                        columns: ':visible:not(:eq(12))' 
+                        columns: ':visible:not(:eq(0),:eq(13))'
+                        @else
+                        columns: ':visible:not(:eq(12))'
                         @endif
                     }
                 },
@@ -217,9 +217,9 @@
                     "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
                     "exportOptions": {
                         @if (permission('material-bulk-delete'))
-                        columns: ':visible:not(:eq(0),:eq(13))' 
-                        @else 
-                        columns: ':visible:not(:eq(12))' 
+                        columns: ':visible:not(:eq(0),:eq(13))'
+                        @else
+                        columns: ':visible:not(:eq(12))'
                         @endif
                     }
                 },
@@ -233,18 +233,18 @@
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
                         @if (permission('material-bulk-delete'))
-                        columns: ':visible:not(:eq(0),:eq(13))' 
-                        @else 
-                        columns: ':visible:not(:eq(12))' 
+                        columns: ':visible:not(:eq(0),:eq(13))'
+                        @else
+                        columns: ':visible:not(:eq(12))'
                         @endif
                     },
                     customize: function(doc) {
-                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
+                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
                         doc.styles.tableHeader.fontSize = 7;
                         doc.pageMargins = [5,5,5,5];
-                    } 
+                    }
                 },
-                @endif 
+                @endif
                 @if (permission('material-bulk-delete'))
                 {
                     'className':'btn btn-danger btn-sm delete_btn d-none text-white',
@@ -256,11 +256,11 @@
                 @endif
             ],
         });
-    
+
         $('#btn-filter').click(function () {
             table.ajax.reload();
         });
-    
+
         $('#btn-reset').click(function () {
             $('#form-filter')[0].reset();
             $('#form-filter .selectpicker').selectpicker('refresh');
@@ -286,7 +286,7 @@
         $('.remove-files').on('click', function(){
             $(this).parents(".col-md-12").remove();
         });
-    
+
         $(document).on('click', '#save-btn', function () {
             let form = document.getElementById('store_or_update_form');
             let formData = new FormData(form);
@@ -327,8 +327,8 @@
                                 $('#store_or_update_form #' + key).parent().append(
                                 '<small class="error text-danger">' + value + '</small>');
                             }
-                            
-                            
+
+
                         });
                     } else {
                         notification(data.status, data.message);
@@ -352,7 +352,7 @@
                 }
             });
         });
-    
+
         $(document).on('click', '.edit_data', function () {
             let id = $(this).data('id');
             $('#store_or_update_form')[0].reset();
@@ -378,10 +378,10 @@
                             $('#store_or_update_form #unit_id').val(data.unit_id);
                             $('#store_or_update_form #alert_qty').val(data.alert_qty);
                             data.tax_id ? $('#store_or_update_form #tax_id').val(data.tax_id) : $('#store_or_update_form #tax_id').val(0)
-                            
+
                             $('#store_or_update_form #tax_method').val(data.tax_method);
-                            
-                            
+
+
                             $('#has_opening_stock').val(data.has_opening_stock);
                             if(data.has_opening_stock == 1)
                             {
@@ -417,7 +417,7 @@
                                 '<i class="fas fa-edit text-white"></i> <span>Edit ' + data.name + '</span>');
                             $('#store_or_update_modal #save-btn').text('Update');
                         }
-                        
+
                     },
                     error: function (xhr, ajaxOption, thrownError) {
                         console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
@@ -450,7 +450,7 @@
                 });
             }
         });
-    
+
         $(document).on('click', '.delete_data', function () {
             let id    = $(this).data('id');
             let name  = $(this).data('name');
@@ -458,7 +458,7 @@
             let url   = "{{ route('material.delete') }}";
             delete_data(id, url, table, row, name);
         });
-    
+
         function multi_delete(){
             let ids = [];
             let rows;
@@ -523,8 +523,8 @@
                 $('.material-qty,.opening-warehouse-id,.material-cost').addClass('d-none');
             }
         });
-    
-    
+
+
     });
 
     function populate_unit(unit_id,purchase_unit_id='')
@@ -543,7 +543,7 @@
                     $('#purchase_unit_id').val(purchase_unit_id);
                     $('.selectpicker').selectpicker('refresh');
                 }
-                
+
             },
         });
     }
@@ -562,7 +562,7 @@
         $('#store_or_update_form .spartan_remove_row').css('display','none');
         $('#store_or_update_form .img_').css('display','none');
         $('#store_or_update_form .img_').attr('src','');
-   
+
         $('#store_or_update_modal').modal({
             keyboard: false,
             backdrop: 'static',
