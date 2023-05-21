@@ -185,6 +185,7 @@
                                         @php
                                             $totalMaterials = 0;
                                         @endphp
+                                        {{-- @dd($product->product_materials) --}}
                                         @if (!$product->product_materials->isEmpty())
                                             @foreach ($product->product_materials as $key => $value)
                                                 <div class="row {{ $key == 0 ? '' : 'row_remove' }}">

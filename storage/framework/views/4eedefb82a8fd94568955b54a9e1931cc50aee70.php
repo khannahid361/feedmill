@@ -214,6 +214,7 @@
                                         <?php
                                             $totalMaterials = 0;
                                         ?>
+                                        
                                         <?php if(!$product->product_materials->isEmpty()): ?>
                                             <?php $__currentLoopData = $product->product_materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <div class="row <?php echo e($key == 0 ? '' : 'row_remove'); ?>">
