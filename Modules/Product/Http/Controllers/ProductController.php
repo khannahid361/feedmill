@@ -230,7 +230,8 @@ class ProductController extends BaseController
 
         if (permission('product-view')) {
             $this->setPageData('Product Details', 'Product Details', 'fas fa-paste', [['name' => 'Product', 'link' => route('product')], ['name' => 'Product Details']]);
-            $product = $this->model->with('category', 'tax', 'base_unit', 'product_material')->findOrFail($id);
+            $product = $this->model->with('category', 'tax', 'base_unit', 'product_material','product_materials')->findOrFail($id);
+            // return response()->json($product);
             return view('product::details', compact('product'));
         } else {
             return $this->access_blocked();
