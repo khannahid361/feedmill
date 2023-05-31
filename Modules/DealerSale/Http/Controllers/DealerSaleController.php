@@ -193,6 +193,7 @@ class DealerSaleController extends BaseController{
                 'dealer'       => DB::table('dealers')->where([['status',1]])->select('id','name')->get(),
                 'taxes'        => Tax::activeTaxes(),
             ];
+            // return response()->json($data);
             return view('dealersale::edit',$data);
         }else{
             return $this->access_blocked();

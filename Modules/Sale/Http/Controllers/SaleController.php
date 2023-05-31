@@ -215,13 +215,15 @@ class SaleController extends BaseController{
                 ->groupBy('product_id')
                 ->orderBy('p.name','asc')
                 ->get();
+                $sale =$this->model->with('sale_products','customer')->find($id);
             $data = [
                 'products'     => $products,
                 'sale'         => $this->model->with('sale_products','customer')->find($id),
                 'taxes'        => Tax::activeTaxes(),
+                'account' => ChartOfAccount::where('id',$sale->account_id)->first()
             ];
 
-//            return response()->json($data);
+        //    return response()->json($data);
             return view('sale::edit',$data);
         }else{
             return $this->access_blocked();
