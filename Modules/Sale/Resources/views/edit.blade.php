@@ -239,7 +239,7 @@
                                         <div class="form-group col-md-4">
                                             <label for="account_id">{{__('Account')}}</label>
                                             <select class="form-control" id="account_id" name="account_id">
-                                                <option value="{{$sale->account->id}}">{{$sale->account->name}}</option>
+                                                <option value="{{$sale->account_id}}">{{$sale->account->name}}</option>
                                             </select>
                                         </div>
 {{--                                        <div class="form-group required col-md-4 @if($sale->payment_method) {{ $sale->payment_method != 1  ? '' : 'd-none' }} @endif reference_no">--}}

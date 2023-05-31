@@ -248,7 +248,8 @@ class PurchaseController extends BaseController{
                         $material                  = Material::find($value['material_id']);
                         $warehouseMaterialQuantity = WarehouseMaterial::where(['material_id' => $value['material_id']])->sum('qty');
                         $warehouse_material        = WarehouseMaterial::where(['warehouse_id' => $purchase->warehouse_id,'material_id'=>$value['material_id']])->first();
-                        $materialNewPrice          = (($warehouseMaterialQuantity * $material->cost) + ($value['qty'] * $value['net_unit_cost'])) / ( $warehouseMaterialQuantity + $value['qty']);
+                        // $materialNewPrice          = (($warehouseMaterialQuantity * $material->cost) + ($value['qty'] * $value['net_unit_cost'])) / ( $warehouseMaterialQuantity + $value['qty']);
+                        $materialNewPrice          = (($warehouseMaterialQuantity * $material->cost) + ($purchase->grand_total)) / ( $warehouseMaterialQuantity + $value['qty']);
                         MaterialPurchase::where(['purchase_id' => $id,'material_id' => $value['material_id']])->first()->update([
                             'new_unit_cost' => $materialNewPrice
                         ]);

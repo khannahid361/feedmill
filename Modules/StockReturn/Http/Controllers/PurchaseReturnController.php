@@ -140,7 +140,8 @@ class PurchaseReturnController extends BaseController
 
                                 $material                  = Material::find($value['id']);
                                 $warehouseMaterialQuantity = WarehouseMaterial::where(['material_id' => $value['id']])->sum('qty');
-                                $materialNewPrice          = (($warehouseMaterialQuantity * $material->cost) - ($value['return_qty'] * $value['net_unit_cost'])) / ( $warehouseMaterialQuantity - $value['return_qty']);
+                                // $materialNewPrice          = (($warehouseMaterialQuantity * $material->cost) - ($value['return_qty'] * $value['net_unit_cost'])) / ( $warehouseMaterialQuantity - $value['return_qty']);
+                                $materialNewPrice          = (($warehouseMaterialQuantity * $material->cost) - ($value['total'])) / ( $warehouseMaterialQuantity - $value['return_qty']);
                                 if(!empty($material)){
                                     $material->update([
                                        'qty'   => $material->qty - $qty,
