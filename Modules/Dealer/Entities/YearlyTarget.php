@@ -2,17 +2,10 @@
 
 namespace Modules\Dealer\Entities;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\BaseModel;
 
-class YearlyTarget extends Model
+class YearlyTarget extends BaseModel
 {
-    use HasFactory;
-
-    protected $fillable = [];
-    
-    protected static function newFactory()
-    {
-        return \Modules\Dealer\Database\factories\YearlyTargetFactory::new();
-    }
+    protected $table = 'yearly_target';
+    protected $fillable = ['dealer_id', 'qty', 'commission_amount', 'year', 'month', 'status', 'created_by', 'modified_by', 'paid_amount', 'due_amount', 'is_paid', 'acheived_qty'];
 }

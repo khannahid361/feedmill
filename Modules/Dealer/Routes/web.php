@@ -45,6 +45,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('change-status', 'DealerAdvanceController@change_status')->name('change.status');
     });
 
-
-
+    //Monthly commission Target
+    Route::get('dealer-monthly-commission', 'MonthlyTargetController@index')->name('dealer.monthly.commission');
+    Route::group(['prefix' => 'dealer-monthly-commission', 'as'=>'dealer.monthly.commission.'], function () {
+        Route::post('datatable-data', 'MonthlyTargetController@get_datatable_data')->name('datatable.data');
+        Route::get('create', 'MonthlyTargetController@create')->name('create');
+        Route::post('store', 'MonthlyTargetController@store')->name('store');
+        Route::post('datatable-data', 'MonthlyTargetController@datatableData')->name('datatableData');
+    });
 });
