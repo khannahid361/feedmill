@@ -34,13 +34,17 @@
                                     $currentYear = date('Y');
                                     $nextYear = $currentYear + 1;
                                 @endphp
-
+                                <div class="form-group col-md-3 required">
+                                    <label for="year_id">Select Month</label>
+                                    <select name="year" id="year_id" class="form-control selectpicker" required>
+                                        <option value="{{ $currentYear }}">{{ $currentYear }}</option>
+                                        <option value="{{ $nextYear }}">{{ $nextYear }}</option>
+                                    </select>
+                                </div>
                                 <div class="col-md-12">
                                     <table class="table table-bordered" id="commission_table">
                                         <thead class="bg-primary">
                                             <th>Dealer Name</th>
-                                            <th>Month</th>
-                                            <th>Year</th>
                                             <th class="text-center">Target Qty</th>
                                             <th class="text-center">Commission Amount</th>
                                             <th class="text-center"></th>
@@ -48,67 +52,23 @@
                                         <tbody id="commission">
                                             <tr>
                                                 <td>
-                                                    <input type="hidden" name="commission[0][dealer_id]"
-                                                        id="commission_0_dealer_id" value="{{ $dealer->dealer_id }}">
-                                                    <input type="text" readonly name="" id=""
-                                                        value="{{ $dealer->dealer->name }}" class="form-control">
-                                                </td>
-                                                <td>
-                                                    <select name="month" id="month_id" class="form-control selectpicker"
-                                                        required>
-                                                        <option value="1"
-                                                            @if ($dealer->month == 1) ? selected @endif>January
-                                                        </option>
-                                                        <option value="2"
-                                                            @if ($dealer->month == 2) ? selected @endif>February
-                                                        </option>
-                                                        <option value="3"
-                                                            @if ($dealer->month == 3) ? selected @endif>March
-                                                        </option>
-                                                        <option value="4"
-                                                            @if ($dealer->month == 4) ? selected @endif>April
-                                                        </option>
-                                                        <option value="5"
-                                                            @if ($dealer->month == 5) ? selected @endif>May</option>
-                                                        <option value="6"
-                                                            @if ($dealer->month == 6) ? selected @endif>June
-                                                        </option>
-                                                        <option value="7"
-                                                            @if ($dealer->month == 7) ? selected @endif>July
-                                                        </option>
-                                                        <option value="8"
-                                                            @if ($dealer->month == 8) ? selected @endif>August
-                                                        </option>
-                                                        <option value="9"
-                                                            @if ($dealer->month == 9) ? selected @endif>September
-                                                        </option>
-                                                        <option value="10"
-                                                            @if ($dealer->month == 10) ? selected @endif>October
-                                                        </option>
-                                                        <option value="11"
-                                                            @if ($dealer->month == 11) ? selected @endif>November
-                                                        </option>
-                                                        <option value="12"
-                                                            @if ($dealer->month == 12) ? selected @endif>December
-                                                        </option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <select name="year" id="year_id" class="form-control selectpicker"
-                                                        required>
-                                                        <option value="{{ $currentYear }}"
-                                                            @if ($dealer->year == $currentYear) selected @endif>
-                                                            {{ $currentYear }}</option>
-                                                        <option value="{{ $nextYear }}"
-                                                            @if ($dealer->year == $nextYear) selected @endif>
-                                                            {{ $nextYear }}</option>
+                                                    <select name="commission[0][dealer_id]" id="commission_0_dealer_id" required
+                                                        class="form-control selectpicker" required>
+                                                        <option value="">Select Please</option>
+                                                        @foreach ($dealers as $value)
+                                                            <option value="{{ $value->id }}">{{ $value->name }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                 </td>
                                                 <td><input type="text" name="commission[0][qty]" id="commission_0_qty_id"
-                                                        class="form-control" required value="{{ $dealer->qty }}"></td>
+                                                        class="form-control" required value="0"></td>
                                                 <td><input type="text" name="commission[0][commission_amount]"
                                                         id="commission_0_commission_amount_id" class="form-control" required
-                                                        value="{{ $dealer->commission_amount }}"></td>
+                                                        value="0"></td>
+                                                <td class="text-center"><button type="button"
+                                                        class="btn btn-success btn-sm small-btn btn-md add-dealer"><i
+                                                            class="fas fa-plus"></i></button></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -131,10 +91,52 @@
     <script src="{{ asset('js/moment.js') }}"></script>
     <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
     <script>
+        var serials = 0;
+        //add
+        $('#commission_table').on('click', '.add-dealer', function() {
+            serials++;
+            commission_row_add(serials);
+        });
+
+        function commission_row_add(index) {
+            let html = `<tr data-row-id="${index}">
+                                                <td>
+                                                    <select name="commission[${index}][dealer_id]" id="dealer_id_${index}" required
+                                                        class="form-control selectpicker dealerSelect" required>
+                                                        <option value="">Select Please</option>
+                                                        @foreach ($dealers as $value)
+                                                            <option value="{{ $value->id }}">{{ $value->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td><input type="text" name="commission[${index}][qty]" id="qty_id_${index}"
+                                                        class="form-control" required value="0"></td>
+                                                <td><input type="text" name="commission[${index}][commission_amount]" id="commission_amount_${index}"
+                                                        class="form-control" required value="0"></td>
+                                                <td class="text-center"><button type="button"
+                                                        class="btn btn-danger btn-sm small-btn btn-md delete-dealer"><i
+                                                            class="fas fa-minus"></i></button></td>
+                                            </tr>`;
+            $('#commission_table').append(html);
+            $('.selectpicker').selectpicker('refresh');
+        }
+        //delete
+        $('#commission_table').on('click', '.delete-dealer', function() {
+            var row = $(this).closest("tr");
+            var rowId = row.data("row-id");
+            remove_commission_row(rowId);
+        });
+
+        function remove_commission_row(index) {
+            var rowToRemove = $("#commission_table").find("tr[data-row-id='" + index + "']");
+            rowToRemove.remove();
+        }
+
         function store_data() {
             let form = document.getElementById('commission_store_form');
             let formData = new FormData(form);
-            let url = "{{ route('dealer.monthly.commission.update', $dealer->id) }}";
+            let url = "{{ route('dealer.yearly.commission.store') }}";
             $.ajax({
                 url: url,
                 type: "POST",
@@ -164,7 +166,7 @@
                     } else {
                         notification(data.status, data.message);
                         if (data.status == 'success') {
-                            window.location.replace("{{ route('dealer.monthly.commission') }}");
+                            window.location.replace("{{ route('dealer.yearly.commission') }}");
 
                         }
                     }

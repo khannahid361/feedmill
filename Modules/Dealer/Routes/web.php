@@ -52,5 +52,20 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('create', 'MonthlyTargetController@create')->name('create');
         Route::post('store', 'MonthlyTargetController@store')->name('store');
         Route::post('datatable-data', 'MonthlyTargetController@datatableData')->name('datatableData');
+        Route::get('edit/{id}', 'MonthlyTargetController@edit')->name('edit');
+        Route::post('show', 'MonthlyTargetController@show')->name('show');
+        Route::post('update/{id}', 'MonthlyTargetController@update')->name('update');
+    });
+
+    //Monthly commission Target
+    Route::get('dealer-yearly-commission', 'YearlyTargetController@index')->name('dealer.yearly.commission');
+    Route::group(['prefix' => 'dealer-yearly-commission', 'as'=>'dealer.yearly.commission.'], function () {
+        Route::post('datatable-data', 'YearlyTargetController@get_datatable_data')->name('datatable.data');
+        Route::get('create', 'YearlyTargetController@create')->name('create');
+        Route::post('store', 'YearlyTargetController@store')->name('store');
+        Route::post('datatable-data', 'YearlyTargetController@datatableData')->name('datatableData');
+        Route::get('edit/{id}', 'YearlyTargetController@edit')->name('edit');
+        Route::post('show', 'YearlyTargetController@show')->name('show');
+        Route::post('update/{id}', 'YearlyTargetController@update')->name('update');
     });
 });

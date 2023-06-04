@@ -12,7 +12,7 @@
                     </div>
                     <div class="card-toolbar">
                         <?php if(permission('dealer-add')): ?>
-                            <a href="<?php echo e(route('dealer.monthly.commission.create')); ?>"
+                            <a href="<?php echo e(route('dealer.yearly.commission.create')); ?>"
                                 class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add
                                 New</a>
                         <?php endif; ?>
@@ -23,30 +23,6 @@
                 <div class="card-header flex-wrap py-5">
                     <form method="POST" id="form-filter" class="col-md-12 px-0">
                         <div class="row">
-                            <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Month','name' => 'month','required' => 'required','col' => 'col-md-3','class' => 'selectpicker']]); ?>
-<?php $component->withName('form.selectbox'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Month','name' => 'month','required' => 'required','col' => 'col-md-3','class' => 'selectpicker']); ?>
-                                <option value="1">January</option>
-                                <option value="2">February</option>
-                                <option value="3">March</option>
-                                <option value="4">April</option>
-                                <option value="5">May</option>
-                                <option value="6">June</option>
-                                <option value="7">July</option>
-                                <option value="8">August</option>
-                                <option value="9">September</option>
-                                <option value="10">October</option>
-                                <option value="11">November</option>
-                                <option value="12">December</option>
-                             <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
-<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
-<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
-<?php endif; ?>
                             <?php
                                 $currentYear = date('Y');
                                 $nextYear = $currentYear + 1;
@@ -108,7 +84,6 @@
                                             <th>Sl</th>
                                             <th>Dealer Name</th>
                                             <th>Year</th>
-                                            <th>Month</th>
                                             <th>Target Quantity</th>
                                             <th>Acheived Quantity</th>
                                             <th>Commission Amount</th>
@@ -127,7 +102,7 @@
             </div>
         </div>
     </div>
-    <?php echo $__env->make('dealer::monthly_target.view', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make('dealer::yearly_target.view', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <?php $__env->startPush('scripts'); ?>
         <script>
             $(document).ready(function() {
@@ -151,17 +126,16 @@
                         zeroRecords: '<strong class="text-danger">No Data Found</strong>'
                     },
                     "ajax": {
-                        "url": "<?php echo e(route('dealer.monthly.commission.datatableData')); ?>",
+                        "url": "<?php echo e(route('dealer.yearly.commission.datatableData')); ?>",
                         "type": "POST",
                         "data": function(data) {
                             data.year = $('#year').val();
-                            data.month = $('#month').val();
                             data.dealer_id = $('#dealer_id').val();
                             data._token = _token;
                         }
                     },
                     "columnDefs": [{
-                        "targets": [10],
+                        "targets": [9],
                         "orderable": false,
                         "className": "text-center"
                     }, ],
@@ -276,4 +250,4 @@
     <?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Dealer\Resources/views/monthly_target/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Dealer\Resources/views/yearly_target/index.blade.php ENDPATH**/ ?>

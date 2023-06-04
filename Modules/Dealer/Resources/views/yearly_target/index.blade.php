@@ -1,21 +1,22 @@
-<?php $__env->startSection('title', $page_title); ?>
-<?php $__env->startPush('styles'); ?>
-    <link href="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.css')); ?>" rel="stylesheet" type="text/css" />
-<?php $__env->stopPush(); ?>
-<?php $__env->startSection('content'); ?>
+@extends('layouts.app')
+@section('title', $page_title)
+@push('styles')
+    <link href="{{ asset('plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+@endpush
+@section('content')
     <div class="d-flex flex-column-fluid">
         <div class="container-fluid">
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-5">
                     <div class="card-title">
-                        <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
+                        <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
                     </div>
                     <div class="card-toolbar">
-                        <?php if(permission('dealer-add')): ?>
-                            <a href="<?php echo e(route('dealer.monthly.commission.create')); ?>"
+                        @if (permission('dealer-add'))
+                            <a href="{{ route('dealer.yearly.commission.create') }}"
                                 class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add
                                 New</a>
-                        <?php endif; ?>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -23,67 +24,24 @@
                 <div class="card-header flex-wrap py-5">
                     <form method="POST" id="form-filter" class="col-md-12 px-0">
                         <div class="row">
-                            <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Month','name' => 'month','required' => 'required','col' => 'col-md-3','class' => 'selectpicker']]); ?>
-<?php $component->withName('form.selectbox'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Month','name' => 'month','required' => 'required','col' => 'col-md-3','class' => 'selectpicker']); ?>
-                                <option value="1">January</option>
-                                <option value="2">February</option>
-                                <option value="3">March</option>
-                                <option value="4">April</option>
-                                <option value="5">May</option>
-                                <option value="6">June</option>
-                                <option value="7">July</option>
-                                <option value="8">August</option>
-                                <option value="9">September</option>
-                                <option value="10">October</option>
-                                <option value="11">November</option>
-                                <option value="12">December</option>
-                             <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
-<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
-<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
-<?php endif; ?>
-                            <?php
+                            @php
                                 $currentYear = date('Y');
                                 $nextYear = $currentYear + 1;
-                            ?>
-                            <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Year','name' => 'year','required' => 'required','col' => 'col-md-3','class' => 'selectpicker']]); ?>
-<?php $component->withName('form.selectbox'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Year','name' => 'year','required' => 'required','col' => 'col-md-3','class' => 'selectpicker']); ?>
-                                <option value="<?php echo e($currentYear); ?>"><?php echo e($currentYear); ?></option>
-                                <option value="<?php echo e($nextYear); ?>"><?php echo e($nextYear); ?></option>
-                             <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
-<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
-<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
-<?php endif; ?>
-                            <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Dealer','name' => 'dealer_id','required' => 'required','col' => 'col-md-3','class' => 'selectpicker']]); ?>
-<?php $component->withName('form.selectbox'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Dealer','name' => 'dealer_id','required' => 'required','col' => 'col-md-3','class' => 'selectpicker']); ?>
-                                <?php if(!$dealers->isEmpty()): ?>
-                                    <?php $__currentLoopData = $dealers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <option value="<?php echo e($value->id); ?>"><?php echo e($value->name); ?>
-
+                            @endphp
+                            <x-form.selectbox labelName="Year" name="year" required="required" col="col-md-3"
+                                class="selectpicker">
+                                <option value="{{ $currentYear }}">{{ $currentYear }}</option>
+                                <option value="{{ $nextYear }}">{{ $nextYear }}</option>
+                            </x-form.selectbox>
+                            <x-form.selectbox labelName="Dealer" name="dealer_id" required="required" col="col-md-3"
+                                class="selectpicker">
+                                @if (!$dealers->isEmpty())
+                                    @foreach ($dealers as $value)
+                                        <option value="{{ $value->id }}">{{ $value->name }}
                                         </option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                <?php endif; ?>
-                             <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
-<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
-<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
-<?php endif; ?>
+                                    @endforeach
+                                @endif
+                            </x-form.selectbox>
                             <div class="col-md-3">
                                 <div style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right"
@@ -108,7 +66,6 @@
                                             <th>Sl</th>
                                             <th>Dealer Name</th>
                                             <th>Year</th>
-                                            <th>Month</th>
                                             <th>Target Quantity</th>
                                             <th>Acheived Quantity</th>
                                             <th>Commission Amount</th>
@@ -127,8 +84,8 @@
             </div>
         </div>
     </div>
-    <?php echo $__env->make('dealer::monthly_target.view', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-    <?php $__env->startPush('scripts'); ?>
+    @include('dealer::yearly_target.view')
+    @push('scripts')
         <script>
             $(document).ready(function() {
                 table = $('#dataTable').DataTable({
@@ -151,17 +108,16 @@
                         zeroRecords: '<strong class="text-danger">No Data Found</strong>'
                     },
                     "ajax": {
-                        "url": "<?php echo e(route('dealer.monthly.commission.datatableData')); ?>",
+                        "url": "{{ route('dealer.yearly.commission.datatableData') }}",
                         "type": "POST",
                         "data": function(data) {
                             data.year = $('#year').val();
-                            data.month = $('#month').val();
                             data.dealer_id = $('#dealer_id').val();
                             data._token = _token;
                         }
                     },
                     "columnDefs": [{
-                        "targets": [10],
+                        "targets": [9],
                         "orderable": false,
                         "className": "text-center"
                     }, ],
@@ -179,7 +135,7 @@
                             "extend": 'print',
                             'text': 'Print',
                             'className': 'btn btn-secondary btn-sm text-white',
-                            "title": "<?php echo e($page_title); ?> List",
+                            "title": "{{ $page_title }} List",
                             "orientation": "landscape", //portrait
                             "pageSize": "A4", //A3,A5,A6,legal,letter
                             "exportOptions": {
@@ -202,8 +158,8 @@
                             "extend": 'csv',
                             'text': 'CSV',
                             'className': 'btn btn-secondary btn-sm text-white',
-                            "title": "<?php echo e($page_title); ?> List",
-                            "filename": "<?php echo e(strtolower(str_replace(' ', '-', $page_title))); ?>-list",
+                            "title": "{{ $page_title }} List",
+                            "filename": "{{ strtolower(str_replace(' ', '-', $page_title)) }}-list",
                             "exportOptions": {
                                 columns: ':visible:not(:eq(0),:eq(10))'
                             }
@@ -212,8 +168,8 @@
                             "extend": 'excel',
                             'text': 'Excel',
                             'className': 'btn btn-secondary btn-sm text-white',
-                            "title": "<?php echo e($page_title); ?> List",
-                            "filename": "<?php echo e(strtolower(str_replace(' ', '-', $page_title))); ?>-list",
+                            "title": "{{ $page_title }} List",
+                            "filename": "{{ strtolower(str_replace(' ', '-', $page_title)) }}-list",
                             "exportOptions": {
                                 columns: ':visible:not(:eq(0),:eq(10))'
                             }
@@ -222,8 +178,8 @@
                             "extend": 'pdf',
                             'text': 'PDF',
                             'className': 'btn btn-secondary btn-sm text-white',
-                            "title": "<?php echo e($page_title); ?> List",
-                            "filename": "<?php echo e(strtolower(str_replace(' ', '-', $page_title))); ?>-list",
+                            "title": "{{ $page_title }} List",
+                            "filename": "{{ strtolower(str_replace(' ', '-', $page_title)) }}-list",
                             "orientation": "landscape", //portrait
                             "pageSize": "A4", //A3,A5,A6,legal,letter
                             "exportOptions": {
@@ -250,7 +206,7 @@
                     let id = $(this).data('id');
                     if (id) {
                         $.ajax({
-                            url: "<?php echo e(route('dealer.monthly.commission.show')); ?>",
+                            url: "{{ route('dealer.monthly.commission.show') }}",
                             type: "POST",
                             data: {
                                 id: id,
@@ -273,7 +229,5 @@
                 });
             });
         </script>
-    <?php $__env->stopPush(); ?>
-<?php $__env->stopSection(); ?>
-
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Dealer\Resources/views/monthly_target/index.blade.php ENDPATH**/ ?>
+    @endpush
+@endsection

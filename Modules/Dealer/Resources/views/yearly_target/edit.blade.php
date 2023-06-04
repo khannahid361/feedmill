@@ -39,7 +39,6 @@
                                     <table class="table table-bordered" id="commission_table">
                                         <thead class="bg-primary">
                                             <th>Dealer Name</th>
-                                            <th>Month</th>
                                             <th>Year</th>
                                             <th class="text-center">Target Qty</th>
                                             <th class="text-center">Commission Amount</th>
@@ -52,46 +51,6 @@
                                                         id="commission_0_dealer_id" value="{{ $dealer->dealer_id }}">
                                                     <input type="text" readonly name="" id=""
                                                         value="{{ $dealer->dealer->name }}" class="form-control">
-                                                </td>
-                                                <td>
-                                                    <select name="month" id="month_id" class="form-control selectpicker"
-                                                        required>
-                                                        <option value="1"
-                                                            @if ($dealer->month == 1) ? selected @endif>January
-                                                        </option>
-                                                        <option value="2"
-                                                            @if ($dealer->month == 2) ? selected @endif>February
-                                                        </option>
-                                                        <option value="3"
-                                                            @if ($dealer->month == 3) ? selected @endif>March
-                                                        </option>
-                                                        <option value="4"
-                                                            @if ($dealer->month == 4) ? selected @endif>April
-                                                        </option>
-                                                        <option value="5"
-                                                            @if ($dealer->month == 5) ? selected @endif>May</option>
-                                                        <option value="6"
-                                                            @if ($dealer->month == 6) ? selected @endif>June
-                                                        </option>
-                                                        <option value="7"
-                                                            @if ($dealer->month == 7) ? selected @endif>July
-                                                        </option>
-                                                        <option value="8"
-                                                            @if ($dealer->month == 8) ? selected @endif>August
-                                                        </option>
-                                                        <option value="9"
-                                                            @if ($dealer->month == 9) ? selected @endif>September
-                                                        </option>
-                                                        <option value="10"
-                                                            @if ($dealer->month == 10) ? selected @endif>October
-                                                        </option>
-                                                        <option value="11"
-                                                            @if ($dealer->month == 11) ? selected @endif>November
-                                                        </option>
-                                                        <option value="12"
-                                                            @if ($dealer->month == 12) ? selected @endif>December
-                                                        </option>
-                                                    </select>
                                                 </td>
                                                 <td>
                                                     <select name="year" id="year_id" class="form-control selectpicker"
@@ -134,7 +93,7 @@
         function store_data() {
             let form = document.getElementById('commission_store_form');
             let formData = new FormData(form);
-            let url = "{{ route('dealer.monthly.commission.update', $dealer->id) }}";
+            let url = "{{ route('dealer.yearly.commission.update', $dealer->id) }}";
             $.ajax({
                 url: url,
                 type: "POST",
@@ -164,7 +123,7 @@
                     } else {
                         notification(data.status, data.message);
                         if (data.status == 'success') {
-                            window.location.replace("{{ route('dealer.monthly.commission') }}");
+                            window.location.replace("{{ route('dealer.yearly.commission') }}");
 
                         }
                     }

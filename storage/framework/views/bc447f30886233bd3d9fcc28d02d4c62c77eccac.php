@@ -1,25 +1,24 @@
-@extends('layouts.app')
-@section('title', $page_title)
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}" />
-    <link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css" />
+<?php $__env->startSection('title', $page_title); ?>
+<?php $__env->startPush('styles'); ?>
+    <link rel="stylesheet" href="<?php echo e(asset('css/jquery-ui.css')); ?>" />
+    <link href="<?php echo e(asset('css/bootstrap-datetimepicker.min.css')); ?>" rel="stylesheet" type="text/css" />
     <style>
         .customer.table td {
             vertical-align: top !important;
             padding: 0 !important;
         }
     </style>
-@endpush
-@section('content')
+<?php $__env->stopPush(); ?>
+<?php $__env->startSection('content'); ?>
     <div class="d-flex flex-column-fluid">
         <div class="container-fluid">
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-5">
                     <div class="card-title">
-                        <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
+                        <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
                     </div>
                     <div class="card-toolbar">
-                        <a href="{{ route('dealer.monthly.commission') }}"
+                        <a href="<?php echo e(route('dealer.monthly.commission')); ?>"
                             class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
                     </div>
                 </div>
@@ -28,12 +27,12 @@
                 <div class="card-body">
                     <div id="kt_datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <form action="" id="commission_store_form" method="post" enctype="multipart/form-data">
-                            @csrf
+                            <?php echo csrf_field(); ?>
                             <div class="row">
-                                @php
+                                <?php
                                     $currentYear = date('Y');
                                     $nextYear = $currentYear + 1;
-                                @endphp
+                                ?>
 
                                 <div class="col-md-12">
                                     <table class="table table-bordered" id="commission_table">
@@ -49,66 +48,66 @@
                                             <tr>
                                                 <td>
                                                     <input type="hidden" name="commission[0][dealer_id]"
-                                                        id="commission_0_dealer_id" value="{{ $dealer->dealer_id }}">
+                                                        id="commission_0_dealer_id" value="<?php echo e($dealer->dealer_id); ?>">
                                                     <input type="text" readonly name="" id=""
-                                                        value="{{ $dealer->dealer->name }}" class="form-control">
+                                                        value="<?php echo e($dealer->dealer->name); ?>" class="form-control">
                                                 </td>
                                                 <td>
                                                     <select name="month" id="month_id" class="form-control selectpicker"
                                                         required>
                                                         <option value="1"
-                                                            @if ($dealer->month == 1) ? selected @endif>January
+                                                            <?php if($dealer->month == 1): ?> ? selected <?php endif; ?>>January
                                                         </option>
                                                         <option value="2"
-                                                            @if ($dealer->month == 2) ? selected @endif>February
+                                                            <?php if($dealer->month == 2): ?> ? selected <?php endif; ?>>February
                                                         </option>
                                                         <option value="3"
-                                                            @if ($dealer->month == 3) ? selected @endif>March
+                                                            <?php if($dealer->month == 3): ?> ? selected <?php endif; ?>>March
                                                         </option>
                                                         <option value="4"
-                                                            @if ($dealer->month == 4) ? selected @endif>April
+                                                            <?php if($dealer->month == 4): ?> ? selected <?php endif; ?>>April
                                                         </option>
                                                         <option value="5"
-                                                            @if ($dealer->month == 5) ? selected @endif>May</option>
+                                                            <?php if($dealer->month == 5): ?> ? selected <?php endif; ?>>May</option>
                                                         <option value="6"
-                                                            @if ($dealer->month == 6) ? selected @endif>June
+                                                            <?php if($dealer->month == 6): ?> ? selected <?php endif; ?>>June
                                                         </option>
                                                         <option value="7"
-                                                            @if ($dealer->month == 7) ? selected @endif>July
+                                                            <?php if($dealer->month == 7): ?> ? selected <?php endif; ?>>July
                                                         </option>
                                                         <option value="8"
-                                                            @if ($dealer->month == 8) ? selected @endif>August
+                                                            <?php if($dealer->month == 8): ?> ? selected <?php endif; ?>>August
                                                         </option>
                                                         <option value="9"
-                                                            @if ($dealer->month == 9) ? selected @endif>September
+                                                            <?php if($dealer->month == 9): ?> ? selected <?php endif; ?>>September
                                                         </option>
                                                         <option value="10"
-                                                            @if ($dealer->month == 10) ? selected @endif>October
+                                                            <?php if($dealer->month == 10): ?> ? selected <?php endif; ?>>October
                                                         </option>
                                                         <option value="11"
-                                                            @if ($dealer->month == 11) ? selected @endif>November
+                                                            <?php if($dealer->month == 11): ?> ? selected <?php endif; ?>>November
                                                         </option>
                                                         <option value="12"
-                                                            @if ($dealer->month == 12) ? selected @endif>December
+                                                            <?php if($dealer->month == 12): ?> ? selected <?php endif; ?>>December
                                                         </option>
                                                     </select>
                                                 </td>
                                                 <td>
                                                     <select name="year" id="year_id" class="form-control selectpicker"
                                                         required>
-                                                        <option value="{{ $currentYear }}"
-                                                            @if ($dealer->year == $currentYear) selected @endif>
-                                                            {{ $currentYear }}</option>
-                                                        <option value="{{ $nextYear }}"
-                                                            @if ($dealer->year == $nextYear) selected @endif>
-                                                            {{ $nextYear }}</option>
+                                                        <option value="<?php echo e($currentYear); ?>"
+                                                            <?php if($dealer->year == $currentYear): ?> selected <?php endif; ?>>
+                                                            <?php echo e($currentYear); ?></option>
+                                                        <option value="<?php echo e($nextYear); ?>"
+                                                            <?php if($dealer->year == $nextYear): ?> selected <?php endif; ?>>
+                                                            <?php echo e($nextYear); ?></option>
                                                     </select>
                                                 </td>
                                                 <td><input type="text" name="commission[0][qty]" id="commission_0_qty_id"
-                                                        class="form-control" required value="{{ $dealer->qty }}"></td>
+                                                        class="form-control" required value="<?php echo e($dealer->qty); ?>"></td>
                                                 <td><input type="text" name="commission[0][commission_amount]"
                                                         id="commission_0_commission_amount_id" class="form-control" required
-                                                        value="{{ $dealer->commission_amount }}"></td>
+                                                        value="<?php echo e($dealer->commission_amount); ?>"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -125,16 +124,16 @@
             </div>
         </div>
     </div>
-@endsection
-@push('scripts')
-    <script src="{{ asset('js/jquery-ui.js') }}"></script>
-    <script src="{{ asset('js/moment.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+    <script src="<?php echo e(asset('js/jquery-ui.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/moment.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/bootstrap-datetimepicker.min.js')); ?>"></script>
     <script>
         function store_data() {
             let form = document.getElementById('commission_store_form');
             let formData = new FormData(form);
-            let url = "{{ route('dealer.monthly.commission.update', $dealer->id) }}";
+            let url = "<?php echo e(route('dealer.monthly.commission.update', $dealer->id)); ?>";
             $.ajax({
                 url: url,
                 type: "POST",
@@ -164,7 +163,7 @@
                     } else {
                         notification(data.status, data.message);
                         if (data.status == 'success') {
-                            window.location.replace("{{ route('dealer.monthly.commission') }}");
+                            window.location.replace("<?php echo e(route('dealer.monthly.commission')); ?>");
 
                         }
                     }
@@ -176,4 +175,6 @@
             });
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Dealer\Resources/views/monthly_target/edit.blade.php ENDPATH**/ ?>

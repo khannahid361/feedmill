@@ -24,6 +24,30 @@
                 <div class="card-header flex-wrap py-5">
                     <form method="POST" id="form-filter" class="col-md-12 px-0">
                         <div class="row">
+                            <x-form.selectbox labelName="Month" name="month" required="required" col="col-md-3"
+                                class="selectpicker">
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </x-form.selectbox>
+                            @php
+                                $currentYear = date('Y');
+                                $nextYear = $currentYear + 1;
+                            @endphp
+                            <x-form.selectbox labelName="Year" name="year" required="required" col="col-md-3"
+                                class="selectpicker">
+                                <option value="{{ $currentYear }}">{{ $currentYear }}</option>
+                                <option value="{{ $nextYear }}">{{ $nextYear }}</option>
+                            </x-form.selectbox>
                             <x-form.selectbox labelName="Dealer" name="dealer_id" required="required" col="col-md-3"
                                 class="selectpicker">
                                 @if (!$dealers->isEmpty())
@@ -33,6 +57,17 @@
                                     @endforeach
                                 @endif
                             </x-form.selectbox>
+                            <div class="col-md-3">
+                                <div style="margin-top:28px;">
+                                    <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right"
+                                        type="button" data-toggle="tooltip" data-theme="dark" title="Reset"><i
+                                            class="fas fa-undo-alt"></i></button>
+                                    <button id="btn-filter"
+                                        class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right" type="button"
+                                        data-toggle="tooltip" data-theme="dark" title="Search"><i
+                                            class="fas fa-search"></i></button>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -65,6 +100,7 @@
             </div>
         </div>
     </div>
+    @include('dealer::monthly_target.view')
     @push('scripts')
         <script>
             $(document).ready(function() {
@@ -75,6 +111,7 @@
                     "responsive": true,
                     "bInfo": true,
                     "bFilter": false,
+                    "ordering": false,
                     "lengthMenu": [
                         [5, 10, 15, 25, 50, 100, 1000, 10000, -1],
                         [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
@@ -90,9 +127,9 @@
                         "url": "{{ route('dealer.monthly.commission.datatableData') }}",
                         "type": "POST",
                         "data": function(data) {
-                            data.year = year;
-                            data.month = month;
-                            data.dealer_id = dealer_id;
+                            data.year = $('#year').val();
+                            data.month = $('#month').val();
+                            data.dealer_id = $('#dealer_id').val();
                             data._token = _token;
                         }
                     },
@@ -173,6 +210,39 @@
                             }
                         },
                     ],
+                });
+                $('#btn-filter').click(function() {
+                    table.ajax.reload();
+                });
+                $('#btn-reset').click(function() {
+                    $('#form-filter')[0].reset();
+                    $('#form-filter .selectpicker').selectpicker('refresh');
+                    table.ajax.reload();
+                });
+                $(document).on('click', '.view_data', function() {
+                    let id = $(this).data('id');
+                    if (id) {
+                        $.ajax({
+                            url: "{{ route('dealer.monthly.commission.show') }}",
+                            type: "POST",
+                            data: {
+                                id: id,
+                                _token: _token
+                            },
+                            success: function(data) {
+                                $('#view_modal #view-data').html('');
+                                $('#view_modal #view-data').html(data);
+                                $('#view_modal').modal({
+                                    keyboard: false,
+                                    backdrop: 'static',
+                                });
+                            },
+                            error: function(xhr, ajaxOption, thrownError) {
+                                console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr
+                                    .responseText);
+                            }
+                        });
+                    }
                 });
             });
         </script>
