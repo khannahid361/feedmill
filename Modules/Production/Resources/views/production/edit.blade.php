@@ -288,6 +288,19 @@
                                                         @endif
                                                     </div>
                                                 </div>
+                                                <div class="form-group col-md-3 required">
+                                                    <label for="">Remaining Mixture</label>
+                                                    <input type="text" class="form-control" name=""
+                                                        id="remaining_mixture"
+                                                        value="{{ $wastage->recyclable_wastage ?? '0' }}"
+                                                        readonly />
+                                                </div>
+                                                <div class="form-group col-md-3 required">
+                                                    <label for="">Used Mixture</label>
+                                                    <input type="text" class="form-control" name="used_wastage_qty"
+                                                        id="used_wastage_qty" onkeyup="checkUsedMixtureQty();"
+                                                        value="{{ $item->used_wastage_qty }}" required />
+                                                </div>
                                             </div>
                                         </div>
                                     @endforeach
@@ -295,7 +308,8 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-primary btn-sm mr-5 float-right"
-                            onclick="check_material_stock()" id="save-btn"><i class="fas fa-sync-alt"></i> Update</button>
+                            onclick="check_material_stock()" id="save-btn"><i class="fas fa-sync-alt"></i>
+                            Update</button>
                     </div>
                 </form>
             </div>

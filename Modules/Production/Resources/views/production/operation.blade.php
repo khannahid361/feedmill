@@ -40,7 +40,10 @@
                                             <th class="text-center">Mfg. Date</th>
                                             <th class="text-center">Exp. Date</th>
                                             <th class="text-center">Unit Name</th>
-                                            <th class="text-center">Finish Goods Qty <sup class="text-danger font-weight-bolder">*</sup></th>
+                                            <th class="text-center">Expected Finish Goods Qty <sup class="text-danger font-weight-bolder">*</sup></th>
+                                            <th class="text-center">Actual Finish Goods Qty <sup class="text-danger font-weight-bolder">*</sup></th>
+                                            <th class="text-center">Recyclable Waste/Mixture</th>
+                                            <th class="text-center">Permanent Waste</th>
                                         </thead>
                                         <tbody>
                                             <tr>
@@ -48,8 +51,18 @@
                                                 <td class="text-center">{{ date('d-M-Y',strtotime($item->exp_date)) }}</td>
                                                 <td class="text-center">{{ $item->product->unit->unit_name.' ('.$item->product->unit->unit_code.')' }}</td>
                                                 <td>
-                                                    <input type="text" class="form-control text-center" value="{{ $item->base_unit_qty }}" name="production[{{ $key+1 }}][fg_qty]" id="production_{{ $key+1 }}_fg_qty" onkeyup="per_unit_cost('{{ $key+1 }}')" readonly>
+                                                    <input type="text" class="form-control text-center" value="{{ $item->expected_unit_qty }}" name="production[{{ $key+1 }}][expected_unit_qty]" id="production_{{ $key+1 }}_expected_unit_qty" readonly>
+
                                                     <input type="hidden" class="form-control" name="production[{{ $key+1 }}][production_product_id]" value="{{ $item->id }}">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control text-center" value="{{ $item->base_unit_qty }}" name="production[{{ $key+1 }}][fg_qty]" id="production_{{ $key+1 }}_fg_qty" onkeyup="per_unit_cost('{{ $key+1 }}')">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control text-center" value="{{ $item->recyclable_wastage_qty ??'0' }}" name="production[{{ $key+1 }}][recyclable_wastage_qty]" id="production_{{ $key+1 }}_recyclable_waste_qty">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control text-center" value="{{ $item->permanent_wastage_qty ?? '0' }}" name="production[{{ $key+1 }}][permanent_wastage_qty]" id="production_{{ $key+1 }}_permanent_waste_qty">
                                                 </td>
                                             </tr>
                                         </tbody>

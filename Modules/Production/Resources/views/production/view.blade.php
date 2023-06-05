@@ -30,8 +30,8 @@
                             <h5>
                                 <b>Batch No.:</b> {{ $production->batch_no }} <br>
                                 <b>Warehouse:</b> {{ $production->warehouse->name }} <br>
-                                <b>Start Date:</b> {{ date('d-M-Y',strtotime($production->start_date)) }}
-                                @if($production->end_date) <br><b>Start Date:</b> {{ date('d-M-Y',strtotime($production->end_date)) }} @endif
+                                <b>Mfg. Date:</b> {{ date('d-M-Y',strtotime($production->start_date)) }}
+                                @if($production->end_date) <br><b>Expired Date:</b> {{ date('d-M-Y',strtotime($production->end_date)) }} @endif
                             </h5>
                         </div>
                         <div class="col-md-12 pt-5">
@@ -48,6 +48,9 @@
                                                 <th class="text-center">Exp. Date</th>
                                                 <th class="text-center">Unit Name</th>
                                                 <th class="text-center">Finish Goods Qty</th>
+                                                <th class="text-center">Mixture Used (Previous)</th>
+                                                <th class="text-center">Recyclable Wastage Qty</th>
+                                                <th class="text-center">Permanent Wastage Qty</th>
                                                 @if ($item->has_coupon == 1)
                                                     <th class="text-center">Total Coupon</th>
                                                     <th class="text-center">Coupon Price</th>
@@ -61,6 +64,9 @@
                                                     <td class="text-center">{{ date('d-M-Y',strtotime($item->exp_date)) }}</td>
                                                     <td class="text-center">{{ $item->product->unit->unit_name.' ('.$item->product->unit->unit_code.')' }}</td>
                                                     <td class="text-center">{{ $item->base_unit_qty }}</td>
+                                                    <td class="text-center">{{ $item->used_wastage_qty }}</td>
+                                                    <td class="text-center">{{ $item->recyclable_wastage_qty }}</td>
+                                                    <td class="text-center">{{ $item->permanent_wastage_qty }}</td>
                                                     @if ($item->has_coupon == 1)
                                                         <td class="text-center">{{ $item->total_coupon }}</td>
                                                         <td class="text-center">{{ number_format($item->coupon_price,2,'.','') }}</td>

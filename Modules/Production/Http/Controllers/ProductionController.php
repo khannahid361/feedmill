@@ -15,6 +15,7 @@ use Modules\Production\Entities\ProductionCoupon;
 use Modules\Production\Entities\ProductionProduct;
 use Modules\Production\Http\Requests\ProductionRequest;
 use Modules\Production\Entities\ProductionProductMaterial;
+use Modules\Production\Entities\ProductionWastage;
 
 class ProductionController extends BaseController
 {
@@ -247,12 +248,14 @@ class ProductionController extends BaseController
                                     'year'            => $product['year'],
                                     'mfg_date'        => $product['mfg_date'],
                                     'exp_date'        => $product['exp_date'],
+                                    'used_wastage_qty'=> $request->used_wastage_qty,
 
                                     // 'other_cost'      => $product['other_cost'],
                                     // 'sub_total'       => $product['sub_total'],
                                     // 'per_unit_cost'   => $product['per_unit_cost'],
 
-                                    'base_unit_qty'   => $product['base_unit_qty'],
+                                    'base_unit_qty'   => $product['expected_unit_qty'],
+                                    'expected_unit_qty'   => $product['expected_unit_qty']
                                 ];
                                 $productData = ProductionProduct::create($product_data);
                                 if ($product) {
@@ -313,8 +316,8 @@ class ProductionController extends BaseController
             if ($production) {
                 $this->setPageData('Production Edit', 'Production Edit', 'fas fa-industry', [['name' => 'Production Edit']]);
                 $warehouses =  Warehouse::where('status',1)->get();
-                // dd($production);
-                return view('production::production.edit', compact('production', 'warehouses'));
+                $wastage = ProductionWastage::where('product_id', $production->products[0]['product_id'])->first();
+                return view('production::production.edit', compact('production', 'warehouses','wastage'));
             } else {
                 return redirect()->back();
             }
@@ -346,6 +349,8 @@ class ProductionController extends BaseController
                                         'mfg_date'        => $product['mfg_date'],
                                         'exp_date'        => $product['exp_date'],
                                         'base_unit_qty'   => $product['base_unit_qty'],
+                                        'expected_unit_qty'   => $product['base_unit_qty'],
+                                        'used_wastage_qty'=> $request->used_wastage_qty,
                                     ]);
 
                                     if (!empty($product['materials']) && count($product['materials']) > 0) {
@@ -534,6 +539,7 @@ class ProductionController extends BaseController
             ->select('pm.product_id', 'pm.material_id', 'pm.qty as q_ty', 'm.material_name', 'm.material_code', 'm.cost', 'm.qty', 'm.type', 'm.unit_id', 'u.unit_name', 'u.unit_code')
             ->where('pm.product_id', $request->product_id)
             ->get();
-        return view('production::production.materials', compact('materials', 'tab'))->render();
+        $wastage = ProductionWastage::where('product_id', $request->product_id)->first();
+        return view('production::production.materials', compact('materials', 'tab', 'wastage'))->render();
     }
 }

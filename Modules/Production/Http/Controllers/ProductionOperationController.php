@@ -14,6 +14,7 @@ use Modules\Material\Entities\WarehouseMaterial;
 use Modules\Production\Entities\ProductionProduct;
 use Modules\Production\Http\Requests\OperationRequest;
 use Modules\Production\Entities\ProductionProductMaterial;
+use Modules\Production\Entities\ProductionWastage;
 
 class ProductionOperationController extends BaseController{
     public function __construct(Production $model){
@@ -59,8 +60,11 @@ class ProductionOperationController extends BaseController{
                                 $production_product->update([
                                     'labor_cost'    => $product['labor_cost'],
                                     'other_cost'    => $product['other_cost'],
+                                    'expected_unit_qty' => $product['expected_unit_qty'],
                                     'base_unit_qty' => $product['fg_qty'],
                                     'per_unit_cost' => $product['materials_per_unit_cost'],
+                                    'recyclable_wastage_qty' => $product['recyclable_wastage_qty'],
+                                    'permanent_wastage_qty' => $product['permanent_wastage_qty']
                                 ]);
                                 if (!empty($product['materials']) && count($product['materials']) > 0) {
                                     foreach ($product['materials'] as $material) {
@@ -137,6 +141,7 @@ class ProductionOperationController extends BaseController{
                                         $product                  = Product::find($value->product_id);
                                         $warehouseProductQuantity = WarehouseProduct::where(['product_id' => $value->product_id])->sum('qty');
                                         $warehouse_product        = WarehouseProduct::where([['warehouse_id', $warehouse_id], ['product_id', $value->product_id]])->first();
+                                        $productionWastage = ProductionWastage::where('product_id',$value->product_id)->first();
 //                                        $productNewPrice          = (($warehouseProductQuantity * $product->base_unit_price) + ($value->base_unit_qty * $value->per_unit_cost)) / ($warehouseProductQuantity + $value->base_unit_qty);
 //                                        $product->update([
 //                                            'base_unit_price'     => $productNewPrice
@@ -152,6 +157,19 @@ class ProductionOperationController extends BaseController{
                                                 'warehouse_id'=> $warehouse_id,
                                                 'product_id'=> $value->product_id,
                                                 'qty'=> $value->base_unit_qty,
+                                            ]);
+                                        }
+                                        if($productionWastage)
+                                        {
+                                            $productionWastage->recyclable_wastage += $value->recyclable_wastage_qty - $value->used_wastage_qty;
+                                            $productionWastage->permanent_wastage += $value->permanent_wastage_qty;
+                                            $productionWastage->update();
+                                        }
+                                        else{
+                                            ProductionWastage::create([
+                                                'product_id'=> $value->product_id,
+                                                'recyclable_wastage'=> $value->recyclable_wastage_qty,
+                                                'permanent_wastage'=> $value->permanent_wastage_qty
                                             ]);
                                         }
                                     }

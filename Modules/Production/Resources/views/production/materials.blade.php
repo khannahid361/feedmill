@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-md-4 mb-4">
                     <input type="text" class="form-control text-center finishedQty finished-qty" value=""
-                        name="production[{{ $tab }}][base_unit_qty]" id="finished_qty">
+                        name="production[{{ $tab }}][expected_unit_qty]" id="finished_qty">
                 </div>
 
             </div>
@@ -97,6 +97,15 @@
             @endif
         </tbody>
     </table>
+</div>
+<div class="col-md-6"></div>
+<div class="form-group col-md-3 required">
+    <label for="">Remaining Mixture</label>
+    <input type="text" class="form-control" name="" id="remaining_mixture" value="{{ $wastage->recyclable_wastage??'0' }}" readonly />
+</div>
+<div class="form-group col-md-3 required">
+    <label for="">Used Mixture</label>
+    <input type="text" class="form-control" name="used_wastage_qty" id="used_wastage_qty" onkeyup="checkUsedMixtureQty();" value="0" required />
 </div>
 {{-- <div class="col-md-7"></div> --}}
 {{-- <div class="col-md-5"> --}}

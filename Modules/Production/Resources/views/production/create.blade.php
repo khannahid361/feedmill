@@ -448,5 +448,14 @@
             let months = monthDiff + yearDiff * 12;
             $('#production_1_year').val(months);
         }
+
+        function checkUsedMixtureQty() {
+            let remaining_mixture = $('#remaining_mixture').val();
+            let used_mixture = $('#used_wastage_qty').val();
+            if (used_mixture > remaining_mixture) {
+                alert('Used Mixture Can not Exceed Remaining Mixture Quantity');
+                $('#used_wastage_qty').val('0');
+            }
+        }
     </script>
 @endpush

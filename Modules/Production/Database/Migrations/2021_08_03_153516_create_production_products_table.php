@@ -26,8 +26,12 @@ class CreateProductionProductsTable extends Migration
             $table->float('total_coupon')->nullable();
             $table->float('coupon_price')->nullable();
             $table->date('coupon_exp_date')->nullable();
+            $table->double('expected_unit_qty')->nullable();
             $table->double('base_unit_qty')->nullable();
             $table->double('per_unit_cost')->nullable();
+            $table->double('recyclable_wastage_qty')->nullable();
+            $table->double('permanent_wastage_qty')->nullable();
+            $table->double('used_wastage_qty')->nullable();
             $table->timestamps();
         });
     }
