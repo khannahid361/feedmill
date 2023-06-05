@@ -292,8 +292,7 @@
                                                     <label for="">Remaining Mixture</label>
                                                     <input type="text" class="form-control" name=""
                                                         id="remaining_mixture"
-                                                        value="{{ $wastage->recyclable_wastage ?? '0' }}"
-                                                        readonly />
+                                                        value="{{ $wastage->recyclable_wastage ?? '0' }}" readonly />
                                                 </div>
                                                 <div class="form-group col-md-3 required">
                                                     <label for="">Used Mixture</label>

@@ -26,7 +26,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('delete', 'ProductionController@delete')->name('delete');
         Route::post('bulk-delete', 'ProductionController@bulk_delete')->name('bulk.delete');
         Route::post('change-status', 'ProductionController@change_status')->name('change.status');
-        
+
         Route::post('product-materials', 'ProductionController@product_material_list')->name('product.materials');
 
         Route::get('operation/{id}', 'ProductionOperationController@index')->name('operation');
@@ -38,4 +38,6 @@ Route::group(['middleware' => ['auth']], function () {
     });
     Route::get('finish-goods', 'FinishGoodsController@index')->name('finish.goods');
     Route::post('finish-goods/datatable-data', 'FinishGoodsController@get_datatable_data')->name('finish.goods.datatable.data');
+    Route::get('production-wastage', 'ProductionWastageController@index')->name('production.wastage');
+    Route::post('production-wastage/datatable-data', 'ProductionWastageController@get_datatable_data')->name('production.wastage.datatable.data');
 });

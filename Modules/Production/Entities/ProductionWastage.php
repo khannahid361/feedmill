@@ -3,6 +3,7 @@
 namespace Modules\Production\Entities;
 
 use App\Models\BaseModel;
+use Modules\Product\Entities\Product;
 
 class ProductionWastage extends BaseModel
 {
