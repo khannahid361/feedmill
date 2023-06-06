@@ -39,5 +39,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('finish-goods', 'FinishGoodsController@index')->name('finish.goods');
     Route::post('finish-goods/datatable-data', 'FinishGoodsController@get_datatable_data')->name('finish.goods.datatable.data');
     Route::get('production-wastage', 'ProductionWastageController@index')->name('production.wastage');
-    Route::post('production-wastage/datatable-data', 'ProductionWastageController@get_datatable_data')->name('production.wastage.datatable.data');
+    Route::post('production-wastage/datatable-data', 'ProductionWastageController@datatableData')->name('production.wastage.datatable.data');
 });
