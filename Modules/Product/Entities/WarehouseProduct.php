@@ -8,7 +8,7 @@ use Modules\Product\Entities\Product;
 use Modules\Setting\Entities\Warehouse;
 
 class WarehouseProduct extends BaseModel{
-    protected $fillable = ['warehouse_id', 'product_id', 'qty'];
+    protected $fillable = ['warehouse_id', 'product_id', 'qty', 'bag_qty', 'unit'];
     protected $table    = 'warehouse_product';
     protected $order    = ['p.id' => 'asc'];
     protected $_name;

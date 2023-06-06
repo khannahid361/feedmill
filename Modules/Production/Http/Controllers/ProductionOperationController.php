@@ -146,8 +146,13 @@ class ProductionOperationController extends BaseController{
 //                                        $product->update([
 //                                            'base_unit_price'     => $productNewPrice
 //                                        ]);
+                                        //calculating new avg price
+                                        $previousCost = $product->cost * $warehouse_product->qty;
+                                        $currenCost = $value->per_unit_cost * $value->base_unit_qty;
+                                        $newCost = $currenCost + $previousCost;
+                                        $avgPrice = $newCost/($warehouse_product->qty+$value->base_unit_qty);
                                         $product->update([
-                                           'cost'           => $value->per_unit_cost
+                                           'cost'           => $avgPrice
                                         ]);
                                         if ($warehouse_product) {
                                             $warehouse_product->qty += $value->base_unit_qty;

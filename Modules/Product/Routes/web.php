@@ -45,7 +45,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('view/{id}', 'AdjustmentController@show')->name('view');
         Route::post('delete', 'AdjustmentController@delete')->name('delete');
         Route::post('bulk-delete', 'AdjustmentController@bulk_delete')->name('bulk.delete');
-        
+
     });
 
+    Route::get('convert-to-bag', 'ProductQtyConverterController@create')->name('convert.product.bag');
 });

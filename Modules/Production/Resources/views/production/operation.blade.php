@@ -215,6 +215,7 @@ $(document).ready(function () {
             notification('error','Please select status');
         }
     });
+    per_unit_cost(1);
 });
 function calculateRowData(key,index) {
     var cost          = parseFloat($('#production_'+key+'_materials_'+index+'_cost').val());
