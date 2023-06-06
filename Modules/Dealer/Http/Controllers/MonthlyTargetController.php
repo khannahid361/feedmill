@@ -45,7 +45,11 @@ class MonthlyTargetController extends BaseController
                     foreach ($request->commission as $com) {
 
                         if (!empty($com['dealer_id']) && !empty($com['qty']) && !empty($com['commission_amount'])) {
-                            $existing = MonthlyTarget::where()->where(['dealer_id' => $com['dealer_id'], 'month' => $request->month, 'year' => $request->year])->first();
+                            $existing = MonthlyTarget::where(['dealer_id' => $com['dealer_id'], 'month' => $request->month, 'year' => $request->year])->first();
+                            if(!empty($existing) && $existing->acheived_qty == 0)
+                            {
+                                $existing->delete();
+                            }
                             if (empty($existing) || $existing->acheived_qty == 0) {
                                 $collection[] = [
                                     'dealer_id'         => $com['dealer_id'],
@@ -100,11 +104,47 @@ class MonthlyTargetController extends BaseController
                     if (permission('dealer-view')) {
                         $action .= ' <a class="dropdown-item view_data" data-id="' . $value->id . '">' . self::ACTION_BUTTON['View'] . '</a>';
                     }
+                    if($value->month == 1) {
+                        $mnth = "January";
+                    }
+                    if($value->month == 2) {
+                        $mnth = "February";
+                    }
+                    if($value->month == 3) {
+                        $mnth = "March";
+                    }
+                    if($value->month == 4) {
+                        $mnth = "April";
+                    }
+                    if($value->month == 5) {
+                        $mnth = "May";
+                    }
+                    if($value->month == 6) {
+                        $mnth = "June";
+                    }
+                    if($value->month == 7) {
+                        $mnth = "July";
+                    }
+                    if($value->month == 8) {
+                        $mnth = "August";
+                    }
+                    if($value->month == 9) {
+                        $mnth = "September";
+                    }
+                    if($value->month == 10) {
+                        $mnth = "October";
+                    }
+                    if($value->month == 11) {
+                        $mnth = "November";
+                    }
+                    if($value->month == 12) {
+                        $mnth = "December";
+                    }
                     $row    = [];
                     $row[]  = $no;
                     $row[]  = $value->dealer->name ?? '';
                     $row[]  = $value->year;
-                    $row[]  = $value->month;
+                    $row[]  = $mnth;
                     $row[]  = $value->qty;
                     $row[]  = $value->acheived_qty;
                     $row[]  = $value->commission_amount;

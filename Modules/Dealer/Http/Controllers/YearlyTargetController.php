@@ -45,7 +45,11 @@ class YearlyTargetController extends BaseController
                     foreach ($request->commission as $com) {
 
                         if (!empty($com['dealer_id']) && !empty($com['qty']) && !empty($com['commission_amount'])) {
-                            $existing = YearlyTarget::where()->where(['dealer_id' => $com['dealer_id'], 'year' => $request->year])->first();
+                            $existing = YearlyTarget::where(['dealer_id' => $com['dealer_id'], 'year' => $request->year])->first();
+                            if(!empty($existing) && $existing->acheived_qty == 0)
+                            {
+                                $existing->delete();
+                            }
                             if (empty($existing) || $existing->acheived_qty == 0) {
                             $collection[] = [
                                 'dealer_id'         => $com['dealer_id'],
