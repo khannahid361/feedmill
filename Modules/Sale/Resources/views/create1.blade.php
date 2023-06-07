@@ -53,9 +53,9 @@
                                         <th>Name</th>
                                         <th class="text-center">Code</th>
                                         <th class="text-center">Sale Unit</th>
-                                        <th class="text-center">Available Bag Qty</th>
-                                        <th class="text-center">Bag Qty</th>
-                                        <th class="text-center">Free Bag Qty</th>
+                                        <th class="text-center">Available Qty</th>
+                                        <th class="text-center">Qty</th>
+                                        <th class="text-center">Free Qty</th>
                                         <th class="text-right">Net Sale Unit Price</th>
                                         <th class="text-right">Tax</th>
                                         <th class="text-right">Subtotal</th>
@@ -353,15 +353,15 @@
                         $('#products_id_vl_'+row).val(data.id);
                         $('#products_code_vl_'+row).val(data.code);
                         $('#products_unit_vl_'+row).val(temp_unit_name[0]);
-                        $('#products_stock_qty_'+row).val(data.bag_qty);
-                        $('#products_free_stock_qty_'+row).val(data.bag_qty);
+                        $('#products_stock_qty_'+row).val(data.qty);
+                        $('#products_free_stock_qty_'+row).val(data.qty);
                         $('#tax_rate_vl_'+row).val(data.tax_rate);
                         if(product_price[rowindex] == 'undefined'){
                             product_price.push(parseFloat(data.price) + parseFloat(data.price * customer_group_rate));
                         }else{
                             product_price[rowindex] = (parseFloat(data.price) + parseFloat(data.price * customer_group_rate));
                         }
-                        product_qty.push(data.bag_qty);
+                        product_qty.push(data.qty);
                         product_free_qty.push(data.free_qty);
                         tax_rate.push(parseFloat(data.tax_rate));
                         tax_name.push(data.tax_name);

@@ -216,6 +216,7 @@ class SaleController extends BaseController{
                 ->orderBy('p.name','asc')
                 ->get();
                 $sale =$this->model->with('sale_products','customer')->find($id);
+                // return response()->json($sale);
             $data = [
                 'products'     => $products,
                 'sale'         => $this->model->with('sale_products','customer')->find($id),
@@ -338,7 +339,7 @@ class SaleController extends BaseController{
                             $saleProduct = SaleProduct::where(['sale_id' => $request->sale_id,'product_id' => $value['product_id']])->first();
                             $saleProduct->update(['delivered_qty' => $saleProduct->delivered_qty + $value['delivery_qty'] ]);
                             $warehouseProduct = WarehouseProduct::where(['warehouse_id' => $request->warehouse_id,'product_id' => $value['product_id']])->first();
-                            $warehouseProduct->update(['qty' => $warehouseProduct->qty - $value['delivery_qty']]);
+                            $warehouseProduct->update(['bag_qty' => $warehouseProduct->bag_qty - $value['delivery_qty']]);
                         }
                     }
                 }
@@ -365,7 +366,7 @@ class SaleController extends BaseController{
                 $data[$key] = [
                     'product_name' => $warehouseProduct->product->name,
                     'product_id'   => $warehouseProduct->product_id,
-                    'stock_qty'    => $warehouseProduct->qty,
+                    'stock_qty'    => $warehouseProduct->bag_qty,
                     'order_qty'    => $value['qty'] + $value['free_qty'],
                     'delivered_qty'=> $value['delivered_qty'],
                     'price'        => $value['net_unit_price']
@@ -421,13 +422,11 @@ class SaleController extends BaseController{
                 'description' => 'Customer credit for Paid Amount For Customer Invoice NO- ' . $invoiceNo . ' Customer- ' . $customerName,'debit' => 0,
                 'credit' => $paymentData['paid_amount'],'posted' => 1,'approve' => 1,'Created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s') ]);
             if($paymentData['payment_method'] == 1){
-                // dd('lol');
                 $payment = collect(['chart_of_account_id' => $paymentData['account_id'],'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
                     'description' => 'Cash in Hand in Sale for Invoice No - ' . $invoiceNo . ' customer- ' .$customerName,'debit' => $paymentData['paid_amount'],
                     'credit' => 0,'posted' => 1,'approve' => 1,'created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s')]);
                 Transaction::create($payment->all());
                 }else{
-                // dd('lol2');
                 $payment  = collect(['chart_of_account_id' => $paymentData['account_id'],'voucher_no' => $invoiceNo,'voucher_type' => 'INVOICE','voucher_date' => $saleDate,
                     'description' => 'Paid amount for customer  Invoice No  - ' . $invoiceNo . ' customer- ' .$customerName,'debit' => $paymentData['paid_amount'],
                     'credit' => 0,'posted' => 1,'approve' => 1,'created_by' => auth()->user()->name,'created_at' => date('Y-m-d H:i:s')]);

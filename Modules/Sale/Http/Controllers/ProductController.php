@@ -108,13 +108,13 @@ class ProductController extends Controller
             ->where(['wp.product_id' => $request->data])
             ->selectRaw('wp.*,p.name,p.code,p.base_unit_id,p.base_unit_price as price,p.tax_method,t.name as tax_name,t.rate as tax_rate')
             ->first();
-            $qty = WarehouseProduct::where(['product_id' => $request->data])->sum('qty');
+            $qty = WarehouseProduct::where(['product_id' => $request->data])->sum('bag_qty');
             if($product) {
                 $output['id']         = $product->product_id;
                 $output['name']       = $product->name;
                 $output['code']       = $product->code;
                 $output['price']      = $product->price;
-                $output['qty']        = $qty;
+                $output['bag_qty']        = $qty;
                 $output['tax_name']   = $product->tax_name ?? 'No Tax';
                 $output['tax_rate']   = $product->tax_rate ?? 0;
                 $output['tax_method'] = $product->tax_method;
