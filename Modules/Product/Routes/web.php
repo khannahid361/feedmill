@@ -49,4 +49,5 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::get('convert-to-bag', 'ProductQtyConverterController@create')->name('convert.product.bag');
+    Route::post('convert-to-bag/store', 'ProductQtyConverterController@store')->name('convert.product.bag.store');
 });

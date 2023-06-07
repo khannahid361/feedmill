@@ -53,6 +53,8 @@ class ProductStockController extends BaseController{
                 $row[]  = number_format($value->cost,2);
                 $row[]  = $value->qty;
                 $row[]  = number_format(($value->cost * $value->qty),2);
+                $row[]  = $value->bag_qty;
+                $row[]  = $value->wpunit;
                 $data[] = $row;
             }
             return $this->datatable_draw($request->input('draw'),$this->model->count_all(), $this->model->count_filtered(), $data);

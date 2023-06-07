@@ -12,7 +12,7 @@
                         <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
                     </div>
                     <div class="card-toolbar">
-                        <a href="{{ route('convert.product.bag') }}"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add New</a>
+                        <a href="{{ route('convert.product.bag') }}"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add Product Bag</a>
                     </div>
                 </div>
             </div>
@@ -61,6 +61,8 @@
                                         <th>Per Unit Cost</th>
                                         <th>Quantity</th>
                                         <th>Total Unit Cost</th>
+                                        <th>Bag</th>
+                                        <th>Bag Uint</th>
                                     </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -75,6 +77,8 @@
                                         <th style="text-align: right !important;font-weight:bold;color:white;">Total</th>
                                         <th style="text-align: right !important;font-weight:bold;color:white;"></th>
                                         <th style="text-align: right !important;font-weight:bold;color:white;"></th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -121,7 +125,7 @@
                     }
                 },
                 "columnDefs"   : [{
-                    "targets"  : [0,1,2,3,4,5,6,7,8],
+                    "targets"  : [0,1,2,3,4,5,6,7,8,9,10],
                     "orderable": false,
                     "className": "text-center"
                 },],
@@ -198,6 +202,27 @@
                             }, 0 );
                         if(index == 8) {
                             $( api.column( index ).footer() ).html('= '+number_format(pageTotal)+'Tk');
+                        }else{
+                            $( api.column( index ).footer() ).html('= '+number_format(pageTotal));
+                        }
+
+                    }
+
+                    for (let index = 9; index <=10; index++) {
+                        total = api
+                            .column( index )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        pageTotal = api
+                            .column(index, { page: 'current'} )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0 );
+                        if(index == 9) {
+                            $( api.column( index ).footer() ).html('= '+number_format(pageTotal));
                         }else{
                             $( api.column( index ).footer() ).html('= '+number_format(pageTotal));
                         }
