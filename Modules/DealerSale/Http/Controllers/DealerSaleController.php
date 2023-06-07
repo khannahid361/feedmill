@@ -302,7 +302,7 @@ class DealerSaleController extends BaseController{
                             $saleProduct = DealerSaleProduct::where(['dealer_sale_id' => $request->dealer_sale_id,'product_id' => $value['product_id']])->first();
                             $saleProduct->update(['delivered_qty' => $saleProduct->delivered_qty + $value['delivery_qty'] ]);
                             $warehouseProduct = WarehouseProduct::where(['warehouse_id' => $request->warehouse_id,'product_id' => $value['product_id']])->first();
-                            $warehouseProduct->update(['qty' => $warehouseProduct->qty - $value['delivery_qty']]);
+                            $warehouseProduct->update(['bag_qty' => $warehouseProduct->bag_qty - $value['delivery_qty']]);
                         }
                     }
                 }
@@ -334,7 +334,7 @@ class DealerSaleController extends BaseController{
                 $data[$key] = [
                     'product_name' => $warehouseProduct->product->name,
                     'product_id'   => $warehouseProduct->product_id,
-                    'stock_qty'    => $warehouseProduct->qty,
+                    'stock_qty'    => $warehouseProduct->bag_qty,
                     'order_qty'    => $value['qty'] + $value['free_qty'],
                     'delivered_qty'=> $value['delivered_qty'],
                     'price'        => $value['net_unit_price']

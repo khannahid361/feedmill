@@ -51,9 +51,9 @@
                                         <th>Name</th>
                                         <th class="text-center">Code</th>
                                         <th class="text-center">Sale Unit</th>
-                                        <th class="text-center">Available Bag Qty</th>
-                                        <th class="text-center">Bag Qty</th>
-                                        <th class="text-center">Free Bag Qty</th>
+                                        <th class="text-center">Available Qty</th>
+                                        <th class="text-center">Qty</th>
+                                        <th class="text-center">Free Qty</th>
                                         <th class="text-right">Net Sale Unit Price</th>
                                         <th class="text-right">Tax</th>
                                         <th class="text-right">Subtotal</th>
@@ -72,7 +72,7 @@
                                                         $tax = DB::table('taxes')->where('rate',$sale_product->pivot->tax_rate)->first();
                                                         $units = DB::table('units')->where('base_unit',$sale_product->pivot->sale_unit_id)->orWhere('id',$sale_product->pivot->sale_unit_id)->get();
                                                         $warehouse_product = DB::table('warehouse_product')->where(['product_id' => $sale_product->pivot->product_id])->first();
-                                                        $stock_qty = $sale_product->pivot->qty + ($warehouse_product ? $warehouse_product->bag_qty : 0);
+                                                        $stock_qty = $sale_product->pivot->qty + ($warehouse_product ? $warehouse_product->qty : 0);
                                                         $unit_name            = [];
                                                         $unit_operator        = [];
                                                         $unit_operation_value = [];
@@ -115,7 +115,7 @@
                                                     <input type="hidden" class="product-id_vl_{{ $key+1 }}" name="products[{{ $key + 1 }}][id]"  value="{{ $sale_product->pivot->product_id }}" id="products_id_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
                                                     <input type="hidden" class="product-code_vl_{{ $key+1 }}" name="products[{{ $key + 1 }}][code]" value="{{ $sale_product->code }}" id="products_code_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
                                                     <input type="hidden" class="batch-no_vl_{{ $key+1 }}" name="products[{{ $key + 1 }}][batch_no]" id="products_batch_no_{{ $key + 1 }}" value="{{ $sale_product->pivot->batch_no }}" data-row="{{ $key + 1 }}">
-                                                    <input type="hidden" class="stock-qty_vl_{{ $key+1 }} form-control text-center" name="products[{{ $key+1 }}][stock_qty]"  value="{{ $stock_qty -$sale_product->pivot->qty }}" id="products_stock_qty_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
+                                                    <input type="hidden" class="stock-qty_vl_{{ $key+1 }} form-control text-center" name="products[{{ $key+1 }}][stock_qty]"  value="{{ $stock_qty }}" id="products_stock_qty_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
                                                     <input type="hidden" class="free-stock-qty_vl_{{ $key+1 }} form-control text-center" name="products[{{ $key+1 }}][free_stock_qty]"  value="{{ $sale_product->pivot->free_qty }}" id="products_free_stock_qty_{{ $key+1 }}" data-row="{{ $key + 1 }}">
                                                     <input type="hidden" class="sale-unit_vl_{{ $key+1 }}" name="products[{{ $key+1 }}][unit]" value="{{ $unit_name }}" id="sale_unit_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
                                                     <input type="hidden" class="sale-unit-operator_vl_{{ $key+1 }}"  value="{{ $unit_operator }}" id="sale_unit_operator_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
@@ -459,22 +459,22 @@
                         temp_unit_name = data.unit_name.split(',');
                         $('#products_code_'+row).text(data.code);
                         $('#products_unit_'+row).text(temp_unit_name[0]);
-                        $('#products_available_qty_'+row).text(data.bag_qty);
+                        $('#products_available_qty_'+row).text(data.qty);
                         $('#products_net_unit_price_'+row).val(data.price);
                         $('#tax_tx_'+row).text(data.tax_name);
                         $('#products_id_vl_'+row).val(data.id);
                         $('#products_code_vl_'+row).val(data.code);
                         $('#products_batch_no_'+row).val(data.batch_no);
                         $('#products_unit_vl_'+row).val(temp_unit_name[0]);
-                        $('#products_stock_qty_'+row).val(data.bag_qty);
-                        $('#products_free_stock_qty_'+row).val(data.bag_qty);
+                        $('#products_stock_qty_'+row).val(data.qty);
+                        $('#products_free_stock_qty_'+row).val(data.qty);
                         $('#tax_rate_vl_'+row).val(data.tax_rate);
                         if(product_price[rowindex] == 'undefined'){
                             product_price.push(parseFloat(data.price) + parseFloat(data.price * customer_group_rate));
                         }else{
                             product_price[rowindex] = (parseFloat(data.price) + parseFloat(data.price * customer_group_rate));
                         }
-                        product_qty.push(data.bag_qty);
+                        product_qty.push(data.qty);
                         product_free_qty.push(data.free_qty);
                         tax_rate.push(parseFloat(data.tax_rate));
                         tax_name.push(data.tax_name);

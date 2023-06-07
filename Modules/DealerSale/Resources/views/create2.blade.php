@@ -52,9 +52,9 @@
                                         <th>Name</th>
                                         <th class="text-center">Code</th>
                                         <th class="text-center">Sale Unit</th>
-                                        <th class="text-center">Available Bag Qty</th>
-                                        <th class="text-center">Bag Qty</th>
-                                        <th class="text-center">Free Bag Qty</th>
+                                        <th class="text-center">Available Qty</th>
+                                        <th class="text-center">Qty</th>
+                                        <th class="text-center">Free Qty</th>
                                         <th class="text-right">Net Sale Unit Price</th>
                                         <th class="text-right">Tax</th>
                                         <th class="text-right">Subtotal</th>
@@ -342,21 +342,21 @@
                     temp_unit_name = data.unit_name.split(',');
                     $('#products_code_' + row).text(data.code);
                     $('#products_unit_' + row).text(temp_unit_name[0]);
-                    $('#products_available_qty_' + row).text(data.bag_qty);
+                    $('#products_available_qty_' + row).text(data.qty);
                     $('#products_net_unit_price_' + row).val(data.price);
                     $('#tax_tx_' + row).text(data.tax_name);
                     $('#products_id_vl_' + row).val(data.id);
                     $('#products_code_vl_' + row).val(data.code);
                     $('#products_unit_vl_' + row).val(temp_unit_name[0]);
-                    $('#products_stock_qty_' + row).val(data.bag_qty);
-                    $('#products_free_stock_qty_' + row).val(data.bag_qty);
+                    $('#products_stock_qty_' + row).val(data.qty);
+                    $('#products_free_stock_qty_' + row).val(data.qty);
                     $('#tax_rate_vl_' + row).val(data.tax_rate);
                     if (product_price[rowindex] == 'undefined') {
                         product_price.push(parseFloat(data.price));
                     } else {
                         product_price[rowindex] = (parseFloat(data.price));
                     }
-                    product_qty.push(data.bag_qty);
+                    product_qty.push(data.qty);
                     product_free_qty.push(data.free_qty);
                     tax_rate.push(parseFloat(data.tax_rate));
                     tax_name.push(data.tax_name);
