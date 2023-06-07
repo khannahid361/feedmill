@@ -60,8 +60,8 @@
                                         <th>Name</th>
                                         <th class="text-center">Code</th>
                                         <th class="text-center">Unit</th>
-                                        <th class="text-center">Sold Qty</th>
-                                        <th class="text-center">Return Qty</th>
+                                        <th class="text-center">Sold Bag Qty</th>
+                                        <th class="text-center">Return Bag Qty</th>
                                         <th class="text-right">Net Unit Price</th>
                                         <th class="text-right">Deduction (%)</th>
                                         <th class="text-right">Subtotal</th>
@@ -169,7 +169,7 @@ function quantity_calculate(row) {
     var deduction_rate = $(".deduction_rate_" + row).val();
     if(parseFloat(sold_qty) < parseFloat(return_qty)){
         alert("Sold quantity less than quantity!");
-        $("#return_qty_"+row).val("");
+        $(".return_qty_"+row).val("");
     }
     if (parseFloat(return_qty) > 0) {
         var price = (return_qty * price_item);

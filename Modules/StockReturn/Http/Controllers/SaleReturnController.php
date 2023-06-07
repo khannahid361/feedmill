@@ -153,12 +153,12 @@ class SaleReturnController extends BaseController
                                 ];
                                 $warehouseProduct = WarehouseProduct::where([['warehouse_id',$warehouse_id],['product_id',$value['id']]])->first();
                                 if(!empty($warehouseProduct)){
-                                    $warehouseProduct->update(['qty' => $warehouseProduct->qty + $value['return_qty']]);
+                                    $warehouseProduct->update(['bag_qty' => $warehouseProduct->bag_qty + $value['return_qty']]);
                                 }else{
                                     WarehouseProduct::create([
                                        'warehouse_id' => $warehouse_id,
                                        'product_id'   => $value['id'],
-                                       'qty'          => $value['return_qty'] 
+                                       'bag_qty'      => $value['return_qty']
                                     ]);
                                 }
                                 // $warehouse_product = WarehouseProduct::where([
@@ -255,7 +255,7 @@ class SaleReturnController extends BaseController
                                 'product_id'=> $return_product->product_id,
                                 ])->first();
                             if($warehouse_product){
-                                $warehouse_product->qty -= $return_qty;
+                                $warehouse_product->bag_qty -= $return_qty;
                                 $warehouse_product->update();
                             }
                         }
