@@ -311,4 +311,41 @@ class Dealer extends Authenticatable
         }
     }
 
+    public function dealer_monthly_commission_coa(string $code,string $head_name,int $dealer_id)
+    {
+        return [
+            'code'              => $code,
+            'name'              => $head_name,
+            'parent_name'       => 'Commission Monthly Payable',
+            'level'             => 3,
+            'type'              => 'L',
+            'transaction'       => 1,
+            'general_ledger'    => 2,
+            'dealer_id'         => $dealer_id,
+            'budget'            => 2,
+            'depreciation'      => 2,
+            'depreciation_rate' => '0',
+            'status'            => 1,
+            'created_by'        => auth()->user()->name
+        ];
+    }
+
+    public function dealer_yearly_commission_coa(string $code,string $head_name,int $dealer_id)
+    {
+        return [
+            'code'              => $code,
+            'name'              => $head_name,
+            'parent_name'       => 'Commission Yearly Payable',
+            'level'             => 3,
+            'type'              => 'L',
+            'transaction'       => 1,
+            'general_ledger'    => 2,
+            'dealer_id'         => $dealer_id,
+            'budget'            => 2,
+            'depreciation'      => 2,
+            'depreciation_rate' => '0',
+            'status'            => 1,
+            'created_by'        => auth()->user()->name
+        ];
+    }
 }

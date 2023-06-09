@@ -57,7 +57,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('update/{id}', 'MonthlyTargetController@update')->name('update');
     });
 
-    //Monthly commission Target
+    //Yearly commission Target
     Route::get('dealer-yearly-commission', 'YearlyTargetController@index')->name('dealer.yearly.commission');
     Route::group(['prefix' => 'dealer-yearly-commission', 'as'=>'dealer.yearly.commission.'], function () {
         Route::post('datatable-data', 'YearlyTargetController@get_datatable_data')->name('datatable.data');
@@ -68,4 +68,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('show', 'YearlyTargetController@show')->name('show');
         Route::post('update/{id}', 'YearlyTargetController@update')->name('update');
     });
+
+    //Monthly commission payment
+    Route::get('dealer-monthly-commission-payment', 'MonthlyTargetController@dealerMonthlyCommissionIdex')->name('dealer.monthly.commission.payment');
 });

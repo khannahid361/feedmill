@@ -6,6 +6,8 @@ use App\Http\Controllers\BaseController;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Modules\Account\Entities\ChartOfAccount;
+use Modules\Account\Entities\Transaction;
 use Modules\Dealer\Entities\Dealer;
 use Modules\Dealer\Entities\MonthlyTarget;
 use Modules\Dealer\Http\Requests\CommissionMonthlyFormRequest;
@@ -46,8 +48,7 @@ class MonthlyTargetController extends BaseController
 
                         if (!empty($com['dealer_id']) && !empty($com['qty']) && !empty($com['commission_amount'])) {
                             $existing = MonthlyTarget::where(['dealer_id' => $com['dealer_id'], 'month' => $request->month, 'year' => $request->year])->first();
-                            if(!empty($existing) && $existing->acheived_qty == 0)
-                            {
+                            if (!empty($existing) && $existing->acheived_qty == 0) {
                                 $existing->delete();
                             }
                             if (empty($existing) || $existing->acheived_qty == 0) {
@@ -104,40 +105,43 @@ class MonthlyTargetController extends BaseController
                     if (permission('dealer-view')) {
                         $action .= ' <a class="dropdown-item view_data" data-id="' . $value->id . '">' . self::ACTION_BUTTON['View'] . '</a>';
                     }
-                    if($value->month == 1) {
+                    if ($value->qty <= $value->acheived_qty && $value->is_generated == 0) {
+                        $action .= ' <a class="dropdown-item view_data" data-id="' . $value->id . '">' . self::ACTION_BUTTON['Generate'] . '</a>';
+                    }
+                    if ($value->month == 1) {
                         $mnth = "January";
                     }
-                    if($value->month == 2) {
+                    if ($value->month == 2) {
                         $mnth = "February";
                     }
-                    if($value->month == 3) {
+                    if ($value->month == 3) {
                         $mnth = "March";
                     }
-                    if($value->month == 4) {
+                    if ($value->month == 4) {
                         $mnth = "April";
                     }
-                    if($value->month == 5) {
+                    if ($value->month == 5) {
                         $mnth = "May";
                     }
-                    if($value->month == 6) {
+                    if ($value->month == 6) {
                         $mnth = "June";
                     }
-                    if($value->month == 7) {
+                    if ($value->month == 7) {
                         $mnth = "July";
                     }
-                    if($value->month == 8) {
+                    if ($value->month == 8) {
                         $mnth = "August";
                     }
-                    if($value->month == 9) {
+                    if ($value->month == 9) {
                         $mnth = "September";
                     }
-                    if($value->month == 10) {
+                    if ($value->month == 10) {
                         $mnth = "October";
                     }
-                    if($value->month == 11) {
+                    if ($value->month == 11) {
                         $mnth = "November";
                     }
-                    if($value->month == 12) {
+                    if ($value->month == 12) {
                         $mnth = "December";
                     }
                     $row    = [];
@@ -211,5 +215,75 @@ class MonthlyTargetController extends BaseController
             $output = ['status' => 'error', 'message' => 'Failed To Update Commission Data'];
             return response()->json($this->unauthorized());
         }
+    }
+
+    public function generateMonthlyCommission(Request $request)
+    {
+        //3 ta transaction dhukbe , Liability , current liability ar dealer agains a transaction
+        $commissionVoucher = 'COM-' . date('ymd') . rand(1, 999);
+        if ($request->month == 1) {
+            $mnth = "January";
+        }
+        if ($request->month == 2) {
+            $mnth = "February";
+        }
+        if ($request->month == 3) {
+            $mnth = "March";
+        }
+        if ($request->month == 4) {
+            $mnth = "April";
+        }
+        if ($request->month == 5) {
+            $mnth = "May";
+        }
+        if ($request->month == 6) {
+            $mnth = "June";
+        }
+        if ($request->month == 7) {
+            $mnth = "July";
+        }
+        if ($request->month == 8) {
+            $mnth = "August";
+        }
+        if ($request->month == 9) {
+            $mnth = "September";
+        }
+        if ($request->month == 10) {
+            $mnth = "October";
+        }
+        if ($request->month == 11) {
+            $mnth = "November";
+        }
+        if ($request->month == 12) {
+            $mnth = "December";
+        }
+        $dealerCoa = ChartOfAccount::where(['parent_name' => 'Commission Monthly Payable', 'level' => '3', 'dealer_id' => $request->id])->first();
+        $description = "Dealer- " . $dealerCoa->name . " commission generated for the month of " . $mnth . " and year " . $request->year;
+        dd($dealerCoa);
+        Transaction::create([
+            'chart_of_account_id' => $dealerCoa->id,
+            'voucher_no' => 'Monthly Commission',
+            'voucher_date' => date('Y-m-d'),
+            'description' => $description,
+            // 'debit' => $
+        ]);
+    }
+
+    public function dealerMonthlyCommissionIdex()
+    {
+        $setTitle = 'Accounts';
+        $setSubTitle = 'Dealer Commission Payment List';
+        $this->setPageData($setSubTitle, $setSubTitle, 'far fa-money-bill-alt', [['name' => $setTitle], ['name' => $setSubTitle]]);
+        $dealers = DB::table('dealers')->join('chart_of_accounts', 'chart_of_accounts.dealer_id', 'dealers.id')->where(['chart_of_accounts.parent_name' => 'Commission Monthly Payable'])->get(['dealers.*', 'chart_of_accounts.id as dealer_coa_id']);
+        // dd($dealers);
+        return view('account::monthly-commission-payment.index', compact('dealers'));
+    }
+
+    public function dealerMonthlyCommissionCreate()
+    {
+        $this->setPageData('Supplier Payment', 'Supplier Payment', 'far fa-money-bill-alt', [['name' => 'Accounts'], ['name' => 'Supplier Payment']]);
+        $voucher_no = 'COM-' . date('ymd') . rand(1, 999);
+        $dealers = Dealer::where('status', 1)->get();
+        return view('account::monthly-commission-payment.create', compact('voucher_no', 'dealers'));
     }
 }

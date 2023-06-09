@@ -7,7 +7,7 @@ use App\Models\BaseModel;
 class MonthlyTarget extends BaseModel
 {
     protected $table = 'monthly_target';
-    protected $fillable = ['dealer_id', 'qty', 'commission_amount', 'year', 'month', 'status', 'created_by', 'modified_by', 'paid_amount', 'due_amount', 'is_paid', 'acheived_qty'];
+    protected $fillable = ['dealer_id', 'qty', 'commission_amount', 'year', 'month', 'status', 'created_by', 'modified_by', 'paid_amount', 'due_amount', 'is_paid', 'acheived_qty','is_generated'];
 
 
     protected $column_order;

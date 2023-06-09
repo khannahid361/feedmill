@@ -14,6 +14,7 @@ class BaseController extends Controller
         'Edit'          => '<i class="fas fa-edit text-primary mr-2"></i> Edit',
         'View'          => '<i class="fas fa-eye text-warning mr-2"></i> View',
         'Delete'        => '<i class="fas fa-trash text-danger mr-2"></i> Delete',
+        'Generate'        => '<i class="fas fa-file-signature text-danger mr-2"></i> Generate',
         'Change Status' => '<i class="fas fa-check-circle text-success mr-2"></i>Change Status',
     ];
 

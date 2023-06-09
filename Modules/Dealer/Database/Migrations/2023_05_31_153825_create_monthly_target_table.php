@@ -29,6 +29,7 @@ class CreateMonthlyTargetTable extends Migration
             $table->string('created_by')->nullable();
             $table->string('modified_by')->nullable();
             $table->timestamps();
+            $table->string('is_generated');
         });
     }
 

@@ -168,13 +168,27 @@ class DealerController extends BaseController
                                 $customer_coa->update(['name'=>$request->name]);
                             }
                         }
-
+                        ChartOfAccount::where('dealer_id', $request->dealer_id)->update([
+                            'name'=>$request->name
+                        ]);
                     }else{
                         $dealer       = $this->model->create($collection->all());
                         $coa_max_code = ChartOfAccount::where('level',4)->where('code','like','1020203%')->max('code');
                         $code         = $coa_max_code ? ($coa_max_code + 1) : 10202030001;
                         $dealer_coa   = ChartOfAccount::create($this->model->dealer_coa($code,$dealer->name,$dealer->id));
 
+                        //Dealer Commissions
+                        //monthly
+                        $commission_monthly_maxcode = ChartOfAccount::where('level',3)->where('code','like','50205%')->max('code');
+                        $monthlyCommissionCode = $commission_monthly_maxcode ? ($commission_monthly_maxcode + 1) : 502050001;
+                        $dealer_monthly_commission = ChartOfAccount::create($this->model->dealer_monthly_commission_coa($monthlyCommissionCode,$dealer->name,$dealer->id));
+                        //monthly
+                        //yearly 
+                        $commission_yearly_maxcode = ChartOfAccount::where('level',3)->where('code','like','50206%')->max('code');
+                        $yearlyCommissionCode = $commission_yearly_maxcode ? ($commission_yearly_maxcode + 1) : 502060001;
+                        $dealer_yearly_commission = ChartOfAccount::create($this->model->dealer_yearly_commission_coa($yearlyCommissionCode,$dealer->name,$dealer->id));
+                        //yearly
+                        //End Dealer Commissions
                         if(!empty($request->previous_balance))
                         {
                             if($dealer_coa){
