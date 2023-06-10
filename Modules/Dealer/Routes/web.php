@@ -56,6 +56,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('show', 'MonthlyTargetController@show')->name('show');
         Route::post('update/{id}', 'MonthlyTargetController@update')->name('update');
         Route::post('generate', 'MonthlyTargetController@generateMonthlyCommission')->name('generate');
+        Route::get('ledger', 'DealerMonthlyCommissionLedgerController@index')->name('ledger');
+        Route::post('ledger-datatable-data', 'DealerMonthlyCommissionLedgerController@datatableData')->name('ledger.datatable');
     });
 
     //Yearly commission Target
@@ -69,6 +71,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('show', 'YearlyTargetController@show')->name('show');
         Route::post('update/{id}', 'YearlyTargetController@update')->name('update');
         Route::post('generate', 'YearlyTargetController@generateCommission')->name('generate');
+        Route::get('ledger', 'DealerYearlyCommissionLedgerController@index')->name('ledger');
+        Route::post('ledger-datatable-data', 'DealerYearlyCommissionLedgerController@datatableData')->name('ledger.datatable');
     });
 
     //Monthly commission payment
