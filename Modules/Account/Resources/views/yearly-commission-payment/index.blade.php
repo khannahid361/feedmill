@@ -12,7 +12,7 @@
                     <div class="card-title"><h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3></div>
                     <div class="card-toolbar">
                         {{-- @if (permission('supplier-payment-create')) --}}
-                            <a href="{{ route('dealer.monthly.commission.payment.create') }}"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add New</a>
+                            <a href="{{ route('dealer.yearly.commission.payment.create') }}"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add New</a>
                         {{-- @endif --}}
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                     zeroRecords: '<strong class="text-danger">No Data Found</strong>'
                 },
                 "ajax": {
-                    "url" : "{{route('dealer.monthly.commission.payment.datatable.data')}}",
+                    "url" : "{{route('dealer.yearly.commission.payment.datatable.data')}}",
                     "type": "POST",
                     "data": function (data) {
                         data.start_date        = $("#form-filter #start_date").val();
@@ -140,7 +140,7 @@
                 let id    = $(this).data('id');
                 let name  = $(this).data('name');
                 let row   = table.row($(this).parent('tr'));
-                let url   = "{{ route('dealer.monthly.commission.payment.delete') }}";
+                let url   = "{{ route('dealer.yearly.commission.payment.delete') }}";
                 delete_data(id, url, table, row, name);
             });
         });

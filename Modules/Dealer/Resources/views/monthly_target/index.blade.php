@@ -85,8 +85,8 @@
                                             <th>Target Quantity</th>
                                             <th>Acheived Quantity</th>
                                             <th>Commission Amount</th>
-                                            <th>Paid Amount</th>
-                                            <th>Due Amount</th>
+                                            {{-- <th>Paid Amount</th>
+                                            <th>Due Amount</th> --}}
                                             <th>Created By</th>
                                             <th>Action</th>
                                         </tr>
@@ -134,7 +134,7 @@
                         }
                     },
                     "columnDefs": [{
-                        "targets": [10],
+                        "targets": [8],
                         "orderable": false,
                         "className": "text-center"
                     }, ],
@@ -236,6 +236,37 @@
                                     keyboard: false,
                                     backdrop: 'static',
                                 });
+                            },
+                            error: function(xhr, ajaxOption, thrownError) {
+                                console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr
+                                    .responseText);
+                            }
+                        });
+                    }
+                });
+
+                $(document).on('click', '.generate-data', function() {
+                    let id = $(this).data('dealerid');
+                    let targetId = $(this).data('id');
+                    if (id) {
+                        $.ajax({
+                            url: "{{ route('dealer.monthly.commission.generate') }}",
+                            type: "POST",
+                            data: {
+                                id: id,
+                                targetId: targetId,
+                                _token: _token
+                            },
+                            beforeSend: function() {
+                                $('#status-btn').addClass(
+                                    'kt-spinner kt-spinner--md kt-spinner--light');
+                            },
+                            complete: function() {
+                                $('#status-btn').removeClass(
+                                    'kt-spinner kt-spinner--md kt-spinner--light');
+                            },
+                            success: function(data) {
+                                notification(data.status, data.message);
                             },
                             error: function(xhr, ajaxOption, thrownError) {
                                 console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr

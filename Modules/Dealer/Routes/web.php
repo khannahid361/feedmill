@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('edit/{id}', 'MonthlyTargetController@edit')->name('edit');
         Route::post('show', 'MonthlyTargetController@show')->name('show');
         Route::post('update/{id}', 'MonthlyTargetController@update')->name('update');
+        Route::post('generate', 'MonthlyTargetController@generateMonthlyCommission')->name('generate');
     });
 
     //Yearly commission Target
@@ -67,8 +68,18 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('edit/{id}', 'YearlyTargetController@edit')->name('edit');
         Route::post('show', 'YearlyTargetController@show')->name('show');
         Route::post('update/{id}', 'YearlyTargetController@update')->name('update');
+        Route::post('generate', 'YearlyTargetController@generateCommission')->name('generate');
     });
 
     //Monthly commission payment
     Route::get('dealer-monthly-commission-payment', 'MonthlyTargetController@dealerMonthlyCommissionIdex')->name('dealer.monthly.commission.payment');
+    Route::get('dealer-monthly-commission-payment-create', 'MonthlyTargetController@dealerMonthlyCommissionCreate')->name('dealer.monthly.commission.payment.create');
+    Route::get('dealer/commission-due/{dealer_id}', 'MonthlyTargetController@getDealerCommissionDueAmount')->name('get.dealer.commission.due');
+    Route::post('dealer-monthly-commission-payment', 'MonthlyTargetController@dealerMonthlyCommissionPayment')->name('dealer.monthly.commission.payment.store');
+
+    //Yearly commission payment
+    Route::get('dealer-yearly-commission-payment', 'YearlyTargetController@dealerCommissionIdex')->name('dealer.yearly.commission.payment');
+    Route::get('dealer-yearly-commission-payment-create', 'YearlyTargetController@dealerCommissionCreate')->name('dealer.yearly.commission.payment.create');
+    Route::get('dealer-yearly-commission-due/{dealer_id}', 'YearlyTargetController@getDealerCommissionDueAmount')->name('get.dealer.yearly.commission.due');
+    Route::post('dealer-yearly-commission-payment', 'YearlyTargetController@dealerCommissionPayment')->name('dealer.yearly.commission.payment.store');
 });

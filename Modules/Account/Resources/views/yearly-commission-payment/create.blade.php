@@ -11,7 +11,7 @@
                     <div class="card-title"><h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3></div>
                     <div class="card-toolbar">
                         @if (permission('supplier-payment-access'))
-                            <a href="{{ route('dealer.monthly.commission.payment') }}"  class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-circle-left"></i> Back</a>
+                            <a href="{{ route('dealer.yearly.commission.payment') }}"  class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-circle-left"></i> Back</a>
                         @endif
                     </div>
                 </div>
@@ -81,7 +81,7 @@
         });
         function dueAmount(dealer_id) {
             $.ajax({
-                url: "{{url('dealer/commission-due')}}/"+dealer_id,
+                url: "{{url('dealer-yearly-commission-due')}}/"+dealer_id,
                 type: "GET",
                 dataType: "JSON",
                 success: function (data) {
@@ -95,7 +95,7 @@
         function store_data(){
             let form = document.getElementById('supplier-payment-form');
             let formData = new FormData(form);
-            let url = "{{route('dealer.monthly.commission.payment.store')}}";
+            let url = "{{route('dealer.yearly.commission.payment.store')}}";
             $.ajax({
                 url        : url,
                 type       : "POST",
@@ -124,7 +124,7 @@
                         });
                     } else {
                         notification(data.status, data.message);
-                        window.location.replace("{{ url('dealer-monthly-commission-payment') }}");
+                        window.location.replace("{{ url('dealer-yearly-commission-payment') }}");
                     }
                 },
                 error: function (xhr, ajaxOption, thrownError) {console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);}

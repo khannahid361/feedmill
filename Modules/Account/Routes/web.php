@@ -173,4 +173,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('datatable-data', 'DealerRecieveController@get_datatable_data')->name('datatable.data');
     });
 
+    //dealer monthly commission payment
+    Route::post('dealer-monthly-commission-payment/datatable-data', 'DealerMonthlyCommissionPaymentController@commissionPaymentDatatable')->name('dealer.monthly.commission.payment.datatable.data');
+    Route::get('dealer-monthly-commission-payment/show/{id}', 'DealerMonthlyCommissionPaymentController@show')->name('dealer.monthly.commission.payment.show');
+    Route::post('dealer-monthly-commission-payment/delete', 'DealerMonthlyCommissionPaymentController@delete')->name('dealer.monthly.commission.payment.delete');
+
+    //dealer Yearly commission payment
+    Route::post('dealer-yearly-commission-payment/datatable-data', 'DealerYearlyCommissionPaymentController@commissionPaymentDatatable')->name('dealer.yearly.commission.payment.datatable.data');
+    Route::get('dealer-yearly-commission-payment/show/{id}', 'DealerYearlyCommissionPaymentController@show')->name('dealer.yearly.commission.payment.show');
+    Route::post('dealer-yearly-commission-payment/delete', 'DealerYearlyCommissionPaymentController@delete')->name('dealer.yearly.commission.payment.delete');
 });

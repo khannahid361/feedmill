@@ -1,19 +1,18 @@
-@extends('layouts.app')
-@section('title', $page_title)
-@push('styles')
-    <link href="{{asset('plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset('css/daterangepicker.min.css')}}" rel="stylesheet" type="text/css" />
-@endpush
-@section('content')
+<?php $__env->startSection('title', $page_title); ?>
+<?php $__env->startPush('styles'); ?>
+    <link href="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.css')); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(asset('css/daterangepicker.min.css')); ?>" rel="stylesheet" type="text/css" />
+<?php $__env->stopPush(); ?>
+<?php $__env->startSection('content'); ?>
     <div class="d-flex flex-column-fluid">
         <div class="container-fluid">
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-5">
-                    <div class="card-title"><h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3></div>
+                    <div class="card-title"><h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3></div>
                     <div class="card-toolbar">
-                        {{-- @if (permission('supplier-payment-create')) --}}
-                            <a href="{{ route('dealer.monthly.commission.payment.create') }}"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add New</a>
-                        {{-- @endif --}}
+                        
+                            <a href="<?php echo e(route('dealer.yearly.commission.payment.create')); ?>"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add New</a>
+                        
                     </div>
                 </div>
             </div>
@@ -29,13 +28,23 @@
                                     <input type="hidden" id="end_date" name="end_date" value="">
                                 </div>
                             </div>
-                            <x-form.selectbox labelName="Dealer" name="dealer_coa_id"  col="col-md-3" class="selectpicker">
-                                @if (!$dealers->isEmpty())
-                                    @foreach ($dealers as $dealer)
-                                        <option value="{{ $dealer->dealer_coa_id }}">{{ $dealer->name }}</option>
-                                    @endforeach
-                                @endif
-                            </x-form.selectbox>
+                            <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Dealer','name' => 'dealer_coa_id','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Dealer','name' => 'dealer_coa_id','col' => 'col-md-3','class' => 'selectpicker']); ?>
+                                <?php if(!$dealers->isEmpty()): ?>
+                                    <?php $__currentLoopData = $dealers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dealer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($dealer->dealer_coa_id); ?>"><?php echo e($dealer->name); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endif; ?>
+                             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                             <div class="col-md-3">
                                 <div style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button" data-toggle="tooltip" data-theme="dark" title="Reset"><i class="fas fa-undo-alt"></i></button>
@@ -53,15 +62,15 @@
                                     <table id="dataTable" class="table table-bordered table-hover">
                                         <thead class="bg-primary">
                                         <tr>
-                                            <th>{{'SL'}}</th>
-                                            <th>{{'Voucher Date'}}</th>
-                                            <th>{{'Voucher No'}}</th>
-                                            <th>{{'Dealer'}}</th>
-                                            <th>{{'Account Head'}}</th>
-                                            <th>{{'Description'}}</th>
-                                            <th>{{'Amount'}}</th>
-                                            <th>{{'Created By'}}</th>
-                                            <th>{{'Action'}}</th>
+                                            <th><?php echo e('SL'); ?></th>
+                                            <th><?php echo e('Voucher Date'); ?></th>
+                                            <th><?php echo e('Voucher No'); ?></th>
+                                            <th><?php echo e('Dealer'); ?></th>
+                                            <th><?php echo e('Account Head'); ?></th>
+                                            <th><?php echo e('Description'); ?></th>
+                                            <th><?php echo e('Amount'); ?></th>
+                                            <th><?php echo e('Created By'); ?></th>
+                                            <th><?php echo e('Action'); ?></th>
                                         </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -74,12 +83,12 @@
             </div>
         </div>
     </div>
-@endsection
-@push('scripts')
-    <script src="{{asset('plugins/custom/datatables/datatables.bundle.js')}}" type="text/javascript"></script>
-    <script src="{{asset('js/moment.js')}}"></script>
-    <script src="{{asset('js/knockout-3.4.2.js')}}"></script>
-    <script src="{{asset('js/daterangepicker.min.js')}}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+    <script src="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.js')); ?>" type="text/javascript"></script>
+    <script src="<?php echo e(asset('js/moment.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/knockout-3.4.2.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/daterangepicker.min.js')); ?>"></script>
     <script>
         let table;
         $(document).ready(function(){
@@ -112,7 +121,7 @@
                     zeroRecords: '<strong class="text-danger">No Data Found</strong>'
                 },
                 "ajax": {
-                    "url" : "{{route('dealer.monthly.commission.payment.datatable.data')}}",
+                    "url" : "<?php echo e(route('dealer.yearly.commission.payment.datatable.data')); ?>",
                     "type": "POST",
                     "data": function (data) {
                         data.start_date        = $("#form-filter #start_date").val();
@@ -140,9 +149,11 @@
                 let id    = $(this).data('id');
                 let name  = $(this).data('name');
                 let row   = table.row($(this).parent('tr'));
-                let url   = "{{ route('dealer.monthly.commission.payment.delete') }}";
+                let url   = "<?php echo e(route('dealer.yearly.commission.payment.delete')); ?>";
                 delete_data(id, url, table, row, name);
             });
         });
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Account\Resources/views/yearly-commission-payment/index.blade.php ENDPATH**/ ?>
