@@ -13,10 +13,6 @@
 
                 <tr>
                     <td><b>Commission Amount</b></td><td><b>:</b></td><td>{{  $dealer->commission_amount  }}</td>
-                    <td><b>Paid Amount</b></td><td><b>:</b></td><td>{{  $dealer->paid_amount  }}</td>
-                </tr>
-                <tr>
-                    <td><b>Due Amount</b></td><td><b>:</b></td><td>{{  $dealer->due_amount }}</td>
                     <td><b>Created By</b></td><td><b>:</b></td><td>{{  $dealer->created_by  }}</td>
                 </tr>
                 <tr>

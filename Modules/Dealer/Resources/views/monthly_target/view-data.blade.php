@@ -55,10 +55,6 @@
 
                 </tr>
                 <tr>
-                    <td><b>Paid Amount</b></td><td><b>:</b></td><td>{{  $dealer->paid_amount  }}</td>
-                    <td><b>Due Amount</b></td><td><b>:</b></td><td>{{  $dealer->due_amount }}</td>
-                </tr>
-                <tr>
 
                     <td><b>Created By</b></td><td><b>:</b></td><td>{{  $dealer->created_by  }}</td>
                     <td><b>Modified By</b></td><td><b>:</b></td><td>{{  $dealer->modified_by  }}</td>
