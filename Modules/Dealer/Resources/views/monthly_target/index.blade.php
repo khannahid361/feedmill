@@ -246,6 +246,9 @@
                 });
 
                 $(document).on('click', '.generate-data', function() {
+                    //stopping double click
+                    $(this).prop('disabled', true);
+
                     let id = $(this).data('dealerid');
                     let targetId = $(this).data('id');
                     if (id) {
@@ -262,6 +265,9 @@
                                     'kt-spinner kt-spinner--md kt-spinner--light');
                             },
                             complete: function() {
+                                // Re-enable the button after the AJAX request is completed
+                                $('.generate-data').prop('disabled', false);
+
                                 $('#status-btn').removeClass(
                                     'kt-spinner kt-spinner--md kt-spinner--light');
                             },

@@ -4,6 +4,7 @@ namespace Modules\Dealer\Http\Controllers;
 
 use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Modules\Account\Entities\Transaction;
 use Modules\Dealer\Entities\Dealer;
 use Modules\Dealer\Entities\DealerYearlyCommissionLedger;
@@ -16,9 +17,9 @@ class DealerYearlyCommissionLedgerController extends BaseController
     }
     public function index()
     {
-        $this->setPageData('Manage Dealer Monthly Commission Ledger', 'Manage Dealer Monthly Commission Ledger', 'fas fa-money-check-alt', [['name' => 'Manage Dealer Monthly Commission Ledger']]);
+        $this->setPageData('Manage Dealer Yearly Commission Ledger', 'Manage Dealer Yearly Commission Ledger', 'fas fa-money-check-alt', [['name' => 'Manage Dealer Yearly Commission Ledger']]);
         $data = [
-            'dealers'  => Dealer::orderBy('id', 'DESC')->get()
+            'dealers'  => DB::table('dealers as d')->join('chart_of_accounts as c', 'c.dealer_id','d.id')->where('c.parent_name','Commission yearly Payable')->get(['d.*','c.id as dealer_coa_id']),
         ];
         return view('dealer::yearly_target.ledger', $data);
     }
@@ -32,8 +33,8 @@ class DealerYearlyCommissionLedgerController extends BaseController
                 if (!empty($request->end_date)) {
                     $this->model->setEndDate($request->end_date);
                 }
-                if (!empty($request->supplier_coa_id)) {
-                    $this->model->setDealerCOAID($request->supplier_coa_id);
+                if (!empty($request->dealer_coa_id)) {
+                    $this->model->setDealerCOAID($request->dealer_coa_id);
                 }
                 $this->set_datatable_default_properties($request); //set datatable default properties
                 $list = $this->model->getDatatableList(); //get table data
