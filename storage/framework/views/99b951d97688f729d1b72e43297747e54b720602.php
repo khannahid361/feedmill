@@ -1,41 +1,41 @@
-@extends('layouts.app')
-@section('title', $page_title)
-@section('content')
+<?php $__env->startSection('title', $page_title); ?>
+<?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
         <div class="card card-custom gutter-b">
             <div class="card-header flex-wrap py-5">
-                <div class="card-title"><h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3></div>
+                <div class="card-title"><h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3></div>
                 <div class="card-toolbar">
-                    @if ($production->production_status != 3)
+                    <?php if($production->production_status != 3): ?>
                     <button type="button" class="btn btn-primary btn-sm mr-5" onclick="store_data()" id="save-btn"><i class="fas fa-save"></i> Save</button>
-                    <button type="button" class="btn btn-primary btn-sm mr-5 change_production_status"  data-id="{{ $production->id }}" data-name="{{ $production->batch_no }}" data-status="{{ $production->production_status }}"><i class="fas fa-check-circle text-white mr-2"></i> Change Production Status</button>
-                    @endif
-                    <a href="{{ route('production') }}" class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
+                    <button type="button" class="btn btn-primary btn-sm mr-5 change_production_status"  data-id="<?php echo e($production->id); ?>" data-name="<?php echo e($production->batch_no); ?>" data-status="<?php echo e($production->production_status); ?>"><i class="fas fa-check-circle text-white mr-2"></i> Change Production Status</button>
+                    <?php endif; ?>
+                    <a href="<?php echo e(route('production')); ?>" class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
                 </div>
             </div>
         </div>
         <div class="card card-custom" style="padding-bottom: 100px !important;">
             <form id="store_or_update_form" method="post">
-                @csrf
+                <?php echo csrf_field(); ?>
                 <div class="card-body">
                     <div class="col-md-12 text-center">
                         <h5>
-                            <b>Batch No.:</b> {{ $production->batch_no }} <br>
-                            <b>Warehouse:</b> {{ $production->warehouse->name }} <br>
-                            <b>Start Date:</b> {{ date('d-M-Y',strtotime($production->start_date)) }}
+                            <b>Batch No.:</b> <?php echo e($production->batch_no); ?> <br>
+                            <b>Warehouse:</b> <?php echo e($production->warehouse->name); ?> <br>
+                            <b>Start Date:</b> <?php echo e(date('d-M-Y',strtotime($production->start_date))); ?>
+
                         </h5>
                     </div>
                     <div class="col-md-12 pt-5">
-                        @if (!$production->products->isEmpty())
-                            @foreach ($production->products as $key => $item)
+                        <?php if(!$production->products->isEmpty()): ?>
+                            <?php $__currentLoopData = $production->products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="row pt-5">
                                 <div class="col-md-12 text-center">
-{{--                                    <h3 class="py-3 bg-warning text-white" style="margin: 10px auto 10px auto;">{{ ($key+1).' - '.$item->product->name }}</h3>--}}
-                                    <h3 class="py-3 bg-warning text-white" style="margin: 10px auto 10px auto;">{{$item->product->name }}</h3>
+
+                                    <h3 class="py-3 bg-warning text-white" style="margin: 10px auto 10px auto;"><?php echo e($item->product->name); ?></h3>
                                 </div>
                                 <div class="col-md-12">
-                                    <table class="table table-bordered pb-5" id="material_table_{{ $key + 1 }}">
+                                    <table class="table table-bordered pb-5" id="material_table_<?php echo e($key + 1); ?>">
                                         <thead class="bg-primary">
                                             <th class="text-center">Mfg. Date</th>
                                             <th class="text-center">Exp. Date</th>
@@ -47,29 +47,29 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td class="text-center">{{ date('d-M-Y',strtotime($item->mfg_date)) }}</td>
-                                                <td class="text-center">{{ date('d-M-Y',strtotime($item->exp_date)) }}</td>
-                                                <td class="text-center">{{ $item->product->unit->unit_name.' ('.$item->product->unit->unit_code.')' }}</td>
+                                                <td class="text-center"><?php echo e(date('d-M-Y',strtotime($item->mfg_date))); ?></td>
+                                                <td class="text-center"><?php echo e(date('d-M-Y',strtotime($item->exp_date))); ?></td>
+                                                <td class="text-center"><?php echo e($item->product->unit->unit_name.' ('.$item->product->unit->unit_code.')'); ?></td>
                                                 <td>
-                                                    <input type="text" class="form-control text-center" value="{{ $item->expected_unit_qty + $item->used_wastage_qty }}" name="production[{{ $key+1 }}][expected_unit_qty]" id="production_{{ $key+1 }}_expected_unit_qty" readonly>
+                                                    <input type="text" class="form-control text-center" value="<?php echo e($item->expected_unit_qty + $item->used_wastage_qty); ?>" name="production[<?php echo e($key+1); ?>][expected_unit_qty]" id="production_<?php echo e($key+1); ?>_expected_unit_qty" readonly>
 
-                                                    <input type="hidden" class="form-control" name="production[{{ $key+1 }}][production_product_id]" value="{{ $item->id }}">
+                                                    <input type="hidden" class="form-control" name="production[<?php echo e($key+1); ?>][production_product_id]" value="<?php echo e($item->id); ?>">
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control text-center" value="{{ $item->base_unit_qty }}" name="production[{{ $key+1 }}][fg_qty]" id="production_{{ $key+1 }}_fg_qty" onkeyup="per_unit_cost('{{ $key+1 }}')">
+                                                    <input type="text" class="form-control text-center" value="<?php echo e($item->base_unit_qty); ?>" name="production[<?php echo e($key+1); ?>][fg_qty]" id="production_<?php echo e($key+1); ?>_fg_qty" onkeyup="per_unit_cost('<?php echo e($key+1); ?>')">
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control text-center" value="{{ $item->recyclable_wastage_qty ??'0' }}" name="production[{{ $key+1 }}][recyclable_wastage_qty]" id="production_{{ $key+1 }}_recyclable_waste_qty">
+                                                    <input type="text" class="form-control text-center" value="<?php echo e($item->recyclable_wastage_qty ??'0'); ?>" name="production[<?php echo e($key+1); ?>][recyclable_wastage_qty]" id="production_<?php echo e($key+1); ?>_recyclable_waste_qty">
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control text-center" value="{{ $item->permanent_wastage_qty ?? '0' }}" name="production[{{ $key+1 }}][permanent_wastage_qty]" id="production_{{ $key+1 }}_permanent_waste_qty">
+                                                    <input type="text" class="form-control text-center" value="<?php echo e($item->permanent_wastage_qty ?? '0'); ?>" name="production[<?php echo e($key+1); ?>][permanent_wastage_qty]" id="production_<?php echo e($key+1); ?>_permanent_waste_qty">
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="col-md-12 table-responsive">
-                                    <table class="table table-bordered pb-5" id="material_table_{{ $key + 1 }}">
+                                    <table class="table table-bordered pb-5" id="material_table_<?php echo e($key + 1); ?>">
                                         <thead class="bg-primary">
                                             <th width="30%">Material</th>
                                             <th width="5%" class="text-center">Type</th>
@@ -77,92 +77,95 @@
                                             <th width="10%" class="text-right">Rate</th>
                                             <th class="text-center" hidden></th>
                                             <th class="text-center">Used Qty <sup class="text-danger font-weight-bolder">*</sup></th>
-{{--                                            <th class="text-center">Damaged Qty</th>--}}
+
                                             <th class="text-center">Total</th>
-{{--                                            <th class="text-center">Odd Qty</th>--}}
+
                                         </thead>
                                         <tbody>
-                                        @php
+                                        <?php
                                             $a = 0;
-                                        @endphp
-                                            @if (!$item->materials->isEmpty())
-                                                @foreach ($item->materials as $index => $value)
+                                        ?>
+                                            <?php if(!$item->materials->isEmpty()): ?>
+                                                <?php $__currentLoopData = $item->materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <tr>
                                                         <td>
-                                                            {{ $value->material_name .' ('.$value->material_code.')' }}
-                                                            <input type="hidden" class="form-control text-center" value="{{ $value->pivot->id }}" name="production[{{ $key+1 }}][materials][{{ $index+1 }}][production_material_id]" id="production_{{ $key+1 }}_materials_{{ $index+1 }}_production_material_id" data-id="{{ $index+1 }}">
+                                                            <?php echo e($value->material_name .' ('.$value->material_code.')'); ?>
+
+                                                            <input type="hidden" class="form-control text-center" value="<?php echo e($value->pivot->id); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][production_material_id]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_production_material_id" data-id="<?php echo e($index+1); ?>">
                                                         </td>
-                                                        <td class="text-center">{{ MATERIAL_TYPE[$value->type] }}</td>
-                                                        <td class="text-center">{{ $value->unit->unit_name.' ('.$value->unit->unit_code.')' }}</td>
+                                                        <td class="text-center"><?php echo e(MATERIAL_TYPE[$value->type]); ?></td>
+                                                        <td class="text-center"><?php echo e($value->unit->unit_name.' ('.$value->unit->unit_code.')'); ?></td>
                                                         <td class="text-right">
-                                                            {{ number_format($value->pivot->cost,2,'.','') }}
-                                                            <input type="hidden" class="form-control text-right material_{{ $key+1 }}_cost" value="{{ $value->pivot->cost }}" name="production[{{ $key+1 }}][materials][{{ $index+1 }}][cost]" id="production_{{ $key+1 }}_materials_{{ $index+1 }}_cost" data-id="{{ $index+1 }}">
+                                                            <?php echo e(number_format($value->pivot->cost,2,'.','')); ?>
+
+                                                            <input type="hidden" class="form-control text-right material_<?php echo e($key+1); ?>_cost" value="<?php echo e($value->pivot->cost); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][cost]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_cost" data-id="<?php echo e($index+1); ?>">
                                                         </td>
                                                         <td class="text-center" hidden>
-{{--                                                            {{ number_format($value->pivot->qty,2,'.','') }}--}}
-                                                            <input type="hidden" class="form-control text-right material_{{ $key+1 }}_qty" value="{{ $value->pivot->qty }}" name="production[{{ $key+1 }}][materials][{{ $index+1 }}][qty]" id="production_{{ $key+1 }}_materials_{{ $index+1 }}_qty" data-id="{{ $index+1 }}">
+
+                                                            <input type="hidden" class="form-control text-right material_<?php echo e($key+1); ?>_qty" value="<?php echo e($value->pivot->qty); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][qty]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_qty" data-id="<?php echo e($index+1); ?>">
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control text-center material_{{ $key+1 }}_used_qty" value="{{ $value->pivot->used_qty ?? '' }}" name="production[{{ $key+1 }}][materials][{{ $index+1 }}][used_qty]" id="production_{{ $key+1 }}_materials_{{ $index+1 }}_used_qty"  onkeyup="calculateRowData('{{ $key+1 }}','{{ $index+1 }}')" data-id="{{ $index+1 }}" readonly>
+                                                            <input type="text" class="form-control text-center material_<?php echo e($key+1); ?>_used_qty" value="<?php echo e($value->pivot->used_qty ?? ''); ?>" name="production[<?php echo e($key+1); ?>][materials][<?php echo e($index+1); ?>][used_qty]" id="production_<?php echo e($key+1); ?>_materials_<?php echo e($index+1); ?>_used_qty"  onkeyup="calculateRowData('<?php echo e($key+1); ?>','<?php echo e($index+1); ?>')" data-id="<?php echo e($index+1); ?>" readonly>
                                                         </td>
-{{--                                                        <td>--}}
-{{--                                                            <input type="text" class="form-control text-center material_{{ $key+1 }}_damaged_qty" value="{{ $value->pivot->damaged_qty ?? '' }}" name="production[{{ $key+1 }}][materials][{{ $index+1 }}][damaged_qty]" id="production_{{ $key+1 }}_materials_{{ $index+1 }}_damaged_qty"  onkeyup="calculateRowData('{{ $key+1 }}','{{ $index+1 }}')" data-id="{{ $index+1 }}">--}}
-{{--                                                        </td>--}}
+
+
+
                                                         <td class="text-right">
-                                                            {{ number_format($value->pivot->total,2,'.','') }}
-                                                            @php
+                                                            <?php echo e(number_format($value->pivot->total,2,'.','')); ?>
+
+                                                            <?php
                                                                 $a += $value->pivot->total;
-                                                            @endphp
+                                                            ?>
                                                         </td>
-{{--                                                        <td>--}}
-{{--                                                            <input readonly type="text" class="form-control bg-secondary text-center material_{{ $key+1 }}_odd_qty" value="{{ $value->pivot->odd_qty ?? '' }}" name="production[{{ $key+1 }}][materials][{{ $index+1 }}][odd_qty]" id="production_{{ $key+1 }}_materials_{{ $index+1 }}_odd_qty"  data-id="{{ $index+1 }}">--}}
-{{--                                                        </td>--}}
+
+
+
                                                     </tr>
-                                                @endforeach
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td colspan="5" class="text-right font-weight-bold">Labor Cost</td>
-                                                    <td colspan="1" class="text-right font-weight-bold"><input type="text" class="form-control material_{{ $key+1 }}_labor_cost" id="production_{{ $key+1 }}_labor_cost" name="production[{{ $key+1 }}][labor_cost]" value="{{ $item->labor_cost ? number_format($item->labor_cost,2,'.','') : '' }}" onkeyup="per_unit_cost('{{ $key+1 }}')"  data-id="{{ $key+1 }}"></td>
+                                                    <td colspan="1" class="text-right font-weight-bold"><input type="text" class="form-control material_<?php echo e($key+1); ?>_labor_cost" id="production_<?php echo e($key+1); ?>_labor_cost" name="production[<?php echo e($key+1); ?>][labor_cost]" value="<?php echo e($item->labor_cost ? number_format($item->labor_cost,2,'.','') : ''); ?>" onkeyup="per_unit_cost('<?php echo e($key+1); ?>')"  data-id="<?php echo e($key+1); ?>"></td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="5" class="text-right font-weight-bold">Other Cost</td>
-                                                    <td colspan="1" class="text-right font-weight-bold"><input type="text" class="form-control material_{{ $key+1 }}_other_cost" id="production_{{ $key+1 }}_other_cost" name="production[{{ $key+1 }}][other_cost]" value="{{ $item->labor_cost ? number_format($item->other_cost,2,'.','') : '' }}" onkeyup="per_unit_cost('{{ $key+1 }}')"  data-id="{{ $key+1 }}"></td>
+                                                    <td colspan="1" class="text-right font-weight-bold"><input type="text" class="form-control material_<?php echo e($key+1); ?>_other_cost" id="production_<?php echo e($key+1); ?>_other_cost" name="production[<?php echo e($key+1); ?>][other_cost]" value="<?php echo e($item->labor_cost ? number_format($item->other_cost,2,'.','') : ''); ?>" onkeyup="per_unit_cost('<?php echo e($key+1); ?>')"  data-id="<?php echo e($key+1); ?>"></td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="5" class="text-right font-weight-bold">Total Cost</td>
                                                     <td colspan="1">
-                                                        @php
+                                                        <?php
                                                             if(!empty($item->per_unit_cost) && !empty($item->base_unit_qty)) {
                                                                 $total_cost = $item->per_unit_cost * $item->base_unit_qty;
                                                             }else{
                                                                 $total_cost = '';
                                                             }
-                                                        @endphp
-                                                        <input readonly type="text" class="form-control text-white bg-primary text-right material_{{ $key+1 }}_total_cost" value="{{ $a }}" name="production[{{ $key+1 }}][materials_total_cost]" id="production_{{ $key+1 }}_materials_total_cost"  data-id="{{ $key+1 }}">
+                                                        ?>
+                                                        <input readonly type="text" class="form-control text-white bg-primary text-right material_<?php echo e($key+1); ?>_total_cost" value="<?php echo e($a); ?>" name="production[<?php echo e($key+1); ?>][materials_total_cost]" id="production_<?php echo e($key+1); ?>_materials_total_cost"  data-id="<?php echo e($key+1); ?>">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="5" class="text-right font-weight-bold">Per Unit Cost</td>
                                                     <td colspan="1">
-                                                        <input readonly type="text" class="form-control text-white bg-primary text-right material_{{ $key+1 }}_per_unit_cost" value="{{ $item->per_unit_cost ? number_format($item->per_unit_cost,2,'.','') : $a/$item->base_unit_qty }}" name="production[{{ $key+1 }}][materials_per_unit_cost]" id="production_{{ $key+1 }}_materials_per_unit_cost"  data-id="{{ $key+1 }}">
+                                                        <input readonly type="text" class="form-control text-white bg-primary text-right material_<?php echo e($key+1); ?>_per_unit_cost" value="<?php echo e($item->per_unit_cost ? number_format($item->per_unit_cost,2,'.','') : $a/$item->base_unit_qty); ?>" name="production[<?php echo e($key+1); ?>][materials_per_unit_cost]" id="production_<?php echo e($key+1); ?>_materials_per_unit_cost"  data-id="<?php echo e($key+1); ?>">
                                                     </td>
                                                 </tr>
-                                            @endif
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            @endforeach
-                        @endif
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-@include('production::production.production-status-modal')
-@endsection
-@push('scripts')
-<script src="{{asset('js/jquery.printarea.js')}}"></script>
+<?php echo $__env->make('production::production.production-status-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+<script src="<?php echo e(asset('js/jquery.printarea.js')); ?>"></script>
 <script>
 $(document).ready(function () {
     $(document).on('click','#print-qrcode',function(){
@@ -190,7 +193,7 @@ $(document).ready(function () {
         var production_status =  $('#production_status_form #production_status option:selected').val();
         if(production_id && production_status) {
             $.ajax({
-                url: "{{route('production.change.production.status')}}",
+                url: "<?php echo e(route('production.change.production.status')); ?>",
                 type: "POST",
                 data: {production_id:production_id,production_status:production_status,_token:_token},
                 dataType: "JSON",
@@ -204,7 +207,7 @@ $(document).ready(function () {
                     notification(data.status, data.message);
                     if (data.status == 'success') {
                         $('#production_status_modal').modal('hide');
-                        window.location.replace("{{ url('production') }}");
+                        window.location.replace("<?php echo e(url('production')); ?>");
                     }
                 },
                 error: function (xhr, ajaxOption, thrownError) {
@@ -273,7 +276,7 @@ function per_unit_cost(key) {
 function store_data(){
     let form = document.getElementById('store_or_update_form');
     let formData = new FormData(form);
-    let url = "{{url('production/store-operation')}}";
+    let url = "<?php echo e(url('production/store-operation')); ?>";
     $.ajax({
         url: url,
         type: "POST",
@@ -303,7 +306,7 @@ function store_data(){
             } else {
                 notification(data.status, data.message);
                 if (data.status == 'success') {
-                    window.location.replace("{{ url('production/operation',$production->id) }}");
+                    window.location.replace("<?php echo e(url('production/operation',$production->id)); ?>");
                 }
             }
         },
@@ -328,7 +331,7 @@ function load_qrcode_view() {
     var row_qty     = $('#qrcode_form #row_qty').val();
     if(production_product_id && batch_no && row_qty){
         $.ajax({
-            url: "{{ route('production.generate.coupon.qrcode') }}",
+            url: "<?php echo e(route('production.generate.coupon.qrcode')); ?>",
             type: "POST",
             data: {production_product_id:production_product_id,batch_no:batch_no,row_qty:row_qty,_token:_token},
             beforeSend: function(){
@@ -357,4 +360,6 @@ function load_qrcode_view() {
     }
 }
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Production\Resources/views/production/operation.blade.php ENDPATH**/ ?>
