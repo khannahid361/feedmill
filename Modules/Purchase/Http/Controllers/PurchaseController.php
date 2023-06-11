@@ -242,6 +242,7 @@ class PurchaseController extends BaseController{
             DB::beginTransaction();
             try{
                 $purchase = $this->model->with('purchaseMaterialList')->find($id);
+                // return response()->json($purchase);
                 if($status == 1){
                     foreach ($purchase->purchaseMaterialList as $key => $value){
                         $supplier                  = Supplier::with('coa')->find($purchase->supplier_id);
@@ -249,7 +250,19 @@ class PurchaseController extends BaseController{
                         $warehouseMaterialQuantity = WarehouseMaterial::where(['material_id' => $value['material_id']])->sum('qty');
                         $warehouse_material        = WarehouseMaterial::where(['warehouse_id' => $purchase->warehouse_id,'material_id'=>$value['material_id']])->first();
                         // $materialNewPrice          = (($warehouseMaterialQuantity * $material->cost) + ($value['qty'] * $value['net_unit_cost'])) / ( $warehouseMaterialQuantity + $value['qty']);
-                        $materialNewPrice          = (($warehouseMaterialQuantity * $material->cost) + ($purchase->grand_total)) / ( $warehouseMaterialQuantity + $value['qty']);
+
+                        //warehouseMaterial Cost
+                        $warehouseCost = $warehouseMaterialQuantity * $material->cost;
+
+                        //purchaseMaterial cost
+                        $currentMaterialQty = $value['qty'];
+                        $currentMaterialRate = $value['net_unit_cost'];
+                        $currentMaterialTotalCost = $value['total'];
+                        $newMaterialTotalCost = ($purchase->grand_total * $currentMaterialTotalCost)/$purchase->total_cost;
+                        $newWarehouseCost = $warehouseCost + $newMaterialTotalCost;
+
+                        $materialNewPrice          = $newWarehouseCost / ( $warehouseMaterialQuantity + $value['qty']);
+
                         MaterialPurchase::where(['purchase_id' => $id,'material_id' => $value['material_id']])->first()->update([
                             'new_unit_cost' => $materialNewPrice
                         ]);
