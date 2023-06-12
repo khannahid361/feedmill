@@ -56,7 +56,7 @@
                                     required="required" property="readonly" col="col-md-4" />
                                 <x-form.textbox labelName="Date" name="start_date" required="required" col="col-md-4"
                                     class="date" property="readonly" value="{{ date('Y-m-d') }}" />
-                                <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required"
+                                <x-form.selectbox labelName="Depo" name="warehouse_id" required="required"
                                     col="col-md-4" class="selectpicker">
                                     @if (!$warehouses->isEmpty())
                                         @foreach ($warehouses as $warehouse)

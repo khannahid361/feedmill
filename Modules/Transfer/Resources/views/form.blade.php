@@ -27,7 +27,7 @@
                             @if(Auth::user()->warehouse_id)
                             <input type="hidden" name="from_warehouse_id" id="from_warehouse_id" value="{{ Auth::user()->warehouse_id }}">
                             @else
-                            <x-form.selectbox labelName="From Warehouse" name="from_warehouse_id" required="required" col="col-md-4" class="selectpicker">
+                            <x-form.selectbox labelName="From Depo" name="from_warehouse_id" required="required" col="col-md-4" class="selectpicker">
                               @if (!$warehouses->isEmpty())
                                   @foreach ($warehouses as $value)
                                   <option value="{{ $value->id }}" {{ isset($transfer) ? ($transfer->from_warehouse_id == $value->id ? 'selected' : 'disabled') : ''  }}>{{ $value->name }}</option>
@@ -35,7 +35,7 @@
                               @endif
                             </x-form.selectbox>
                             @endif
-                            <x-form.selectbox labelName="To Warehouse" name="to_warehouse_id" required="required" col="col-md-4" class="selectpicker">
+                            <x-form.selectbox labelName="To Depo" name="to_warehouse_id" required="required" col="col-md-4" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $value)
                                 <option value="{{ $value->id }}" {{ isset($transfer) ? ($transfer->to_warehouse_id == $value->id ? 'selected' : '') : ''  }}>{{ $value->name }}</option>

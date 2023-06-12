@@ -19,7 +19,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <input type="hidden" name="update_id" id="update_id" />
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-4" required="required" class="selectpicker">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-4" required="required" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                             @foreach ($warehouses as $id => $name)
                                 <option value="{{ $id }}" data-name="{{ $name }}">{{ $name }}</option>

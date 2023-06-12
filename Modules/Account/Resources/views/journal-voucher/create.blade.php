@@ -27,7 +27,7 @@
                                 <label for="voucher_date">Date</label>
                                 <input type="text" class="form-control date" name="voucher_date" id="voucher_date" value="{{ date('Y-m-d') }}" readonly />
                             </div>
-                            <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required"  col="col-md-4" class="selectpicker">
+                            <x-form.selectbox labelName="Depo" name="warehouse_id" required="required"  col="col-md-4" class="selectpicker">
                                 @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>

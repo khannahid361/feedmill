@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    <a href="{{ route('adjustment') }}" class="btn btn-warning btn-sm font-weight-bolder"> 
+                    <a href="{{ route('adjustment') }}" class="btn btn-warning btn-sm font-weight-bolder">
                         <i class="fas fa-arrow-left"></i> Back</a>
                     <!--end::Button-->
                 </div>
@@ -39,7 +39,7 @@
                                 <input type="text" class="form-control" name="adjustment_no" id="adjustment_no" value="{{ $adjustment_no }}" readonly />
                             </div>
 
-                            <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-4" required="required" class="selectpicker">
+                            <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-4" required="required" class="selectpicker">
                                 @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $id => $name)
                                     <option value="{{ $id }}" {{ $id==1 ? 'selected' : '' }}>{{ $name }}</option>
@@ -79,8 +79,8 @@
                                     </tfoot>
                                 </table>
                             </div>
-                           
-                           
+
+
                             <div class="form-group col-md-12">
                                 <label for="shipping_cost">Note</label>
                                 <textarea  class="form-control" name="note" id="note" cols="30" rows="3"></textarea>
@@ -183,7 +183,7 @@ $(document).ready(function () {
         }else{
             calculateProductData($(this).val());
         }
-        
+
     });
 
     $('#product_table').on('click','.remove-product',function(){
@@ -225,7 +225,7 @@ $(document).ready(function () {
                     cols += `<td class="tax text-right"></td>`;
                     cols += `<td class="sub-total text-right"></td>`;
                     cols += `<td class="text-center"><button type="button" class="btn btn-danger btn-sm remove-product small-btn"><i class="fas fa-trash"></i></button></td>`;
-                    
+
                     cols += `<input type="hidden" class="product-id" name="products[`+count+`][id]"  value="`+data.id+`">`;
                     cols += `<input type="hidden"  name="products[`+count+`][name]" value="`+data.name+`">`;
                     cols += `<input type="hidden" class="product-code" name="products[`+count+`][code]" value="`+data.code+`">`;
@@ -244,12 +244,12 @@ $(document).ready(function () {
                     calculateProductData(1);
                     count++;
                 }
-                
+
             }
         });
     }
 
-    function calculateProductData(quantity){ 
+    function calculateProductData(quantity){
         unitConversion();
 
         $('#product_table tbody tr:nth-child('+(rowindex + 1)+')').find('.tax-rate').val(tax_rate[rowindex].toFixed(2));
@@ -371,7 +371,7 @@ function store_data(){
                     notification(data.status, data.message);
                     if (data.status == 'success') {
                         window.location.replace("{{ route('adjustment') }}");
-                        
+
                     }
                 }
 
@@ -381,7 +381,7 @@ function store_data(){
             }
         });
     }
-    
+
 }
 
 </script>

@@ -41,7 +41,7 @@
                                     <option value="{{ $key }}" {{ ($key == 1) ? 'selected' : '' }}>{{ $value }}</option>
                                 @endforeach
                             </x-form.selectbox>
-                            <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required" col="col-md-4" class="selectpicker">
+                            <x-form.selectbox labelName="Depo" name="warehouse_id" required="required" col="col-md-4" class="selectpicker">
                                 @foreach($warehouses as $warehouse)
                                     <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
                                 @endforeach

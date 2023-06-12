@@ -17,7 +17,7 @@
                         <form id="dealer-receive-form" method="post">
                             @csrf
                             <div class="row">
-                                <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-4" required="required" class="selectpicker">
+                                <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-4" required="required" class="selectpicker">
                                     @if (!$warehouses->isEmpty())
                                         @foreach ($warehouses as $id => $name)
                                             <option value="{{ $id }}" data-name="{{ $name }}">{{ $name }}</option>

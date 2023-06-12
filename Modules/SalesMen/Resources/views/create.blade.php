@@ -73,7 +73,7 @@
                                         @endforeach
                                         @endif
                                     </x-form.selectbox>
-                                    <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required" col="col-md-4" class="selectpicker" onchange="setDistrictData();getUpazilaList(2);">
+                                    <x-form.selectbox labelName="Depo" name="warehouse_id" required="required" col="col-md-4" class="selectpicker" onchange="setDistrictData();getUpazilaList(2);">
                                         @if (!$warehouses->isEmpty())
                                         @foreach ($warehouses as $warehouse)
                                             <option value="{{ $warehouse->id }}"  {{ isset($salesman) ? ($salesman->warehouse_id == $warehouse->id ? 'selected' : '') : '' }} data-districtid="{{ $warehouse->district_id }}" data-districtname="{{ $warehouse->district->name }}">{{ $warehouse->name }}</option>

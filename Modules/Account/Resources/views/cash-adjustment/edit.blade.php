@@ -27,7 +27,7 @@
                         @csrf
                         <div class="row">
                             <div class="col-md-12">
-                                <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-6" required="required" class="selectpicker">
+                                <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-6" required="required" class="selectpicker">
                                     @if (!$warehouses->isEmpty())
                                     @foreach ($warehouses as $id => $name)
                                         <option value="{{ $id }}" data-name="{{ $name }}" {{ $voucher_data->warehouse_id == $id ? 'selected' : '' }}>{{ $name }}</option>
@@ -104,7 +104,7 @@ function store_data(){
                 notification(data.status, data.message);
                 if (data.status == 'success') {
                     window.location.replace("{{ url('cash-adjustment') }}");
-                    
+
                 }
             }
 

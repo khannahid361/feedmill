@@ -44,7 +44,7 @@
                                 <input type="hidden" id="end_date" name="end_date">
                             </div>
                         </div>
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-4" class="selectpicker">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-4" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                             @foreach ($warehouses as $id => $name)
                                 <option value="{{ $id }}" data-name="{{ $name }}">{{ $name }}</option>
@@ -52,11 +52,11 @@
                             @endif
                         </x-form.selectbox>
                         <div class="col-md-4">
-                            <div style="margin-top:28px;">     
+                            <div style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Reset">
                                     <i class="fas fa-undo-alt"></i></button>
-    
+
                                     <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" onclick="summary_data()" title="Search">
                                     <i class="fas fa-search"></i></button>
@@ -70,7 +70,7 @@
                 <div id="kt_datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                     <div class="col-md-12" style="position: relative;">
                         <div class="row" id="summary_data">
-                        
+
                         </div>
                         <div class="col-md-12 d-none" id="table-loader" style="position: absolute;top:80px;left:0;">
                             <div style="width: 120px;
@@ -151,7 +151,7 @@ function summary_data()
     } else {
         notification('error','Please choose date!');
     }
-    
+
 
 }
 

@@ -55,7 +55,7 @@
                                     @if(Auth::user()->warehouse_id)
                                         <input type="hidden" name="warehouse_id" id="warehouse_id" value="{{ Auth::user()->warehouse_id }}">
                                     @else
-                                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required" col="col-md-4" class="selectpicker">
+                                        <x-form.selectbox labelName="Depo" name="warehouse_id" required="required" col="col-md-4" class="selectpicker">
                                             @if (!$warehouses->isEmpty())
                                                 @foreach ($warehouses as $id => $name)
                                                     <option value="{{ $id }}" {{ isset($dealer) ? ( $dealer->warehouse_id == $id ? 'selected' : '') : '' }}>{{ $name }}</option>

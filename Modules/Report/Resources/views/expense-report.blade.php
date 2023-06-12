@@ -24,7 +24,7 @@
             <div class="card-header flex-wrap py-5">
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row justify-content-center">
-                        
+
                         <div class="form-group col-md-3">
                             <label for="name">Choose Your Date</label>
                             <div class="input-group">
@@ -42,7 +42,7 @@
                             @endif
                         </x-form.selectbox>
 
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-3" class="selectpicker">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-3" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                             @foreach ($warehouses as $id => $name)
                                 <option value="{{ $id }}" data-name="{{ $name }}">{{ $name }}</option>
@@ -51,7 +51,7 @@
                         </x-form.selectbox>
 
                         <div class="col-md-3">
-                            <div style="margin-top:28px;">    
+                            <div style="margin-top:28px;">
                                 <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                 data-toggle="tooltip" data-theme="dark" title="Reset">
                                 <i class="fas fa-undo-alt"></i></button>
@@ -139,7 +139,7 @@ $(document).ready(function(){
             [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
         ],
         "pageLength": 25, //number of data show per page
-        "language": { 
+        "language": {
             processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
             emptyTable: '<strong class="text-danger">No Data Found</strong>',
             infoEmpty: '',
@@ -247,11 +247,11 @@ $(document).ready(function(){
                 },
                 footer:true,
                 customize: function(doc) {
-                    doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
+                    doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
                     doc.styles.tableHeader.fontSize = 7;
                     doc.styles.tableFooter.fontSize = 7;
                     doc.pageMargins = [5,5,5,5];
-                }  
+                }
             },
         ],
         "footerCallback": function ( row, data, start, end, display ) {

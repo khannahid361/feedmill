@@ -8,7 +8,7 @@
     <p><b>Date :</b> {{ date('d-M-Y',strtotime($credit_voucher->voucher_date)) }}</p>
 </div>
 <div class="col-md-12">
-    <p><b>Warehouse :</b> {{ $credit_voucher->warehouse_name }}</p>
+    <p><b>Depo :</b> {{ $credit_voucher->warehouse_name }}</p>
 </div>
 <div class="col-md-12">
     <div class="table-responsive">
@@ -20,7 +20,7 @@
             <tbody>
                 @php
                     $total_debit = 0;
-                @endphp     
+                @endphp
                 @if (!$debit_vouchers->isEmpty())
                     @foreach ($debit_vouchers as $key => $voucher)
                     @php

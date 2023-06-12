@@ -45,8 +45,8 @@
                                         <th>Sl</th>
                                         <th>Transfer No.</th>
                                         <th>Transfer Date</th>
-                                        <th>From Warehouse</th>
-                                        <th>To Warehouse</th>
+                                        <th>From Depo</th>
+                                        <th>To Depo</th>
                                         <th>Total Qty</th>
                                         <th>Stock Value</th>
                                         <th> Status</th>

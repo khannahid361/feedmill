@@ -58,7 +58,7 @@
                                 <input type="hidden" id="end_date" name="end_date">
                             </div>
                         </div>
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-4" required="required" class="selectpicker">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-4" required="required" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                             @foreach ($warehouses as $id => $name)
                                 <option value="{{ $id }}" data-name="{{ $name }}">{{ $name }}</option>
@@ -67,8 +67,8 @@
                         </x-form.selectbox>
                         <x-form.textbox labelName="Product Name" name="product_name" col="col-md-6" />
                         <input type="hidden" class="form-control" name="product_id" id="product_id">
-                    
-                        <div class="col-md-6">      
+
+                        <div class="col-md-6">
                                 <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                 data-toggle="tooltip" data-theme="dark" title="Reset">
                                 <i class="fas fa-undo-alt"></i></button>
@@ -214,7 +214,7 @@ $(document).ready(function(){
             [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
         ],
         "pageLength": 25, //number of data show per page
-        "language": { 
+        "language": {
             processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
             emptyTable: '<strong class="text-danger">No Data Found</strong>',
             infoEmpty: '',
@@ -264,7 +264,7 @@ $(document).ready(function(){
                 "exportOptions": {
                     columns: function (index, data, node) {
                         return table.column(index).visible();
-                    } 
+                    }
                 },
                 customize: function (win) {
                     $(win.document.body).addClass('bg-white');
@@ -285,7 +285,7 @@ $(document).ready(function(){
                 "exportOptions": {
                     columns: function (index, data, node) {
                         return table.column(index).visible();
-                    } 
+                    }
                 },
                 footer:true
             },
@@ -298,7 +298,7 @@ $(document).ready(function(){
                 "exportOptions": {
                     columns: function (index, data, node) {
                         return table.column(index).visible();
-                    } 
+                    }
                 },
                 footer:true
             },
@@ -313,10 +313,10 @@ $(document).ready(function(){
                 "exportOptions": {
                     columns: function (index, data, node) {
                         return table.column(index).visible();
-                    } 
+                    }
                 },
                 customize: function(doc) {
-                    doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
+                    doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
                     doc.styles.tableHeader.fontSize = 7;
                     doc.styles.tableFooter.fontSize = 7;
                     doc.pageMargins = [5,5,5,5];

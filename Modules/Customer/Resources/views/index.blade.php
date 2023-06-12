@@ -33,7 +33,7 @@
                         @if(Auth::user()->warehouse_id)
                         <input type="hidden" name="warehouse_id" id="warehouse_id" value="{{ Auth::user()->warehouse_id }}">
                         @else
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-3" class="selectpicker">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-3" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>
@@ -91,7 +91,7 @@
                                         <th>Image</th>
                                         <th>Customer</th>
                                         <th>Group Name</th>
-                                        <th>Warehouse</th>
+                                        <th>Depo</th>
                                         <th>District</th>
                                         <th>Upazila</th>
                                         <th>Area</th>

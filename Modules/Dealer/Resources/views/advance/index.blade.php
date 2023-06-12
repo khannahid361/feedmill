@@ -19,7 +19,7 @@
                 <div class="card-toolbar">
                     <!--begin::Button-->
                     @if (permission('dealer-advance-add'))
-                    <a href="javascript:void(0);" onclick="showAdvanceFormModal('Add New Dealer Advance','Save')" class="btn btn-primary btn-sm font-weight-bolder"> 
+                    <a href="javascript:void(0);" onclick="showAdvanceFormModal('Add New Dealer Advance','Save')" class="btn btn-primary btn-sm font-weight-bolder">
                         <i class="fas fa-plus-circle"></i> Add New</a>
                     @endif
                     <!--end::Button-->
@@ -50,7 +50,7 @@
                         </x-form.selectbox>
 
                         <div class="col-md-4">
-                            <div style="margin-top:28px;">   
+                            <div style="margin-top:28px;">
                                 <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                 data-toggle="tooltip" data-theme="dark" title="Reset">
                                 <i class="fas fa-undo-alt"></i></button>
@@ -75,7 +75,7 @@
                                         <th>Name</th>
                                         <th>Shop Name</th>
                                         <th>Mobile No.</th>
-                                        <th>Warehouse</th>
+                                        <th>Depo</th>
                                         <th>Advance Type</th>
                                         <th>Amount</th>
                                         <th>Date</th>
@@ -129,7 +129,7 @@ $(document).ready(function(){
             [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
         ],
         "pageLength": 25, //number of data show per page
-        "language": { 
+        "language": {
             processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
             emptyTable: '<strong class="text-danger">No Data Found</strong>',
             infoEmpty: '',
@@ -227,10 +227,10 @@ $(document).ready(function(){
                     }
                 },
                 customize: function(doc) {
-                doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
+                doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
                 doc.styles.tableHeader.fontSize = 7;
                 doc.pageMargins = [5,5,5,5];
-            }  
+            }
             },
         ],
     });
@@ -308,9 +308,9 @@ $(document).ready(function(){
                 console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
             }
         });
-        
+
     });
-    
+
     $(document).on('click', '.edit_data', function () {
         let id = $(this).data('id');
         $('#store_or_update_form')[0].reset();
@@ -327,7 +327,7 @@ $(document).ready(function(){
                         notification(data.status,data.message)
                     }else{
                         $('#store_or_update_form #update_id').val(data.id);
-                        
+
                         $('#store_or_update_form #type').val(data.type);
                         $('#store_or_update_form #amount').val(data.amount);
                         $('#store_or_update_form #payment_method').val(data.payment_method);

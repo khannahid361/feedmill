@@ -23,7 +23,7 @@
                         <x-form.textbox labelName="Name" name="name" col="col-md-4" placeholder="Enter name" />
                         <x-form.textbox labelName="Phone No." name="phone" col="col-md-4" placeholder="Enter phone number" />
                         <x-form.textbox labelName="Email" name="email" col="col-md-4" placeholder="Enter email" />
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required" col="col-md-3" class="selectpicker" onchange="getUpazilaList(1)">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" required="required" col="col-md-3" class="selectpicker" onchange="getUpazilaList(1)">
                             @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $warehouse)
                                     <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
@@ -68,7 +68,7 @@
                                         <th>Avatar</th>
                                         <th>Name</th>
                                         <th>Username</th>
-                                        <th>Warehouse</th>
+                                        <th>Depo</th>
                                         <th>District</th>
                                         <th>Upazila</th>
                                         <th>Status</th>

@@ -10,7 +10,7 @@ class DealerMonthlyCommissionLedger extends BaseModel
     protected const VOUCHER_PREFIX = 'MonthlyCommission';
     protected $fillable   = ['chart_of_account_id','voucher_no', 'voucher_type','payment_type', 'voucher_date', 'description','debit', 'credit', 'is_opening','posted', 'approve', 'created_by', 'modified_by'];
     protected $table = 'transactions';
-    protected $order = ['t.id' => 'desc'];
+    protected $order = ['t.id' => 'asc'];
     protected $_start_date;
     protected $_end_date;
     protected $_dealer_coa_id;

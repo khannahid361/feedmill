@@ -50,7 +50,7 @@
                                     <option value="{{ $key }}">{{ $value }}</option>
                                 @endforeach
                             </x-form.selectbox>
-                            <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required" col="col-md-4">
+                            <x-form.selectbox labelName="Depo" name="warehouse_id" required="required" col="col-md-4">
                                 @foreach($warehouses as $warehouse)
                                     <option value="{{$warehouse->id}}" @if($warehouse->id == $purchase->warehouse_id) selected="selected" @endif >{{$warehouse->name}}</option>
                                 @endforeach

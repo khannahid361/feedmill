@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    <a href="{{ route('adjustment') }}" class="btn btn-warning btn-sm font-weight-bolder"> 
+                    <a href="{{ route('adjustment') }}" class="btn btn-warning btn-sm font-weight-bolder">
                         <i class="fas fa-arrow-left"></i> Back</a>
                     <!--end::Button-->
                 </div>
@@ -40,7 +40,7 @@
                                 <input type="text" class="form-control" name="adjustment_no" id="adjustment_no" value="{{ $adjustment->adjustment_no }}"  />
                             </div>
 
-                            <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-4" required="required" class="selectpicker">
+                            <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-4" required="required" class="selectpicker">
                                 @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $id => $name)
                                     <option value="{{ $id }}" {{ $adjustment->warehouse_id == $id ? 'selected' : '' }}>{{ $name }}</option>
@@ -88,7 +88,7 @@
                                                     <td class="tax text-right">{{ number_format($adjustment_product->pivot->tax,2,'.','') }}</td>
                                                     <td class="sub-total text-right">{{ number_format($adjustment_product->pivot->total,2,'.','') }}</td>
                                                     <td class="text-center"><button type="button" class="btn btn-danger btn-sm remove-product small-btn"><i class="fas fa-trash"></i></button></td>
-                                                    
+
                                                     <input type="hidden" class="product-id" name="products[{{ $key+1 }}][id]"  value="{{ $adjustment_product->id }}">
                                                     <input type="hidden"  name="products[{{ $key+1 }}][name]" value="{{ $adjustment_product->name }}">
                                                     <input type="hidden" class="product-code" name="products[{{ $key+1 }}][code]" value="{{ $adjustment_product->code }}">
@@ -229,7 +229,7 @@ $(document).ready(function () {
         }else{
             calculateProductData($(this).val());
         }
-        
+
     });
 
     $('#product_table').on('click','.remove-product',function(){
@@ -275,7 +275,7 @@ $(document).ready(function () {
                     cols += `<td class="tax text-right"></td>`;
                     cols += `<td class="sub-total text-right"></td>`;
                     cols += `<td class="text-center"><button type="button" class="btn btn-danger btn-sm remove-product small-btn"><i class="fas fa-trash"></i></button></td>`;
-                    
+
                     cols += `<input type="hidden" class="product-id" name="products[`+count+`][id]"  value="`+data.id+`">`;
                     cols += `<input type="hidden"  name="products[`+count+`][name]" value="`+data.name+`">`;
                     cols += `<input type="hidden" class="product-code" name="products[`+count+`][code]" value="`+data.code+`">`;
@@ -294,12 +294,12 @@ $(document).ready(function () {
                     calculateProductData(1);
                     count++;
                 }
-                
+
             }
         });
     }
 
-    function calculateProductData(quantity){ 
+    function calculateProductData(quantity){
         unitConversion();
 
         $('#product_table tbody tr:nth-child('+(rowindex + 1)+')').find('.tax-rate').val(tax_rate[rowindex].toFixed(2));
@@ -421,7 +421,7 @@ function store_data(){
                     notification(data.status, data.message);
                     if (data.status == 'success') {
                         window.location.replace("{{ route('adjustment') }}");
-                        
+
                     }
                 }
 
@@ -431,7 +431,7 @@ function store_data(){
             }
         });
     }
-    
+
 }
 
 </script>

@@ -12,12 +12,6 @@
                     <div class="card-title">
                         <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
                     </div>
-                    <div class="card-toolbar">
-                        {{-- @if (permission('supplier-payment-create')) --}}
-                        <a href="{{ route('dealer.monthly.commission.payment.create') }}"
-                            class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add New</a>
-                        {{-- @endif --}}
-                    </div>
                 </div>
             </div>
             <div class="card card-custom">

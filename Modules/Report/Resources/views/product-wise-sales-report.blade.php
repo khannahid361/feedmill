@@ -24,7 +24,7 @@
             <div class="card-header flex-wrap py-5">
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row">
-                        
+
                         <div class="form-group col-md-3">
                             <label for="name">Choose Your Date</label>
                             <div class="input-group">
@@ -41,7 +41,7 @@
                             @endif
                         </x-form.selectbox>
 
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-3" class="selectpicker">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-3" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                             @foreach ($warehouses as $id => $name)
                                 <option value="{{ $id }}" data-name="{{ $name }}">{{ $name }}</option>
@@ -49,7 +49,7 @@
                             @endif
                         </x-form.selectbox>
 
-                        <div class="col-md-12">   
+                        <div class="col-md-12">
                             <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                             data-toggle="tooltip" data-theme="dark" title="Reset">
                             <i class="fas fa-undo-alt"></i></button>
@@ -124,7 +124,7 @@
     });
     var table;
     $(document).ready(function(){
-    
+
         table = $('#dataTable').DataTable({
             "processing": true, //Feature control the processing indicator
             "serverSide": true, //Feature control DataTable server side processing mode
@@ -137,7 +137,7 @@
                 [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
             ],
             "pageLength": 25, //number of data show per page
-            "language": { 
+            "language": {
                 processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
                 emptyTable: '<strong class="text-danger">No Data Found</strong>',
                 infoEmpty: '',
@@ -167,7 +167,7 @@
             "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
-    
+
             "buttons": [
                 {
                     'extend':'colvis','className':'btn btn-secondary btn-sm text-white','text':'Column','columns': ':gt(0)'
@@ -237,11 +237,11 @@
                     },
                     footer:true,
                     customize: function(doc) {
-                    doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
+                    doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
                     doc.styles.tableHeader.fontSize = 7;
                     doc.styles.tableFooter.fontSize = 7;
                     doc.pageMargins = [5,5,5,5];
-                }  
+                }
                 },
             ],
             "footerCallback": function ( row, data, start, end, display ) {
@@ -272,14 +272,14 @@
         $('#btn-filter').click(function () {
             table.ajax.reload();
         });
-    
+
         $('#btn-reset').click(function () {
             $('#form-filter')[0].reset();
             $('#start_date, #end_date, #warehouse_id, #product_id').val("");
             $('#form-filter .selectpicker').selectpicker('refresh');
             table.ajax.reload();
         });
-    
+
     });
     </script>
 @endpush

@@ -34,7 +34,7 @@
                                     <label for="voucher_date">Date</label>
                                     <input type="text" class="form-control date" name="voucher_date" id="voucher_date" value="{{ date('Y-m-d') }}" readonly />
                                 </div>
-                                <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required"  col="col-md-3" class="selectpicker">
+                                <x-form.selectbox labelName="Depo" name="warehouse_id" required="required"  col="col-md-3" class="selectpicker">
                                     @if (!$warehouses->isEmpty())
                                     @foreach ($warehouses as $id => $name)
                                         <option value="{{ $id }}">{{ $name }}</option>
@@ -48,7 +48,7 @@
                                     @endforeach
                                     @endif
                                 </x-form.selectbox>
-                                
+
                                 <div class="col-md-12">
                                     <table class="table table-bordered" id="debit-voucher-table">
                                         <thead class="bg-primary">
@@ -125,7 +125,7 @@ function add_more_account_field(row){
                     <input type="text" class="form-control text-right amount" onkeyup="calculate_total()" name="debit_account[`+row+`][amount]" id="debit_account_`+row+`_amount" placeholder="0.00">
                 </td>
                 <td class="text-center">
-                    <button type="button" class="btn btn-danger btn-sm remove" data-toggle="tooltip" 
+                    <button type="button" class="btn btn-danger btn-sm remove" data-toggle="tooltip"
                         data-placement="top" data-original-title="Remove">
                         <i class="fas fa-minus-square"></i>
                     </button>
@@ -192,7 +192,7 @@ function store_data(){
                 notification(data.status, data.message);
                 if (data.status == 'success') {
                     window.location.replace("{{ url('debit-voucher') }}");
-                    
+
                 }
             }
 

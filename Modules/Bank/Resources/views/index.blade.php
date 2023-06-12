@@ -18,7 +18,7 @@
                 <div class="card-toolbar">
                     <!--begin::Button-->
                     @if (permission('bank-add'))
-                    <a href="javascript:void(0);" onclick="showFormModal('Add New Bank','Save')" class="btn btn-primary btn-sm font-weight-bolder"> 
+                    <a href="javascript:void(0);" onclick="showFormModal('Add New Bank','Save')" class="btn btn-primary btn-sm font-weight-bolder">
                         <i class="fas fa-plus-circle"></i> Add New</a>
                         @endif
                     <!--end::Button-->
@@ -34,7 +34,7 @@
                         <x-form.textbox labelName="Bank Name" name="bank_name" col="col-md-3" />
                         <x-form.textbox labelName="Account Name" name="account_name" col="col-md-3" />
                         <x-form.textbox labelName="Account Number" name="account_number" col="col-md-3" />
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required"  col="col-md-3" class="selectpicker">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" required="required"  col="col-md-3" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>
@@ -42,11 +42,11 @@
                             @endif
                           </x-form.selectbox>
                         <div class="col-md-12">
-                            <div style="margin-top:28px;">      
+                            <div style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Reset">
                                     <i class="fas fa-undo-alt"></i></button>
-    
+
                                     <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Search">
                                     <i class="fas fa-search"></i></button>
@@ -67,7 +67,7 @@
                                         <th>Bank Name</th>
                                         <th>Account Name</th>
                                         <th>Account Number</th>
-                                        <th>Warehouse</th>
+                                        <th>Depo</th>
                                         <th>Balance</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -92,7 +92,7 @@
 <script>
     var table;
     $(document).ready(function(){
-    
+
         table = $('#dataTable').DataTable({
             "processing": true, //Feature control the processing indicator
             "serverSide": true, //Feature control DataTable server side processing mode
@@ -105,7 +105,7 @@
                 [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
             ],
             "pageLength": 25, //number of data show per page
-            "language": { 
+            "language": {
                 processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
                 emptyTable: '<strong class="text-danger">No Data Found</strong>',
                 infoEmpty: '',
@@ -141,7 +141,7 @@
             "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
-    
+
             "buttons": [
                 @if (permission('bank-report'))
                 {
@@ -155,7 +155,7 @@
                     "orientation": "landscape", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
-                        columns: ':visible:not(:eq(7))' 
+                        columns: ':visible:not(:eq(7))'
                     },
                     customize: function (win) {
                         $(win.document.body).addClass('bg-white');
@@ -173,7 +173,7 @@
                     "title": "{{ $page_title }} List",
                     "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
                     "exportOptions": {
-                        columns: ':visible:not(:eq(7))' 
+                        columns: ':visible:not(:eq(7))'
                     }
                 },
                 {
@@ -183,7 +183,7 @@
                     "title": "{{ $page_title }} List",
                     "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
                     "exportOptions": {
-                        columns: ':visible:not(:eq(7))' 
+                        columns: ':visible:not(:eq(7))'
                     }
                 },
                 {
@@ -195,15 +195,15 @@
                     "orientation": "portrait", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
-                        columns: ':visible:not(:eq(7))' 
+                        columns: ':visible:not(:eq(7))'
                     },
                     customize: function(doc) {
-                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
+                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
                         doc.styles.tableHeader.fontSize = 7;
                         doc.pageMargins = [5,5,5,5];
-                    } 
+                    }
                 },
-                @endif 
+                @endif
                 @if (permission('bank-bulk-delete'))
                 {
                     'className':'btn btn-danger btn-sm delete_btn d-none text-white',
@@ -215,16 +215,16 @@
                 @endif
             ],
         });
-    
+
         $('#btn-filter').click(function () {
             table.ajax.reload();
         });
-    
+
         $('#btn-reset').click(function () {
             $('#form-filter')[0].reset();
             table.ajax.reload();
         });
-    
+
         $(document).on('click', '#save-btn', function () {
             let form = document.getElementById('store_or_update_form');
             let formData = new FormData(form);
@@ -238,7 +238,7 @@
             }
             store_or_update_data(table, method, url, formData);
         });
-    
+
         $(document).on('click', '.edit_data', function () {
             let id = $(this).data('id');
             $('#store_or_update_form')[0].reset();
@@ -270,7 +270,7 @@
                                 '<i class="fas fa-edit text-white"></i> <span>Edit ' + data.bank_name + '</span>');
                             $('#store_or_update_modal #save-btn').text('Update');
                         }
-                        
+
                     },
                     error: function (xhr, ajaxOption, thrownError) {
                         console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
@@ -295,8 +295,8 @@
             let url   = "{{ route('bank.delete') }}";
             delete_data(id, url, table, row, name);
         });
-    
-    
+
+
     });
     </script>
 @endpush

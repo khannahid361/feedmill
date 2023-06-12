@@ -30,7 +30,7 @@
                             @endforeach
                             @endif
                         </x-form.selectbox>
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required" col="col-md-4" class="selectpicker" onchange="getUpazilaList(1)">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" required="required" col="col-md-4" class="selectpicker" onchange="getUpazilaList(1)">
                             @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $warehouse)
                                     <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
@@ -79,7 +79,7 @@
                                         <th>Avatar</th>
                                         <th>Name</th>
                                         <th>Username</th>
-                                        <th>Warehouse</th>
+                                        <th>Depo</th>
                                         <th>ASM</th>
                                         <th>District</th>
                                         <th>Upazila</th>

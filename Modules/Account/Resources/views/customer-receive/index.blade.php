@@ -54,7 +54,7 @@
                                         <thead class="bg-primary">
                                         <tr>
                                             <th>Sl</th>
-                                            <th>Warehouse</th>
+                                            <th>Depo</th>
                                             <th>Customer</th>
                                             <th>Voucher No</th>
                                             <th>Voucher Date</th>

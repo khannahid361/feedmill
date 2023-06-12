@@ -45,11 +45,11 @@
                         @endif
 
                         <div class="{{ (Auth::user()->warehouse_id) ? 'col-md-8' : 'col-md-4' }}">
-                            <div style="margin-top:28px;">     
+                            <div style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Reset">
                                     <i class="fas fa-undo-alt"></i></button>
-    
+
                                     <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Search">
                                     <i class="fas fa-search"></i></button>
@@ -68,7 +68,7 @@
                                     <tr>
                                         <th>Sl</th>
                                         @if(empty(Auth::user()->warehouse_id))
-                                        <th>Warehouse</th>
+                                        <th>Depo</th>
                                         @endif
                                         <th>Date</th>
                                         <th>Collection Received</th>
@@ -136,7 +136,7 @@ $(document).ready(function(){
             [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
         ],
         "pageLength": 25, //number of data show per page
-        "language": { 
+        "language": {
             processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
             emptyTable: '<strong class="text-danger">No Data Found</strong>',
             infoEmpty: '',
@@ -159,7 +159,7 @@ $(document).ready(function(){
             @else
             "targets": [5],
             @endif
-                
+
                 "orderable": false,
                 "className": "text-center"
             },
@@ -197,9 +197,9 @@ $(document).ready(function(){
                 "pageSize": "A4", //A3,A5,A6,legal,letter
                 "exportOptions": {
                     @if (empty(Auth::user()->warehouse_id))
-                    columns: ':visible:not(:eq(6))' 
+                    columns: ':visible:not(:eq(6))'
                     @else
-                    columns: ':visible:not(:eq(5))' 
+                    columns: ':visible:not(:eq(5))'
                     @endif
                 },
                 customize: function (win) {
@@ -220,9 +220,9 @@ $(document).ready(function(){
                 "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
                 "exportOptions": {
                     @if (empty(Auth::user()->warehouse_id))
-                    columns: ':visible:not(:eq(6))' 
+                    columns: ':visible:not(:eq(6))'
                     @else
-                    columns: ':visible:not(:eq(5))' 
+                    columns: ':visible:not(:eq(5))'
                     @endif
                 },
                 footer:true
@@ -235,9 +235,9 @@ $(document).ready(function(){
                 "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}",
                 "exportOptions": {
                     @if (empty(Auth::user()->warehouse_id))
-                    columns: ':visible:not(:eq(6))' 
+                    columns: ':visible:not(:eq(6))'
                     @else
-                    columns: ':visible:not(:eq(5))' 
+                    columns: ':visible:not(:eq(5))'
                     @endif
                 },
                 footer:true
@@ -252,18 +252,18 @@ $(document).ready(function(){
                 "pageSize": "A4", //A3,A5,A6,legal,letter
                 "exportOptions": {
                     @if (empty(Auth::user()->warehouse_id))
-                    columns: ':visible:not(:eq(6))' 
+                    columns: ':visible:not(:eq(6))'
                     @else
-                    columns: ':visible:not(:eq(5))' 
+                    columns: ':visible:not(:eq(5))'
                     @endif
                 },
                 footer:true,
                 customize: function(doc) {
-                doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
+                doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
                 doc.styles.tableHeader.fontSize = 7;
                 doc.styles.tableFooter.fontSize = 7;
                 doc.pageMargins = [5,5,5,5];
-            }  
+            }
             },
         ],
         "footerCallback": function ( row, data, start, end, display ) {
@@ -283,7 +283,7 @@ $(document).ready(function(){
             var start = 2;
             var end = 4;
             @endif
-            
+
             // Total over all pages
             for (let index = start; index <= end; index++) {
                 // Total over this page
@@ -293,7 +293,7 @@ $(document).ready(function(){
                     .reduce( function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0 );
-    
+
                 // Total over this page
                 pageTotal = api
                     .column(index, { page: 'current'} )
@@ -301,7 +301,7 @@ $(document).ready(function(){
                     .reduce( function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0 );
-    
+
                 // Update footer
                 $( api.column( index ).footer() ).html('= '+number_format(total) +' Tk');
             }

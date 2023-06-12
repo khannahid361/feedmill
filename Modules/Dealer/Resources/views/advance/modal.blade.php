@@ -22,14 +22,14 @@
                         @if(Auth::user()->warehouse_id)
                         <input type="hidden" name="warehouse_id" id="warehouse_id" value="{{ Auth::user()->warehouse_id }}">
                         @else
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-4" required="required" class="selectpicker">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-4" required="required" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                             @foreach ($warehouses as $id => $name)
                                 <option value="{{ $id }}" data-name="{{ $name }}">{{ $name }}</option>
                             @endforeach
                             @endif
                         </x-form.selectbox>
-                        @endif 
+                        @endif
 
                         <x-form.selectbox labelName="Dealer" name="dealer" col="col-md-4" class="selectpicker">
                             @if (!$dealers->isEmpty())

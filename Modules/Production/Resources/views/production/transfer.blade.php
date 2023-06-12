@@ -15,8 +15,8 @@
                 <div class="card-toolbar">
                     <!--begin::Button-->
                     <button type="button" class="btn btn-primary btn-sm mr-5" onclick="store_data()" id="save-btn"><i class="fas fa-dolly-flatbed"></i> Transfer</button>
-                   
-                   <a href="{{ route('production') }}" class="btn btn-warning btn-sm font-weight-bolder"> 
+
+                   <a href="{{ route('production') }}" class="btn btn-warning btn-sm font-weight-bolder">
                         <i class="fas fa-arrow-left"></i> Back</a>
                     <!--end::Button-->
                 </div>
@@ -33,8 +33,8 @@
                             <x-form.textbox labelName="Batch No." name="batch_no" value="{{ $production->batch_no }}" property="readonly" required="required" col="col-md-3"/>
                             <x-form.textbox labelName="Chalan No." name="chalan_no" value="{{ $production->chalan_no ? $production->chalan_no : 'KEAPLTR-'.$production->id }}" property="readonly" required="required" col="col-md-3"/>
                             <x-form.textbox labelName="Transfer Date" name="transfer_date" required="required" col="col-md-3" property="readonly" class="date" value="{{ $production->transfer_date ? $production->transfer_date : date('Y-m-d') }}"/>
-                            <x-form.textbox labelName="Warehouse" name="warehouse" value="{{ $production->warehouse->name }}" property="readonly" required="required" col="col-md-3"/>
-                        </div> 
+                            <x-form.textbox labelName="Depo" name="warehouse" value="{{ $production->warehouse->name }}" property="readonly" required="required" col="col-md-3"/>
+                        </div>
                     </div>
                     <div class="col-md-12 pt-5">
                         <table class="table table-bordered pb-5" id="material_table">
@@ -50,8 +50,8 @@
                                 <th class="text-right">Sub Total</th>
                             </thead>
                             <tbody>
-                                @php 
-                                    $total_cost = $total_unit_qty = $total_base_unit_qty = $total_tax = 0; 
+                                @php
+                                    $total_cost = $total_unit_qty = $total_base_unit_qty = $total_tax = 0;
                                 @endphp
                                 @if (!$production->products->isEmpty())
                                     @foreach ($production->products as $key => $item)
@@ -109,7 +109,7 @@
                                     <th colspan="8" class="text-right">Total</th>
                                     <th class="text-right">
                                         {{ number_format($total_cost,2,'.','') }}
-                                        
+
                                     </th>
                                 </tr>
                             </tfoot>
@@ -132,8 +132,8 @@
                     <div class="col-md-12 pt-5">
                         <table class="table table-bordered">
                             <thead class="bg-primary">
-                                <th><strong>Items</strong><span class="float-right" id="item"> 
-                                    @if (!$production->products->isEmpty()) 
+                                <th><strong>Items</strong><span class="float-right" id="item">
+                                    @if (!$production->products->isEmpty())
                                     {{ count($production->products).'('.$total_unit_qty.')'.'('.$total_base_unit_qty.')' }}
                                     @endif
                                 </span></th>
@@ -166,7 +166,7 @@
 <script>
 $(document).ready(function () {
     $('.date').datetimepicker({format: 'YYYY-MM-DD',ignoreReadonly: true});
-    
+
 
     calculateGrandTotal();
     function calculateGrandTotal()
@@ -189,7 +189,7 @@ $(document).ready(function () {
         $('#labor_total_cost').text(labor_cost.toFixed(2));
         $('#grand_total').text(grand_total.toFixed(2));
         $('input[name="grand_total"]').val(grand_total.toFixed(2));
-        
+
     }
 
     $('input[name="shipping_cost"]').on('input',function(){

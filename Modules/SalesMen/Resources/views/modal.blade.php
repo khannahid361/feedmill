@@ -41,7 +41,7 @@
                                     </div>
                                 </div>
                             </div>
-                
+
                             <div class="col-md-6 form-group">
                                 <label for="site_title">Confirm Password</label>
                                 <div class="input-group">
@@ -58,14 +58,14 @@
                                 @if (!$asms->isEmpty())
                                 @foreach ($asms as $asm)
                                     <option value="{{ $asm->id }}">{{ $asm->name.' - '.$asm->phone }}</option>
-                                @endforeach 
+                                @endforeach
                                 @endif
                             </x-form.selectbox>
-                            <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required" col="col-md-6" class="selectpicker" onchange="setDistrictData();getUpazilaList(2);">
+                            <x-form.selectbox labelName="Depo" name="warehouse_id" required="required" col="col-md-6" class="selectpicker" onchange="setDistrictData();getUpazilaList(2);">
                                 @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $warehouse)
                                     <option value="{{ $warehouse->id }}" data-districtid="{{ $warehouse->district_id }}" data-districtname="{{ $warehouse->district->name }}">{{ $warehouse->name }}</option>
-                                @endforeach 
+                                @endforeach
                                 @endif
                             </x-form.selectbox>
                             <div class="form-group col-md-6 required">
@@ -89,7 +89,7 @@
                             <label for="logo" class="form-control-label">Person Image</label>
                             <div class="col=md-12 px-0  text-center">
                                 <div id="avatar">
-                
+
                                 </div>
                             </div>
                             <div class="text-center"><span class="text-muted">Maximum Allowed File Size 2MB and Format (png,jpg,jpeg,svg,webp)</span></div>

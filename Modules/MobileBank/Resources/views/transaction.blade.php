@@ -23,10 +23,10 @@
             <div class="card-body">
                 <!--begin: Datatable-->
                 <div id="kt_datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                    
+
                         <form id="bank_transaction_form" method="post">
                             @csrf
-                            <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required" onchange="getBankList(this.value)" col="col-md-6" class="selectpicker">
+                            <x-form.selectbox labelName="Depo" name="warehouse_id" required="required" onchange="getBankList(this.value)" col="col-md-6" class="selectpicker">
                                 @if (!$warehouses->isEmpty())
                                     @foreach ($warehouses as $id => $name)
                                         <option value="{{ $id }}">{{ $name }}</option>
@@ -48,7 +48,7 @@
                             </div>
                         </form>
 
-                    
+
                 </div>
                 <!--end: Datatable-->
             </div>
@@ -83,7 +83,7 @@ function getBankList(warehouse_id)
             $.each(data, function(key, value) {
                 html += '<option value="'+ value.bank_name +'">'+ value.bank_name + ' - ' + value.account_number +'</option>';
             });
-            
+
             $('#bank_transaction_form #bank_name').empty().append(html);
             $('#bank_transaction_form .selectpicker').selectpicker('refresh');
         },
@@ -123,7 +123,7 @@ function save_data() {
                 if(data.status == 'success'){
                     window.location.replace("{{ route('mobilebank') }}");
                 }
-                
+
             }
         },
         error: function (xhr, ajaxOption, thrownError) {

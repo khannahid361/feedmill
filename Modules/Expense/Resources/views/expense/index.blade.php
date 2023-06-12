@@ -19,7 +19,7 @@
                 <div class="card-toolbar">
                     <!--begin::Button-->
                     @if (permission('expense-add'))
-                    <a href="javascript:void(0);" onclick="showFormModal('Add New Expense','Save')" class="btn btn-primary btn-sm font-weight-bolder"> 
+                    <a href="javascript:void(0);" onclick="showFormModal('Add New Expense','Save')" class="btn btn-primary btn-sm font-weight-bolder">
                         <i class="fas fa-plus-circle"></i> Add New</a>
                         @endif
                     <!--end::Button-->
@@ -32,7 +32,7 @@
             <div class="card-header flex-wrap py-5">
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row">
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-4" class="selectpicker">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-4" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $value)
                                 <option value="{{ $value->id }}">{{ $value->name }}</option>
@@ -47,12 +47,12 @@
                         @endif
                         </x-form.selectbox>
                         <div class="col-md-4">
-                            <div style="margin-top:28px;">    
-                                <div style="margin-top:28px;">    
+                            <div style="margin-top:28px;">
+                                <div style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Reset">
                                     <i class="fas fa-undo-alt"></i></button>
-    
+
                                     <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Search">
                                     <i class="fas fa-search"></i></button>
@@ -111,7 +111,7 @@
     $('.date').datetimepicker({format: 'YYYY-MM-DD',ignoreReadonly: true});
     var table;
     $(document).ready(function(){
-    
+
         table = $('#dataTable').DataTable({
             "processing": true, //Feature control the processing indicator
             "serverSide": true, //Feature control DataTable server side processing mode
@@ -124,7 +124,7 @@
                 [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
             ],
             "pageLength": 25, //number of data show per page
-            "language": { 
+            "language": {
                 processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
                 emptyTable: '<strong class="text-danger">No Data Found</strong>',
                 infoEmpty: '',
@@ -142,7 +142,7 @@
             "columnDefs": [{
                     @if (permission('expense-bulk-delete'))
                     "targets": [0,9],
-                    @else 
+                    @else
                     "targets": [8],
                     @endif
                     "orderable": false,
@@ -151,7 +151,7 @@
                 {
                     @if (permission('expense-bulk-delete'))
                     "targets": [1,2,6],
-                    @else 
+                    @else
                     "targets": [0,1,5],
                     @endif
                     "className": "text-center"
@@ -159,7 +159,7 @@
                 {
                     @if (permission('expense-bulk-delete'))
                     "targets": [8],
-                    @else 
+                    @else
                     "targets": [7],
                     @endif
                     "className": "text-right"
@@ -168,7 +168,7 @@
             "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
-    
+
             "buttons": [
                 @if (permission('expense-report'))
                 {
@@ -183,9 +183,9 @@
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
                         @if(permission('expense-bulk-delete'))
-                        columns: ':visible:not(:eq(0),:eq(9))' 
+                        columns: ':visible:not(:eq(0),:eq(9))'
                         @else
-                        columns: ':visible:not(:eq(8))' 
+                        columns: ':visible:not(:eq(8))'
                         @endif
                     },
                     customize: function (win) {
@@ -205,9 +205,9 @@
                     "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
                     "exportOptions": {
                         @if(permission('expense-bulk-delete'))
-                        columns: ':visible:not(:eq(0),:eq(9))' 
+                        columns: ':visible:not(:eq(0),:eq(9))'
                         @else
-                        columns: ':visible:not(:eq(8))' 
+                        columns: ':visible:not(:eq(8))'
                         @endif
                     }
                 },
@@ -219,9 +219,9 @@
                     "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
                     "exportOptions": {
                         @if(permission('expense-bulk-delete'))
-                        columns: ':visible:not(:eq(0),:eq(9))' 
+                        columns: ':visible:not(:eq(0),:eq(9))'
                         @else
-                        columns: ':visible:not(:eq(8))' 
+                        columns: ':visible:not(:eq(8))'
                         @endif
                     }
                 },
@@ -235,18 +235,18 @@
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
                         @if(permission('expense-bulk-delete'))
-                        columns: ':visible:not(:eq(0),:eq(9))' 
+                        columns: ':visible:not(:eq(0),:eq(9))'
                         @else
-                        columns: ':visible:not(:eq(8))' 
+                        columns: ':visible:not(:eq(8))'
                         @endif
                     },
                     customize: function(doc) {
-                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
+                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
                         doc.styles.tableHeader.fontSize = 7;
                         doc.pageMargins = [5,5,5,5];
-                    }  
+                    }
                 },
-                @endif 
+                @endif
                 @if (permission('expense-bulk-delete'))
                 {
                     'className':'btn btn-danger btn-sm delete_btn d-none text-white',
@@ -258,16 +258,16 @@
                 @endif
             ],
         });
-    
+
         $('#btn-filter').click(function () {
             table.ajax.reload();
         });
-    
+
         $('#btn-reset').click(function () {
             $('#form-filter')[0].reset();
             table.ajax.reload();
         });
-    
+
         $(document).on('click', '#save-btn', function () {
             let form = document.getElementById('store_or_update_form');
             let formData = new FormData(form);
@@ -281,7 +281,7 @@
             }
             store_or_update_data(table, method, url, formData);
         });
-    
+
         $(document).on('click', '.edit_data', function () {
             let id = $(this).data('id');
             $('#store_or_update_form')[0].reset();
@@ -315,7 +315,7 @@
                                 '<i class="fas fa-edit text-white"></i> <span>Edit Data</span>');
                             $('#store_or_update_modal #save-btn').text('Update');
                         }
-                        
+
                     },
                     error: function (xhr, ajaxOption, thrownError) {
                         console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
@@ -323,7 +323,7 @@
                 });
             }
         });
-    
+
         $(document).on('click', '.delete_data', function () {
             let id    = $(this).data('id');
             let name  = $(this).data('name');
@@ -331,7 +331,7 @@
             let url   = "{{ route('expense.delete') }}";
             delete_data(id, url, table, row, name);
         });
-    
+
         function multi_delete(){
             let ids = [];
             let rows;
@@ -351,7 +351,7 @@
                 bulk_delete(ids,url,table,rows);
             }
         }
-    
+
     });
 
     function account_list(payment_type,account_id='')

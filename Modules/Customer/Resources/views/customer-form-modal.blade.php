@@ -36,7 +36,7 @@
                     @if(Auth::user()->warehouse_id)
                     <input type="hidden" name="warehouse_id" id="warehouse_id" value="{{ Auth::user()->warehouse_id }}">
                     @else
-                    <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-6" class="selectpicker">
+                    <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-6" class="selectpicker">
                         @if (!$warehouses->isEmpty())
                             @foreach ($warehouses as $id => $name)
                                 <option value="{{ $id }}">{{ $name }}</option>
@@ -57,7 +57,7 @@
                     <x-form.selectbox labelName="Area" name="area_id" col="col-md-6" required="required" class="selectpicker"/>
                     <x-form.textbox labelName="Previous Balance" name="previous_balance" col="col-md-6 pbalance" placeholder="Previous credit balalnce"/>
                     <x-form.textarea labelName="Customer Address" name="address" col="col-md-6" required="required" placeholder="Enter customer address"/>
-                    
+
                   </div>
                 </div>
                 <div class="col-md-3">
@@ -65,14 +65,14 @@
                       <label for="logo" class="form-control-label">Person Image</label>
                       <div class="col=md-12 px-0  text-center">
                           <div id="avatar">
-          
+
                           </div>
                       </div>
                       <input type="hidden" name="old_avatar" id="old_avatar">
                   </div>
                 </div>
               </div>
-                
+
             </div>
             <!-- /modal body -->
 

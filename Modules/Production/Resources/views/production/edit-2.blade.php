@@ -54,7 +54,7 @@
                         <div class="row">
                             <x-form.textbox labelName="Batch No." name="batch_no" value="{{ $production->batch_no }}" property="readonly" required="required" col="col-md-4" />
                             <x-form.textbox labelName="Date" name="start_date" required="required" col="col-md-4" property="readonly" class="date" value="{{ $production->start_date }}"/>
-                            <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required"  col="col-md-4" class="selectpicker">
+                            <x-form.selectbox labelName="Depo" name="warehouse_id" required="required"  col="col-md-4" class="selectpicker">
                                 @if (!$warehouses->isEmpty())
                                     @foreach ($warehouses as $warehouse)
                                         <option value="{{ $warehouse->id }}" {{ $production->warehouse_id == $warehouse->id ? 'selected' : '' }}>{{ $warehouse->name }}</option>

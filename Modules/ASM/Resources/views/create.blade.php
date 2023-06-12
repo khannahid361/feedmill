@@ -68,7 +68,7 @@
                                     @if(!isset($asm))
                                     <x-form.textbox labelName="Previous Balance" name="previous_balance" col="col-md-4" class="text-right" placeholder="Previous balalnce"/>
                                     @endif
-                                    <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required" col="col-md-4" class="selectpicker" onchange="setDistrictData();getUpazilaList(2);">
+                                    <x-form.selectbox labelName="Depo" name="warehouse_id" required="required" col="col-md-4" class="selectpicker" onchange="setDistrictData();getUpazilaList(2);">
                                         @if (!$warehouses->isEmpty())
                                         @foreach ($warehouses as $warehouse)
                                             <option value="{{ $warehouse->id }}"  {{ isset($asm) ? ($asm->warehouse_id == $warehouse->id ? 'selected' : '') : '' }} data-districtid="{{ $warehouse->district_id }}" data-districtname="{{ $warehouse->district->name }}">{{ $warehouse->name }}</option>

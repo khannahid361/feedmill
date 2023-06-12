@@ -34,7 +34,7 @@
                                     <option value="{{ $role->id }}">{{ $role->role_name }}</option>
                                 @endforeach
                             </x-form.selectbox>
-                            
+
                             <div class="col-md-6 form-group">
                                 <label for="site_title">Password</label>
                                 <div class="input-group">
@@ -51,7 +51,7 @@
                                     </div>
                                 </div>
                             </div>
-                
+
                             <div class="col-md-6 form-group">
                                 <label for="site_title">Confirm Password</label>
                                 <div class="input-group">
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                             <x-form.selectbox labelName="Control By" name="parent_id" required="required" col="col-md-6" class="selectpicker"/>
-                            <x-form.selectbox labelName="Warehouse" name="warehouse_id" required="required" col="col-md-6 warehouse d-none" class="selectpicker">
+                            <x-form.selectbox labelName="Depo" name="warehouse_id" required="required" col="col-md-6 warehouse d-none" class="selectpicker">
                                 @if (!$warehouses->isEmpty())
                                   @foreach ($warehouses as $value)
                                   <option value="{{ $value->id }}">{{ $value->name }}</option>
@@ -78,14 +78,14 @@
                             <label for="logo" class="form-control-label">User Image</label>
                             <div class="col=md-12 px-0  text-center">
                                 <div id="avatar">
-                
+
                                 </div>
                             </div>
                             <div class="text-center"><span class="text-muted">Maximum Allowed File Size 2MB and Format (png,jpg,jpeg,svg,webp)</span></div>
                             <input type="hidden" name="old_avatar" id="old_avatar">
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
             <!-- /modal body -->

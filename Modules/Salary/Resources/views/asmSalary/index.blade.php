@@ -45,7 +45,7 @@
                                     <tr>
                                         <th>Sl</th>
                                         <th>UserName</th>
-                                        <th>Warehouse</th>
+                                        <th>Depo</th>
                                         <th>Month</th>
                                         <th>Date</th>
                                         <th>Salary</th>

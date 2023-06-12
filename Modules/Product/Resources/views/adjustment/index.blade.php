@@ -21,7 +21,7 @@
                 <div class="card-toolbar">
                     <!--begin::Button-->
                     @if (permission('adjustment-add'))
-                    <a href="{{ route('adjustment.add') }}"  class="btn btn-primary btn-sm font-weight-bolder"> 
+                    <a href="{{ route('adjustment.add') }}"  class="btn btn-primary btn-sm font-weight-bolder">
                         <i class="fas fa-plus-circle"></i> Add New</a>
                         @endif
                     <!--end::Button-->
@@ -43,7 +43,7 @@
                                 <input type="hidden" id="to_date" name="to_date" >
                             </div>
                         </div>
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-3" class="selectpicker">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-3" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>
@@ -52,11 +52,11 @@
                         </x-form.selectbox>
 
                         <div class="col-md-3">
-                            <div style="margin-top:28px;">       
+                            <div style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Reset">
                                     <i class="fas fa-undo-alt"></i></button>
-    
+
                                     <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Search">
                                     <i class="fas fa-search"></i></button>
@@ -83,7 +83,7 @@
                                         @endif
                                         <th>Sl</th>
                                         <th>Adjustment No.</th>
-                                        <th>Warehouse</th>
+                                        <th>Depo</th>
                                         <th>Total Item</th>
                                         <th>Products</th>
                                         <th>Total Quantity</th>
@@ -135,7 +135,7 @@
                 [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
             ],
             "pageLength": 25, //number of data show per page
-            "language": { 
+            "language": {
                 processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
                 emptyTable: '<strong class="text-danger">No Data Found</strong>',
                 infoEmpty: '',
@@ -181,7 +181,7 @@
             "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
-    
+
             "buttons": [
                 @if (permission('adjustment-report'))
                 {
@@ -196,9 +196,9 @@
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
                         @if (permission('adjustment-bulk-delete'))
-                        columns: ':visible:not(:eq(0),:eq(10))' 
+                        columns: ':visible:not(:eq(0),:eq(10))'
                         @else
-                        columns: ':visible:not(:eq(9))' 
+                        columns: ':visible:not(:eq(9))'
                         @endif
                     },
                     customize: function (win) {
@@ -218,9 +218,9 @@
                     "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
                     "exportOptions": {
                         @if (permission('adjustment-bulk-delete'))
-                        columns: ':visible:not(:eq(0),:eq(10))' 
+                        columns: ':visible:not(:eq(0),:eq(10))'
                         @else
-                        columns: ':visible:not(:eq(9))' 
+                        columns: ':visible:not(:eq(9))'
                         @endif
                     }
                 },
@@ -232,9 +232,9 @@
                     "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
                     "exportOptions": {
                         @if (permission('adjustment-bulk-delete'))
-                        columns: ':visible:not(:eq(0),:eq(10))' 
+                        columns: ':visible:not(:eq(0),:eq(10))'
                         @else
-                        columns: ':visible:not(:eq(9))' 
+                        columns: ':visible:not(:eq(9))'
                         @endif
                     }
                 },
@@ -248,16 +248,16 @@
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
                         @if (permission('adjustment-bulk-delete'))
-                        columns: ':visible:not(:eq(0),:eq(10))' 
+                        columns: ':visible:not(:eq(0),:eq(10))'
                         @else
-                        columns: ':visible:not(:eq(9))' 
+                        columns: ':visible:not(:eq(9))'
                         @endif
                     },
                     customize: function(doc) {
-                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
+                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
                         doc.styles.tableHeader.fontSize = 7;
                         doc.pageMargins = [5,5,5,5];
-                    }  
+                    }
                 },
                 @endif
                 @if (permission('adjustment-bulk-delete'))
@@ -271,11 +271,11 @@
                 @endif
             ],
         });
-    
+
         $('#btn-filter').click(function () {
             table.ajax.reload();
         });
-    
+
         $('#btn-reset').click(function () {
             $('#form-filter')[0].reset();
             $('#form-filter #from_date').val('');
@@ -283,7 +283,7 @@
             $('#form-filter .selectpicker').selectpicker('refresh');
             table.ajax.reload();
         });
-    
+
         $(document).on('click', '.delete_data', function () {
             let id    = $(this).data('id');
             let name  = $(this).data('name');

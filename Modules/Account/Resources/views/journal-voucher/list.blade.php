@@ -19,7 +19,7 @@
                 <div class="card-toolbar">
                     <!--begin::Button-->
                     @if (permission('journal-voucher-add'))
-                    <a href="{{ route('journal.voucher.create') }}"  class="btn btn-primary btn-sm font-weight-bolder"> 
+                    <a href="{{ route('journal.voucher.create') }}"  class="btn btn-primary btn-sm font-weight-bolder">
                         <i class="fas fa-plus-circle"></i> Add New</a>
                         @endif
                     <!--end::Button-->
@@ -46,7 +46,7 @@
                             <input type="text" class="form-control" name="voucher_no" id="voucher_no"/>
                         </div>
 
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-3" class="selectpicker">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-3" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                             @foreach ($warehouses as $id => $name)
                                 <option value="{{ $id }}">{{ $name }}</option>
@@ -55,7 +55,7 @@
                         </x-form.selectbox>
 
                         <div class="col-md-3">
-                            <div style="margin-top:28px;">     
+                            <div style="margin-top:28px;">
                                 <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                 data-toggle="tooltip" data-theme="dark" title="Reset">
                                 <i class="fas fa-undo-alt"></i></button>
@@ -78,7 +78,7 @@
                                     <thead class="bg-primary">
                                         <tr>
                                             <th>Sl</th>
-                                            <th>Warehouse</th>
+                                            <th>Depo</th>
                                             <th>Voucher No.</th>
                                             <th>Date</th>
                                             <th>Remark</th>
@@ -134,7 +134,7 @@ $(document).ready(function(){
             [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
         ],
         "pageLength": 25, //number of data show per page
-        "language": { 
+        "language": {
             processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
             emptyTable: '<strong class="text-danger">No Data Found</strong>',
             infoEmpty: '',
@@ -183,7 +183,7 @@ $(document).ready(function(){
                 "orientation": "landscape", //portrait
                 "pageSize": "A4", //A3,A5,A6,legal,letter
                 "exportOptions": {
-                    columns: ':visible:not(:eq(9))' 
+                    columns: ':visible:not(:eq(9))'
                 },
                 customize: function (win) {
                     $(win.document.body).addClass('bg-white');
@@ -201,7 +201,7 @@ $(document).ready(function(){
                 "title": "{{ $page_title }} List",
                 "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
                 "exportOptions": {
-                    columns: ':visible:not(:eq(9))' 
+                    columns: ':visible:not(:eq(9))'
                 }
             },
             {
@@ -211,7 +211,7 @@ $(document).ready(function(){
                 "title": "{{ $page_title }} List",
                 "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
                 "exportOptions": {
-                    columns: ':visible:not(:eq(9))' 
+                    columns: ':visible:not(:eq(9))'
                 }
             },
             {
@@ -223,13 +223,13 @@ $(document).ready(function(){
                 "orientation": "landscape", //portrait
                 "pageSize": "A4", //A3,A5,A6,legal,letter
                 "exportOptions": {
-                    columns: ':visible:not(:eq(9))' 
+                    columns: ':visible:not(:eq(9))'
                 },
                 customize: function(doc) {
-                    doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
+                    doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
                     doc.styles.tableHeader.fontSize = 7;
                     doc.pageMargins = [5,5,5,5];
-                }  
+                }
             },
         ],
     });

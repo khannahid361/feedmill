@@ -12,7 +12,7 @@
                     <input type="hidden" name="update_id" id="update_id"/>
                     <input type="hidden" name="type" id="type" value="update"> <!-- To check the form is store form or edit from for validation rules -->
                     <x-form.textbox labelName="Month" name="month" required="required" col="col-md-6"/>
-                    <x-form.textbox labelName="Warehouse" name="warehouse" required="required" col="col-md-6"/>
+                    <x-form.textbox labelName="Depo" name="warehouse" required="required" col="col-md-6"/>
                     <x-form.textbox labelName="SR" name="sr" required="required" col="col-md-6"/>
                     <x-form.textbox labelName="Target Value" name="target_value" required="required" col="col-md-6" />
                     <x-form.textbox labelName="Commission Rate" name="commission_rate"  required="required" col="col-md-6" />

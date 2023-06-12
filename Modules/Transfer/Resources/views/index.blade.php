@@ -31,14 +31,14 @@
                             </div>
                         </div>
                         @if(empty(Auth::user()->warehouse_id))
-                        <x-form.selectbox labelName="From Warehouse" name="from_warehouse_id" required="required" col="col-md-3" class="selectpicker">
+                        <x-form.selectbox labelName="From Depo" name="from_warehouse_id" required="required" col="col-md-3" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $value)
                                 <option value="{{ $value->id }}">{{ $value->name }}</option>
                                 @endforeach
                             @endif
                         </x-form.selectbox>
-                        <x-form.selectbox labelName="To Warehouse" name="to_warehouse_id" required="required" col="col-md-3" class="selectpicker">
+                        <x-form.selectbox labelName="To Depo" name="to_warehouse_id" required="required" col="col-md-3" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $value)
                                 <option value="{{ $value->id }}">{{ $value->name }}</option>
@@ -83,8 +83,8 @@
                                         <th>Transfer No.</th>
                                         <th>Transfer Date</th>
                                         @if(empty(Auth::user()->warehouse_id))
-                                        <th>From Warehouse</th>
-                                        <th>To Warehouse</th>
+                                        <th>From Depo</th>
+                                        <th>To Depo</th>
                                         @endif
                                         <th>Total Item</th>
                                         @if(empty(Auth::user()->warehouse_id))

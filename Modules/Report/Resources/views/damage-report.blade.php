@@ -47,7 +47,7 @@
                 <div class="card-toolbar">
                     <!--begin::Button-->
                     @if (permission('sale-return-add'))
-                    <a href="{{ route('return') }}"  class="btn btn-primary btn-sm font-weight-bolder"> 
+                    <a href="{{ route('return') }}"  class="btn btn-primary btn-sm font-weight-bolder">
                         <i class="fas fa-plus-circle"></i> Add Return</a>
                     @endif
                     <!--end::Button-->
@@ -69,7 +69,7 @@
                             </div>
                         </div>
 
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-3" class="selectpicker">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-3" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                             @foreach ($warehouses as $id => $name)
                                 <option value="{{ $id }}" data-name="{{ $name }}">{{ $name }}</option>
@@ -78,11 +78,11 @@
                         </x-form.selectbox>
 
                         <div class="col-md-6">
-                            <div style="margin-top:28px;">     
+                            <div style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Reset">
                                     <i class="fas fa-undo-alt"></i></button>
-    
+
                                     <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Search">
                                     <i class="fas fa-search"></i></button>
@@ -192,7 +192,7 @@ $(document).ready(function(){
             [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
         ],
         "pageLength": 25, //number of data show per page
-        "language": { 
+        "language": {
             processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
             emptyTable: '<strong class="text-danger">No Data Found</strong>',
             infoEmpty: '',
@@ -291,7 +291,7 @@ $(document).ready(function(){
                         }
                 },
                 customize: function(doc) {
-                    doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
+                    doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
                     doc.styles.tableHeader.fontSize = 7;
                     doc.styles.tableFooter.fontSize = 7;
                     doc.pageMargins = [5,5,5,5];

@@ -39,7 +39,7 @@
                         @if(Auth::user()->warehouse_id)
                         <input type="hidden" name="warehouse_id" id="warehouse_id" value="{{ Auth::user()->warehouse_id }}">
                         @else
-                        <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-3" class="selectpicker">
+                        <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-3" class="selectpicker">
                             @if (!$warehouses->isEmpty())
                                 @foreach ($warehouses as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>
@@ -77,13 +77,13 @@
                             @endif
                         </x-form.selectbox>
                         <x-form.selectbox labelName="Customer" name="customer_id" col="col-md-3" class="selectpicker"/>
-                        
+
                         <div class="{{ Auth::user()->warehouse_id ? 'col-md-12' : 'col-md-9' }}">
-                            <div style="margin-top:28px;">       
+                            <div style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Reset">
                                     <i class="fas fa-undo-alt"></i></button>
-    
+
                                     <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right" type="button"
                                     data-toggle="tooltip" data-theme="dark" title="Search">
                                     <i class="fas fa-search"></i></button>
@@ -104,7 +104,7 @@
                                         <th>Customer Name</th>
                                         <th>Shop Name</th>
                                         <th>Mobile</th>
-                                        <th>Warehouse</th>
+                                        <th>Depo</th>
                                         <th>District</th>
                                         <th>Upazila</th>
                                         <th>Area</th>
@@ -158,7 +158,7 @@ $(document).ready(function(){
             [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
         ],
         "pageLength": 25, //number of data show per page
-        "language": { 
+        "language": {
             processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
             emptyTable: '<strong class="text-danger">No Data Found</strong>',
             infoEmpty: '',
@@ -229,7 +229,7 @@ $(document).ready(function(){
                     }
                 },
                 footer:true,
-                
+
             },
             {
                 "extend": 'excel',
@@ -259,7 +259,7 @@ $(document).ready(function(){
                 },
                 footer:true,
                 customize: function(doc) {
-                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
+                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
                         doc.styles.tableHeader.fontSize = 7;
                         doc.styles.tableFooter.fontSize = 7;
                         doc.pageMargins = [5,5,5,5];
@@ -321,7 +321,7 @@ function customer_list()
             });
             $('#form-filter #customer_id').empty().append(html);
             $('#form-filter #customer_id.selectpicker').selectpicker('refresh');
-      
+
         },
     });
 
@@ -349,7 +349,7 @@ function getUpazilaList(district_id,selector,upazila_id=''){
                 $('#store_or_update_form #upazila_id').val(upazila_id);
                 $('#store_or_update_form #upazila_id.selectpicker').selectpicker('refresh');
             }
-      
+
         },
     });
 }
@@ -376,7 +376,7 @@ function getAreaList(upazila_id,selector,area_id=''){
                 $('#store_or_update_form #area_id').val(area_id);
                 $('#store_or_update_form #area_id.selectpicker').selectpicker('refresh');
             }
-      
+
         },
     });
 }

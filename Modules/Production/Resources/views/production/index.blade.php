@@ -39,7 +39,7 @@
                                     <input type="hidden" id="end_date" name="end_date">
                                 </div>
                             </div>
-                            <x-form.selectbox labelName="Warehouse" name="warehouse_id" col="col-md-3" class="selectpicker">
+                            <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-3" class="selectpicker">
                                 @if (!$warehouses->isEmpty())
                                     @foreach ($warehouses as $id => $name)
                                         <option value="{{ $id }}">{{ $name }}</option>
@@ -86,7 +86,7 @@
                                             <th>Sl</th>
                                             <th>Batch No.</th>
                                             <th>Product Name</th>
-                                            <th>Warehouse</th>
+                                            <th>Depo</th>
                                             <th>Start Date</th>
                                             <th>End Date</th>
                                             <th>Expire In</th>
