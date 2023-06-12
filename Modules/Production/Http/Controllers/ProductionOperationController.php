@@ -16,47 +16,52 @@ use Modules\Production\Http\Requests\OperationRequest;
 use Modules\Production\Entities\ProductionProductMaterial;
 use Modules\Production\Entities\ProductionWastage;
 
-class ProductionOperationController extends BaseController{
-    public function __construct(Production $model){
+class ProductionOperationController extends BaseController
+{
+    public function __construct(Production $model)
+    {
         $this->model = $model;
     }
-    public function index(int $id){
-        if(permission('production-operation')){
-            $production = $this->model->with(['warehouse:id,name','products'])->find($id);
-            if($production) {
-                $this->setPageData('Production','Production','fas fa-industry',[['name' => 'Production']]);
-                return view('production::production.operation',compact('production'));
-            }else{
+    public function index(int $id)
+    {
+        if (permission('production-operation')) {
+            $production = $this->model->with(['warehouse:id,name', 'products'])->find($id);
+            if ($production) {
+                $this->setPageData('Production', 'Production', 'fas fa-industry', [['name' => 'Production']]);
+                return view('production::production.operation', compact('production'));
+            } else {
                 return redirect()->back();
             }
-        }else{
+        } else {
             return $this->access_blocked();
         }
     }
-    public function generateCouponQrcode(Request $request){
-        if($request->ajax()) {
+    public function generateCouponQrcode(Request $request)
+    {
+        if ($request->ajax()) {
             $coupons = DB::table('production_coupons as pc')
-            ->select('pc.id','pc.coupon_code','pp.coupon_price','pp.total_coupon')
-            ->join('production_products as pp','pc.production_product_id','=','pp.id')
-            ->where([['pc.production_product_id',$request->production_product_id],['pc.batch_no',$request->batch_no],['pc.status',2]])
-            ->get();
+                ->select('pc.id', 'pc.coupon_code', 'pp.coupon_price', 'pp.total_coupon')
+                ->join('production_products as pp', 'pc.production_product_id', '=', 'pp.id')
+                ->where([['pc.production_product_id', $request->production_product_id], ['pc.batch_no', $request->batch_no], ['pc.status', 2]])
+                ->get();
             $data = [
                 'coupons'     => $coupons,
                 'row_qty'     => $request->row_qty,
             ];
-            return view('production::production.print-qrcode',$data)->render();
+            return view('production::production.print-qrcode', $data)->render();
         }
     }
-    public function store(OperationRequest $request){
+    public function store(OperationRequest $request)
+    {
         // dd($request->production);
         if ($request->ajax()) {
             if (permission('production-operation')) {
                 DB::beginTransaction();
                 try {
-                    if($request->has('production')){
-                        foreach($request->production as $product) {
+                    if ($request->has('production')) {
+                        foreach ($request->production as $product) {
                             $production_product = ProductionProduct::find($product['production_product_id']);
-                            if($production_product) {
+                            if ($production_product) {
                                 $production_product->update([
                                     'labor_cost'    => $product['labor_cost'],
                                     'other_cost'    => $product['other_cost'],
@@ -69,20 +74,20 @@ class ProductionOperationController extends BaseController{
                                 if (!empty($product['materials']) && count($product['materials']) > 0) {
                                     foreach ($product['materials'] as $material) {
                                         $production_material = ProductionProductMaterial::find($material['production_material_id']);
-                                        if($production_material) {
+                                        if ($production_material) {
                                             $production_material->update([
                                                 "used_qty"    => $material['used_qty'],
-//                                                "damaged_qty" => $material['damaged_qty'] ? $material['damaged_qty'] : 0,
-//                                                "odd_qty"     => $material['odd_qty'] ? $material['odd_qty'] : 0
+                                                //                                                "damaged_qty" => $material['damaged_qty'] ? $material['damaged_qty'] : 0,
+                                                //                                                "odd_qty"     => $material['odd_qty'] ? $material['odd_qty'] : 0
                                             ]);
                                         }
                                     }
                                 }
                             }
                         }
-                        $output = ['status' => 'success','message' => 'Data Updated Successfully'];
-                    }else{
-                        $output = ['status' => 'error','message' => 'Failed to Update Data'];
+                        $output = ['status' => 'success', 'message' => 'Data Updated Successfully'];
+                    } else {
+                        $output = ['status' => 'error', 'message' => 'Failed to Update Data'];
                     }
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -96,7 +101,6 @@ class ProductionOperationController extends BaseController{
         }
     }
     public function change_production_status(Request $request){
-        // dd($request->all());
         if ($request->ajax()) {
             if (permission('production-operation')) {
                 if ($request->production_status) {
@@ -135,22 +139,22 @@ class ProductionOperationController extends BaseController{
                                     }
                                 }
                                 $production_products = DB::table('production_products')->where('production_id',$request->production_id)->get();
-                                // dd($production_products);
                                 if(!$production_products->isEmpty()) {
                                     foreach ($production_products as  $value) {
                                         $product                  = Product::find($value->product_id);
-                                        $warehouseProductQuantity = WarehouseProduct::where(['product_id' => $value->product_id])->sum('qty');
+                                        $warehouseProductQuantity = 0;
                                         $warehouse_product        = WarehouseProduct::where([['warehouse_id', $warehouse_id], ['product_id', $value->product_id]])->first();
                                         $productionWastage = ProductionWastage::where('product_id',$value->product_id)->first();
-//                                        $productNewPrice          = (($warehouseProductQuantity * $product->base_unit_price) + ($value->base_unit_qty * $value->per_unit_cost)) / ($warehouseProductQuantity + $value->base_unit_qty);
-//                                        $product->update([
-//                                            'base_unit_price'     => $productNewPrice
-//                                        ]);
+
                                         //calculating new avg price
-                                        $previousCost = $product->cost * $warehouse_product->qty;
+                                        if($warehouse_product)
+                                        {
+                                            $warehouseProductQuantity  = $warehouse_product->qty;
+                                        }
+                                        $previousCost = $product->cost * $warehouseProductQuantity;
                                         $currenCost = $value->per_unit_cost * $value->base_unit_qty;
                                         $newCost = $currenCost + $previousCost;
-                                        $avgPrice = $newCost/($warehouse_product->qty+$value->base_unit_qty);
+                                        $avgPrice = $newCost/($warehouseProductQuantity+$value->base_unit_qty);
                                         $product->update([
                                            'cost'           => $avgPrice
                                         ]);

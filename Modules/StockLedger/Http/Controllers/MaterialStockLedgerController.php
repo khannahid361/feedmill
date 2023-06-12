@@ -84,7 +84,7 @@ class MaterialStockLedgerController extends BaseController
                         'previous_cost'    => $previous_data['cost'],
                         'previous_qty'     => $previous_data['qty'],
                         'previous_value'   => $previous_data['value'],
-                        'purchase_cost'    => $purchase_data['new_unit_cost'],
+                        'purchase_cost'    => $purchase_data['cost'],
                         'purchase_qty'     => $purchase_data['qty'],
                         'purchase_value'   => $purchase_data['value'],
                         'purchase_numbers' => $purchase_data['purchase_numbers'],
@@ -277,6 +277,7 @@ class MaterialStockLedgerController extends BaseController
             ->get();
             $new_unit_cost = 0;
             $datetime = '';
+            // dd($purchaseMaterial);
         $total_purchased_cost =  $total_purchased_qty = 0;
         if (!$purchaseMaterial->isEmpty()) {
             foreach ($purchaseMaterial as $material) {
@@ -311,11 +312,12 @@ class MaterialStockLedgerController extends BaseController
         $material_data = [
             'cost' => $per_unit_cost,
             'qty' => $total_purchased_qty,
-            'value' => $new_unit_cost * $total_purchased_qty,
+            'value' => $per_unit_cost * $total_purchased_qty,
             'purchase_numbers' => $purchase_numbers,
             'new_unit_cost' => $new_unit_cost,
             'datetime' => $datetime
         ];
+        // dd($material_data);
         return $material_data;
     }
 

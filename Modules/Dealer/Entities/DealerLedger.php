@@ -44,7 +44,7 @@ class DealerLedger extends BaseModel{
         $this->column_order = ['d.id'];
         $query = DB::table('dealers as d')
                  ->join('chart_of_accounts as coa','d.id','=','coa.dealer_id')
-                 ->join('transactions as t','coa.id','=','t.chart_of_account_id')->where('t.approve',1)->select('t.*','coa.id as coa_id','coa.code','coa.name','coa.parent_name','d.id as dealer_id','d.shop_name','d.name','d.mobile');
+                 ->join('transactions as t','coa.id','=','t.chart_of_account_id')->whereNotIn('coa.parent_name', ['Commission Yearly Payable','Commission Monthly Payable'])->where('t.approve',1)->select('t.*','coa.id as coa_id','coa.code','coa.name','coa.parent_name','d.id as dealer_id','d.shop_name','d.name','d.mobile');
 
         // if(auth()->user()->warehouse_id)
         // {
@@ -90,6 +90,7 @@ class DealerLedger extends BaseModel{
         $query = self::select('transactions.*','coa.id as coa_id','coa.code','coa.name','coa.parent_name','c.id as dealer_id','c.shop_name','c.name','c.mobile')
         ->join('chart_of_accounts as coa','transactions.chart_of_account_id','=','coa.id')
         ->join('dealers as c','coa.dealer_id','c.id')
+        ->whereNotIn('coa.parent_name', ['Commission Yearly Payable','Commission Monthly Payable'])
         ->where('transactions.approve',1);
         if(auth()->user()->warehouse_id)
         {

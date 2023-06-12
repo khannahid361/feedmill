@@ -49,11 +49,11 @@
                                 </div>
                             </div>
                             <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Warehouse','name' => 'warehouse_id','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Depo','name' => 'warehouse_id','col' => 'col-md-3','class' => 'selectpicker']]); ?>
 <?php $component->withName('form.selectbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Warehouse','name' => 'warehouse_id','col' => 'col-md-3','class' => 'selectpicker']); ?>
+<?php $component->withAttributes(['labelName' => 'Depo','name' => 'warehouse_id','col' => 'col-md-3','class' => 'selectpicker']); ?>
                                 <?php if(!$warehouses->isEmpty()): ?>
                                     <?php $__currentLoopData = $warehouses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
@@ -124,7 +124,7 @@
                                             <th>Sl</th>
                                             <th>Batch No.</th>
                                             <th>Product Name</th>
-                                            <th>Warehouse</th>
+                                            <th>Depo</th>
                                             <th>Start Date</th>
                                             <th>End Date</th>
                                             <th>Expire In</th>
