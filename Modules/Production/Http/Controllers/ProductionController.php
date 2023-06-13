@@ -72,9 +72,9 @@ class ProductionController extends BaseController
                     if (permission('production-approve')  && $value->status == 2) {
                         $action .= ' <a class="dropdown-item change_status"  data-id="' . $value->id . '" data-name="' . $value->batch_no . '" data-status="' . $value->status . '" data-warehouseID="' . $value->warehouse_id . '"><i class="fas fa-toggle-on text-info mr-2"></i> Approve Status</a>';
                     }
-                    // if (permission('production-edit') && $value->status == 2) {
-                    //     $action .= ' <a class="dropdown-item" href="' . route("production.edit", $value->id) . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
-                    // }
+                    if (permission('production-edit') && $value->status == 2) {
+                        $action .= ' <a class="dropdown-item" href="' . route("production.edit", $value->id) . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
+                    }
                     if (permission('production-operation') && $value->status == 1 && $value->production_status != 3) {
                         $action .= ' <a class="dropdown-item" href="' . url("production/operation/" . $value->id) . '"><i class="fas fa-toolbox text-success mr-2"></i> Operation</a>';
                     }
@@ -317,6 +317,7 @@ class ProductionController extends BaseController
                 $this->setPageData('Production Edit', 'Production Edit', 'fas fa-industry', [['name' => 'Production Edit']]);
                 $warehouses =  Warehouse::where('status',1)->get();
                 $wastage = ProductionWastage::where('product_id', $production->products[0]['product_id'])->first();
+                // return response()->json($production->products[0]->materials);
                 return view('production::production.edit', compact('production', 'warehouses','wastage'));
             } else {
                 return redirect()->back();
@@ -359,6 +360,7 @@ class ProductionController extends BaseController
                                             if ($production_material) {
                                                 $production_material->update([
                                                     'qty'           => $material['qty'],
+                                                    'used_qty'           => $material['qty'],
                                                     'cost'          => $material['cost'],
                                                     'total'         => $material['total'],
                                                 ]);

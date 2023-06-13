@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', $page_title); ?>
 
-@section('title', $page_title)
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
     <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
     <style>
         #form-tab li a.active {
@@ -25,20 +23,20 @@
             font-size: 20px;
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="d-flex flex-column-fluid">
         <div class="container-fluid">
             <!--begin::Notice-->
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-5">
                     <div class="card-title">
-                        <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
+                        <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        <a href="{{ route('production') }}" class="btn btn-warning btn-sm font-weight-bolder">
+                        <a href="<?php echo e(route('production')); ?>" class="btn btn-warning btn-sm font-weight-bolder">
                             <i class="fas fa-arrow-left"></i> Back</a>
                         <!--end::Button-->
                     </div>
@@ -48,52 +46,79 @@
             <!--begin::Card-->
             <div class="card card-custom" style="padding-bottom: 100px !important;">
                 <form id="store_or_update_form" method="post">
-                    @csrf
-                    <input type="hidden" name="update_id" value="{{ $production->id }}">
+                    <?php echo csrf_field(); ?>
+                    <input type="hidden" name="update_id" value="<?php echo e($production->id); ?>">
                     <div class="card-body">
                         <div class="col-md-12">
                             <div class="row">
-                                <x-form.textbox labelName="Batch No." name="batch_no" value="{{ $production->batch_no }}"
-                                    property="readonly" required="required" col="col-md-4" />
-                                <x-form.textbox labelName="Date" name="start_date" required="required" col="col-md-4"
-                                    property="readonly" class="date" value="{{ $production->start_date }}" />
-                                <x-form.selectbox labelName="Depo" name="warehouse_id" required="required" col="col-md-4"
-                                    class="selectpicker">
-                                    @if (!$warehouses->isEmpty())
-                                        @foreach ($warehouses as $warehouse)
-                                            <option value="{{ $warehouse->id }}"
-                                                {{ $production->warehouse_id == $warehouse->id ? 'selected' : '' }}>
-                                                {{ $warehouse->name }}</option>
-                                        @endforeach
-                                    @endif
-                                </x-form.selectbox>
+                                <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Batch No.','name' => 'batch_no','value' => ''.e($production->batch_no).'','property' => 'readonly','required' => 'required','col' => 'col-md-4']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Batch No.','name' => 'batch_no','value' => ''.e($production->batch_no).'','property' => 'readonly','required' => 'required','col' => 'col-md-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                                <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Date','name' => 'start_date','required' => 'required','col' => 'col-md-4','property' => 'readonly','class' => 'date','value' => ''.e($production->start_date).'']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Date','name' => 'start_date','required' => 'required','col' => 'col-md-4','property' => 'readonly','class' => 'date','value' => ''.e($production->start_date).'']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                                <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Depo','name' => 'warehouse_id','required' => 'required','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Depo','name' => 'warehouse_id','required' => 'required','col' => 'col-md-4','class' => 'selectpicker']); ?>
+                                    <?php if(!$warehouses->isEmpty()): ?>
+                                        <?php $__currentLoopData = $warehouses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $warehouse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($warehouse->id); ?>"
+                                                <?php echo e($production->warehouse_id == $warehouse->id ? 'selected' : ''); ?>>
+                                                <?php echo e($warehouse->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endif; ?>
+                                 <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                             </div>
                         </div>
                         <div class="col-md-12 pt-5">
                             <ul class="nav nav-tabs nav-tabs-2" id="form-tab" role="tablist"
                                 style="border-bottom: 0px !important;justify-content: space-between;">
-                                {{-- <li class="nav-item mx-0 mb-3" id="tab1">
-                                <a class="nav-link active text-center step  step-1" data-toggle="tab" href="#tab-1" role="tab">Product-1</a>
-                            </li> --}}
-                                @if (!$production->products->isEmpty())
-                                    @foreach ($production->products as $key => $item)
-                                        <li class="nav-item mx-0 mb-3" id="tab{{ $key + 1 }}">
-                                            <a class="nav-link {{ $key == 0 ? 'active' : '' }} text-center step  step-{{ $key + 1 }}"
-                                                data-toggle="tab" href="#tab-{{ $key + 1 }}"
-                                                role="tab">Product-{{ $key + 1 }}</a>
+                                
+                                <?php if(!$production->products->isEmpty()): ?>
+                                    <?php $__currentLoopData = $production->products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <li class="nav-item mx-0 mb-3" id="tab<?php echo e($key + 1); ?>">
+                                            <a class="nav-link <?php echo e($key == 0 ? 'active' : ''); ?> text-center step  step-<?php echo e($key + 1); ?>"
+                                                data-toggle="tab" href="#tab-<?php echo e($key + 1); ?>"
+                                                role="tab">Product-<?php echo e($key + 1); ?></a>
                                         </li>
-                                    @endforeach
-                                @endif
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endif; ?>
 
                             </ul>
 
                             <input type="hidden" name="tab" id="check_tab">
                             <div class="tab-content">
-                                @if (!$production->products->isEmpty())
-                                    @foreach ($production->products as $key => $item)
-                                        <div class="tab-pane {{ $key == 0 ? 'active' : '' }}  step step-{{ $key + 1 }}  p-3"
-                                            id="tab-{{ $key + 1 }}" role="tabpanel">
-                                            <div class="row" id="production_{{ $key + 1 }}">
+                                <?php if(!$production->products->isEmpty()): ?>
+                                    <?php $__currentLoopData = $production->products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <div class="tab-pane <?php echo e($key == 0 ? 'active' : ''); ?>  step step-<?php echo e($key + 1); ?>  p-3"
+                                            id="tab-<?php echo e($key + 1); ?>" role="tabpanel">
+                                            <div class="row" id="production_<?php echo e($key + 1); ?>">
                                                 <div class="col-md-12 px-0" style="border-top: 5px solid #024c96;">
                                                     <div class="card card-custom card-fit card-border"
                                                         style="border-radius: 0 !important;">
@@ -102,15 +127,15 @@
                                                                 <div class="form-group col-md-12 required">
                                                                     <label>Product</label>
                                                                     <input type="text" class="form-control"
-                                                                        value="{{ $item->product->name }}">
+                                                                        value="<?php echo e($item->product->name); ?>">
                                                                     <input type="hidden" class="form-control"
-                                                                        value="{{ $item->id }}"
-                                                                        name="production[{{ $key + 1 }}][production_product_id]"
-                                                                        id="production_{{ $key + 1 }}_production_product_id">
+                                                                        value="<?php echo e($item->id); ?>"
+                                                                        name="production[<?php echo e($key + 1); ?>][production_product_id]"
+                                                                        id="production_<?php echo e($key + 1); ?>_production_product_id">
                                                                     <input type="hidden" class="form-control"
-                                                                        value="{{ $item->product_id }}"
-                                                                        name="production[{{ $key + 1 }}][product_id]"
-                                                                        id="production_{{ $key + 1 }}_product_id">
+                                                                        value="<?php echo e($item->product_id); ?>"
+                                                                        name="production[<?php echo e($key + 1); ?>][product_id]"
+                                                                        id="production_<?php echo e($key + 1); ?>_product_id">
                                                                 </div>
                                                                 <div class="form-group col-md-3 required">
                                                                     <label for="mfg_date">Mfg. Date</label>
@@ -118,7 +143,7 @@
                                                                         class="form-control date total-time"
                                                                         name="production[1][mfg_date]"
                                                                         id="production_1_mfg_date"
-                                                                        value="{{ $item->mfg_date }}" readonly
+                                                                        value="<?php echo e($item->mfg_date); ?>" readonly
                                                                         onblur="setExpireTime();" />
                                                                 </div>
                                                                 <div class="form-group col-md-3 required">
@@ -127,14 +152,14 @@
                                                                         class="form-control date total-time"
                                                                         name="production[1][exp_date]"
                                                                         id="production_1_exp_date"
-                                                                        value="{{ $item->exp_date }}"
+                                                                        value="<?php echo e($item->exp_date); ?>"
                                                                         onblur="setExpireTime();" readonly />
                                                                 </div>
                                                                 <div class="form-group col-md-3 required">
                                                                     <label for="production_1_year">Total Months </label>
                                                                     <input type="text" name="production[1][year]"
                                                                         id="production_1_year" class="form-control "
-                                                                        value="{{ $item->year }}" placeholder=""
+                                                                        value="<?php echo e($item->year); ?>" placeholder=""
                                                                         readonly>
                                                                 </div>
                                                             </div>
@@ -142,8 +167,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 py-5">
-                                                    <div class="row" id="production_materials_{{ $key + 1 }}">
-                                                        @if (!$item->materials->isEmpty())
+                                                    <div class="row" id="production_materials_<?php echo e($key + 1); ?>">
+                                                        <?php if(!$item->materials->isEmpty()): ?>
                                                             <div class="col-md-12 py-5 table-responsive">
                                                                 <div class="col-md-12 text-center">
                                                                     <h5 class="bg-warning text-white p-3"
@@ -151,7 +176,7 @@
                                                                         Materials</h5>
                                                                 </div>
                                                                 <table class="table table-bordered pb-5"
-                                                                    id="material_table_{{ $key + 1 }}">
+                                                                    id="material_table_<?php echo e($key + 1); ?>">
                                                                     <div class="col-md-12 text-center">
                                                                         <div class="row">
                                                                             <div class="col-md-6"></div>
@@ -162,8 +187,8 @@
                                                                             <div class="col-md-4 mb-4">
                                                                                 <input type="text"
                                                                                     class="form-control text-center finishedQty finished-qty"
-                                                                                    value="{{ $item->base_unit_qty }}"
-                                                                                    name="production[{{ $key + 1 }}][base_unit_qty]"
+                                                                                    value="<?php echo e($item->base_unit_qty); ?>"
+                                                                                    name="production[<?php echo e($key + 1); ?>][base_unit_qty]"
                                                                                     id="finished_qty">
                                                                             </div>
 
@@ -171,7 +196,7 @@
                                                                     </div>
                                                                     <thead class="bg-primary">
                                                                         <th width="30%">Material</th>
-                                                                        {{--                                                                    <th width="5%" class="text-center">Type</th> --}}
+                                                                        
                                                                         <th width="10%" class="text-center">Material Qty
                                                                         </th>
                                                                         <th width="10%" class="text-right">Rate</th>
@@ -181,133 +206,137 @@
                                                                             QTY</th>
                                                                         <th width="17%" class="text-right">Total</th>
                                                                     </thead>
-                                                                    @php
+                                                                    <?php
                                                                         $totalMaterial = 0;
                                                                         $totalAmnt = 0;
-                                                                    @endphp
+                                                                    ?>
                                                                     <tbody>
-                                                                        @foreach ($item->materials as $index => $value)
-                                                                        @php
+                                                                        <?php $__currentLoopData = $item->materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                        <?php
                                                                             $productId = $item->product_id;
                                                                             // $materialUnitQty =
-                                                                        @endphp
+                                                                        ?>
                                                                             <tr>
-                                                                                @php
+                                                                                <?php
                                                                                     $totalMaterial += $value->pivot->qty;
 
                                                                                     $totalAmnt += $value->pivot->cost * $value->pivot->qty;
-                                                                                @endphp
+                                                                                ?>
                                                                                 <td>
-                                                                                    {{ $value->material_name . ' (' . $value->material_code . ')' }}
+                                                                                    <?php echo e($value->material_name . ' (' . $value->material_code . ')'); ?>
+
                                                                                     <input type="hidden"
                                                                                         class="form-control text-center"
-                                                                                        value="{{ $value->pivot->id }}"
-                                                                                        name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][production_material_id]"
-                                                                                        id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_production_material_id"
-                                                                                        data-id="{{ $index + 1 }}"
+                                                                                        value="<?php echo e($value->pivot->id); ?>"
+                                                                                        name="production[<?php echo e($key + 1); ?>][materials][<?php echo e($index + 1); ?>][production_material_id]"
+                                                                                        id="production_<?php echo e($key + 1); ?>_materials_<?php echo e($index + 1); ?>_production_material_id"
+                                                                                        data-id="<?php echo e($index + 1); ?>"
                                                                                         readonly>
                                                                                     <input type="hidden"
                                                                                         class="form-control text-center"
-                                                                                        value="{{ $value->id }}"
-                                                                                        name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][material_id]"
-                                                                                        id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_material_id"
-                                                                                        data-id="{{ $index + 1 }}"
+                                                                                        value="<?php echo e($value->id); ?>"
+                                                                                        name="production[<?php echo e($key + 1); ?>][materials][<?php echo e($index + 1); ?>][material_id]"
+                                                                                        id="production_<?php echo e($key + 1); ?>_materials_<?php echo e($index + 1); ?>_material_id"
+                                                                                        data-id="<?php echo e($index + 1); ?>"
                                                                                         readonly>
                                                                                     <input type="hidden"
                                                                                         class="form-control"
-                                                                                        value="{{ $value->unit_id }}"
-                                                                                        name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][unit_id]"
-                                                                                        id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_unit_id"
-                                                                                        data-id="{{ $index + 1 }}">
+                                                                                        value="<?php echo e($value->unit_id); ?>"
+                                                                                        name="production[<?php echo e($key + 1); ?>][materials][<?php echo e($index + 1); ?>][unit_id]"
+                                                                                        id="production_<?php echo e($key + 1); ?>_materials_<?php echo e($index + 1); ?>_unit_id"
+                                                                                        data-id="<?php echo e($index + 1); ?>">
                                                                                     <input type="hidden"
                                                                                         class="form-control text-right"
-                                                                                        value="{{ $value->pivot->cost }}"
-                                                                                        name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][cost]"
-                                                                                        id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_cost"
-                                                                                        data-id="{{ $index + 1 }}"
+                                                                                        value="<?php echo e($value->pivot->cost); ?>"
+                                                                                        name="production[<?php echo e($key + 1); ?>][materials][<?php echo e($index + 1); ?>][cost]"
+                                                                                        id="production_<?php echo e($key + 1); ?>_materials_<?php echo e($index + 1); ?>_cost"
+                                                                                        data-id="<?php echo e($index + 1); ?>"
                                                                                         readonly>
                                                                                     <input type="hidden"
                                                                                         class="form-control text-right stock_qty"
-                                                                                        value="{{ $value->qty }}"
-                                                                                        name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][stock_qty]"
-                                                                                        id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_stock_qty"
-                                                                                        data-id="{{ $index + 1 }}">
+                                                                                        value="<?php echo e($value->qty); ?>"
+                                                                                        name="production[<?php echo e($key + 1); ?>][materials][<?php echo e($index + 1); ?>][stock_qty]"
+                                                                                        id="production_<?php echo e($key + 1); ?>_materials_<?php echo e($index + 1); ?>_stock_qty"
+                                                                                        data-id="<?php echo e($index + 1); ?>">
 
                                                                                     <input type="hidden" class="track"
-                                                                                        data-qty="{{ $value->pivot->qty }}"
-                                                                                        data-cost="{{ $value->pivot->cost }}"
-                                                                                        data-stock_qty="{{ $value->qty }}"
-                                                                                        data-total="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_total"
-                                                                                        data-tab="{{ $index + 1 }}" />
+                                                                                        data-qty="<?php echo e($value->pivot->qty); ?>"
+                                                                                        data-cost="<?php echo e($value->pivot->cost); ?>"
+                                                                                        data-stock_qty="<?php echo e($value->qty); ?>"
+                                                                                        data-total="production_<?php echo e($key + 1); ?>_materials_<?php echo e($index + 1); ?>_total"
+                                                                                        data-tab="<?php echo e($index + 1); ?>" />
 
                                                                                     <input type="hidden" readonly
                                                                                         name=""
-                                                                                        value="{{ $value->pivot->used_qty / $item->base_unit_qty }}"
+                                                                                        value="<?php echo e($value->pivot->used_qty / $item->base_unit_qty); ?>"
                                                                                         class="unit-qty" id=""
-                                                                                        data-id="{{ $index + 1 }}" data-tab="{{ $key + 1 }}" data-unitcost={{ $value->pivot->cost }}>
+                                                                                        data-id="<?php echo e($index + 1); ?>" data-tab="<?php echo e($key + 1); ?>" data-unitcost=<?php echo e($value->pivot->cost); ?>>
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    {{ $value->pivot->used_qty / $item->base_unit_qty }}
+                                                                                    <?php echo e($value->pivot->used_qty / $item->base_unit_qty); ?>
+
                                                                                 </td>
                                                                                 <td class="text-right">
-                                                                                    {{ number_format($value->pivot->cost, 2, '.', '') }}
+                                                                                    <?php echo e(number_format($value->pivot->cost, 2, '.', '')); ?>
+
 
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    {{ $value->qty }}
-                                                                                    ({{ $value->unit->unit_name }})
+                                                                                    <?php echo e($value->qty); ?>
+
+                                                                                    (<?php echo e($value->unit->unit_name); ?>)
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     <input type="text"
                                                                                         class="form-control text-right"
-                                                                                        value="{{ $value->pivot->qty }}"
-                                                                                        name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][qty]"
-                                                                                        id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_q_ty"
-                                                                                        data-id="{{ $index + 1 }}"
+                                                                                        value="<?php echo e($value->pivot->qty); ?>"
+                                                                                        name="production[<?php echo e($key + 1); ?>][materials][<?php echo e($index + 1); ?>][qty]"
+                                                                                        id="production_<?php echo e($key + 1); ?>_materials_<?php echo e($index + 1); ?>_q_ty"
+                                                                                        data-id="<?php echo e($index + 1); ?>"
                                                                                         readonly>
                                                                                 </td>
                                                                                 <td>
                                                                                     <input type="text"
                                                                                         class="form-control text-right total material-amount"
-                                                                                        value="{{ number_format($value->pivot->cost * $value->pivot->qty, 2, '.', '') }}"
-                                                                                        name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][total]"
-                                                                                        id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_total"
-                                                                                        data-id="{{ $index + 1 }}"
+                                                                                        value="<?php echo e(number_format($value->pivot->cost * $value->pivot->qty, 2, '.', '')); ?>"
+                                                                                        name="production[<?php echo e($key + 1); ?>][materials][<?php echo e($index + 1); ?>][total]"
+                                                                                        id="production_<?php echo e($key + 1); ?>_materials_<?php echo e($index + 1); ?>_total"
+                                                                                        data-id="<?php echo e($index + 1); ?>"
                                                                                         readonly>
                                                                                 </td>
                                                                             </tr>
-                                                                        @endforeach
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                                         <tr>
                                                                             <td colspan="3">Total</td>
                                                                             <td class="text-right"><span
-                                                                                    id="materialQty">{{ $totalMaterial }}</span>
+                                                                                    id="materialQty"><?php echo e($totalMaterial); ?></span>
                                                                             </td>
                                                                             <td colspan="4" class="text-right"><span
-                                                                                    id="materialAmnt">{{ $totalAmnt }}</span>
+                                                                                    id="materialAmnt"><?php echo e($totalAmnt); ?></span>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                        @endif
+                                                        <?php endif; ?>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-3 required">
                                                     <label for="">Remaining Mixture</label>
                                                     <input type="text" class="form-control" name=""
                                                         id="remaining_mixture"
-                                                        value="{{ $wastage->recyclable_wastage ?? '0' }}" readonly />
+                                                        value="<?php echo e($wastage->recyclable_wastage ?? '0'); ?>" readonly />
                                                 </div>
                                                 <div class="form-group col-md-3 required">
                                                     <label for="">Used Mixture</label>
                                                     <input type="text" class="form-control" name="used_wastage_qty"
                                                         id="used_wastage_qty" onkeyup="checkUsedMixtureQty();"
-                                                        value="{{ $item->used_wastage_qty }}" required />
+                                                        value="<?php echo e($item->used_wastage_qty); ?>" required />
                                                 </div>
                                             </div>
                                         </div>
-                                    @endforeach
-                                @endif
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <button type="button" class="btn btn-primary btn-sm mr-5 float-right"
@@ -319,10 +348,10 @@
             <!--end::Card-->
         </div>
     </div>
-    @include('production::production.view-modal')
-@endsection
+    <?php echo $__env->make('production::production.view-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script src="js/moment.js"></script>
     <script src="js/bootstrap-datetimepicker.min.js"></script>
     <script>
@@ -395,7 +424,7 @@
         function check_material_stock() {
             let form = document.getElementById('store_or_update_form');
             let formData = new FormData(form);
-            let url = "{{ url('production/check-material-stock') }}";
+            let url = "<?php echo e(url('production/check-material-stock')); ?>";
             $.ajax({
                 url: url,
                 type: "POST",
@@ -446,7 +475,7 @@
         function update_data() {
             let form = document.getElementById('store_or_update_form');
             let formData = new FormData(form);
-            let url = "{{ url('production/update') }}";
+            let url = "<?php echo e(url('production/update')); ?>";
             $.ajax({
                 url: url,
                 type: "POST",
@@ -476,7 +505,7 @@
                     // } else {
                     notification(data.status, data.message);
                     if (data.status == 'success') {
-                        window.location.replace("{{ url('production') }}");
+                        window.location.replace("<?php echo e(url('production')); ?>");
                     }
                     // }
                 },
@@ -532,4 +561,6 @@
             _('g_tl').value = total;
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Production\Resources/views/production/edit.blade.php ENDPATH**/ ?>
