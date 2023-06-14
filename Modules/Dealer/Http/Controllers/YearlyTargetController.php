@@ -48,19 +48,22 @@ class YearlyTargetController extends BaseController
                     foreach ($request->commission as $com) {
 
                         if (!empty($com['dealer_id']) && !empty($com['qty']) && !empty($com['commission_amount'])) {
-                            $existing = YearlyTarget::where(['dealer_id' => $com['dealer_id'], 'year' => $request->year])->first();
+                            //'from_date' => $request->from_date , 'to_date' => $request->to_date
+                            $existing = YearlyTarget::where('dealer_id' , $com['dealer_id'])->where('from_date')->first();
                             if (!empty($existing) && $existing->acheived_qty == 0) {
                                 $existing->delete();
                             }
                             if (empty($existing) || $existing->acheived_qty == 0) {
                                 $collection[] = [
                                     'dealer_id'         => $com['dealer_id'],
-                                    'year'              => $request->year,
+                                    'from_date'         => $request->from_date,
+                                    'to_date'           => $request->to_date,
                                     'qty'               => $com['qty'],
                                     'commission_amount' => $com['commission_amount'],
                                     'created_at' => date("Y-m-d H:i:s"),
                                     'created_by' => auth()->user()->name,
                                     'modified_by' => auth()->user()->name,
+                                    'is_generated' => 0
                                 ];
                             }
                         }
@@ -86,9 +89,6 @@ class YearlyTargetController extends BaseController
                 if (!empty($request->dealer_id)) {
                     $this->model->setDealer($request->dealer_id);
                 }
-                if (!empty($request->year)) {
-                    $this->model->year($request->year);
-                }
                 $this->set_datatable_default_properties($request);
                 $list = $this->model->getDatatableList();
                 $data = [];
@@ -108,7 +108,8 @@ class YearlyTargetController extends BaseController
                     $row    = [];
                     $row[]  = $no;
                     $row[]  = $value->dealer->name ?? '';
-                    $row[]  = $value->year;
+                    $row[]  = $value->from_date;
+                    $row[]  = $value->to_date;
                     $row[]  = $value->qty;
                     $row[]  = $value->acheived_qty;
                     $row[]  = $value->commission_amount;
@@ -157,7 +158,8 @@ class YearlyTargetController extends BaseController
             try {
                 $data = YearlyTarget::where('id', $id)->update([
                     'dealer_id'         => $request->commission[0]['dealer_id'],
-                    'year'              => $request->year,
+                    'from_date'         => $request->from_date,
+                    'to_date'           => $request->to_date,
                     'qty'               => $request->commission[0]['qty'],
                     'commission_amount' => $request->commission[0]['commission_amount'],
                     'updated_at' => date("Y-m-d H:i:s"),
@@ -191,7 +193,7 @@ class YearlyTargetController extends BaseController
                     'voucher_no'          => $commissionVoucher,
                     'voucher_date'        => date('Y-m-d'),
                     'description'         => $description,
-                    'credit'              => $dealerYearlyTarget->commission_amount,
+                    'credit'              => $dealerYearlyTarget->commission_amount * $dealerYearlyTarget->acheived_qty,
                     'debit'               => 0,
                     'is_openings'         => 2,
                     'posted'              => 1,
@@ -208,7 +210,7 @@ class YearlyTargetController extends BaseController
                     'voucher_date'        => date('Y-m-d'),
                     'description'         => 'Yearly commission Debit for -' . $dealerCoa->name,
                     'credit'              => 0,
-                    'debit'               => $dealerYearlyTarget->commission_amount,
+                    'debit'               => $dealerYearlyTarget->commission_amount * $dealerYearlyTarget->acheived_qty,
                     'is_openings'         => 2,
                     'posted'              => 1,
                     'approve'             => 1,

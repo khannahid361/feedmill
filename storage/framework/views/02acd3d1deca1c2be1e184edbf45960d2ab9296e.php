@@ -1,25 +1,24 @@
-@extends('layouts.app')
-@section('title', $page_title)
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}" />
-    <link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css" />
+<?php $__env->startSection('title', $page_title); ?>
+<?php $__env->startPush('styles'); ?>
+    <link rel="stylesheet" href="<?php echo e(asset('css/jquery-ui.css')); ?>" />
+    <link href="<?php echo e(asset('css/bootstrap-datetimepicker.min.css')); ?>" rel="stylesheet" type="text/css" />
     <style>
         .customer.table td {
             vertical-align: top !important;
             padding: 0 !important;
         }
     </style>
-@endpush
-@section('content')
+<?php $__env->stopPush(); ?>
+<?php $__env->startSection('content'); ?>
     <div class="d-flex flex-column-fluid">
         <div class="container-fluid">
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-5">
                     <div class="card-title">
-                        <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
+                        <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
                     </div>
                     <div class="card-toolbar">
-                        <a href="{{ route('dealer.yearly.commission') }}"
+                        <a href="<?php echo e(route('dealer.yearly.commission')); ?>"
                             class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
                     </div>
                 </div>
@@ -28,7 +27,7 @@
                 <div class="card-body">
                     <div id="kt_datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <form action="" id="commission_store_form" method="post" enctype="multipart/form-data">
-                            @csrf
+                            <?php echo csrf_field(); ?>
                             <div class="row">
                                 <div class="col-md-12">
                                     <table class="table table-bordered" id="commission_table">
@@ -37,28 +36,28 @@
                                             <th>From Date</th>
                                             <th>To Date</th>
                                             <th class="text-center">Target Qty</th>
-                                            <th class="text-center">Commission Amount Per Bag</th>
+                                            <th class="text-center">Commission Amount</th>
                                             <th class="text-center"></th>
                                         </thead>
                                         <tbody id="commission">
                                             <tr>
                                                 <td>
                                                     <input type="hidden" name="commission[0][dealer_id]"
-                                                        id="commission_0_dealer_id" value="{{ $dealer->dealer_id }}">
+                                                        id="commission_0_dealer_id" value="<?php echo e($dealer->dealer_id); ?>">
                                                     <input type="text" readonly name="" id=""
-                                                        value="{{ $dealer->dealer->name }}" class="form-control">
+                                                        value="<?php echo e($dealer->dealer->name); ?>" class="form-control">
                                                 </td>
                                                 <td>
-                                                    <input type="date" id="from_date" class="form-control datetimepicker" name="from_date" value="{{ $dealer->from_date }}">
+                                                    <input type="date" id="from_date" class="form-control datetimepicker" name="from_date" value="<?php echo e($dealer->from_date); ?>">
                                                 </td>
                                                 <td>
-                                                    <input type="date" id="to_date" class="form-control datetimepicker" name="to_date" value="{{ $dealer->to_date }}">
+                                                    <input type="date" id="to_date" class="form-control datetimepicker" name="to_date" value="<?php echo e($dealer->to_date); ?>">
                                                 </td>
                                                 <td><input type="text" name="commission[0][qty]" id="commission_0_qty_id"
-                                                        class="form-control" required value="{{ $dealer->qty }}"></td>
+                                                        class="form-control" required value="<?php echo e($dealer->qty); ?>"></td>
                                                 <td><input type="text" name="commission[0][commission_amount]"
                                                         id="commission_0_commission_amount_id" class="form-control" required
-                                                        value="{{ $dealer->commission_amount }}"></td>
+                                                        value="<?php echo e($dealer->commission_amount); ?>"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -75,16 +74,16 @@
             </div>
         </div>
     </div>
-@endsection
-@push('scripts')
-    <script src="{{ asset('js/jquery-ui.js') }}"></script>
-    <script src="{{ asset('js/moment.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+    <script src="<?php echo e(asset('js/jquery-ui.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/moment.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/bootstrap-datetimepicker.min.js')); ?>"></script>
     <script>
         function store_data() {
             let form = document.getElementById('commission_store_form');
             let formData = new FormData(form);
-            let url = "{{ route('dealer.yearly.commission.update', $dealer->id) }}";
+            let url = "<?php echo e(route('dealer.yearly.commission.update', $dealer->id)); ?>";
             $.ajax({
                 url: url,
                 type: "POST",
@@ -114,7 +113,7 @@
                     } else {
                         notification(data.status, data.message);
                         if (data.status == 'success') {
-                            window.location.replace("{{ route('dealer.yearly.commission') }}");
+                            window.location.replace("<?php echo e(route('dealer.yearly.commission')); ?>");
 
                         }
                     }
@@ -126,4 +125,6 @@
             });
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Dealer\Resources/views/yearly_target/edit.blade.php ENDPATH**/ ?>

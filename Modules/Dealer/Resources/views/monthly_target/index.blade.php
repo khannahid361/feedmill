@@ -84,9 +84,7 @@
                                             <th>Month</th>
                                             <th>Target Quantity</th>
                                             <th>Acheived Quantity</th>
-                                            <th>Commission Amount</th>
-                                            {{-- <th>Paid Amount</th>
-                                            <th>Due Amount</th> --}}
+                                            <th>Commission Amount Per Bag</th>
                                             <th>Created By</th>
                                             <th>Action</th>
                                         </tr>

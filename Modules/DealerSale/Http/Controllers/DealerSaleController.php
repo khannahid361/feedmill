@@ -277,7 +277,8 @@ class DealerSaleController extends BaseController
                 $month = $date->format("m");
                 $month = intval($month);
                 $monthlyTraget = MonthlyTarget::where(['month' => $month,'year'=>$year,'dealer_id'=>$sale->dealer_id])->first();
-                $yearlyTarget = YearlyTarget::where(['year'=>$year,'dealer_id'=>$sale->dealer_id])->first();
+                $yearlyTarget = YearlyTarget::where('dealer_id',$sale->dealer_id)->where('from_date','<=', $sale->sale_date) ->where('to_date','>=', $sale->sale_date)->first();
+                // dd($yearlyTarget);
                 if(!empty($yearlyTarget))
                 {
                     $yearlyTarget->acheived_qty += $sale->total_qty;

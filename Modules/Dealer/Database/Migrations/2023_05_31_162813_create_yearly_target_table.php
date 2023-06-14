@@ -23,7 +23,8 @@ class CreateYearlyTargetTable extends Migration
             $table->double('paid_amount',10,2);
             $table->double('due_amount',10,2);
             $table->tinyInteger('is_paid')->default('0')->comment='0=not paid, 1=paid';
-            $table->string('year');
+            $table->string('from_date');
+            $table->string('to_date');
             $table->enum('status',['1','2'])->default('1')->comment = "1=Active, 2=Inactive";
             $table->string('created_by')->nullable();
             $table->string('modified_by')->nullable();

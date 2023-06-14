@@ -7,7 +7,7 @@ use App\Models\BaseModel;
 class YearlyTarget extends BaseModel
 {
     protected $table = 'yearly_target';
-    protected $fillable = ['dealer_id', 'qty', 'commission_amount', 'year', 'month', 'status', 'created_by', 'modified_by', 'paid_amount', 'due_amount', 'is_paid', 'acheived_qty','is_generated'];
+    protected $fillable = ['dealer_id', 'qty', 'commission_amount', 'from_date','to_date', 'month', 'status', 'created_by', 'modified_by', 'paid_amount', 'due_amount', 'is_paid', 'acheived_qty','is_generated'];
 
     protected $column_order;
     protected $orderValue;
@@ -40,32 +40,22 @@ class YearlyTarget extends BaseModel
     protected $order = ['id' => 'desc'];
 
     protected $_dealer_id;
-    protected $_year;
 
     public function setDealer($dealer_id)
     {
         $this->_dealer_id = $dealer_id;
     }
 
-    public function year($year)
-    {
-        return $this->_year = $year;
-    }
-
     private function get_datatable_query()
     {
 
-        $this->column_order = ['dealer_id', 'qty', 'commission_amount', 'year', 'status', 'created_by', 'modified_by', 'paid_amount', 'due_amount', 'is_paid', 'acheived_qty', null, null];
+        $this->column_order = ['dealer_id', 'qty', 'commission_amount', 'from_date', 'to_date', 'status', 'created_by', 'modified_by', 'paid_amount', 'due_amount', 'is_paid', 'acheived_qty', null, null];
 
         $query = self::with('dealer:id,name');
 
         //search query
         if (!empty($this->_dealer_id)) {
             $query->where('dealer_id', $this->_dealer_id);
-        }
-
-        if (!empty($this->_year)) {
-            $query->where('year', $this->_year);
         }
 
         //order by data fetching code

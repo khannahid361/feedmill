@@ -1,23 +1,22 @@
-@extends('layouts.app')
-@section('title', $page_title)
-@push('styles')
-    <link rel="stylesheet" href="{{asset('css/jquery-ui.css')}}" />
-    <link href="{{asset('css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet" type="text/css" />
+<?php $__env->startSection('title', $page_title); ?>
+<?php $__env->startPush('styles'); ?>
+    <link rel="stylesheet" href="<?php echo e(asset('css/jquery-ui.css')); ?>" />
+    <link href="<?php echo e(asset('css/bootstrap-datetimepicker.min.css')); ?>" rel="stylesheet" type="text/css" />
     <style>
         .customer.table td{
             vertical-align: top !important;
             padding: 0 !important;
         }
     </style>
-@endpush
-@section('content')
+<?php $__env->stopPush(); ?>
+<?php $__env->startSection('content'); ?>
     <div class="d-flex flex-column-fluid">
         <div class="container-fluid">
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-5">
-                    <div class="card-title"><h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3></div>
+                    <div class="card-title"><h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3></div>
                     <div class="card-toolbar">
-                        <a href="{{ route('dealer.sale') }}" class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
+                        <a href="<?php echo e(route('sale')); ?>" class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
                     </div>
                 </div>
             </div>
@@ -25,21 +24,21 @@
                 <div class="card-body">
                     <div id="kt_datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <form action="" id="sale_store_form" method="post" enctype="multipart/form-data">
-                            @csrf
+                            <?php echo csrf_field(); ?>
                             <div class="row">
-                                <input type="hidden" name="sale_id" id="sale_id" value="{{ $sale->id }}">
+                                <input type="hidden" name="sale_id" id="sale_id" value="<?php echo e($sale->id); ?>">
                                 <div class="form-group col-md-3 required">
                                     <label for="memo_no">Memo No.</label>
-                                    <input type="text" class="form-control" name="memo_no" id="memo_no" value="{{  $sale->memo_no }}"  />
+                                    <input type="text" class="form-control" name="memo_no" id="memo_no" value="<?php echo e($sale->memo_no); ?>"  />
                                 </div>
                                 <div class="form-group col-md-3 required">
                                     <label for="sale_date">Sale Date</label>
-                                    <input type="text" class="form-control date" name="sale_date" id="sale_date" value="{{ $sale->sale_date }}" readonly />
+                                    <input type="text" class="form-control date" name="sale_date" id="sale_date" value="<?php echo e($sale->sale_date); ?>" readonly />
                                 </div>
                                 <div class="form-group col-md-3 required">
                                     <label>Customer</label>
-                                    <input type="text" class="form-control" value="{{  $sale->dealer->name }}" readonly  />
-                                    <input type="hidden" name="customer_id_hidden" id="customer_id_hidden" value="{{ $sale->dealer_id }}">
+                                    <input type="text" class="form-control" value="<?php echo e($sale->customer->name.' - '.$sale->customer->shop_name); ?>" readonly  />
+                                    <input type="hidden" name="customer_id_hidden" id="customer_id_hidden" value="<?php echo e($sale->customer_id); ?>">
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="document">Attach Document <i class="fas fa-info-circle" data-toggle="tooltip" data-theme="dark" title="Maximum Allowed File Size 5MB and Format (png,jpg,jpeg,svg,webp,pdf,csv,xlxs)"></i></label>
@@ -60,15 +59,15 @@
                                         <th class="text-center"><i class="fas fa-trash text-white"></i></th>
                                         </thead>
                                         <tbody>
-                                        @php
+                                        <?php
                                             $temp_unit_name = [];
                                             $temp_unit_operator = [];
                                             $temp_unit_operation_value = [];
-                                        @endphp
-                                        @if (!$sale->sale_products->isEmpty())
-                                            @foreach ($sale->sale_products as $key => $sale_product)
+                                        ?>
+                                        <?php if(!$sale->sale_products->isEmpty()): ?>
+                                            <?php $__currentLoopData = $sale->sale_products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $sale_product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
-                                                    @php
+                                                    <?php
                                                         $tax = DB::table('taxes')->where('rate',$sale_product->pivot->tax_rate)->first();
                                                         $units = DB::table('units')->where('base_unit',$sale_product->pivot->sale_unit_id)->orWhere('id',$sale_product->pivot->sale_unit_id)->get();
                                                         $warehouse_product = DB::table('warehouse_product')->where(['product_id' => $sale_product->pivot->product_id])->first();
@@ -102,139 +101,174 @@
                                                             $temp_unit_operator = $unit_operator = implode(",",$unit_operator).',';
                                                             $temp_unit_operation_value = $unit_operation_value = implode(",",$unit_operation_value).',';
                                                         }
-                                                    @endphp
-                                                    <td  data-row="{{ $key + 1 }}">{{ $sale_product->name }}</td>
-                                                    <td class="product-code_tx_{{ $key + 1 }} text-center" id="products_code_{{ $key + 1 }}" data-row="{{ $key + 1 }}">{{ $sale_product->code }}</td>
-                                                    <td class="unit-name_tx_{{ $key + 1 }} text-center" id="products_unit_{{ $key + 1 }}"  data-row="{{ $key + 1 }}">{{$temp_unit_name[0]}}</td>
-                                                    <td class="available-qty_tx_{{ $key + 1 }} text-center" id="products_available_qty_{{ $key + 1 }}" data-row="{{ $key + 1 }}">{{ $stock_qty-$sale_product->pivot->qty }}</td>
-                                                    <td><input type="text" class="form-control qty text-center" name="products[{{ $key + 1 }}][qty]" id="products_qty_{{ $key + 1 }}" value="{{ number_format($sale_product->pivot->qty,2,'.','') }}" data-row="{{ $key + 1 }}"></td>
-                                                    <td><input type="text" class="form-control free_qty text-center" name="products[{{ $key + 1 }}][free_qty]" id="products_free_qty_{{ $key + 1 }}" value="{{ number_format($sale_product->pivot->free_qty,2,'.','') }}" data-row="{{ $key + 1 }}"></td>
-                                                    <td><input type="text" class="fcs text-right form-control net_unit_price" name="products[{{ $key + 1 }}][net_unit_price]" id="products_net_unit_price_{{ $key + 1 }}" value="{{ $product_price }}" data-row="{{ $key + 1 }}"></td>
-                                                    <td class="tax text-right" id="tax_tx_{{ $key + 1 }}" data-row="{{ $key + 1 }}">{{ number_format((float)$sale_product->pivot->tax, 2, '.','') }}</td>
-                                                    <td class="sub-total text-right" id="sub_total_tx_{{ $key + 1 }}" data-row="{{ $key + 1 }}">{{ number_format((float)$sale_product->pivot->total, 2, '.','') }}</td>
-                                                    <input type="hidden" class="product-id_vl_{{ $key+1 }}" name="products[{{ $key + 1 }}][id]"  value="{{ $sale_product->pivot->product_id }}" id="products_id_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
-                                                    <input type="hidden" class="product-code_vl_{{ $key+1 }}" name="products[{{ $key + 1 }}][code]" value="{{ $sale_product->code }}" id="products_code_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
-                                                    <input type="hidden" class="batch-no_vl_{{ $key+1 }}" name="products[{{ $key + 1 }}][batch_no]" id="products_batch_no_{{ $key + 1 }}" value="{{ $sale_product->pivot->batch_no }}" data-row="{{ $key + 1 }}">
-                                                    <input type="hidden" class="stock-qty_vl_{{ $key+1 }} form-control text-center" name="products[{{ $key+1 }}][stock_qty]"  value="{{ $stock_qty -$sale_product->pivot->qty }}" id="products_stock_qty_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
-                                                    <input type="hidden" class="free-stock-qty_vl_{{ $key+1 }} form-control text-center" name="products[{{ $key+1 }}][free_stock_qty]"  value="{{ $sale_product->pivot->free_qty }}" id="products_free_stock_qty_{{ $key+1 }}" data-row="{{ $key + 1 }}">
-                                                    <input type="hidden" class="sale-unit_vl_{{ $key+1 }}" name="products[{{ $key+1 }}][unit]" value="{{ $unit_name }}" id="sale_unit_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
-                                                    <input type="hidden" class="sale-unit-operator_vl_{{ $key+1 }}"  value="{{ $unit_operator }}" id="sale_unit_operator_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
-                                                    <input type="hidden" class="sale-unit-operation-value_vl_{{ $key+1 }}"  value="{{ $unit_operation_value }}" id="sale_unit_operation_value_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
-                                                    <input type="hidden" class="tax-rate" name="products[{{ $key+1 }}][tax_rate]" value="{{ $sale_product->pivot->tax_rate }}" id="tax_rate_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
-                                                    @if ($tax)
-                                                        <input type="hidden" class="tax-name" value="{{ $tax->name }}" id="tax_name_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
-                                                    @else
-                                                        <input type="hidden" class="tax-name" value="No Tax" id="tax_name_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
-                                                    @endif
-                                                    <input type="hidden" class="tax-method" value="{{ $sale_product->tax_method }}" id="tax_method_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
-                                                    <input type="hidden" class="tax-value" name="products[{{ $key+1 }}][tax]" value="{{ $sale_product->pivot->tax }}" id="tax_value_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
-                                                    <input type="hidden" class="subtotal-value" name="products[{{ $key+1 }}][subtotal]" value="{{ $sale_product->pivot->total }}" id="subtotal_value_vl_{{ $key + 1 }}" data-row="{{ $key + 1 }}">
+                                                    ?>
+                                                    <td  data-row="<?php echo e($key + 1); ?>"><?php echo e($sale_product->name); ?></td>
+                                                    <td class="product-code_tx_<?php echo e($key + 1); ?> text-center" id="products_code_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>"><?php echo e($sale_product->code); ?></td>
+                                                    <td class="unit-name_tx_<?php echo e($key + 1); ?> text-center" id="products_unit_<?php echo e($key + 1); ?>"  data-row="<?php echo e($key + 1); ?>"><?php echo e($temp_unit_name[0]); ?></td>
+                                                    <td class="available-qty_tx_<?php echo e($key + 1); ?> text-center" id="products_available_qty_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>"><?php echo e($stock_qty - $sale_product->pivot->qty); ?></td>
+                                                    <td><input type="text" class="form-control qty text-center" name="products[<?php echo e($key + 1); ?>][qty]" id="products_qty_<?php echo e($key + 1); ?>" value="<?php echo e(number_format($sale_product->pivot->qty,2,'.','')); ?>" data-row="<?php echo e($key + 1); ?>"></td>
+                                                    <td><input type="text" class="form-control free_qty text-center" name="products[<?php echo e($key + 1); ?>][free_qty]" id="products_free_qty_<?php echo e($key + 1); ?>" value="<?php echo e(number_format($sale_product->pivot->free_qty,2,'.','')); ?>" data-row="<?php echo e($key + 1); ?>"></td>
+                                                    <td><input type="text" class="fcs text-right form-control net_unit_price" name="products[<?php echo e($key + 1); ?>][net_unit_price]" id="products_net_unit_price_<?php echo e($key + 1); ?>" value="<?php echo e($product_price); ?>" data-row="<?php echo e($key + 1); ?>"></td>
+                                                    <td class="tax text-right" id="tax_tx_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>"><?php echo e(number_format((float)$sale_product->pivot->tax, 2, '.','')); ?></td>
+                                                    <td class="sub-total text-right" id="sub_total_tx_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>"><?php echo e(number_format((float)$sale_product->pivot->total, 2, '.','')); ?></td>
+                                                    <input type="hidden" class="product-id_vl_<?php echo e($key+1); ?>" name="products[<?php echo e($key + 1); ?>][id]"  value="<?php echo e($sale_product->pivot->product_id); ?>" id="products_id_vl_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>">
+                                                    <input type="hidden" class="product-code_vl_<?php echo e($key+1); ?>" name="products[<?php echo e($key + 1); ?>][code]" value="<?php echo e($sale_product->code); ?>" id="products_code_vl_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>">
+                                                    <input type="hidden" class="batch-no_vl_<?php echo e($key+1); ?>" name="products[<?php echo e($key + 1); ?>][batch_no]" id="products_batch_no_<?php echo e($key + 1); ?>" value="<?php echo e($sale_product->pivot->batch_no); ?>" data-row="<?php echo e($key + 1); ?>">
+                                                    <input type="hidden" class="stock-qty_vl_<?php echo e($key+1); ?> form-control text-center" name="products[<?php echo e($key+1); ?>][stock_qty]"  value="<?php echo e($stock_qty - $sale_product->pivot->qty); ?>" id="products_stock_qty_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>">
+                                                    <input type="hidden" class="free-stock-qty_vl_<?php echo e($key+1); ?> form-control text-center" name="products[<?php echo e($key+1); ?>][free_stock_qty]"  value="<?php echo e($sale_product->pivot->free_qty); ?>" id="products_free_stock_qty_<?php echo e($key+1); ?>" data-row="<?php echo e($key + 1); ?>">
+                                                    <input type="hidden" class="sale-unit_vl_<?php echo e($key+1); ?>" name="products[<?php echo e($key+1); ?>][unit]" value="<?php echo e($unit_name); ?>" id="sale_unit_vl_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>">
+                                                    <input type="hidden" class="sale-unit-operator_vl_<?php echo e($key+1); ?>"  value="<?php echo e($unit_operator); ?>" id="sale_unit_operator_vl_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>">
+                                                    <input type="hidden" class="sale-unit-operation-value_vl_<?php echo e($key+1); ?>"  value="<?php echo e($unit_operation_value); ?>" id="sale_unit_operation_value_vl_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>">
+                                                    <input type="hidden" class="tax-rate" name="products[<?php echo e($key+1); ?>][tax_rate]" value="<?php echo e($sale_product->pivot->tax_rate); ?>" id="tax_rate_vl_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>">
+                                                    <?php if($tax): ?>
+                                                        <input type="hidden" class="tax-name" value="<?php echo e($tax->name); ?>" id="tax_name_vl_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>">
+                                                    <?php else: ?>
+                                                        <input type="hidden" class="tax-name" value="No Tax" id="tax_name_vl_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>">
+                                                    <?php endif; ?>
+                                                    <input type="hidden" class="tax-method" value="<?php echo e($sale_product->tax_method); ?>" id="tax_method_vl_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>">
+                                                    <input type="hidden" class="tax-value" name="products[<?php echo e($key+1); ?>][tax]" value="<?php echo e($sale_product->pivot->tax); ?>" id="tax_value_vl_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>">
+                                                    <input type="hidden" class="subtotal-value" name="products[<?php echo e($key+1); ?>][subtotal]" value="<?php echo e($sale_product->pivot->total); ?>" id="subtotal_value_vl_<?php echo e($key + 1); ?>" data-row="<?php echo e($key + 1); ?>">
                                                 </tr>
-                                            @endforeach
-                                        @endif
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endif; ?>
                                         </tbody>
                                         <tfoot class="bg-primary">
                                         <th colspan="4" class="font-weight-bolder">Total</th>
-                                        <th id="total-qty" class="text-center font-weight-bolder">0.00</th>
-                                        <th id="total-free-qty" class="text-center font-weight-bolder">0.00</th>
+                                        <th id="total-qty" class="text-center font-weight-bolder"><?php echo e($sale->total_qty); ?></th>
+                                        <th id="total-free-qty" class="text-center font-weight-bolder"><?php echo e($sale->total_free_qty); ?></th>
                                         <th></th>
-                                        <th id="total-tax" class="text-right font-weight-bolder">0.00</th>
-                                        <th id="total" class="text-right font-weight-bolder">0.00</th>
+                                        <th id="total-tax" class="text-right font-weight-bolder"><?php echo e(number_format( $sale->total_tax,2,'.',',')); ?></th>
+                                        <th id="total" class="text-right font-weight-bolder"><?php echo e(number_format( $sale->total_price,2,'.',',')); ?></th>
                                         <th class="text-center"><button type="button" class="btn btn-success btn-md add-product"><i class="fas fa-plus"></i></button></th>
                                         </tfoot>
                                     </table>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="row justify-content-between">
-                                        <x-form.selectbox labelName="Order Tax" name="order_tax_rate" col="col-md-2">
+                                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Order Tax','name' => 'order_tax_rate','col' => 'col-md-2']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Order Tax','name' => 'order_tax_rate','col' => 'col-md-2']); ?>
                                             <option value="0" selected>No Tax</option>
-                                            @if (!$taxes->isEmpty())
-                                                @foreach ($taxes as $tax)
-                                                    <option value="{{ $tax->rate }}" {{ $sale->order_tax_rate == $tax->rate ? 'selected' : '' }}>{{ $tax->name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </x-form.selectbox>
+                                            <?php if(!$taxes->isEmpty()): ?>
+                                                <?php $__currentLoopData = $taxes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tax): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value="<?php echo e($tax->rate); ?>" <?php echo e($sale->order_tax_rate == $tax->rate ? 'selected' : ''); ?>><?php echo e($tax->name); ?></option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php endif; ?>
+                                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
 
                                         <div class="form-group col-md-2">
                                             <label for="order_discount">Order Discount</label>
-                                            <input type="text" class="form-control" name="order_discount" id="order_discount" value="{{ number_format($sale->order_discount,2,'.','') }}">
+                                            <input type="text" class="form-control" name="order_discount" id="order_discount" value="<?php echo e(number_format($sale->order_discount,2,'.','')); ?>">
                                         </div>
                                         <div class="form-group col-md-2">
                                             <label for="shipping_cost">Shipping Cost</label>
-                                            <input type="text" class="form-control" name="shipping_cost" id="shipping_cost"  value="{{ number_format($sale->shipping_cost,2,'.','') }}" />
+                                            <input type="text" class="form-control" name="shipping_cost" id="shipping_cost"  value="<?php echo e(number_format($sale->shipping_cost,2,'.','')); ?>" />
                                         </div>
                                         <div class="form-group col-md-2">
                                             <label for="labor_cost">Labor Cost</label>
-                                            <input type="text" class="form-control" name="labor_cost" id="labor_cost"  value="{{ number_format($sale->labor_cost,2,'.','') }}" />
+                                            <input type="text" class="form-control" name="labor_cost" id="labor_cost"  value="<?php echo e(number_format($sale->labor_cost,2,'.','')); ?>" />
                                         </div>
 
-                                        <x-form.selectbox labelName="Payment Status" name="payment_status" required="required"  col="col-md-2">
-                                            @foreach (PAYMENT_STATUS as $key => $value)
-                                                <option value="{{ $key }}" {{ $sale->payment_status == $key ? 'selected' : '' }}>{{ $value }}</option>
-                                            @endforeach
-                                        </x-form.selectbox>
+                                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Payment Status','name' => 'payment_status','required' => 'required','col' => 'col-md-2']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Payment Status','name' => 'payment_status','required' => 'required','col' => 'col-md-2']); ?>
+                                            <?php $__currentLoopData = PAYMENT_STATUS; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($key); ?>" <?php echo e($sale->payment_status == $key ? 'selected' : ''); ?>><?php echo e($value); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="note">Note</label>
-                                    <textarea  class="form-control" name="note" id="note" cols="30" rows="3">{{ $sale->note }}</textarea>
+                                    <textarea  class="form-control" name="note" id="note" cols="30" rows="3"><?php echo e($sale->note); ?></textarea>
                                 </div>
                                 <div class="col-md-12">
                                     <table class="table table-bordered">
                                         <thead class="bg-primary">
-                                        <th><strong>Items</strong><span class="float-right" id="item">{{$sale->item}}({{$sale->total_qty}})</span></th>
-                                        <th><strong>Total</strong><span class="float-right" id="subtotal">{{$sale->total}}</span></th>
-                                        <th><strong>Order Tax</strong><span class="float-right" id="order_total_tax">{{$sale->order_tax}}</span></th>
-                                        <th><strong>Order Discount</strong><span class="float-right" id="order_total_discount">{{$sale->order_discount}}</span></th>
-                                        <th><strong>Shipping Cost</strong><span class="float-right" id="shipping_total_cost">{{$sale->shipping_cost}}</span></th>
-                                        <th><strong>Labor Cost</strong><span class="float-right" id="labor_total_cost">{{$sale->labor_cost}}</span></th>
-                                        <th><strong>Grand Total</strong><span class="float-right" id="grand_total">{{ $sale->grand_total }}</span></th>
+                                        <th><strong>Items</strong><span class="float-right" id="item"><?php echo e($sale->item); ?>(<?php echo e($sale->total_qty); ?>)</span></th>
+                                        <th><strong>Total</strong><span class="float-right" id="subtotal"><?php echo e($sale->total); ?></span></th>
+                                        <th><strong>Order Tax</strong><span class="float-right" id="order_total_tax"><?php echo e($sale->order_tax); ?></span></th>
+                                        <th><strong>Order Discount</strong><span class="float-right" id="order_total_discount"><?php echo e($sale->order_discount); ?></span></th>
+                                        <th><strong>Shipping Cost</strong><span class="float-right" id="shipping_total_cost"><?php echo e($sale->shipping_cost); ?></span></th>
+                                        <th><strong>Labor Cost</strong><span class="float-right" id="labor_total_cost"><?php echo e($sale->labor_cost); ?></span></th>
+                                        <th><strong>Grand Total</strong><span class="float-right" id="grand_total"><?php echo e($sale->grand_total); ?></span></th>
                                         </thead>
                                     </table>
                                 </div>
                                 <div class="col-md-12">
-                                    <input type="hidden" name="total_qty" value="{{ $sale->total_qty }}">
-                                    <input type="hidden" name="total_free_qty" value="{{ $sale->total_free_qty }}">
-                                    <input type="hidden" name="total_discount" value="{{ $sale->total_discount }}">
-                                    <input type="hidden" name="total_tax" value="{{ $sale->total_tax }}">
-                                    <input type="hidden" name="total_price" value="{{ $sale->total_price }}">
-                                    <input type="hidden" name="item" value="{{ $sale->item }}">
-                                    <input type="hidden" name="order_tax" value="{{ $sale->order_tax }}">
-                                    <input type="hidden" name="grand_total" value="{{ $sale->grand_total }}">
-                                    <input type="hidden" name="total_commission" id="total_commission" value="{{ $sale->total_commission }}">
+                                    <input type="hidden" name="total_qty" value="<?php echo e($sale->total_qty); ?>">
+                                    <input type="hidden" name="total_free_qty" value="<?php echo e($sale->total_free_qty); ?>">
+                                    <input type="hidden" name="total_discount" value="<?php echo e($sale->total_discount); ?>">
+                                    <input type="hidden" name="total_tax" value="<?php echo e($sale->total_tax); ?>">
+                                    <input type="hidden" name="total_price" value="<?php echo e($sale->total_price); ?>">
+                                    <input type="hidden" name="item" value="<?php echo e($sale->item); ?>">
+                                    <input type="hidden" name="order_tax" value="<?php echo e($sale->order_tax); ?>">
+                                    <input type="hidden" name="grand_total" value="<?php echo e($sale->grand_total); ?>">
+                                    <input type="hidden" name="total_commission" id="total_commission" value="<?php echo e($sale->total_commission); ?>">
                                 </div>
-                                <div class="payment col-md-12 @if($sale->payment_status == 3) d-none @endif">
+                                <div class="payment col-md-12 <?php if($sale->payment_status == 3): ?> d-none <?php endif; ?>">
                                     <div class="row">
                                         <div class="form-group col-md-4 required">
                                             <label for="previous_due">Previous Due</label>
-                                            <input type="text" class="form-control" name="previous_due" id="previous_due" value="{{ $sale->previous_due }}" readonly>
+                                            <input type="text" class="form-control" name="previous_due" id="previous_due" value="<?php echo e($sale->previous_due); ?>" readonly>
                                         </div>
                                         <div class="form-group col-md-4 required">
                                             <label for="net_total">Net Total</label>
-                                            <input type="text" class="form-control" name="net_total" id="net_total" value="{{ ($sale->grand_total + $sale->previous_due) }}" readonly>
+                                            <input type="text" class="form-control" name="net_total" id="net_total" value="<?php echo e(($sale->grand_total + $sale->previous_due)); ?>" readonly>
                                         </div>
                                         <div class="form-group col-md-4 required">
                                             <label for="paid_amount">Paid Amount</label>
-                                            <input type="text" class="form-control" name="paid_amount" id="paid_amount" value="{{$sale->paid_amount }}">
+                                            <input type="text" class="form-control" name="paid_amount" id="paid_amount" value="<?php echo e($sale->paid_amount); ?>">
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="due_amount">Due Amount</label>
-                                            <input type="text" class="form-control" name="due_amount" id="due_amount" value="{{$sale->due_amount }}" readonly>
+                                            <input type="text" class="form-control" name="due_amount" id="due_amount" value="<?php echo e($sale->due_amount); ?>" readonly>
                                         </div>
-                                        <x-form.selectbox labelName="Payment Method" name="payment_method" onchange="account_list(this.value)" required="required"  col="col-md-4">
-                                            @foreach (SALE_PAYMENT_METHOD as $key => $value)
-                                                <option value="{{ $key }}" @if($sale->payment_method) {{ $sale->payment_method == $key ? 'selected' : '' }} @endif>{{ $value }}</option>
-                                            @endforeach
-                                        </x-form.selectbox>
-                                        <x-form.selectbox labelName="Account" name="account_id" required="required"  col="col-md-4"/>
-                                        <div class="form-group required col-md-4 @if($sale->payment_method) {{ $sale->payment_method != 1  ? '' : 'd-none' }} @endif reference_no">
-                                            <label for="reference_no">Reference No</label>
-                                            <input type="text" class="form-control" name="reference_no" id="reference_no" value="{{ $sale->reference_no }}">
+
+
+
+
+
+
+                                        <div class="form-group col-md-4">
+                                            <label for="payment_method"><?php echo e(__('Payment Method')); ?></label>
+                                            <select class="form-control payment_method" id="payment_method" name="payment_method" onchange="paymentMethod()">
+                                                <option value=""><?php echo e(__('Please Select')); ?></option>
+                                                <?php $__currentLoopData = SALE_PAYMENT_METHOD; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value="<?php echo e($key); ?>" <?php if($key == $sale->payment_method): ?> selected="selected" <?php endif; ?>><?php echo e($value); ?></option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            </select>
                                         </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="account_id"><?php echo e(__('Account')); ?></label>
+                                            <select class="form-control" id="account_id" name="account_id">
+                                                <option value="<?php echo e($sale->account_id); ?>"><?php echo e($account->name ?? ''); ?></option>
+                                            </select>
+                                        </div>
+
+
+
+
                                     </div>
                                 </div>
                                 <div class="form-group col-md-12 text-center pt-5">
-                                    <a href="{{ url('sale') }}" class="btn btn-danger btn-sm mr-3"><i class="far fa-window-close"></i> Cancel</a>
+                                    
                                     <button type="button" class="btn btn-primary btn-sm mr-3" id="save-btn" onclick="update_data()"><i class="fas fa-save"></i> Update</button>
                                 </div>
                             </div>
@@ -244,11 +278,11 @@
             </div>
         </div>
     </div>
-@endsection
-@push('scripts')
-    <script src="{{asset('js/jquery-ui.js')}}"></script>
-    <script src="{{asset('js/moment.js')}}"></script>
-    <script src="{{asset('js/bootstrap-datetimepicker.min.js')}}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+    <script src="<?php echo e(asset('js/jquery-ui.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/moment.js')); ?>"></script>
+    <script src="<?php echo e(asset('js/bootstrap-datetimepicker.min.js')); ?>"></script>
     <script>
         var rowindex;
         var customer_group_rate=0;
@@ -321,15 +355,15 @@
             $('#labor_total_cost').text(parseFloat($('input[name="labor_cost"]').val()).toFixed(2));
             $('#grand_total').text(parseFloat($('input[name="grand_total"]').val()).toFixed(2));
             var cid = $('input[name="customer_id_hidden"]').val();
-            $.get('{{ url("customer/group-data") }}/'+cid,function(data){
+            $.get('<?php echo e(url("customer/group-data")); ?>/'+cid,function(data){
                 customer_group_rate = (data/100);
             });
             $('#customer_id').on('change',function(){
                 var id = $(this).val();
-                $.get('{{ url("customer/group-data") }}/'+id,function(data){
+                $.get('<?php echo e(url("customer/group-data")); ?>/'+id,function(data){
                     customer_group_rate = (data/100);
                 });
-                $.get('{{ url("customer/previous-balance") }}/'+id,function(data){
+                $.get('<?php echo e(url("customer/previous-balance")); ?>/'+id,function(data){
                     $('#previous_due').val(parseFloat(data).toFixed(2));
                 });
             });
@@ -378,11 +412,11 @@
                 $(this).closest('tr').remove();
                 calculateTotal();
             });
-            @if (!$sale->sale_products->isEmpty())
-            var count = "{{ count($sale->sale_products) + 1 }}" ;
-            @else
+            <?php if(!$sale->sale_products->isEmpty()): ?>
+            var count = "<?php echo e(count($sale->sale_products) + 1); ?>" ;
+            <?php else: ?>
             var count = 1;
-            @endif
+            <?php endif; ?>
             $('#product_table').on('click','.add-product',function(){
                 count++;
                 product_row_add(count);
@@ -392,14 +426,14 @@
                 var cols = '';
                 cols += `<td>
                             <select name="products[${count}][pro_id]" id="product_list_${count}" class="fcs selectpicker col-md-12  products-alls product_details_${count} form-control" onchange="getProductDetails(this,${count})" data-live-search="true" data-row="${count}">
-                            @if (!$products->isEmpty())
-                            <option value="0">Please Select</option>
-                            @foreach ($products as $product)
-                            <option value="{{ $product->product_id }}">{{ $product->name }}</option>
-                            @endforeach
-                            @endif
-                            </select>
-                        </td>`;
+                            <?php if(!$products->isEmpty()): ?>
+                <option value="0">Please Select</option>
+        <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($product->product_id); ?>"><?php echo e($product->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endif; ?>
+                </select>
+            </td>`;
                 cols += `<td class="product-code_tx_${count} text-center" id="products_code_${count}" data-row="${count}"></td>`
                 cols += `<td class="unit-name_tx_${count} text-center" id="products_unit_${count}" data-row="${count}"></td>`;
                 cols += `<td class="available-qty_tx_${count} text-center" id="products_available_qty_${count}" data-row="${count}"></td>`;
@@ -427,7 +461,7 @@
         }
         function loadProduct(warehouse_id=null,rowcount){
             $.ajax({
-                url:"{{url('sale/product-select-search')}}",
+                url:"<?php echo e(url('sale/product-select-search')); ?>",
                 type: 'post',
                 data: { _token: _token,warehouse_id:warehouse_id},
                 success: function( data ) {
@@ -443,18 +477,18 @@
         }
         function product_search(data,row) {
             console.log(row);
-            var dealer_id  = $('#customer_id_hidden').val();
+            var customer_id  = $('#customer_id_hidden').val();
             var rowindex = $('#product_list_'+row).closest('tr').index();
             var temp_data = $('#product_list_'+row).val();
-            if(!dealer_id){
+            if(!customer_id){
                 $('#product_list_'+row).val('');
                 $('#product_table #product_list_'+row+'.selectpicker').selectpicker('refresh');
-                notification('error','Please select Dealer');
+                notification('error','Please select customer');
             }else{
                 $.ajax({
-                    url : '{{ route("sale.product.search.with.dealer.id") }}',
+                    url : '<?php echo e(route("sale.product.search.with.id")); ?>',
                     type: 'POST',
-                    data: {data: data,_token:_token,dealer_id:dealer_id},
+                    data: {data: data,_token:_token},
                     success: function(data) {
                         temp_unit_name = data.unit_name.split(',');
                         $('#products_code_'+row).text(data.code);
@@ -557,7 +591,7 @@
                     total_qty += parseFloat($(this).val());
                 }
             });
-            $('#total-qty').text(total_qty);
+            $('#total-qty').text(900);
             $('input[name="total_qty"]').val(total_qty);
             $('.free_qty').each(function() {
                 if($(this).val() == ''){
@@ -583,12 +617,10 @@
             calculateGrandTotal();
         }
         function calculateGrandTotal() {
-            var subtotal            =0;
+            let subtotal            = 0;
             var item                = $('#product_table tbody tr:last').index();
-            console.log(item);
             var total_qty           = parseFloat($('#total-qty').text());
             var total_free_qty      = parseFloat($('#total-free-qty').text());
-            var subtotal            = parseFloat($('#total').text());
             var order_tax           = parseFloat($('select[name="order_tax_rate"]').val());
             var order_discount      = parseFloat($('#order_discount').val());
             var shipping_cost       = parseFloat($('#shipping_cost').val());
@@ -658,9 +690,9 @@
         $('select[name="order_tax_rate"]').on('change',function(){
             calculateGrandTotal();
         });
-        $('#salesmen_id').on('change',function(){
-            $('#sr_commission_rate').val($('#salesmen_id option:selected').data('cpr'));
-        });
+        // $('#salesmen_id').on('change',function(){
+        //     $('#sr_commission_rate').val($('#salesmen_id option:selected').data('cpr'));
+        // });
         $('#payment_status').on('change',function(){
             if($(this).val() != 3){
                 $('.payment').removeClass('d-none');
@@ -682,30 +714,46 @@
         $('#paid_amount').on('input',function(){
             var payable_amount = parseFloat($('input[name="net_total"]').val());
             var paid_amount = parseFloat($(this).val());
-
             if(paid_amount > payable_amount){
                 $('#paid_amount').val(payable_amount.toFixed(2));
                 notification('error','Paid amount cannot be bigger than net total amount');
             }
             $('#due_amount').val((payable_amount - parseFloat($('#paid_amount').val())).toFixed(2));
         });
-        account_list("{{ $sale->payment_method }}","{{ $sale->account_id }}");
-        function account_list(payment_method,account_id='') {
-            $.ajax({
-                url: "{{route('account.list')}}",
-                type: "POST",
-                data: { payment_method: payment_method,_token: _token},
-                success: function (data) {
-                    $('#sale_store_form #account_id').html('');
-                    $('#sale_store_form #account_id').html(data);
-                    $('#sale_store_form #account_id.selectpicker').selectpicker('refresh');
-                    if(account_id) {
-                        $('#sale_store_form #account_id').val(account_id);
-                        $('#sale_store_form #account_id.selectpicker').selectpicker('refresh');
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        function paymentMethod(){
+            let paymentMethod =  $('#payment_method').find('option:selected').val();
+            if(paymentMethod != ''){
+                $.ajax({
+                    url       : "<?php echo e(url('payment-account-list')); ?>/" + paymentMethod,
+                    type      : 'GET',
+                    dataType  : 'JSON',
+                    success   : function(data){
+                        if(data != ''){
+                            html = `<option value="">Select Please</option>`;
+                            $.each(data, function(key, value) { html += '<option value="'+ value.id +'">'+ value.name +'</option>'; });
+                            $('#account_id').empty();
+                            $('#account_id').append(html);
+                           var s = $('#account_id').val(<?php echo e($sale->account_id); ?>);
+                            console.log(s);
+                            $('.selectpicker').selectpicker('refresh');
+                        }
                     }
-                },
-                error: function (xhr, ajaxOption, thrownError) {console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);}
-            });
+                })
+            }
         }
         function update_data(){
             var rownumber = $('table#product_table tbody tr:last').index();
@@ -714,7 +762,7 @@
             }else{
                 let form = document.getElementById('sale_store_form');
                 let formData = new FormData(form);
-                let url = "{{route('dealer.sale.update')}}";
+                let url = "<?php echo e(route('sale.update')); ?>";
                 $.ajax({
                     url: url,
                     type: "POST",
@@ -741,10 +789,13 @@
                                 $('#sale_store_form #' + key).parent().append(
                                     '<small class="error text-danger">' + value + '</small>');
                             });
+                            $('html, body').animate({
+                                scrollTop: ($('.is-invalid').offset().top - 300)
+                                }, 1000);
                         } else {
                             notification(data.status, data.message);
                             if (data.status == 'success') {
-                                window.location.replace("{{ route('dealer.sale') }}");
+                                window.location.replace("<?php echo e(route('sale')); ?>");
 
                             }
                         }
@@ -755,4 +806,6 @@
 
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Sale\Resources/views/edit.blade.php ENDPATH**/ ?>
