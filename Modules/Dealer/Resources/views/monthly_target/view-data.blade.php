@@ -51,7 +51,7 @@
 
                 <tr>
                     <td><b>Acheived Qty</b></td><td><b>:</b></td><td>{{  $dealer->acheived_qty  }}</td>
-                    <td><b>Commission Amount</b></td><td><b>:</b></td><td>{{  $dealer->commission_amount  }}</td>
+                    <td><b>Commission Amount Per Bag</b></td><td><b>:</b></td><td>{{  $dealer->commission_amount  }}</td>
 
                 </tr>
                 <tr>

@@ -12,7 +12,7 @@
                 </tr>
 
                 <tr>
-                    <td><b>Commission Amount</b></td><td><b>:</b></td><td>{{  $dealer->commission_amount  }}</td>
+                    <td><b>Commission Amount Per Bag</b></td><td><b>:</b></td><td>{{  $dealer->commission_amount  }}</td>
                     <td><b>Created By</b></td><td><b>:</b></td><td>{{  $dealer->created_by  }}</td>
                 </tr>
                 <tr>

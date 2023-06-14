@@ -253,13 +253,13 @@
                             },
                             success: function(data) {
                                 notification(data.status, data.message);
+                                table.ajax.reload();
                             },
                             error: function(xhr, ajaxOption, thrownError) {
                                 console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr
                                     .responseText);
                             }
                         });
-                        table.ajax.reload();
                     }
                 });
             });
