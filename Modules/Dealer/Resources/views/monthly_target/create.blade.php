@@ -52,7 +52,7 @@
                                     $nextYear = $currentYear + 1;
                                 @endphp
                                 <div class="form-group col-md-3 required">
-                                    <label for="year_id">Select Month</label>
+                                    <label for="year_id">Select Year</label>
                                     <select name="year" id="year_id" class="form-control selectpicker" required>
                                         <option value="{{ $currentYear }}">{{ $currentYear }}</option>
                                         <option value="{{ $nextYear }}">{{ $nextYear }}</option>

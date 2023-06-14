@@ -62,7 +62,7 @@
                                         <thead class="bg-primary">
                                             <th>Dealer Name</th>
                                             <th class="text-center">Target Qty</th>
-                                            <th class="text-center">Commission Amount</th>
+                                            <th class="text-center">Commission Amount Per Bag</th>
                                             <th class="text-center"></th>
                                         </thead>
                                         <tbody id="commission">
