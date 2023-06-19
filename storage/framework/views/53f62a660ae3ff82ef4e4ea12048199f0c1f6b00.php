@@ -1,3 +1,4 @@
+
 <?php $__env->startSection('title', $page_title); ?>
 <?php $__env->startPush('styles'); ?>
 <link href="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.css')); ?>" rel="stylesheet" type="text/css" />
@@ -11,7 +12,7 @@
             <div class="card-header flex-wrap py-5">
                 <div class="card-title"><h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3></div>
                 <div class="card-toolbar">
-                    <a href="<?php echo e(route('sale.add')); ?>"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add New</a>
+                    <a href="<?php echo e(route('dealer.sale.add')); ?>"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add New</a>
                 </div>
             </div>
         </div>
@@ -39,15 +40,14 @@
                                 <input type="hidden" id="end_date" name="end_date">
                             </div>
                         </div>
-
                         <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Customer','name' => 'customer_id','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Dealer','name' => 'dealer_id','col' => 'col-md-4','class' => 'selectpicker']]); ?>
 <?php $component->withName('form.selectbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Customer','name' => 'customer_id','col' => 'col-md-4','class' => 'selectpicker']); ?>
-                            <?php if(!$customer->isEmpty()): ?>
-                                <?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<?php $component->withAttributes(['labelName' => 'Dealer','name' => 'dealer_id','col' => 'col-md-4','class' => 'selectpicker']); ?>
+                            <?php if(!$dealer->isEmpty()): ?>
+                                <?php $__currentLoopData = $dealer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($value->id); ?>"><?php echo e($value->name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <?php endif; ?>
@@ -89,15 +89,16 @@
                                 <thead class="bg-primary">
                                     <tr>
                                         <th>Memo No.</th>
-                                        <th>Customer Name</th>
+                                        <th>Dealer</th>
                                         <th>Total Item</th>
-                                        <th>Product List</th>
                                         <th>Total Delivery</th>
                                         <th>Total</th>
                                         <th>Grand Total</th>
+                                        <th>Paid Amount</th>
                                         <th>Sale Date</th>
                                         <th>Payment Status</th>
                                         <th>Payment Method</th>
+                                        <th>Order Type</th>
                                         <th>Delivery Status</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -112,7 +113,7 @@
         </div>
     </div>
 </div>
-<?php echo $__env->make('sale::modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('dealersale::modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 <?php $__env->startPush('scripts'); ?>
 <script src="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.js')); ?>" type="text/javascript"></script>
@@ -156,19 +157,19 @@ $(document).ready(function(){
             zeroRecords: '<strong class="text-danger">No Data Found</strong>'
         },
         "ajax": {
-            "url": "<?php echo e(route('sale.datatable.data')); ?>",
+            "url": "<?php echo e(route('dealer.sale.datatable.data')); ?>",
             "type": "POST",
             "data": function (data) {
                 data.memo_no        = $("#form-filter #memo_no").val();
                 data.start_date     = $("#form-filter #start_date").val();
                 data.end_date       = $("#form-filter #end_date").val();
-                data.customer_id    = $("#form-filter #customer_id").val();
+                data.dealer_id    = $("#form-filter #dealer_id").val();
                 data.payment_status = $("#form-filter #payment_status").val();
                 data._token         = _token;
             }
         },
         "columnDefs": [{
-                "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12],
+                "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
                 "orderable": false,
                 "className": "text-center"
             }
@@ -186,7 +187,7 @@ $(document).ready(function(){
         let id    = $(this).data('id');
         let name  = $(this).data('name');
         let row   = table.row($(this).parent('tr'));
-        let url   = "<?php echo e(route('sale.delete')); ?>";
+        let url   = "<?php echo e(route('dealer.sale.delete')); ?>";
         delete_data(id, url, table, row, name);
     });
     $(document).on('click','.change_status',function(){
@@ -204,7 +205,7 @@ $(document).on('click','#status-btn',function(){
     let saleStatus      = _('sale_status').value;
     if(saleId && saleStatus){
         $.ajax({
-            url         : "<?php echo e(route('sale.status.change')); ?>",
+            url         : "<?php echo e(route('dealer.sale.status.change')); ?>",
             type        : "POST",
             data        : {id:saleId,sale_status:saleStatus,_token:_token},
             dataType    : "JSON",
@@ -218,7 +219,7 @@ $(document).on('click','#status-btn',function(){
                 notification(data.status, data.message);
                 if(data.status == 'success'){
                     $('#approve_status_modal').modal('hide');
-                    window.location.replace("<?php echo e(route('sale')); ?>");
+                    window.location.replace("<?php echo e(route('dealer.sale')); ?>");
                 }
             },
             error       : function (xhr, ajaxOption, thrownError){
@@ -230,4 +231,4 @@ $(document).on('click','#status-btn',function(){
 </script>
 <?php $__env->stopPush(); ?>
 
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Sale\Resources/views/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/DealerSale\Resources/views/index.blade.php ENDPATH**/ ?>

@@ -17,7 +17,8 @@ class DealerFormRequest extends FormRequest
         $this->rules['email']                 = ['nullable', 'string', 'email', 'unique:dealers,email'];
         $this->rules['password']              = ['required', 'string', 'min:8', 'confirmed'];
         $this->rules['password_confirmation'] = ['required', 'string', 'min:8'];
-        $this->rules['warehouse_id']           = ['nullable'];
+        $this->rules['warehouse_id']          = ['nullable'];
+        $this->rules['area']                  = ['nullable'];
         $this->rules['district_id']           = ['nullable'];
         $this->rules['upazila_id']            = ['nullable'];
         $this->rules['address']               = ['required'];

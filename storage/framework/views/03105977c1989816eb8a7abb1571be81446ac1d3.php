@@ -30,4 +30,4 @@
       <!-- /modal content -->
 
     </div>
-  </div><?php /**PATH D:\laragon\www\insaf\Modules/Customer\Resources/views/view.blade.php ENDPATH**/ ?>
+  </div><?php /**PATH D:\laragon\www\insaf\Modules/Dealer\Resources/views/view.blade.php ENDPATH**/ ?>

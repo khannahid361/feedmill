@@ -29,4 +29,4 @@
     </div>
 </div>
 
-<?php /**PATH D:\laragon\www\insaf\Modules/Sale\Resources/views/modal.blade.php ENDPATH**/ ?>
+<?php /**PATH D:\laragon\www\insaf\Modules/DealerSale\Resources/views/modal.blade.php ENDPATH**/ ?>

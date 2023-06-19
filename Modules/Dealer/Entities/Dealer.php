@@ -15,7 +15,7 @@ use Modules\Setting\Entities\Warehouse;
 class Dealer extends Authenticatable
 {
     protected $fillable = [ 'name', 'shop_name', 'mobile','username','password', 'email', 'avatar', 'warehouse_id',
-     'district_id', 'upazila_id', 'address', 'status', 'created_by', 'modified_by'];
+     'district_id', 'upazila_id', 'address', 'status', 'created_by', 'modified_by','area'];
 
      protected $hidden = [
         'password',
