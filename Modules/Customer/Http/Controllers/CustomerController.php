@@ -97,10 +97,10 @@ class CustomerController extends BaseController{
                     $row[] = $avatar;
                     $row[] = $value->name.'<br><b>Shop Name: </b>'.$value->shop_name.'<br><b>Mobile No.: </b>'.$value->mobile;
                     $row[] = $value->customer_group->group_name;
-                    $row[] = $value->warehouse->name;
-                    $row[] = $value->district->name;
-                    $row[] = $value->upazila->name;
-                    $row[] = $value->area->name;
+                    $row[] = $value->warehouse->name ?? '';
+                    $row[] = $value->district->name ?? '';
+                    $row[] = $value->upazila->name ?? '';
+                    $row[] = $value->area->name ?? '';
                     $row[] = permission('customer-edit') ? change_status($value->id,$value->status, $value->name) : STATUS_LABEL[$value->status];
                     $row[] = $this->model->customer_balance($value->id);
                     $row[] = action_button($action);//custom helper function for action button
@@ -117,7 +117,6 @@ class CustomerController extends BaseController{
     public function store_or_update_data(CustomerFormRequest $request)
     {
         if($request->ajax()){
-            // dd($request->all());
             if(permission('customer-add') || permission('customer-edit')){
                 DB::beginTransaction();
                 try {

@@ -21,7 +21,7 @@ class CustomerFormRequest extends FormRequest
         $this->rules['email']             = ['nullable','email','string','max:100','unique:customers,email'];
         $this->rules['area_id']           = ['nullable'];
         $this->rules['customer_group_id'] = ['required'];
-        $this->rules['warehouse_id']       = ['nullable'];
+        $this->rules['warehouse_id']      = ['nullable'];
         $this->rules['district_id']       = ['nullable'];
         $this->rules['upazila_id']        = ['nullable'];
         $this->rules['address']           = ['required','string'];

@@ -451,7 +451,7 @@
             var newRow = $('<tr>');
             var cols = '';
             cols += `<td>
-                        <select name="materials[`+count+`][material_id]" id="material_list_${count}" class="fcs col-md-12 material_name form-control" onchange="getMaterialDetails(this,${count})"  data-live-search="true" data-row="${count}">
+                        <select name="materials[`+count+`][material_id]" id="material_list_${count}" class="fcs col-md-12 material_name form-control selectpicker" onchange="getMaterialDetails(this,${count})"  data-live-search="true" data-row="${count}">
                         @if (!$materials->isEmpty())
                         <option value="0">Please Select</option>
                         @foreach ($materials as $material)
@@ -484,7 +484,7 @@
                         cols += `<input type="hidden" class="subtotal-value" name="materials[`+count+`][subtotal]" id="subtotal_value_${count}" data-row="${count}">`;
             newRow.append(cols);
             $('#material_table tbody').append(newRow);
-            $('#material_table .selectpicker').selectpicker();
+            $('#material_table .selectpicker').selectpicker('refresh');
         }
         $('input[name="order_discount"]').on('input',function(){
             calculateGrandTotal();

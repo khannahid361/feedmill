@@ -10,17 +10,17 @@
                     <td><b>Mobile No.</b></td><td><b>:</b></td><td>{{ $customer->mobile }}</td>
                     <td><b>Email</b></td><td><b>:</b></td><td>{!! $customer->email ? $customer->email : '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">No Email</span>' !!}</td>
                 </tr>
-                
+
                 <tr>
                     <td><b>Customer Group</b></td><td><b>:</b></td><td>{{  $customer->customer_group->group_name  }}</td>
-                    <td><b>District</b></td><td><b>:</b></td><td>{{  $customer->district->name  }}</td>
+                    <td><b>District</b></td><td><b>:</b></td><td>{{  $customer->district->name ?? ''  }}</td>
                 </tr>
                 <tr>
-                    <td><b>Upazila</b></td><td><b>:</b></td><td>{{  $customer->upazila->name  }}</td>
-                    <td><b>Route</b></td><td><b>:</b></td><td>{{  $customer->route->name  }}</td>
+                    <td><b>Upazila</b></td><td><b>:</b></td><td>{{  $customer->upazila->name ?? ''  }}</td>
+                    <td><b>Route</b></td><td><b>:</b></td><td>{{  $customer->route->name ?? ''  }}</td>
                 </tr>
                 <tr>
-                    <td><b>Area</b></td><td><b>:</b></td><td>{{  $customer->area->name  }}</td>
+                    <td><b>Area</b></td><td><b>:</b></td><td>{{  $customer->area->name ?? ''  }}</td>
                     <td><b>Address</b></td><td><b>:</b></td><td>{{  $customer->address  }}</td>
                 </tr>
                 <tr>

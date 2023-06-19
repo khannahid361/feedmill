@@ -548,7 +548,7 @@ $(document).ready(function () {
         var newRow = $('<tr>');
         var cols = '';
         cols += `<td>
-                    <select name="materials[`+count+`][material_id]" id="material_list_${count}" class="fcs col-md-12 material_name form-control" onchange="getMaterialDetails(this,${count})"  data-live-search="true" data-row="${count}">
+                    <select name="materials[`+count+`][material_id]" id="material_list_${count}" class="fcs col-md-12 material_name form-control selectpicker" onchange="getMaterialDetails(this,${count})"  data-live-search="true" data-row="${count}">
                     <?php if(!$materials->isEmpty()): ?>
                     <option value="0">Please Select</option>
                     <?php $__currentLoopData = $materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $material): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -584,7 +584,7 @@ $(document).ready(function () {
         cols += `<input type="hidden" class="subtotal-value" name="materials[`+count+`][subtotal]" id="subtotal_value_${count}" data-row="${count}">`;
         newRow.append(cols);
         $('#material_table tbody').append(newRow);
-        $('#material_table .selectpicker').selectpicker();
+        $('#material_table .selectpicker').selectpicker('refresh');
     }
 });
 function getMaterialDetails(value,rowindex){

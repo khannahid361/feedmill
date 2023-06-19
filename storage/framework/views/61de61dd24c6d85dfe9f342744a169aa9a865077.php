@@ -1,4 +1,3 @@
-
 <?php $__env->startSection('title', $page_title); ?>
 <?php $__env->startPush('styles'); ?>
 <link href="<?php echo e(asset('css/daterangepicker.min.css')); ?>" rel="stylesheet" type="text/css" />
@@ -110,8 +109,6 @@
                                         <th>Total Item</th>
                                         <th>Total</th>
                                         <th>Grand Total</th>
-                                        <th>Paid Amount</th>
-                                        <th>Due Amount</th>
                                         <th>Purchase Date</th>
                                         <th>Purchase Status</th>
                                         <th>Payment Status</th>
@@ -184,7 +181,7 @@ $(document).ready(function(){
             }
         },
         "columnDefs": [{
-                "targets": [0,1,2,3,4,5,6,7,8,9,10],
+                "targets": [0,1,2,3,4,5,6,7,8],
                 "orderable": false,
                 "className": "text-center"
             },

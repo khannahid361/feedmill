@@ -128,7 +128,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     //Labour Deduction Setup Routes
-    Route::get('manage-labour-deductions', 'LabourDeductionController@index')->name('deduction');
+    // Route::get('manage-labour-deductions', 'LabourDeductionController@index')->name('deduction');
     Route::group(['prefix' => 'labourDeduction', 'as' => 'labourDeduction.'], function (){
         Route::post('datatable-data', 'LabourDeductionController@get_datatable_data')->name('datatable.data');
         Route::post('store-or-update', 'LabourDeductionController@store_or_update_data')->name('store.or.update');
@@ -144,7 +144,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     //Labour Allowances Setup Routes
-    Route::get('manage-labour-allowance', 'LabourAllowancesController@index')->name('allowances');
+    // Route::get('manage-labour-allowance', 'LabourAllowancesController@index')->name('allowances');
     Route::group(['prefix' => 'labourAllowances', 'as' => 'labourAllowances.'], function (){
         Route::post('datatable-data', 'LabourAllowancesController@get_datatable_data')->name('datatable.data');
         Route::post('store-or-update', 'LabourAllowancesController@store_or_update_data')->name('store.or.update');
@@ -162,7 +162,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     //Labour Bonus Setup Routes
-    Route::get('manage-labour-bonus', 'LabourBonusController@index')->name('bonus');
+    // Route::get('manage-labour-bonus', 'LabourBonusController@index')->name('bonus');
     Route::group(['prefix' => 'bonus', 'as' => 'bonus.'], function (){
         Route::post('datatable-data', 'LabourBonusController@get_datatable_data')->name('datatable.data');
         Route::post('store-or-update', 'LabourBonusController@store_or_update_data')->name('store.or.update');

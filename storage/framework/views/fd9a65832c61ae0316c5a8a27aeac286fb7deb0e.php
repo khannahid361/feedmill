@@ -1,31 +1,29 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', $page_title); ?>
 
-@section('title', $page_title)
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
     <link href="plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
     <link href="css/daterangepicker.min.css" rel="stylesheet" type="text/css" />
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="d-flex flex-column-fluid">
         <div class="container-fluid">
             <!--begin::Notice-->
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-5">
                     <div class="card-title">
-                        <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
+                        <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        @if (permission('supplier-access'))
-                            <a href="{{ route('supplier') }}" class="btn btn-primary btn-sm font-weight-bolder mr-3">
+                        <?php if(permission('supplier-access')): ?>
+                            <a href="<?php echo e(route('supplier')); ?>" class="btn btn-primary btn-sm font-weight-bolder mr-3">
                                 <i class="fas fa-user-tie"></i> Manage Supplier</a>
-                        @endif
-                        @if (permission('supplier-advance-access'))
-                            <a href="{{ route('supplier.advance') }}" class="btn btn-primary btn-sm font-weight-bolder">
+                        <?php endif; ?>
+                        <?php if(permission('supplier-advance-access')): ?>
+                            <a href="<?php echo e(route('supplier.advance')); ?>" class="btn btn-primary btn-sm font-weight-bolder">
                                 <i class="fas fa-hand-holding-usd"></i> Supplier Advance</a>
-                        @endif
+                        <?php endif; ?>
                         <!--end::Button-->
                     </div>
                 </div>
@@ -36,15 +34,26 @@
                 <div class="card-header flex-wrap py-5">
                     <form method="POST" id="form-filter" class="col-md-12 px-0">
                         <div class="row">
-                            <x-form.selectbox labelName="Supplier" name="supplier_id" col="col-md-3" class="selectpicker">
-                                @if (!$suppliers->isEmpty())
-                                    @foreach ($suppliers as $supplier)
-                                        <option value="{{ $supplier->id }}" data-coaid="{{ $supplier->coa->id }}"
-                                            data-name="{{ $supplier->name }}">{{ $supplier->name . ' - ' . $supplier->mobile }}
+                            <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Supplier','name' => 'supplier_id','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Supplier','name' => 'supplier_id','col' => 'col-md-3','class' => 'selectpicker']); ?>
+                                <?php if(!$suppliers->isEmpty()): ?>
+                                    <?php $__currentLoopData = $suppliers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $supplier): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($supplier->id); ?>" data-coaid="<?php echo e($supplier->coa->id); ?>"
+                                            data-name="<?php echo e($supplier->name); ?>"><?php echo e($supplier->name . ' - ' . $supplier->mobile); ?>
+
                                         </option>
-                                    @endforeach
-                                @endif
-                            </x-form.selectbox>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endif; ?>
+                             <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                             <div class="form-group col-md-3">
                                 <label for="name">Choose Your Date</label>
                                 <div class="input-group">
@@ -106,9 +115,9 @@
             <!--end::Card-->
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script src="plugins/custom/datatables/datatables.bundle.js" type="text/javascript"></script>
     <script src="js/moment.js"></script>
     <script src="js/knockout-3.4.2.js"></script>
@@ -147,7 +156,7 @@
                     zeroRecords: '<strong class="text-danger">No Data Found</strong>'
                 },
                 "ajax": {
-                    "url": "{{ route('supplier.ledger.datatable.data') }}",
+                    "url": "<?php echo e(route('supplier.ledger.datatable.data')); ?>",
                     "type": "POST",
                     "data": function(data) {
                         data.supplier_id = $("#form-filter #supplier_id option:selected").val();
@@ -179,7 +188,7 @@
                         "extend": 'print',
                         'text': 'Print',
                         'className': 'btn btn-secondary btn-sm text-white',
-                        "title": "{{ $page_title }} List",
+                        "title": "<?php echo e($page_title); ?> List",
                         "orientation": "landscape", //portrait
                         "pageSize": "A4", //A3,A5,A6,legal,letter
                         "exportOptions": {
@@ -205,8 +214,8 @@
                         "extend": 'csv',
                         'text': 'CSV',
                         'className': 'btn btn-secondary btn-sm text-white',
-                        "title": "{{ $page_title }} List",
-                        "filename": "{{ strtolower(str_replace(' ', '-', $page_title)) }}-list",
+                        "title": "<?php echo e($page_title); ?> List",
+                        "filename": "<?php echo e(strtolower(str_replace(' ', '-', $page_title))); ?>-list",
                         "exportOptions": {
                             columns: function(index, data, node) {
                                 return table.column(index).visible();
@@ -218,8 +227,8 @@
                         "extend": 'excel',
                         'text': 'Excel',
                         'className': 'btn btn-secondary btn-sm text-white',
-                        "title": "{{ $page_title }} List",
-                        "filename": "{{ strtolower(str_replace(' ', '-', $page_title)) }}-list",
+                        "title": "<?php echo e($page_title); ?> List",
+                        "filename": "<?php echo e(strtolower(str_replace(' ', '-', $page_title))); ?>-list",
                         "exportOptions": {
                             columns: function(index, data, node) {
                                 return table.column(index).visible();
@@ -231,8 +240,8 @@
                         "extend": 'pdf',
                         'text': 'PDF',
                         'className': 'btn btn-secondary btn-sm text-white',
-                        "title": "{{ $page_title }} List",
-                        "filename": "{{ strtolower(str_replace(' ', '-', $page_title)) }}-list",
+                        "title": "<?php echo e($page_title); ?> List",
+                        "filename": "<?php echo e(strtolower(str_replace(' ', '-', $page_title))); ?>-list",
                         "orientation": "landscape", //portrait
                         "pageSize": "A4", //A3,A5,A6,legal,letter
                         "exportOptions": {
@@ -263,8 +272,8 @@
                     var debit = 0;
                     var credit = 0;
                     var balance = 0;
-                    var currency_symbol = "{{ config('settings.currency_symbol') }}";
-                    var currency_position = "{{ config('settings.currency_position') }}";
+                    var currency_symbol = "<?php echo e(config('settings.currency_symbol')); ?>";
+                    var currency_position = "<?php echo e(config('settings.currency_position')); ?>";
                     // Total over all pages
                     for (let index = 3; index <= 4; index++) {
                         // Total over this page
@@ -303,4 +312,6 @@
             });
         });
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Supplier\Resources/views/ledger/index.blade.php ENDPATH**/ ?>

@@ -71,11 +71,11 @@
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
                             <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Warehouse','name' => 'warehouse_id','required' => 'required','col' => 'col-md-4']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Depo','name' => 'warehouse_id','required' => 'required','col' => 'col-md-4']]); ?>
 <?php $component->withName('form.selectbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Warehouse','name' => 'warehouse_id','required' => 'required','col' => 'col-md-4']); ?>
+<?php $component->withAttributes(['labelName' => 'Depo','name' => 'warehouse_id','required' => 'required','col' => 'col-md-4']); ?>
                                 <?php $__currentLoopData = $warehouses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $warehouse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($warehouse->id); ?>" <?php if($warehouse->id == $purchase->warehouse_id): ?> selected="selected" <?php endif; ?> ><?php echo e($warehouse->name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -524,7 +524,7 @@
             var newRow = $('<tr>');
             var cols = '';
             cols += `<td>
-                        <select name="materials[`+count+`][material_id]" id="material_list_${count}" class="fcs col-md-12 material_name form-control" onchange="getMaterialDetails(this,${count})"  data-live-search="true" data-row="${count}">
+                        <select name="materials[`+count+`][material_id]" id="material_list_${count}" class="fcs col-md-12 material_name form-control selectpicker" onchange="getMaterialDetails(this,${count})"  data-live-search="true" data-row="${count}">
                         <?php if(!$materials->isEmpty()): ?>
                         <option value="0">Please Select</option>
                         <?php $__currentLoopData = $materials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $material): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -557,7 +557,7 @@
                         cols += `<input type="hidden" class="subtotal-value" name="materials[`+count+`][subtotal]" id="subtotal_value_${count}" data-row="${count}">`;
             newRow.append(cols);
             $('#material_table tbody').append(newRow);
-            $('#material_table .selectpicker').selectpicker();
+            $('#material_table .selectpicker').selectpicker('refresh');
         }
         $('input[name="order_discount"]').on('input',function(){
             calculateGrandTotal();

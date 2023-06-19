@@ -90,8 +90,8 @@ class PurchaseController extends BaseController{
                 $row[] = $value->item.'('.$value->total_qty.')';
                 $row[] = number_format($value->total_cost,2);
                 $row[] = number_format($value->grand_total,2);
-                $row[] = number_format($value->paid_amount,2);
-                $row[] = number_format(($value->grand_total - $value->paid_amount),2);
+                // $row[] = number_format($value->paid_amount,2);
+                // $row[] = number_format(($value->grand_total - $value->paid_amount),2);
                 $row[] = date(config('settings.date_format'),strtotime($value->purchase_date));
                 $row[] = PURCHASE_STATUS_LABEL[$value->purchase_status];
                 $row[] = PAYMENT_STATUS_LABEL[$value->payment_status];
