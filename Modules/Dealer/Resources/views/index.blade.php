@@ -116,6 +116,7 @@ $(document).ready(function(){
         "responsive": true,
         "bInfo": true,
         "bFilter": false,
+        "ordering": false,
         "lengthMenu": [
             [5, 10, 15, 25, 50, 100, 1000, 10000, -1],
             [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]

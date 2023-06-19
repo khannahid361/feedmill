@@ -102,10 +102,10 @@ class DealerController extends BaseController
                     $row[] = $value->username;
                     if(empty(auth()->user()->warehouse_id))
                     {
-                        $row[] = $value->warehouse->name;
+                        $row[] = $value->warehouse->name ?? '';
                     }
-                    $row[] = $value->district->name;
-                    $row[] = $value->upazila->name;
+                    $row[] = $value->district->name ?? '';
+                    $row[] = $value->upazila->name ?? '';
                     $row[] = permission('dealer-edit') ? change_status($value->id,$value->status, $value->name) : STATUS_LABEL[$value->status];
                     $row[] = $this->model->balance($value->id);
                     $row[] = action_button($action);//custom helper function for action button
@@ -183,7 +183,7 @@ class DealerController extends BaseController
                         $monthlyCommissionCode = $commission_monthly_maxcode ? ($commission_monthly_maxcode + 1) : 502050001;
                         $dealer_monthly_commission = ChartOfAccount::create($this->model->dealer_monthly_commission_coa($monthlyCommissionCode,$dealer->name,$dealer->id));
                         //monthly
-                        //yearly 
+                        //yearly
                         $commission_yearly_maxcode = ChartOfAccount::where('level',3)->where('code','like','50206%')->max('code');
                         $yearlyCommissionCode = $commission_yearly_maxcode ? ($commission_yearly_maxcode + 1) : 502060001;
                         $dealer_yearly_commission = ChartOfAccount::create($this->model->dealer_yearly_commission_coa($yearlyCommissionCode,$dealer->name,$dealer->id));

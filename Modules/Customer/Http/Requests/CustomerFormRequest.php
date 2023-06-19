@@ -19,11 +19,11 @@ class CustomerFormRequest extends FormRequest
         $this->rules['shop_name']         = ['required','string','max:100'];
         $this->rules['mobile']            = ['required','string','max:15','unique:customers,mobile'];
         $this->rules['email']             = ['nullable','email','string','max:100','unique:customers,email'];
-        $this->rules['area_id']           = ['required'];
+        $this->rules['area_id']           = ['nullable'];
         $this->rules['customer_group_id'] = ['required'];
-        $this->rules['warehouse_id']       = ['required'];
-        $this->rules['district_id']       = ['required'];
-        $this->rules['upazila_id']        = ['required'];
+        $this->rules['warehouse_id']       = ['nullable'];
+        $this->rules['district_id']       = ['nullable'];
+        $this->rules['upazila_id']        = ['nullable'];
         $this->rules['address']           = ['required','string'];
         $this->rules['previous_balance']  = ['nullable','numeric','gt:0'];
         $this->rules['avatar']                = ['nullable','image', 'mimes:png,jpg,jpeg,svg'];

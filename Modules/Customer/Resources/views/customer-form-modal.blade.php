@@ -44,7 +44,7 @@
                         @endif
                     </x-form.selectbox>
                     @endif
-                    <x-form.selectbox labelName="District" name="district_id" required="required" onchange="getUpazilaList(this.value,2)" col="col-md-6" class="selectpicker">
+                    <x-form.selectbox labelName="District" name="district_id" onchange="getUpazilaList(this.value,2)" col="col-md-6" class="selectpicker">
                       @if (!$locations->isEmpty())
                           @foreach ($locations as $location)
                               @if ($location->type == 1 && $location->parent_id == null)
@@ -53,8 +53,8 @@
                           @endforeach
                       @endif
                     </x-form.selectbox>
-                    <x-form.selectbox labelName="Upazila" name="upazila_id" col="col-md-6" required="required" class="selectpicker" onchange="getAreaList(this.value,2)"/>
-                    <x-form.selectbox labelName="Area" name="area_id" col="col-md-6" required="required" class="selectpicker"/>
+                    <x-form.selectbox labelName="Upazila" name="upazila_id" col="col-md-6" class="selectpicker" onchange="getAreaList(this.value,2)"/>
+                    <x-form.selectbox labelName="Area" name="area_id" col="col-md-6" class="selectpicker"/>
                     <x-form.textbox labelName="Previous Balance" name="previous_balance" col="col-md-6 pbalance" placeholder="Previous credit balalnce"/>
                     <x-form.textarea labelName="Customer Address" name="address" col="col-md-6" required="required" placeholder="Enter customer address"/>
 

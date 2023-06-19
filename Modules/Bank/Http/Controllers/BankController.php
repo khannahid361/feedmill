@@ -66,7 +66,7 @@ class BankController extends BaseController
                     $row[] = $value->bank_name;
                     $row[] = $value->account_name;
                     $row[] = $value->account_number;
-                    $row[] = $value->warehouse->name;
+                    $row[] = $value->warehouse->name ?? '';
                     $row[] = config('settings.currency_position') == '1' ? config('settings.currency_symbol').number_format($this->bank_balance($value->bank_name),2)
                                 : number_format($this->bank_balance($value->bank_name),2).config('settings.currency_symbol');
                     $row[] = permission('bank-edit') ? change_status($value->id,$value->status, $value->bank_name) : STATUS_LABEL[$value->status];
@@ -88,6 +88,7 @@ class BankController extends BaseController
                 DB::beginTransaction();
                 try {
                     $collection = collect($request->validated());
+                    // dd($collection);
                     $collection = $this->track_data($collection,$request->update_id);
                     $result   = $this->model->updateOrCreate(['id'=>$request->update_id],$collection->all());
                     if($result)
@@ -112,15 +113,15 @@ class BankController extends BaseController
                             $bank_coa['depreciation_rate'] = 0;
                         }
                         $bank_coa = collect($bank_coa);
-                        $bank_coa = $this->track_data($bank_coa,$request->update_id); 
+                        $bank_coa = $this->track_data($bank_coa,$request->update_id);
                         ChartOfAccount::updateOrCreate(['name'=>$request->bank_old_name],$bank_coa->all());
                         $output       = $this->store_message($result, $request->update_id);
-                        
+
                         $this->model->flushCache();//Remove Database Cache Data
                     }else{
                         $output = ['status' => 'error','message' => 'Failed to create bank account!'];
                     }
-                    
+
                     DB::commit();
                 } catch (Exception $e) {
                     DB::rollback();
@@ -244,7 +245,7 @@ class BankController extends BaseController
             if(!empty($request->bank_name)){
                 $query =  $query->where('coa.name',$request->bank_name);
             }
-            
+
             $ledger_data = $query->where('t.voucher_date','>=',$from_date)
                                 ->where('t.voucher_date','<=',$to_date)
                                 ->where('t.approve',1)
@@ -257,7 +258,7 @@ class BankController extends BaseController
                 foreach ($ledger_data as $index => $value) {
                         $ledger_data[$index]->debit_amount = $value->debit;
                         $total_debit += $ledger_data[$index]->debit_amount;
-    
+
                         $ledger_data[$index]->balance = $balance + ($value->debit - $value->credit);
                         $ledger_data[$index]->credit_amount  = $value->credit;
                         $total_credit += $ledger_data[$index]->credit_amount;

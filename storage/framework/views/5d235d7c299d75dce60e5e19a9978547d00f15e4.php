@@ -1,26 +1,24 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', $page_title); ?>
 
-@section('title', $page_title)
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
 <link href="plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
         <!--begin::Notice-->
         <div class="card card-custom gutter-b">
             <div class="card-header flex-wrap py-5">
                 <div class="card-title">
-                    <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
+                    <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    @if (permission('bank-add'))
+                    <?php if(permission('bank-add')): ?>
                     <a href="javascript:void(0);" onclick="showFormModal('Add New Bank','Save')" class="btn btn-primary btn-sm font-weight-bolder">
                         <i class="fas fa-plus-circle"></i> Add New</a>
-                        @endif
+                        <?php endif; ?>
                     <!--end::Button-->
                 </div>
             </div>
@@ -31,16 +29,59 @@
             <div class="card-header flex-wrap py-5">
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row">
-                        <x-form.textbox labelName="Bank Name" name="bank_name" col="col-md-3" />
-                        <x-form.textbox labelName="Account Name" name="account_name" col="col-md-3" />
-                        <x-form.textbox labelName="Account Number" name="account_number" col="col-md-3" />
-                        <x-form.selectbox labelName="Depo" name="warehouse_id" required="required"  col="col-md-3" class="selectpicker">
-                            @if (!$warehouses->isEmpty())
-                                @foreach ($warehouses as $id => $name)
-                                    <option value="{{ $id }}">{{ $name }}</option>
-                                @endforeach
-                            @endif
-                          </x-form.selectbox>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Bank Name','name' => 'bank_name','col' => 'col-md-3']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Bank Name','name' => 'bank_name','col' => 'col-md-3']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Account Name','name' => 'account_name','col' => 'col-md-3']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Account Name','name' => 'account_name','col' => 'col-md-3']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Account Number','name' => 'account_number','col' => 'col-md-3']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Account Number','name' => 'account_number','col' => 'col-md-3']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Depo','name' => 'warehouse_id','required' => 'required','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Depo','name' => 'warehouse_id','required' => 'required','col' => 'col-md-3','class' => 'selectpicker']); ?>
+                            <?php if(!$warehouses->isEmpty()): ?>
+                                <?php $__currentLoopData = $warehouses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
+                           <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                         <div class="col-md-12">
                             <div style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
@@ -84,10 +125,10 @@
         <!--end::Card-->
     </div>
 </div>
-@include('bank::bank-modal')
-@endsection
+<?php echo $__env->make('bank::bank-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script src="plugins/custom/datatables/datatables.bundle.js" type="text/javascript"></script>
 <script>
     var table;
@@ -113,7 +154,7 @@
                 zeroRecords: '<strong class="text-danger">No Data Found</strong>'
             },
             "ajax": {
-                "url": "{{route('bank.datatable.data')}}",
+                "url": "<?php echo e(route('bank.datatable.data')); ?>",
                 "type": "POST",
                 "data": function (data) {
                     data.bank_name      = $("#form-filter #bank_name").val();
@@ -144,7 +185,7 @@
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
 
             "buttons": [
-                @if (permission('bank-report'))
+                <?php if(permission('bank-report')): ?>
                 {
                     'extend':'colvis','className':'btn btn-secondary btn-sm text-white','text':'Column','columns': ':gt(0)'
                 },
@@ -152,7 +193,7 @@
                     "extend": 'print',
                     'text':'Print',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
+                    "title": "<?php echo e($page_title); ?> List",
                     "orientation": "landscape", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
@@ -171,8 +212,8 @@
                     "extend": 'csv',
                     'text':'CSV',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
-                    "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                    "title": "<?php echo e($page_title); ?> List",
+                    "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "exportOptions": {
                         columns: ':visible:not(:eq(7))'
                     }
@@ -181,8 +222,8 @@
                     "extend": 'excel',
                     'text':'Excel',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
-                    "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                    "title": "<?php echo e($page_title); ?> List",
+                    "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "exportOptions": {
                         columns: ':visible:not(:eq(7))'
                     }
@@ -191,8 +232,8 @@
                     "extend": 'pdf',
                     'text':'PDF',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
-                    "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                    "title": "<?php echo e($page_title); ?> List",
+                    "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "orientation": "portrait", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
@@ -204,8 +245,8 @@
                         doc.pageMargins = [5,5,5,5];
                     }
                 },
-                @endif
-                @if (permission('bank-bulk-delete'))
+                <?php endif; ?>
+                <?php if(permission('bank-bulk-delete')): ?>
                 {
                     'className':'btn btn-danger btn-sm delete_btn d-none text-white',
                     'text':'Delete',
@@ -213,7 +254,7 @@
                         multi_delete();
                     }
                 }
-                @endif
+                <?php endif; ?>
             ],
         });
 
@@ -229,7 +270,7 @@
         $(document).on('click', '#save-btn', function () {
             let form = document.getElementById('store_or_update_form');
             let formData = new FormData(form);
-            let url = "{{route('bank.store.or.update')}}";
+            let url = "<?php echo e(route('bank.store.or.update')); ?>";
             let id = $('#update_id').val();
             let method;
             if (id) {
@@ -248,7 +289,7 @@
             $('#store_or_update_form').find('.error').remove();
             if (id) {
                 $.ajax({
-                    url: "{{route('bank.edit')}}",
+                    url: "<?php echo e(route('bank.edit')); ?>",
                     type: "POST",
                     data: { id: id,_token: _token},
                     dataType: "JSON",
@@ -285,7 +326,7 @@
             let name   = $(this).data('name');
             let status = $(this).data('status');
             let row    = table.row($(this).parent('tr'));
-            let url    = "{{ route('bank.change.status') }}";
+            let url    = "<?php echo e(route('bank.change.status')); ?>";
             change_status(id, url, table, row, name, status);
         });
 
@@ -293,11 +334,13 @@
             let id    = $(this).data('id');
             let name  = $(this).data('name');
             let row   = table.row($(this).parent('tr'));
-            let url   = "{{ route('bank.delete') }}";
+            let url   = "<?php echo e(route('bank.delete')); ?>";
             delete_data(id, url, table, row, name);
         });
 
 
     });
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Bank\Resources/views/index.blade.php ENDPATH**/ ?>

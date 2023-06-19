@@ -20,13 +20,14 @@ class CreateCustomersTable extends Migration
             $table->string('mobile');
             $table->string('email')->nullable();
             $table->string('avatar')->nullable();
+            $table->integer('warehouse_id')->nullable();
             $table->unsignedBigInteger('customer_group_id');
             $table->foreign('customer_group_id')->references('id')->on('customer_groups');
-            $table->unsignedBigInteger('district_id');
+            $table->unsignedBigInteger('district_id')->nullable();
             $table->foreign('district_id')->references('id')->on('locations');
-            $table->unsignedBigInteger('upazila_id');
+            $table->unsignedBigInteger('upazila_id')->nullable();
             $table->foreign('upazila_id')->references('id')->on('locations');
-            $table->unsignedBigInteger('area_id');
+            $table->unsignedBigInteger('area_id')->nullable();
             $table->foreign('area_id')->references('id')->on('locations');
             $table->text('address')->nullable();
             $table->enum('status',['1','2'])->default('1')->comment = "1=Active, 2=Inactive";

@@ -1,28 +1,71 @@
-@extends('layouts.app')
-@section('title', $page_title)
-@section('content')
+<?php $__env->startSection('title', $page_title); ?>
+<?php $__env->startSection('content'); ?>
     <div class="d-flex flex-column-fluid">
         <div class="container-fluid">
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap py-5">
-                    <div class="card-title"><h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3></div>
+                    <div class="card-title"><h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3></div>
                     <div class="card-toolbar">
-                        <a href="{{ route('dealer') }}" class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
+                        <a href="<?php echo e(route('dealer')); ?>" class="btn btn-warning btn-sm font-weight-bolder"><i class="fas fa-arrow-left"></i> Back</a>
                     </div>
                 </div>
             </div>
             <div class="card card-custom" style="padding-bottom: 100px !important;">
                 <div class="card-body">
                     <form id="store_or_update_form" method="post" enctype="multipart/form-data">
-                        @csrf
+                        <?php echo csrf_field(); ?>
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="row">
-                                    <input type="hidden" name="dealer_id" id="dealer_id" value="{{ isset($dealer) ? $dealer->id : '' }}">
-                                    <x-form.textbox labelName="Dealer Name" name="name" value="{{ isset($dealer) ? $dealer->name : '' }}" required="required" col="col-md-4" placeholder="Enter customer name"/>
-                                    <x-form.textbox labelName="Shop Name" name="shop_name" value="{{ isset($dealer) ? $dealer->shop_name : '' }}" col="col-md-4" placeholder="Enter shop name"/>
-                                    <x-form.textbox labelName="Mobile" name="mobile" value="{{ isset($dealer) ? $dealer->mobile : '' }}" col="col-md-4" required="required" placeholder="Enter mobile number"/>
-                                    <x-form.textbox labelName="Username" name="username" value="{{ isset($dealer) ? $dealer->username : '' }}" required="required" col="col-md-4" placeholder="Enter username"/>
+                                    <input type="hidden" name="dealer_id" id="dealer_id" value="<?php echo e(isset($dealer) ? $dealer->id : ''); ?>">
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Dealer Name','name' => 'name','value' => ''.e(isset($dealer) ? $dealer->name : '').'','required' => 'required','col' => 'col-md-4','placeholder' => 'Enter customer name']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Dealer Name','name' => 'name','value' => ''.e(isset($dealer) ? $dealer->name : '').'','required' => 'required','col' => 'col-md-4','placeholder' => 'Enter customer name']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Shop Name','name' => 'shop_name','value' => ''.e(isset($dealer) ? $dealer->shop_name : '').'','col' => 'col-md-4','placeholder' => 'Enter shop name']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Shop Name','name' => 'shop_name','value' => ''.e(isset($dealer) ? $dealer->shop_name : '').'','col' => 'col-md-4','placeholder' => 'Enter shop name']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Mobile','name' => 'mobile','value' => ''.e(isset($dealer) ? $dealer->mobile : '').'','col' => 'col-md-4','required' => 'required','placeholder' => 'Enter mobile number']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Mobile','name' => 'mobile','value' => ''.e(isset($dealer) ? $dealer->mobile : '').'','col' => 'col-md-4','required' => 'required','placeholder' => 'Enter mobile number']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Username','name' => 'username','value' => ''.e(isset($dealer) ? $dealer->username : '').'','required' => 'required','col' => 'col-md-4','placeholder' => 'Enter username']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Username','name' => 'username','value' => ''.e(isset($dealer) ? $dealer->username : '').'','required' => 'required','col' => 'col-md-4','placeholder' => 'Enter username']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                                     <div class="col-md-4 form-group">
                                         <label for="site_title">Password</label>
                                         <div class="input-group">
@@ -51,30 +94,94 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <x-form.textbox labelName="Email" name="email" value="{{ isset($dealer) ? $dealer->email : '' }}" type="email" col="col-md-4" placeholder="Enter email address"/>
-                                    @if(Auth::user()->warehouse_id)
-                                        <input type="hidden" name="warehouse_id" id="warehouse_id" value="{{ Auth::user()->warehouse_id }}">
-                                    @else
-                                        <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-4" class="selectpicker">
-                                            @if (!$warehouses->isEmpty())
-                                                @foreach ($warehouses as $id => $name)
-                                                    <option value="{{ $id }}" {{ isset($dealer) ? ( $dealer->warehouse_id == $id ? 'selected' : '') : '' }}>{{ $name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </x-form.selectbox>
-                                    @endif
-                                    <x-form.selectbox labelName="District" name="district_id" onchange="getUpazilaList(this.value)" col="col-md-4" class="selectpicker">
-                                        @if (!$districts->isEmpty())
-                                            @foreach ($districts as $id => $name)
-                                                <option value="{{ $id }}" {{ isset($dealer) ? ( $dealer->district_id == $id ? 'selected' : '') : '' }}>{{ $name }}</option>
-                                            @endforeach
-                                        @endif
-                                    </x-form.selectbox>
-                                    <x-form.selectbox labelName="Upazila" name="upazila_id" col="col-md-4" class="selectpicker" />
-                                    @if(!isset($dealer))
-                                        <x-form.textbox labelName="Previous Balance" name="previous_balance" col="col-md-4 pbalance" placeholder="Previous credit balalnce"/>
-                                    @endif
-                                    <x-form.textbox labelName="Dealer Address" name="address" value="{{ isset($dealer) ? $dealer->address : '' }}" col="col-md-4" required="required" placeholder="Enter dealer address"/>
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Email','name' => 'email','value' => ''.e(isset($dealer) ? $dealer->email : '').'','type' => 'email','col' => 'col-md-4','placeholder' => 'Enter email address']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Email','name' => 'email','value' => ''.e(isset($dealer) ? $dealer->email : '').'','type' => 'email','col' => 'col-md-4','placeholder' => 'Enter email address']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                                    <?php if(Auth::user()->warehouse_id): ?>
+                                        <input type="hidden" name="warehouse_id" id="warehouse_id" value="<?php echo e(Auth::user()->warehouse_id); ?>">
+                                    <?php else: ?>
+                                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Depo','name' => 'warehouse_id','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Depo','name' => 'warehouse_id','col' => 'col-md-4','class' => 'selectpicker']); ?>
+                                            <?php if(!$warehouses->isEmpty()): ?>
+                                                <?php $__currentLoopData = $warehouses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value="<?php echo e($id); ?>" <?php echo e(isset($dealer) ? ( $dealer->warehouse_id == $id ? 'selected' : '') : ''); ?>><?php echo e($name); ?></option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php endif; ?>
+                                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'District','name' => 'district_id','onchange' => 'getUpazilaList(this.value)','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'District','name' => 'district_id','onchange' => 'getUpazilaList(this.value)','col' => 'col-md-4','class' => 'selectpicker']); ?>
+                                        <?php if(!$districts->isEmpty()): ?>
+                                            <?php $__currentLoopData = $districts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($id); ?>" <?php echo e(isset($dealer) ? ( $dealer->district_id == $id ? 'selected' : '') : ''); ?>><?php echo e($name); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endif; ?>
+                                     <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Upazila','name' => 'upazila_id','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Upazila','name' => 'upazila_id','col' => 'col-md-4','class' => 'selectpicker']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                                    <?php if(!isset($dealer)): ?>
+                                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Previous Balance','name' => 'previous_balance','col' => 'col-md-4 pbalance','placeholder' => 'Previous credit balalnce']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Previous Balance','name' => 'previous_balance','col' => 'col-md-4 pbalance','placeholder' => 'Previous credit balalnce']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                                    <?php endif; ?>
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Dealer Address','name' => 'address','value' => ''.e(isset($dealer) ? $dealer->address : '').'','col' => 'col-md-4','required' => 'required','placeholder' => 'Enter dealer address']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Dealer Address','name' => 'address','value' => ''.e(isset($dealer) ? $dealer->address : '').'','col' => 'col-md-4','required' => 'required','placeholder' => 'Enter dealer address']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -85,7 +192,7 @@
                                             <div id="avatar"></div>
                                         </div>
                                         <div class="text-center"><span class="text-muted">Maximum Allowed File Size 2MB and Format (png,jpg,jpeg,svg,webp)</span></div>
-                                        <input type="hidden" name="old_avatar" id="old_avatar" value="{{ isset($dealer) ? $dealer->avatar : '' }}">
+                                        <input type="hidden" name="old_avatar" id="old_avatar" value="<?php echo e(isset($dealer) ? $dealer->avatar : ''); ?>">
                                     </div>
                                 </div>
                             </div>
@@ -106,31 +213,31 @@
                                             <th class="text-center">Action</th>
                                             </thead>
                                             <tbody>
-                                            @if (isset($dealer) && !$dealer->hasManyProducts->isEmpty())
-                                                @foreach ($dealer->hasManyProducts as $key => $item)
+                                            <?php if(isset($dealer) && !$dealer->hasManyProducts->isEmpty()): ?>
+                                                <?php $__currentLoopData = $dealer->hasManyProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <tr>
                                                         <td>
-                                                            <select name="products[{{ $key+1 }}][id]" id="products_{{ $key+1 }}_id" required="required" onchange="setProductData({{ $key+1 }})" class="form-control selectpicker" data-live-search="true"
+                                                            <select name="products[<?php echo e($key+1); ?>][id]" id="products_<?php echo e($key+1); ?>_id" required="required" onchange="setProductData(<?php echo e($key+1); ?>)" class="form-control selectpicker" data-live-search="true"
                                                                     data-live-search-placeholder="Search">
                                                                 <option value="">Select Please</option>
-                                                                @if (!$products->isEmpty())
-                                                                    @foreach ($products as $product)
-                                                                        <option value="{{ $product->id }}" {{ $item->product_id == $product->id ? 'selected' : ''  }} data-price="{{ $product->base_unit_price }}" data-unitname="{{ $product->base_unit->unit_name }}">{{ $product->name }}</option>
-                                                                    @endforeach
-                                                                @endif
+                                                                <?php if(!$products->isEmpty()): ?>
+                                                                    <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                        <option value="<?php echo e($product->id); ?>" <?php echo e($item->product_id == $product->id ? 'selected' : ''); ?> data-price="<?php echo e($product->base_unit_price); ?>" data-unitname="<?php echo e($product->base_unit->unit_name); ?>"><?php echo e($product->name); ?></option>
+                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                <?php endif; ?>
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <input type="text" name="products[{{ $key+1 }}][unit]" id="products_{{ $key+1 }}_unit" value="{{ $item->product->unit->unit_name }}" class="form-control text-center bg-secondary" readonly>
+                                                            <input type="text" name="products[<?php echo e($key+1); ?>][unit]" id="products_<?php echo e($key+1); ?>_unit" value="<?php echo e($item->product->unit->unit_name); ?>" class="form-control text-center bg-secondary" readonly>
                                                         </td>
                                                         <td>
-                                                            <input type="text" name="products[{{ $key+1 }}][price]" id="products_{{ $key+1 }}_price" value="{{ $item->product->base_unit_price }}" class="form-control text-right bg-secondary" readonly>
+                                                            <input type="text" name="products[<?php echo e($key+1); ?>][price]" id="products_<?php echo e($key+1); ?>_price" value="<?php echo e($item->product->base_unit_price); ?>" class="form-control text-right bg-secondary" readonly>
                                                         </td>
                                                         <td>
-                                                            <input type="text" name="products[{{ $key+1 }}][commission_rate]" class="form-control text-right"  value="{{ $item->commission_rate }}" onkeyup="generateCommissionPercentage({{ $key+1 }})" id="products_{{ $key+1 }}_commission_rate" >
+                                                            <input type="text" name="products[<?php echo e($key+1); ?>][commission_rate]" class="form-control text-right"  value="<?php echo e($item->commission_rate); ?>" onkeyup="generateCommissionPercentage(<?php echo e($key+1); ?>)" id="products_<?php echo e($key+1); ?>_commission_rate" >
                                                         </td>
                                                         <td>
-                                                            <input type="text" name="products[{{ $key+1 }}][commission_percentage]" value="{{ $item->product->base_unit_price > 0 ? number_format($item->commission_rate/$item->product->base_unit_price,4,'.',',') : 0 }}" class="form-control text-center " id="products_{{ $key+1 }}_commission_percentage" >
+                                                            <input type="text" name="products[<?php echo e($key+1); ?>][commission_percentage]" value="<?php echo e($item->product->base_unit_price > 0 ? number_format($item->commission_rate/$item->product->base_unit_price,4,'.',',') : 0); ?>" class="form-control text-center " id="products_<?php echo e($key+1); ?>_commission_percentage" >
                                                         </td>
                                                         <td class="text-center">
                                                             <button type="button" class="btn btn-danger btn-sm remove" data-toggle="tooltip"
@@ -139,18 +246,18 @@
                                                             </button>
                                                         </td>
                                                     </tr>
-                                                @endforeach
-                                            @else
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php else: ?>
                                                 <tr>
                                                     <td>
                                                         <select name="products[1][id]" id="products_1_id" required="required" onchange="setProductData(1)" class="form-control selectpicker" data-live-search="true"
                                                                 data-live-search-placeholder="Search">
                                                             <option value="">Select Please</option>
-                                                            @if (!$products->isEmpty())
-                                                                @foreach ($products as $product)
-                                                                    <option value="{{ $product->id }}" data-price="{{ $product->base_unit_price }}" data-unitname="{{ $product->base_unit->unit_name }}">{{ $product->name }}</option>
-                                                                @endforeach
-                                                            @endif
+                                                            <?php if(!$products->isEmpty()): ?>
+                                                                <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                    <option value="<?php echo e($product->id); ?>" data-price="<?php echo e($product->base_unit_price); ?>" data-unitname="<?php echo e($product->base_unit->unit_name); ?>"><?php echo e($product->name); ?></option>
+                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                            <?php endif; ?>
                                                         </select>
                                                     </td>
                                                     <td>
@@ -167,7 +274,7 @@
                                                     </td>
                                                     <td></td>
                                                 </tr>
-                                            @endif
+                                            <?php endif; ?>
 
                                             </tbody>
                                             <tfoot>
@@ -183,13 +290,13 @@
                                 </div>
                             </div>
                             <div class="form-group col-md-12 pt-5 text-center">
-                                @if(!isset($dealer))
+                                <?php if(!isset($dealer)): ?>
                                     <button type="button" class="btn btn-primary btn-sm" id="save-btn-1" onclick="storeData(1)"><i class="fas fa-save"></i> Save</button>
                                     <button type="button" class="btn btn-success btn-sm ml-3" id="save-btn-2" onclick="storeData(2)"><i class="fas fa-save"></i> Save & Add Another</button>
-                                @else
-                                    <a href="{{ url('dealer') }}" type="button" class="btn btn-danger btn-sm mr-2"><i class="fas fa-window-close"></i> Cancle</a>
+                                <?php else: ?>
+                                    <a href="<?php echo e(url('dealer')); ?>" type="button" class="btn btn-danger btn-sm mr-2"><i class="fas fa-window-close"></i> Cancle</a>
                                     <button type="button" class="btn btn-primary btn-sm" id="save-btn-1" onclick="storeData(1)"><i class="fas fa-save"></i> Update</button>
-                                @endif
+                                <?php endif; ?>
                             </div>
                         </div>
                     </form>
@@ -197,9 +304,9 @@
             </div>
         </div>
     </div>
-@endsection
-@push('scripts')
-    <script src="{{asset('js/spartan-multi-image-picker.min.js')}}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+    <script src="<?php echo e(asset('js/spartan-multi-image-picker.min.js')); ?>"></script>
     <script>
         $(document).ready(function () {
             $("#avatar").spartanMultiImagePicker({
@@ -213,31 +320,31 @@
             });
             $("input[name='avatar']").prop('required',true);
             $('.remove-files').on('click', function(){$(this).parents(".col-md-12").remove();});
-            @if(isset($dealer) && !empty($dealer->avatar))
+            <?php if(isset($dealer) && !empty($dealer->avatar)): ?>
             $('#avatar img').css('display','none');
             $('#avatar .spartan_remove_row').css('display','block');
             $('#avatar .img_').css('display','block');
-            $('#avatar .img_').attr('src',"{{ asset('storage/'.DEALER_AVATAR_PATH.$dealer->avatar)}}");
-            @else
+            $('#avatar .img_').attr('src',"<?php echo e(asset('storage/'.DEALER_AVATAR_PATH.$dealer->avatar)); ?>");
+            <?php else: ?>
             $('#avatar img').css('display','block');
             $('#avatar .spartan_remove_row').css('display','none');
             $('#avatar .img_').css('display','none');
             $('#avatar .img_').attr('src','');
-            @endif
+            <?php endif; ?>
             var product_count = 1;
-            @if (isset($dealer) && !$dealer->hasManyProducts->isEmpty())
-                product_count = "{{ count($dealer->hasManyProducts) }}";
-            @endif
+            <?php if(isset($dealer) && !$dealer->hasManyProducts->isEmpty()): ?>
+                product_count = "<?php echo e(count($dealer->hasManyProducts)); ?>";
+            <?php endif; ?>
             function add_more_product_field(row){
                 html = ` <tr>
                         <td>
                         <select name="products[${row}][id]" id="products_${row}_id" required="required" onchange="setProductData(${row})" class="form-control selectpicker" data-live-search="true" data-live-search-placeholder="Search">
                         <option value="">Select Please</option>
-                        @if (!$products->isEmpty())
-                @foreach ($products as $product)
-                <option value="{{ $product->id }}" data-price="{{ $product->base_unit_price }}" data-unitname="{{ $product->base_unit->unit_name }}">{{ $product->name }}</option>
-                        @endforeach
-                @endif
+                        <?php if(!$products->isEmpty()): ?>
+                <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($product->id); ?>" data-price="<?php echo e($product->base_unit_price); ?>" data-unitname="<?php echo e($product->base_unit->unit_name); ?>"><?php echo e($product->name); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endif; ?>
                 </select>
                 </td>
                 <td><input type="text" name="products[${row}][unit]" id="products_${row}_unit" class="form-control  text-center bg-secondary" readonly></td>
@@ -286,12 +393,12 @@
             }
             $(`#products_${row}_commission_rate`).val(parseFloat(commissionRate).toFixed(4));
         }
-        @if (isset($dealer))
-        getUpazilaList("{{ $dealer->district_id }}","{{ $dealer->upazila_id }}");
-        @endif
+        <?php if(isset($dealer)): ?>
+        getUpazilaList("<?php echo e($dealer->district_id); ?>","<?php echo e($dealer->upazila_id); ?>");
+        <?php endif; ?>
         function getUpazilaList(district_id,upazila_id=''){
             $.ajax({
-                url       :"{{ url('district-id-wise-upazila-list') }}/"+district_id,
+                url       :"<?php echo e(url('district-id-wise-upazila-list')); ?>/"+district_id,
                 type      :"GET",
                 dataType  :"JSON",
                 success   :function(data){
@@ -311,7 +418,7 @@
             let form = document.getElementById('store_or_update_form');
             let formData = new FormData(form);
             $.ajax({
-                url          : "{{route('dealer.store.or.update')}}",
+                url          : "<?php echo e(route('dealer.store.or.update')); ?>",
                 type         : "POST",
                 data         : formData,
                 dataType     : "JSON",
@@ -345,9 +452,9 @@
                         notification(data.status, data.message);
                         if (data.status == 'success') {
                             if(btn == 1){
-                                window.location.replace("{{ route('dealer') }}");
+                                window.location.replace("<?php echo e(route('dealer')); ?>");
                             }else{
-                                window.location.replace("{{ route('dealer.add') }}");
+                                window.location.replace("<?php echo e(route('dealer.add')); ?>");
                             }
                         }
                     }
@@ -401,4 +508,6 @@
             return finalPassword;
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Dealer\Resources/views/form.blade.php ENDPATH**/ ?>

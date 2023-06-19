@@ -117,6 +117,7 @@ class CustomerController extends BaseController{
     public function store_or_update_data(CustomerFormRequest $request)
     {
         if($request->ajax()){
+            // dd($request->all());
             if(permission('customer-add') || permission('customer-edit')){
                 DB::beginTransaction();
                 try {
