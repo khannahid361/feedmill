@@ -17,7 +17,7 @@ class WarehouseMaterialLedgerController extends BaseController
     public function materialLedger()
     {
         if (permission('material-stock-report-access')) {
-            $this->setPageData('Material Stock', 'Material Stock', 'fas fa-boxes', [['name' => 'Material Stock']]);
+            $this->setPageData('Warehouse Material Stock Ledger', 'Warehouse Material Stock Ledger', 'fas fa-boxes', [['name' => 'Warehouse Material Stock Ledger']]);
             $data = [
                 'categories' => Category::with('warehouse_materials')->whereHas('warehouse_materials')->where([['type', 1], ['status', 1]])->get(),
                 'warehouses' => DB::table('warehouses')->where('status', 1)->pluck('name', 'id')
