@@ -137,7 +137,7 @@ class TransferController extends BaseController{
                             foreach ($transferData->products as $value) {
                                 $from_warehouse = WarehouseProduct::where([['warehouse_id',$transferData->from_warehouse_id], ['product_id',$value->id]])->first();
                                 if($from_warehouse) {
-                                    $from_warehouse->qty += $value->pivot->transfer_qty;
+                                    $from_warehouse->bag_qty += $value->pivot->transfer_qty;
                                     $from_warehouse->update();
                                 }
                             }

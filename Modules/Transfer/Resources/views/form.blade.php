@@ -72,14 +72,14 @@
                                                     @php
                                                         $stock_qty = 0;
                                                         $warehouse_stock = DB::table('warehouse_product')->where([
-                                                            'warehouse_id'=>$transfer->from_warehouse_id,'product_id'=>$item->product_id])->value('qty');
+                                                            'warehouse_id'=>$transfer->from_warehouse_id,'product_id'=>$item->product_id])->value('bag_qty');
 
-                                                        if($transfer->transfer_status == 1)
-                                                        {
-                                                            $stock_qty = ($warehouse_stock ?? 0) + $item->transfer_qty;
-                                                        }else{
+                                                        // if($transfer->transfer_status == 1)
+                                                        // {
+                                                        //     $stock_qty = ($warehouse_stock ?? 0) + $item->transfer_qty;
+                                                        // }else{
                                                             $stock_qty = ($warehouse_stock ?? 0);
-                                                        }
+                                                        // }
                                                     @endphp
                                                     <tr>
                                                         <td>
@@ -308,8 +308,8 @@ $(document).ready(function () {
                 },
                 success: function(data) {
                     console.log(data);
-                    $(`.stock-qty-${row}`).text(data.qty);
-                    $(`#products_${row}_stock_qty`).val(data.qty);
+                    $(`.stock-qty-${row}`).text(data.bag_qty);
+                    $(`#products_${row}_stock_qty`).val(data.bag_qty);
                 }
             });
         }
