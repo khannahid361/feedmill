@@ -41,7 +41,7 @@
                                 name="production[{{ $tab }}][materials][{{ $key + 1 }}][unit_id]"
                                 id="production_{{ $tab }}_materials_{{ $key + 1 }}_unit_id"
                                 data-id="{{ $key + 1 }}">
-                            <input type="hidden" class="form-control text-right" value="{{ $item->cost }}"
+                            <input type="hidden" class="form-control text-right" value="{{ round($item->cost,2) }}"
                                 name="production[{{ $tab }}][materials][{{ $key + 1 }}][cost]"
                                 id="production_{{ $tab }}_materials_{{ $key + 1 }}_cost"
                                 data-id="{{ $key + 1 }}" readonly>
@@ -53,11 +53,11 @@
                                 id="production_{{ $tab }}_materials_{{ $key + 1 }}_q_ty"
                                 data-id="{{ $key + 1 }}" readonly>
                             <input type="hidden" class="track" data-qtys="{{ $item->q_ty }}"
-                                data-cost="{{ $item->cost }}" data-stock_qty="{{ $item->qty }}"
+                                data-cost="{{ round($item->cost,2) }}" data-stock_qty="{{ $item->qty }}"
                                 data-total="production_{{ $tab }}_materials_{{ $key + 1 }}_total"
                                 data-tab="{{ $tab }}" />
                             <input type="hidden" class="track_qty" data-qtys="{{ $item->q_ty }}"
-                                data-cost="{{ $item->cost }}" data-stock_qty="{{ $item->qty }}"
+                                data-cost="{{ round($item->cost,2) }}" data-stock_qty="{{ $item->qty }}"
                                 data-qty="production_{{ $tab }}_materials_{{ $key + 1 }}_qty"
                                 data-tab="{{ $tab }}" />
                         </td>
