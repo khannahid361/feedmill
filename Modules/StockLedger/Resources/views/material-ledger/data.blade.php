@@ -1,11 +1,5 @@
 @if ($ledger_data)
     @foreach ($ledger_data as $key => $value)
-    @php
-        if($key == 10)
-        {
-            dd($value);
-        }
-    @endphp
         <tr>
             <td class="text-center">{{ date('d-M-y', strtotime($value['date'])) }}</td>
             <td>{{ $value['material_name'] }}</td>
