@@ -16,7 +16,7 @@ use Modules\Account\Entities\ChartOfAccount;
 class Customer extends BaseModel
 {
     protected $fillable = [ 'name', 'shop_name', 'mobile', 'email', 'avatar', 'customer_group_id','warehouse_id',
-     'district_id', 'upazila_id', 'area_id', 'address', 'status', 'created_by', 'modified_by'];
+     'district_id', 'upazila_id', 'area_id', 'address', 'status', 'created_by', 'modified_by' ,'area'];
 
     public function customer_group()
     {

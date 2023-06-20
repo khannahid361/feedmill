@@ -474,42 +474,62 @@ $(document).ready(function () {
 function getMaterialDetails(value,rowindex){
     materialSearch($(value).val(),rowindex);
 }
-function materialSearch(data,row) {
-            rowindex = $('#material_list_'+row).closest('tr').index();
-        var temp_data = $('#material_list_'+row).val();
-            $.ajax({
-                url: '{{ route("material.search.by.id") }}',
-                type: 'POST',
-                data: {
-                    data: data,_token:_token
-                },
-                success: function(data) {
-                    $("#edit_modal_"+row).removeClass("d-none");
-                    temp_unit_name = data.unit_name.split(',');
-                    $('#material_code_'+row).text(data.code);
-                    $('#unit_name_'+row).text(temp_unit_name[0]);
-                    $('#materials_net_unit_cost_'+row).val(data.cost);
-                    $('.tax'+row).text(data.tax_name);
-                    $('#material_id_'+row).val(data.id);
-                    $('#material_unit_'+row).val(temp_unit_name[0]);
-                    $('#tax_rate_'+row).val(data.tax_rate);
-                    if(material_cost[rowindex] == 'undefined'){
-                        material_cost.push(parseFloat(data.cost));
-                    }else{
-                        material_cost[rowindex] = parseFloat(data.cost);
-                    }
-                    material_discount.push('0.00');
-                    tax_rate.push(parseFloat(data.tax_rate));
-                    tax_name.push(data.tax_name);
-                    tax_method.push(data.tax_method);
-                    unit_name.push(data.unit_name);
-                    unit_operator.push(data.unit_operator);
-                    unit_operation_value.push(data.unit_operation_value);
-                    console.log('material_discount = '+material_discount+'\n tax rate = '+tax_rate+'\n tax name = '+tax_name+'\n tax method = '+tax_method+'\n unit name = '+unit_name+'\n unit operator = '+unit_operator+'\n unit operation value = '+unit_operation_value);
-                    checkQuantity(1,true,input=2);
-                }
-            });
+function materialSearch(data, row) {
+    var rowindex = $('#material_list_' + row).closest('tr').index();
+    var temp_data = $('#material_list_' + row).val();
+
+    $.ajax({
+        url: '{{ route("material.search.by.id") }}',
+        type: 'POST',
+        data: {
+            data: data,
+            _token: '{{ csrf_token() }}' // Make sure to replace this with the actual CSRF token variable
+        },
+        beforeSend: function () {
+            console.log('lol');
+            $('#unit_name_' + row).text('');
+            $('#material_code_' + row).text('');
+            $('#materials_net_unit_cost_' + row).val('0');
+            $('#material_id_' + row).val('');
+            $('#material_unit_' + row).val('');
+            $('#tax_rate_' + row).val('');
+        },
+        success: function (data) {
+            $("#edit_modal_" + row).removeClass("d-none");
+            var temp_unit_name = data.unit_name.split(',');
+            console.log(temp_unit_name[0]);
+            $('#material_code_' + row).text(data.code);
+            $('#unit_name_' + row).text(temp_unit_name[0]);
+            $('#materials_net_unit_cost_' + row).val(data.cost);
+            $('.tax' + row).text(data.tax_name);
+            $('#material_id_' + row).val(data.id);
+            $('#material_unit_' + row).val(temp_unit_name[0]);
+            $('#tax_rate_' + row).val(data.tax_rate);
+
+            if (typeof material_cost[rowindex] === 'undefined') {
+                material_cost.push(parseFloat(data.cost));
+            } else {
+                material_cost[rowindex] = parseFloat(data.cost);
+            }
+
+            material_discount.push('0.00');
+            tax_rate.push(parseFloat(data.tax_rate));
+            tax_name.push(data.tax_name);
+            tax_method.push(data.tax_method);
+            unit_name.push(data.unit_name);
+            unit_operator.push(data.unit_operator);
+            unit_operation_value.push(data.unit_operation_value);
+
+            console.log('material_discount = ' + material_discount + '\n tax rate = ' + tax_rate +
+                '\n tax name = ' + tax_name + '\n tax method = ' + tax_method +
+                '\n unit name = ' + unit_name + '\n unit operator = ' + unit_operator +
+                '\n unit operation value = ' + unit_operation_value);
+
+            checkQuantity(1, true, input = 2);
+        }
+    });
 }
+
 function checkQuantity(purchase_qty,flag,input=2){
     var row_material_code = $('#material_table tbody tr:nth-child('+(rowindex + 1)+')').find('td:nth-child(2)').text();
     var pos = material_code.indexOf(row_material_code);

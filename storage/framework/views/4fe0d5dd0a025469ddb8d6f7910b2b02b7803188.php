@@ -10,6 +10,9 @@
                     <div class="card-title">
                         <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
                     </div>
+                    <div class="card-toolbar">
+                        <a href="<?php echo e(route('convert.product.bag')); ?>"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add Product Bag</a>
+                    </div>
                 </div>
             </div>
             <div class="card card-custom">
@@ -17,11 +20,11 @@
                     <form method="POST" id="form-filter" class="col-md-12 px-0">
                         <div class="row">
                             <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Material Name','name' => 'name','col' => 'col-md-3']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Product Name','name' => 'name','col' => 'col-md-3']]); ?>
 <?php $component->withName('form.textbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Material Name','name' => 'name','col' => 'col-md-3']); ?>
+<?php $component->withAttributes(['labelName' => 'Product Name','name' => 'name','col' => 'col-md-3']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
@@ -65,8 +68,8 @@
 <?php endif; ?>
                             <div class="col-md-3">
                                 <div style="margin-top:28px;">
-                                <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-left mr-2" type="button" data-toggle="tooltip" data-theme="dark" title="Reset"><i class="fas fa-undo-alt"></i></button>
-                                <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon float-left" type="button" data-toggle="tooltip" data-theme="dark" title="Search"><i class="fas fa-search"></i></button>
+                                    <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-left mr-2" type="button" data-toggle="tooltip" data-theme="dark" title="Reset"><i class="fas fa-undo-alt"></i></button>
+                                    <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon float-left" type="button" data-toggle="tooltip" data-theme="dark" title="Search"><i class="fas fa-search"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -81,20 +84,16 @@
                                     <tr>
                                         <th>Sl</th>
                                         <th>Warehouse Name</th>
-                                        <th>Material Name</th>
-                                        <th>Material Code</th>
+                                        <th>Product Name</th>
+                                        <th>Product Code</th>
                                         <th>Category</th>
-                                        <th>Unit</th>
-                                        <th>Cost</th>
-                                        <th>Quantity</th>
-                                        <th>Balance</th>
+                                        <th>Bag</th>
+                                        <th>Unbagged Quantity</th>
                                     </tr>
                                     </thead>
                                     <tbody></tbody>
                                     <tfoot>
                                     <tr class="bg-primary">
-                                        <th></th>
-                                        <th></th>
                                         <th></th>
                                         <th></th>
                                         <th></th>
@@ -130,7 +129,7 @@
                     [5, 10, 15, 25, 50, 100, 1000, 10000, -1],
                     [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
                 ],
-                "pageLength": 25,
+                "pageLength": -1,
                 "language"  : {
                     processing : `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
                     emptyTable : '<strong class="text-danger">No Data Found</strong>',
@@ -138,7 +137,7 @@
                     zeroRecords: '<strong class="text-danger">No Data Found</strong>'
                 },
                 "ajax": {
-                    "url" : "<?php echo e(route('material.stock.report.datatable.data')); ?>",
+                    "url" : "<?php echo e(route('warehouse.product.stock.datatable.data')); ?>",
                     "type": "POST",
                     "data": function (data) {
                         data.name = $("#form-filter #name").val();
@@ -148,13 +147,13 @@
                     }
                 },
                 "columnDefs"   : [{
-                    "targets"  : [0,1,2,3,4,5,6,7,8],
+                    "targets"  : [0,1,2,3,4,5,6],
                     "orderable": false,
                     "className": "text-center"
                 },],
                 "dom"    : "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
                 "buttons": [
-                        <?php if(permission('material-stock-report-access')): ?>{
+                        <?php if(permission('product-stock-report-access')): ?>{
                         'extend'   : 'colvis',
                         'className': 'btn btn-secondary btn-sm text-white',
                         'text'     : 'Column',
@@ -200,7 +199,7 @@
                             doc.pageMargins = [5, 5, 5, 5];
                         }
                     },
-                        <?php endif; ?>
+                    <?php endif; ?>
                 ],
                 "footerCallback": function ( row, data, start, end, display ) {
                     var api = this.api(), data;
@@ -210,7 +209,7 @@
                             typeof i === 'number' ?
                                 i : 0;
                     };
-                    for (let index = 7; index <=8; index++) {
+                    for (let index = 5; index <=6; index++) {
                         total = api
                             .column( index )
                             .data()
@@ -223,12 +222,11 @@
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
                             }, 0 );
-                        if(index == 8) {
-                            $( api.column( index ).footer() ).html('= '+number_format(pageTotal)+'Tk');
+                        if(index == 5) {
+                            $( api.column( index ).footer() ).html('= '+number_format(pageTotal));
                         }else{
                             $( api.column( index ).footer() ).html('= '+number_format(pageTotal));
                         }
-
                     }
                 }
             });
@@ -242,4 +240,4 @@
     </script>
 <?php $__env->stopPush(); ?>
 
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Stock\Resources/views/material/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Stock\Resources/views/product/stock.blade.php ENDPATH**/ ?>

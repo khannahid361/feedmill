@@ -23,7 +23,7 @@
                     <input type="hidden" name="district_id" id="district_id" value="{{ auth()->user()->district_id }}"/>
                     <input type="hidden" name="old_name" id="old_name"/>
                     <x-form.textbox labelName="Customer Name" name="name" required="required" col="col-md-6" placeholder="Enter customer name"/>
-                    <x-form.textbox labelName="Shop Name" name="shop_name" col="col-md-6" required="required" placeholder="Enter shop name"/>
+                    <x-form.textbox labelName="Shop Name" name="shop_name" col="col-md-6" placeholder="Enter shop name"/>
                     <x-form.textbox labelName="Mobile" name="mobile" col="col-md-6" required="required" placeholder="Enter mobile number"/>
                     <x-form.textbox labelName="Email" name="email" type="email" col="col-md-6" placeholder="Enter email address"/>
                     <x-form.selectbox labelName="Customer Group" name="customer_group_id" col="col-md-6" required="required" class="selectpicker">
@@ -56,6 +56,7 @@
                     <x-form.selectbox labelName="Upazila" name="upazila_id" col="col-md-6" class="selectpicker" onchange="getAreaList(this.value,2)"/>
                     <x-form.selectbox labelName="Area" name="area_id" col="col-md-6" class="selectpicker"/>
                     <x-form.textbox labelName="Previous Balance" name="previous_balance" col="col-md-6 pbalance" placeholder="Previous credit balalnce"/>
+                    <x-form.textarea labelName="Area" name="area" col="col-md-6" placeholder="Enter customer area"/>
                     <x-form.textarea labelName="Customer Address" name="address" col="col-md-6" required="required" placeholder="Enter customer address"/>
 
                   </div>

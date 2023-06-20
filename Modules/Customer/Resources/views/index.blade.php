@@ -328,6 +328,7 @@ $(document).ready(function(){
                         $('#store_or_update_form #customer_group_id').val(data.customer_group_id);
                         $('#store_or_update_form #district_id').val(data.district_id);
                         $('#store_or_update_form #address').val(data.address);
+                        $('#store_or_update_form #area').val(data.area);
                         $('#store_or_update_form .pbalance').addClass('d-none');
                         $('#store_or_update_form .selectpicker').selectpicker('refresh');
 

@@ -72,12 +72,12 @@ class PurchaseController extends BaseController{
                 if($value->document) {
                     $action .= '<a class="dropdown-item" href="'.asset('storage/'.PURCHASE_DOCUMENT_PATH.$value->document).'" download><i class="fas fa-download mr-2"></i> Document</a>';
                 }
-                if(permission('purchase-payment-add') && $value->purchase_status == 1 && ($value->grand_total - $value->paid_amount) != 0){
-                    $action .= ' <a class="dropdown-item add_payment" data-id="'.$value->id.'" data-due="'.($value->grand_total - $value->paid_amount).'"><i class="fas fa-plus-square text-info mr-2"></i> Add Payment</a>';
-                }
-                if(permission('purchase-payment-view') && $value->purchase_status == 1){
-                    $action .= ' <a class="dropdown-item view_payment_list"  data-id="'.$value->id.'"><i class="fas fa-file-invoice-dollar text-dark mr-2"></i> Payment List</a>';
-                }
+                // if(permission('purchase-payment-add') && $value->purchase_status == 1 && ($value->grand_total - $value->paid_amount) != 0){
+                //     $action .= ' <a class="dropdown-item add_payment" data-id="'.$value->id.'" data-due="'.($value->grand_total - $value->paid_amount).'"><i class="fas fa-plus-square text-info mr-2"></i> Add Payment</a>';
+                // }
+                // if(permission('purchase-payment-view') && $value->purchase_status == 1){
+                //     $action .= ' <a class="dropdown-item view_payment_list"  data-id="'.$value->id.'"><i class="fas fa-file-invoice-dollar text-dark mr-2"></i> Payment List</a>';
+                // }
                 if(permission('purchase-change-status') && $value->purchase_status != 1 && $value->purchase_status != 2){
                     $action .= ' <a class="dropdown-item change_status"  data-id="' . $value->id . '" data-name="' . $value->memo_no . '" data-status="'.$value->purchase_status.'"><i class="fas fa-check-circle text-success mr-2"></i> Change Status</a>';
                 }

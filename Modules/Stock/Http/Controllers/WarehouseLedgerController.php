@@ -66,35 +66,34 @@ class WarehouseLedgerController extends BaseController
         }
     }
 
-    public function materialLedger()
+    public function productStock()
     {
-        if (permission('material-stock-report-access')) {
-            $this->setPageData('Material Stock', 'Material Stock', 'fas fa-boxes', [['name' => 'Material Stock']]);
+        if (permission('product-stock-report-access')) {
+            $this->setPageData('Warehouse Product Ledger', 'Warehouse Product Ledger', 'fas fa-boxes', [['name' => 'Warehouse Product Ledger']]);
             $data = [
-                'categories' => Category::with('warehouse_materials')->whereHas('warehouse_materials')->where([['type', 1], ['status', 1]])->get(),
+                'categories' => Category::with('warehouse_products')->whereHas('warehouse_products')->where([['type', 2], ['status', 1]])->get(),
                 'warehouses' => DB::table('warehouses')->where('status', 1)->pluck('name', 'id')
             ];
-            return view('stock::material.ledger', $data);
+            return view('stock::product.stock', $data);
         } else {
             return $this->access_blocked();
         }
     }
 
-    public function materialDatatableData(Request $request)
+    public function getProductStockData(Request $request)
     {
-        if ($request->ajax() && permission('material-stock-report-access')) {
-            $newmodel = new WarehouseMaterial();
+        if ($request->ajax() && permission('product-stock-report-access')) {
             if (!empty($request->name)) {
-                $newmodel->setName($request->name);
+                $this->model->setName($request->name);
             }
             if (!empty($request->category)) {
-                $newmodel->setCategory($request->category);
+                $this->model->setCategory($request->category);
             }
             if (!empty($request->warehouse)) {
-                $newmodel->setWarehouse($request->warehouse);
+                $this->model->setWarehouse($request->warehouse);
             }
             $this->set_datatable_default_properties($request);
-            $list = $newmodel->getDatatableList();
+            $list = $this->model->getDatatableList();
             $data = [];
             $no = $request->input('start');
             foreach ($list as $value) {
@@ -102,22 +101,16 @@ class WarehouseLedgerController extends BaseController
                 $row    = [];
                 $row[]  = $no;
                 $row[]  = $value->warehouse_name;
-                $row[]  = $value->material_name;
-                $row[]  = $value->material_code;
+                $row[]  = $value->product_name;
+                $row[]  = $value->product_code;
                 $row[]  = $value->category_name;
-                $row[]  = number_format($value->cost, 2);
-                $row[]  = number_format($value->qty, 2);
-                $row[]  = number_format(($value->cost * $value->qty), 2);
+                $row[]  = $value->bag_qty;
+                $row[]  = $value->qty;
                 $data[] = $row;
             }
-            return $this->datatable_draw($request->input('draw'), $newmodel->count_all(), $newmodel->count_filtered(), $data);
+            return $this->datatable_draw($request->input('draw'), $this->model->count_all(), $this->model->count_filtered(), $data);
         } else {
             return response()->json($this->unauthorized());
         }
-    }
-
-    public function edit($id)
-    {
-        return view('stock::edit');
     }
 }

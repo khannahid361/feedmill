@@ -74,7 +74,7 @@
                                     @if(!isset($dealer))
                                         <x-form.textbox labelName="Previous Balance" name="previous_balance" col="col-md-4 pbalance" placeholder="Previous credit balalnce"/>
                                     @endif
-                                    <x-form.textbox labelName="Dealer Area" name="area" value="{{ isset($dealer) ? $dealer->area : '' }}" col="col-md-4" required="required" placeholder="Enter dealer area"/>
+                                    <x-form.textbox labelName="Dealer Area" name="area" value="{{ isset($dealer) ? $dealer->area : '' }}" col="col-md-4" placeholder="Enter dealer area"/>
                                     <x-form.textbox labelName="Dealer Address" name="address" value="{{ isset($dealer) ? $dealer->address : '' }}" col="col-md-4" required="required" placeholder="Enter dealer address"/>
                                 </div>
                             </div>

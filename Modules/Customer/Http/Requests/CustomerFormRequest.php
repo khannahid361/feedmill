@@ -16,10 +16,11 @@ class CustomerFormRequest extends FormRequest
     public function rules()
     {
         $this->rules['name']              = ['required','string','max:100'];
-        $this->rules['shop_name']         = ['required','string','max:100'];
+        $this->rules['shop_name']         = ['nullable','string','max:100'];
         $this->rules['mobile']            = ['required','string','max:15','unique:customers,mobile'];
         $this->rules['email']             = ['nullable','email','string','max:100','unique:customers,email'];
         $this->rules['area_id']           = ['nullable'];
+        $this->rules['area']              = ['nullable'];
         $this->rules['customer_group_id'] = ['required'];
         $this->rules['warehouse_id']      = ['nullable'];
         $this->rules['district_id']       = ['nullable'];
@@ -36,7 +37,7 @@ class CustomerFormRequest extends FormRequest
 
     public function messages()
     {
-        $this->messages['area_id.required']      = 'This area field is required';
+        // $this->messages['area_id.required']      = 'This area field is required';
         $this->messages['customer_group_id.required'] = 'This customer group field is required';
         $this->messages['district_id.required']       = 'This district field is required';
         $this->messages['upazila_id.required']        = 'This upazila field is required';

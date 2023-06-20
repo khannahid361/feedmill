@@ -18,7 +18,7 @@ class OpeningBalanceFormRequest extends FormRequest
         return [
             'voucher_no'          => 'required',
             'voucher_date'        => 'required',
-            'warehouse_id'        => 'required',
+            'warehouse_id'        => 'nullable',
             'chart_of_account_id' => 'required',
             'amount'              => 'required|numeric|gt:0',
         ];
@@ -28,7 +28,7 @@ class OpeningBalanceFormRequest extends FormRequest
     {
         return [
             'chart_of_account_id.required' => 'The account head field is required',
-            'warehouse_id.required'        => 'The warehouse field is required',
+            // 'warehouse_id.required'        => 'The warehouse field is required',
         ];
     }
 

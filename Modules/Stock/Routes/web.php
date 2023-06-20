@@ -17,6 +17,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('datatable-data', 'WarehouseLedgerController@getProductLedgerData')->name('datatable.data');
     });
 
+    Route::get('warehouse-product-stock', 'WarehouseLedgerController@productStock')->name('warehouse.product.stock');
+    Route::group(['prefix' => 'warehouse-product-stock', 'as'=>'warehouse.product.stock.'], function () {
+        Route::post('datatable-data', 'WarehouseLedgerController@getProductStockData')->name('datatable.data');
+    });
+
     Route::get('warehouse-material-ledger', 'WarehouseMaterialLedgerController@materialLedger')->name('warehouse.material.ledger');
     Route::group(['prefix' => 'warehouse-material-ledger', 'as'=>'warehouse.material.ledger.'], function () {
         Route::post('datatable-data', 'WarehouseMaterialLedgerController@materialDatatableData')->name('datatable.data');
