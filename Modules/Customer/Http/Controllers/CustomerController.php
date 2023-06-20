@@ -100,7 +100,7 @@ class CustomerController extends BaseController{
                     $row[] = $value->warehouse->name ?? '';
                     $row[] = $value->district->name ?? '';
                     $row[] = $value->upazila->name ?? '';
-                    $row[] = $value->area->name ?? '';
+                    $row[] = $value->area ?? '';
                     $row[] = permission('customer-edit') ? change_status($value->id,$value->status, $value->name) : STATUS_LABEL[$value->status];
                     $row[] = $this->model->customer_balance($value->id);
                     $row[] = action_button($action);//custom helper function for action button

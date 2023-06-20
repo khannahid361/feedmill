@@ -20,7 +20,7 @@
                     <td><b>Route</b></td><td><b>:</b></td><td>{{  $customer->route->name ?? ''  }}</td>
                 </tr>
                 <tr>
-                    <td><b>Area</b></td><td><b>:</b></td><td>{{  $customer->area->name ?? ''  }}</td>
+                    <td><b>Area</b></td><td><b>:</b></td><td>{{  $customer->area ?? ''  }}</td>
                     <td><b>Address</b></td><td><b>:</b></td><td>{{  $customer->address  }}</td>
                 </tr>
                 <tr>

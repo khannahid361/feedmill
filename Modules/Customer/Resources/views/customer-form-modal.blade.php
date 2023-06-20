@@ -54,7 +54,7 @@
                       @endif
                     </x-form.selectbox>
                     <x-form.selectbox labelName="Upazila" name="upazila_id" col="col-md-6" class="selectpicker" onchange="getAreaList(this.value,2)"/>
-                    <x-form.selectbox labelName="Area" name="area_id" col="col-md-6" class="selectpicker"/>
+                    {{-- <x-form.selectbox labelName="Area" name="area_id" col="col-md-6" class="selectpicker"/> --}}
                     <x-form.textbox labelName="Previous Balance" name="previous_balance" col="col-md-6 pbalance" placeholder="Previous credit balalnce"/>
                     <x-form.textarea labelName="Area" name="area" col="col-md-6" placeholder="Enter customer area"/>
                     <x-form.textarea labelName="Customer Address" name="address" col="col-md-6" required="required" placeholder="Enter customer address"/>

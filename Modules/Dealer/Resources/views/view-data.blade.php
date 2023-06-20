@@ -13,16 +13,16 @@
 
                 <tr>
                     <td><b>Username</b></td><td><b>:</b></td><td>{{  $dealer->username  }}</td>
-                    <td><b>Warehouse</b></td><td><b>:</b></td><td>{{  $dealer->warehouse->name  }}</td>
+                    <td><b>Warehouse</b></td><td><b>:</b></td><td>{{  $dealer->warehouse->name ?? ''  }}</td>
 
                 </tr>
                 <tr>
-                    <td><b>District</b></td><td><b>:</b></td><td>{{  $dealer->district->name  }}</td>
-                    <td><b>Upazila</b></td><td><b>:</b></td><td>{{  $dealer->upazila->name  }}</td>
+                    <td><b>District</b></td><td><b>:</b></td><td>{{  $dealer->district->name ?? ''  }}</td>
+                    <td><b>Upazila</b></td><td><b>:</b></td><td>{{  $dealer->upazila->name ?? ''  }}</td>
                 </tr>
                 <tr>
                     <td><b>Address</b></td><td><b>:</b></td><td>{{  $dealer->address  }}</td>
-                    <td><b>Status</b></td><td><b>:</b></td><td>{!! STATUS_LABEL[$dealer->status] !!}</td>
+                    <td><b>Area</b></td><td><b>:</b></td><td>{{ $dealer->area ?? '' }}</td>
                 </tr>
                 <tr>
 
@@ -38,6 +38,9 @@
                         {{  $dealer->updated_at ? date(config('settings.date_format'),strtotime($dealer->updated_at)) : ''  }}
                         @endif
                     </td>
+                </tr>
+                <tr>
+                    <td><b>Status</b></td><td><b>:</b></td><td>{!! STATUS_LABEL[$dealer->status] !!}</td>
                 </tr>
             </table>
         </div>
