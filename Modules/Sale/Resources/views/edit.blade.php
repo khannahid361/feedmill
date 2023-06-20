@@ -169,9 +169,7 @@
                                         </div>
 
                                         <x-form.selectbox labelName="Payment Status" name="payment_status" required="required"  col="col-md-2">
-                                            @foreach (PAYMENT_STATUS as $key => $value)
-                                                <option value="{{ $key }}" {{ $sale->payment_status == $key ? 'selected' : '' }}>{{ $value }}</option>
-                                            @endforeach
+                                            <option value="3">Due</option>
                                         </x-form.selectbox>
                                     </div>
                                 </div>

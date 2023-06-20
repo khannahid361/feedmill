@@ -46,9 +46,10 @@
                                 <input type="text" class="form-control" value="{{ $purchase->supplier->company_name.' ('.$purchase->supplier->name.')' }}" readonly />
                             </div>
                             <x-form.selectbox labelName="Purchase Status" name="purchase_status" required="required" col="col-md-4" onchange="received_qty(this.value)">
-                                @foreach (PURCHASE_STATUS as $key => $value)
+                                {{-- @foreach (PURCHASE_STATUS as $key => $value)
                                     <option value="{{ $key }}">{{ $value }}</option>
-                                @endforeach
+                                @endforeach --}}
+                                <option value="3">Due</option>
                             </x-form.selectbox>
                             <x-form.selectbox labelName="Depo" name="warehouse_id" required="required" col="col-md-4">
                                 @foreach($warehouses as $warehouse)
