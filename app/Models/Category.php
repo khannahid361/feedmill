@@ -26,9 +26,9 @@ class Category extends BaseModel
      * * * Begin :: Custom Datatable Code * * *
     *******************************************/
     //custom search column property
-    protected $type; 
-    protected $name; 
-    protected $status; 
+    protected $type;
+    protected $name;
+    protected $status;
 
     //methods to set custom search property value
     public function setType($type)
@@ -69,7 +69,7 @@ class Category extends BaseModel
                 }
             }
         }
-        
+
         $query = self::toBase();
 
         //search query
@@ -145,7 +145,7 @@ class Category extends BaseModel
      * * * Begin :: Model Local Scope * * *
     ****************************************/
 
-    
+
 
     /*************************************
     * * *  Begin :: Cache Data * * *
@@ -154,20 +154,20 @@ class Category extends BaseModel
     protected const PRODUCT_CATEGORY     = '_product_categories';
 
     public static function allMaterialCategories(){
-        return Cache::rememberForever(self::MATERIAL_CATEGORY, function () {
+        // return Cache::rememberForever(self::MATERIAL_CATEGORY, function () {
             return self::materialcategory()->orderBy('name','asc')->get();
-        });
+        // });
     }
 
     public static function allProductCategories(){
-        return Cache::rememberForever(self::PRODUCT_CATEGORY, function () {
+        // return Cache::rememberForever(self::PRODUCT_CATEGORY, function () {
             return self::productcategory()->orderBy('name','asc')->get();
-        });
+        // });
     }
 
     public static function flushCategoryCache(){
-        Cache::forget(self::MATERIAL_CATEGORY);
-        Cache::forget(self::PRODUCT_CATEGORY);
+        // Cache::forget(self::MATERIAL_CATEGORY);
+        // Cache::forget(self::PRODUCT_CATEGORY);
     }
 
     public static function boot(){
@@ -182,7 +182,7 @@ class Category extends BaseModel
         });
 
         static::deleted(function() {
-            self::flushCategoryCache(); 
+            self::flushCategoryCache();
         });
     }
     /***********************************

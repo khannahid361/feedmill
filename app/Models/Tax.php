@@ -14,7 +14,7 @@ class Tax extends BaseModel
      * * * Begin :: Custom Datatable Code * * *
     *******************************************/
     //custom search column property
-    protected $name; 
+    protected $name;
 
     //methods to set custom search property value
     public function setName($name)
@@ -31,7 +31,7 @@ class Tax extends BaseModel
         }else{
             $this->column_order = ['id','name','rate','status','created_by','modified_by','created_at','updated_at',null];
         }
-        
+
         $query = self::toBase();
 
         //search query
@@ -78,19 +78,19 @@ class Tax extends BaseModel
     protected const ACTIVE_TAXES = '_active_taxes';
 
     public static function allTaxes(){
-        return Cache::rememberForever(self::ALL_TAXES, function () {
+        // return Cache::rememberForever(self::ALL_TAXES, function () {
             return self::toBase()->get();
-        });
+        // });
     }
     public static function activeTaxes(){
-        return Cache::rememberForever(self::ACTIVE_TAXES, function () {
+        // return Cache::rememberForever(self::ACTIVE_TAXES, function () {
             return self::toBase()->where('status',1)->get();
-        });
+        // });
     }
 
     public static function flushCache(){
-        Cache::forget(self::ALL_TAXES);
-        Cache::forget(self::ACTIVE_TAXES);
+        // Cache::forget(self::ALL_TAXES);
+        // Cache::forget(self::ACTIVE_TAXES);
     }
 
 

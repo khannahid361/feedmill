@@ -69,18 +69,18 @@ class Warehouse extends BaseModel{
     protected const ALL_WAREHOUSES    = '_warehouses';
     protected const ACTIVE_WAREHOUSES    = '_active_warehouses';
     public static function allWarehouses(){
-        return Cache::rememberForever(self::ALL_WAREHOUSES, function () {
+        // return Cache::rememberForever(self::ALL_WAREHOUSES, function () {
             return self::toBase()->get();
-        });
+        // });
     }
     public static function activeWarehouses(){
-        return Cache::rememberForever(self::ACTIVE_WAREHOUSES, function () {
+        // return Cache::rememberForever(self::ACTIVE_WAREHOUSES, function () {
             return self::toBase()->where('status',1)->get();
-        });
+        // });
     }
     public static function flushCache(){
-        Cache::forget(self::ALL_WAREHOUSES);
-        Cache::forget(self::ACTIVE_WAREHOUSES);
+        // Cache::forget(self::ALL_WAREHOUSES);
+        // Cache::forget(self::ACTIVE_WAREHOUSES);
     }
     // public static function boot(){
     //     parent::boot();

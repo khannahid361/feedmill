@@ -9,7 +9,7 @@ use Modules\Setting\Entities\Warehouse;
 class Bank extends BaseModel
 {
     protected $fillable = [ 'bank_name', 'account_name', 'account_number', 'warehouse_id',  'status', 'created_by', 'modified_by'];
-    
+
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class,'warehouse_id','id');
@@ -18,10 +18,10 @@ class Bank extends BaseModel
      * * * Begin :: Custom Datatable Code * * *
     *******************************************/
     //custom search column property
-    protected $_bank_name; 
-    protected $_account_name; 
-    protected $_account_number; 
-    protected $_warehouse_id; 
+    protected $_bank_name;
+    protected $_account_name;
+    protected $_account_number;
+    protected $_warehouse_id;
 
     //methods to set custom search property value
     public function setBankName($bank_name)
@@ -50,7 +50,7 @@ class Bank extends BaseModel
         }else{
             $this->column_order = ['id','bank_name','account_name','account_number','warehouse_id',null, 'status',null];
         }
-        
+
         $query = self::with('warehouse:id,name');
 
         //search query
@@ -106,19 +106,19 @@ class Bank extends BaseModel
     protected const ACTIVE_BANKS    = '_active_banks';
 
     public static function allBankList(){
-        return Cache::rememberForever(self::ALL_BANKS, function () {
+        // return Cache::rememberForever(self::ALL_BANKS, function () {
             return self::toBase()->orderBy('bank_name','asc')->get();
-        });
+        // });
     }
     public static function activeBankList(){
-        return Cache::rememberForever(self::ACTIVE_BANKS, function () {
+        // return Cache::rememberForever(self::ACTIVE_BANKS, function () {
             return self::toBase()->where('status',1)->orderBy('bank_name','asc')->get();
-        });
+        // });
     }
 
     public static function flushCache(){
-        Cache::forget(self::ALL_BANKS);
-        Cache::forget(self::ACTIVE_BANKS);
+    //     Cache::forget(self::ALL_BANKS);
+    //     Cache::forget(self::ACTIVE_BANKS);
     }
 
     public static function boot(){
@@ -133,7 +133,7 @@ class Bank extends BaseModel
         });
 
         static::deleted(function() {
-            self::flushCache(); 
+            self::flushCache();
         });
     }
     /***********************************

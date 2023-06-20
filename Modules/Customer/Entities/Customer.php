@@ -42,7 +42,7 @@ class Customer extends BaseModel
     public function coa(){
         return $this->hasOne(ChartOfAccount::class,'customer_id','id');
     }
-    
+
     public function previous_balance()
     {
         return $this->hasOneThrough(Transaction::class,ChartOfAccount::class,'customer_id','chart_of_account_id','id','id')
@@ -66,16 +66,16 @@ class Customer extends BaseModel
      * * * Begin :: Custom Datatable Code * * *
     *******************************************/
     //custom search column property
-    protected $_name; 
-    protected $_shop_name; 
-    protected $_mobile; 
-    protected $_email; 
-    protected $_customer_group_id; 
-    protected $_area_id; 
-    protected $_district_id; 
-    protected $_warehouse_id; 
-    protected $_upazila_id; 
-    protected $_status; 
+    protected $_name;
+    protected $_shop_name;
+    protected $_mobile;
+    protected $_email;
+    protected $_customer_group_id;
+    protected $_area_id;
+    protected $_district_id;
+    protected $_warehouse_id;
+    protected $_upazila_id;
+    protected $_status;
 
     //methods to set custom search property value
     public function setName($name)
@@ -126,8 +126,8 @@ class Customer extends BaseModel
         //set column sorting index table column name wise (should match with frontend table header)
 
         $this->column_order = ['id','id','name', 'customer_group_id','warehouse_id','district_id','upazila_id','area_id','status',null,null];
-        
-        
+
+
         $query = self::with('customer_group','district','upazila','area','warehouse');
         if(auth()->user()->warehouse_id)
         {
@@ -227,21 +227,21 @@ class Customer extends BaseModel
     protected const ACTIVE_CUSTOMERS = '_active_customers';
 
     public static function allCustomers(){
-        return Cache::rememberForever(self::ALL_CUSTOMERS, function () {
+        // return Cache::rememberForever(self::ALL_CUSTOMERS, function () {
             return self::toBase()->orderBy('name','asc')->get();
-        });
+        // });
     }
 
     public static function activeCustomers(){
-        return Cache::rememberForever(self::ACTIVE_CUSTOMERS, function () {
+        // return Cache::rememberForever(self::ACTIVE_CUSTOMERS, function () {
             return self::active()->orderBy('name','asc')->get();
-        });
+        // });
     }
 
 
     public static function flushCache(){
-        Cache::forget(self::ALL_CUSTOMERS);
-        Cache::forget(self::ACTIVE_CUSTOMERS);
+        // Cache::forget(self::ALL_CUSTOMERS);
+        // Cache::forget(self::ACTIVE_CUSTOMERS);
     }
 
 

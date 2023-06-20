@@ -142,9 +142,9 @@ class Supplier extends BaseModel
     protected const ALL_SUPPLIERS    = '_suppliers';
 
     public static function allSuppliers(){
-        return Cache::rememberForever(self::ALL_SUPPLIERS, function () {
+        // return Cache::rememberForever(self::ALL_SUPPLIERS, function () {
             return self::toBase()->where('status',1)->orderBy('name','asc')->get();
-        });
+        // });
     }
 
     public static function flushCache(){

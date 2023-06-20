@@ -9,12 +9,12 @@ class ExpenseItem extends BaseModel
 {
     protected $fillable = ['name','status', 'created_by', 'modified_by'];
 
-    
+
     /******************************************
      * * * Begin :: Custom Datatable Code * * *
     *******************************************/
     //custom search column property
-    protected $_name; 
+    protected $_name;
 
     //methods to set custom search property value
     public function setName($name)
@@ -31,7 +31,7 @@ class ExpenseItem extends BaseModel
         }else{
             $this->column_order = ['id','name','status',null];
         }
-        
+
         $query = self::toBase();
 
         //search query
@@ -78,20 +78,20 @@ class ExpenseItem extends BaseModel
     protected const ACTIVE_EXPENSE_ITEMS    = '_active_expense_items';
 
     public static function allExpenseItems(){
-        return Cache::rememberForever(self::ALL_EXPENSE_ITEMS, function () {
+        // return Cache::rememberForever(self::ALL_EXPENSE_ITEMS, function () {
             return self::toBase()->get();
-        });
+        // });
     }
     public static function activeExpenseItems(){
-        return Cache::rememberForever(self::ACTIVE_EXPENSE_ITEMS, function () {
+        // return Cache::rememberForever(self::ACTIVE_EXPENSE_ITEMS, function () {
             return self::toBase()->where('status',1)->get();
-        });
+        // });
     }
 
 
     public static function flushCache(){
-        Cache::forget(self::ALL_EXPENSE_ITEMS);
-        Cache::forget(self::ACTIVE_EXPENSE_ITEMS);
+        // Cache::forget(self::ALL_EXPENSE_ITEMS);
+        // Cache::forget(self::ACTIVE_EXPENSE_ITEMS);
     }
 
 

@@ -9,7 +9,7 @@ use Modules\Setting\Entities\Warehouse;
 class MobileBank extends BaseModel
 {
     protected $fillable = [ 'bank_name', 'account_name', 'account_number','warehouse_id', 'status', 'created_by', 'modified_by'];
-    
+
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class,'warehouse_id','id');
@@ -18,9 +18,9 @@ class MobileBank extends BaseModel
      * * * Begin :: Custom Datatable Code * * *
     *******************************************/
     //custom search column property
-    protected $_bank_name; 
-    protected $_account_name; 
-    protected $_account_number; 
+    protected $_bank_name;
+    protected $_account_name;
+    protected $_account_number;
     protected $_warehouse_id;
     //methods to set custom search property value
     public function setBankName($bank_name)
@@ -48,7 +48,7 @@ class MobileBank extends BaseModel
         }else{
             $this->column_order = ['id','bank_name','account_name','account_number','warehouse_id',null,'status',null];
         }
-        
+
         $query = self::with('warehouse:id,name');
 
         //search query
@@ -105,19 +105,19 @@ class MobileBank extends BaseModel
     protected const ACTIVE_MOBILE_BANKS    = '_active_mobile_banks';
 
     public static function allMobileBankList(){
-        return Cache::rememberForever(self::ALL_MOBILE_BANKS, function () {
+        // return Cache::rememberForever(self::ALL_MOBILE_BANKS, function () {
             return self::toBase()->orderBy('bank_name','asc')->get();
-        });
+        // });
     }
     public static function activeMobileBankList(){
-        return Cache::rememberForever(self::ACTIVE_MOBILE_BANKS, function () {
+        // return Cache::rememberForever(self::ACTIVE_MOBILE_BANKS, function () {
             return self::toBase()->where('status',1)->orderBy('bank_name','asc')->get();
-        });
+        // });
     }
 
     public static function flushCache(){
-        Cache::forget(self::ALL_MOBILE_BANKS);
-        Cache::forget(self::ACTIVE_MOBILE_BANKS);
+        // Cache::forget(self::ALL_MOBILE_BANKS);
+        // Cache::forget(self::ACTIVE_MOBILE_BANKS);
     }
 
     public static function boot(){
@@ -132,7 +132,7 @@ class MobileBank extends BaseModel
         });
 
         static::deleted(function() {
-            self::flushCache(); 
+            self::flushCache();
         });
     }
     /***********************************
