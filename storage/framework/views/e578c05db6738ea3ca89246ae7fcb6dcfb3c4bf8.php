@@ -17,7 +17,7 @@
                 </tr>
                 <tr>
                     <td><b>Upazila</b></td><td><b>:</b></td><td><?php echo e($customer->upazila->name ?? ''); ?></td>
-                    <td><b>Route</b></td><td><b>:</b></td><td><?php echo e($customer->route->name ?? ''); ?></td>
+                    <td><b>Depo</b></td><td><b>:</b></td><td><?php echo e($customer->warehouse->name ?? ''); ?></td>
                 </tr>
                 <tr>
                     <td><b>Area</b></td><td><b>:</b></td><td><?php echo e($customer->area ?? ''); ?></td>

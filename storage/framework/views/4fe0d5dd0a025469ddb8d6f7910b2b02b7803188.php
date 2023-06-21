@@ -83,7 +83,7 @@
                                     <thead class="bg-primary">
                                     <tr>
                                         <th>Sl</th>
-                                        <th>Warehouse Name</th>
+                                        <th>DEPO Name</th>
                                         <th>Product Name</th>
                                         <th>Product Code</th>
                                         <th>Category</th>

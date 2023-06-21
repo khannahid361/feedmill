@@ -1,27 +1,25 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', $page_title); ?>
 
-@section('title', $page_title)
-
-@push('styles')
+<?php $__env->startPush('styles'); ?>
 <link href="plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
         <!--begin::Notice-->
         <div class="card card-custom gutter-b">
             <div class="card-header flex-wrap py-5">
                 <div class="card-title">
-                    <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
+                    <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    @if (permission('user-add'))
+                    <?php if(permission('user-add')): ?>
                     <a href="javascript:void(0);" onclick="showUserFormModal('Add New User','Save')" class="btn btn-primary btn-sm font-weight-bolder">
                         <i class="fas fa-plus-circle"></i> Add New
                     </a>
-                    @endif
+                    <?php endif; ?>
                     <!--end::Button-->
                 </div>
             </div>
@@ -32,26 +30,100 @@
             <div class="card-header flex-wrap py-5">
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row">
-                        <x-form.textbox labelName="Name" name="name" col="col-md-3" placeholder="Enter name" />
-                        <x-form.textbox labelName="Username" name="username" col="col-md-3" placeholder="Enter username" />
-                        <x-form.textbox labelName="Phone No." name="phone" col="col-md-3" placeholder="Enter phone number" />
-                        <x-form.textbox labelName="Email" name="email" col="col-md-3" placeholder="Enter email" />
-                        <x-form.selectbox labelName="Role" name="role_id" col="col-md-3" class="selectpicker">
-                            @foreach ($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->role_name }}</option>
-                            @endforeach
-                        </x-form.selectbox>
-                        <x-form.selectbox labelName="Showroom" name="warehouse_id" col="col-md-3" class="selectpicker">
-                            @if (!$warehouses->isEmpty())
-                            @foreach ($warehouses as $value)
-                                <option value="{{ $value->id }}">{{ $value->name }}</option>
-                                @endforeach
-                            @endif
-                        </x-form.selectbox>
-                        <x-form.selectbox labelName="Status" name="status" col="col-md-3" class="selectpicker">
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Name','name' => 'name','col' => 'col-md-3','placeholder' => 'Enter name']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Name','name' => 'name','col' => 'col-md-3','placeholder' => 'Enter name']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Username','name' => 'username','col' => 'col-md-3','placeholder' => 'Enter username']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Username','name' => 'username','col' => 'col-md-3','placeholder' => 'Enter username']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Phone No.','name' => 'phone','col' => 'col-md-3','placeholder' => 'Enter phone number']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Phone No.','name' => 'phone','col' => 'col-md-3','placeholder' => 'Enter phone number']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Email','name' => 'email','col' => 'col-md-3','placeholder' => 'Enter email']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Email','name' => 'email','col' => 'col-md-3','placeholder' => 'Enter email']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Role','name' => 'role_id','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Role','name' => 'role_id','col' => 'col-md-3','class' => 'selectpicker']); ?>
+                            <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($role->id); ?>"><?php echo e($role->role_name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Showroom','name' => 'warehouse_id','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Showroom','name' => 'warehouse_id','col' => 'col-md-3','class' => 'selectpicker']); ?>
+                            <?php if(!$warehouses->isEmpty()): ?>
+                            <?php $__currentLoopData = $warehouses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($value->id); ?>"><?php echo e($value->name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Status','name' => 'status','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Status','name' => 'status','col' => 'col-md-3','class' => 'selectpicker']); ?>
                             <option value="1">Active</option>
                             <option value="2">Inactive</option>
-                        </x-form.selectbox>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                         <div class="col-md-3">
                             <div style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
@@ -74,14 +146,14 @@
                             <table id="dataTable" class="table table-bordered table-hover">
                                 <thead class="bg-primary">
                                     <tr>
-                                        @if (permission('user-bulk-delete'))
+                                        <?php if(permission('user-bulk-delete')): ?>
                                         <th>
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="select_all" onchange="select_all()">
                                                 <label class="custom-control-label" for="select_all"></label>
                                             </div>
                                         </th>
-                                        @endif
+                                        <?php endif; ?>
                                         <th>Sl</th>
                                         <th>Avatar</th>
                                         <th>User</th>
@@ -106,11 +178,11 @@
         <!--end::Card-->
     </div>
 </div>
-@include('user.modal')
-@include('user.view')
-@endsection
+<?php echo $__env->make('user.modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('user.view', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script src="plugins/custom/datatables/datatables.bundle.js" type="text/javascript"></script>
 <script src="js/spartan-multi-image-picker.min.js"></script>
 <script>
@@ -137,7 +209,7 @@ $(document).ready(function(){
             zeroRecords: '<strong class="text-danger">No Data Found</strong>'
         },
         "ajax": {
-            "url": "{{route('user.datatable.data')}}",
+            "url": "<?php echo e(route('user.datatable.data')); ?>",
             "type": "POST",
             "data": function (data) {
                 data.name     = $("#form-filter #name").val();
@@ -150,21 +222,21 @@ $(document).ready(function(){
             }
         },
         "columnDefs": [{
-            @if (permission('user-bulk-delete'))
+            <?php if(permission('user-bulk-delete')): ?>
             "targets": [0,11],
-            @else
+            <?php else: ?>
             "targets": [10],
-            @endif
+            <?php endif; ?>
 
                 "orderable": false,
                 "className": "text-center"
             },
             {
-                @if (permission('user-bulk-delete'))
+                <?php if(permission('user-bulk-delete')): ?>
                 "targets": [1,2,8,9,10],
-                @else
+                <?php else: ?>
                 "targets": [0,1,7,8,9],
-                @endif
+                <?php endif; ?>
 
                 "className": "text-center"
             }
@@ -174,7 +246,7 @@ $(document).ready(function(){
             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
 
         "buttons": [
-            @if (permission('user-report'))
+            <?php if(permission('user-report')): ?>
             {
                 'extend':'colvis','className':'btn btn-secondary btn-sm text-white','text':'Column','columns': ':gt(0)'
             },
@@ -182,15 +254,15 @@ $(document).ready(function(){
                     "extend": 'print',
                     'text':'Print',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
+                    "title": "<?php echo e($page_title); ?> List",
                     "orientation": "landscape", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
-                        @if(permission('sale-bulk-delete'))
+                        <?php if(permission('sale-bulk-delete')): ?>
                         columns: ':visible:not(:eq(0),:eq(11))'
-                        @else
+                        <?php else: ?>
                         columns: ':visible:not(:eq(10))'
-                        @endif
+                        <?php endif; ?>
                     },
                     customize: function (win) {
                         $(win.document.body).addClass('bg-white');
@@ -205,44 +277,44 @@ $(document).ready(function(){
                     "extend": 'csv',
                     'text':'CSV',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
-                    "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                    "title": "<?php echo e($page_title); ?> List",
+                    "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "exportOptions": {
-                         @if(permission('sale-bulk-delete'))
+                         <?php if(permission('sale-bulk-delete')): ?>
                         columns: ':visible:not(:eq(0),:eq(11))'
-                        @else
+                        <?php else: ?>
                         columns: ':visible:not(:eq(10))'
-                        @endif
+                        <?php endif; ?>
                     }
                 },
                 {
                     "extend": 'excel',
                     'text':'Excel',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
-                    "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                    "title": "<?php echo e($page_title); ?> List",
+                    "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "exportOptions": {
-                         @if(permission('sale-bulk-delete'))
+                         <?php if(permission('sale-bulk-delete')): ?>
                         columns: ':visible:not(:eq(0),:eq(11))'
-                        @else
+                        <?php else: ?>
                         columns: ':visible:not(:eq(10))'
-                        @endif
+                        <?php endif; ?>
                     }
                 },
                 {
                     "extend": 'pdf',
                     'text':'PDF',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
-                    "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                    "title": "<?php echo e($page_title); ?> List",
+                    "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "orientation": "landscape", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
-                         @if(permission('sale-bulk-delete'))
+                         <?php if(permission('sale-bulk-delete')): ?>
                         columns: ':visible:not(:eq(0),:eq(11))'
-                        @else
+                        <?php else: ?>
                         columns: ':visible:not(:eq(10))'
-                        @endif
+                        <?php endif; ?>
                     },
                     customize: function(doc) {
                         doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
@@ -250,8 +322,8 @@ $(document).ready(function(){
                         doc.pageMargins = [5,5,5,5];
                     }
                 },
-            @endif
-            @if (permission('user-bulk-delete'))
+            <?php endif; ?>
+            <?php if(permission('user-bulk-delete')): ?>
             {
                 'className':'btn btn-danger btn-sm delete_btn d-none text-white',
                 'text':'Delete',
@@ -259,7 +331,7 @@ $(document).ready(function(){
                     multi_delete();
                 }
             }
-            @endif
+            <?php endif; ?>
         ],
     });
 
@@ -296,7 +368,7 @@ $(document).ready(function(){
     $(document).on('click', '#save-btn', function () {
         let form     = document.getElementById('store_or_update_form');
         let formData = new FormData(form);
-        let url      = "{{route('user.store.or.update')}}";
+        let url      = "<?php echo e(route('user.store.or.update')); ?>";
         let id       = $('#update_id').val();
         let method;
         if (id) {
@@ -363,7 +435,7 @@ $(document).ready(function(){
         $('#store_or_update_form').find('.error').remove();
         if (id) {
             $.ajax({
-                url: "{{route('user.edit')}}",
+                url: "<?php echo e(route('user.edit')); ?>",
                 type: "POST",
                 data: { id: id,_token: _token},
                 dataType: "JSON",
@@ -395,7 +467,7 @@ $(document).ready(function(){
                             $('#avatar img').css('display','none');
                             $('#avatar .spartan_remove_row').css('display','none');
                             $('#avatar .img_').css('display','block');
-                            $('#avatar .img_').attr('src',"{{ asset('storage/'.USER_PHOTO_PATH)}}/"+data.avatar);
+                            $('#avatar .img_').attr('src',"<?php echo e(asset('storage/'.USER_PHOTO_PATH)); ?>/"+data.avatar);
                         }else{
                             $('#avatar img').css('display','block');
                             $('#avatar .spartan_remove_row').css('display','none');
@@ -423,7 +495,7 @@ $(document).ready(function(){
         let id = $(this).data('id');
         if (id) {
             $.ajax({
-                url: "{{route('user.view')}}",
+                url: "<?php echo e(route('user.view')); ?>",
                 type: "POST",
                 data: { id: id,_token: _token},
                 success: function (data) {
@@ -445,7 +517,7 @@ $(document).ready(function(){
         let id    = $(this).data('id');
         let name  = $(this).data('name');
         let row   = table.row($(this).parent('tr'));
-        let url   = "{{ route('user.delete') }}";
+        let url   = "<?php echo e(route('user.delete')); ?>";
         delete_data(id, url, table, row, name);
     });
 
@@ -464,7 +536,7 @@ $(document).ready(function(){
                 icon: 'warning',
             });
         }else{
-            let url = "{{route('user.bulk.delete')}}";
+            let url = "<?php echo e(route('user.bulk.delete')); ?>";
             bulk_delete(ids,url,table,rows);
         }
     }
@@ -474,7 +546,7 @@ $(document).ready(function(){
         let name   = $(this).data('name');
         let status = $(this).data('status');
         let row    = table.row($(this).parent('tr'));
-        let url    = "{{ route('user.change.status') }}";
+        let url    = "<?php echo e(route('user.change.status')); ?>";
         change_status(id, url, table, row, name, status);
     });
 
@@ -497,7 +569,7 @@ getUserList();
 function getUserList(user_id='')
 {
     $.ajax({
-        url:"{{ url('user/list') }}",
+        url:"<?php echo e(url('user/list')); ?>",
         type:"GET",
         success:function(data){
             html = `<option value="0">Self</option>`;
@@ -589,4 +661,6 @@ function generatePassword(upper, lower, number, symbol, length){
  * * * End :: Random Password Genrate Code * * *
  **************************************************/
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\resources\views/user/index.blade.php ENDPATH**/ ?>

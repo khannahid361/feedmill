@@ -17,7 +17,7 @@
                 </tr>
                 <tr>
                     <td><b>Upazila</b></td><td><b>:</b></td><td>{{  $customer->upazila->name ?? ''  }}</td>
-                    <td><b>Route</b></td><td><b>:</b></td><td>{{  $customer->route->name ?? ''  }}</td>
+                    <td><b>Depo</b></td><td><b>:</b></td><td>{{  $customer->warehouse->name ?? ''  }}</td>
                 </tr>
                 <tr>
                     <td><b>Area</b></td><td><b>:</b></td><td>{{  $customer->area ?? ''  }}</td>

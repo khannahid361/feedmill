@@ -75,6 +75,8 @@
                                         <th>Dealer</th>
                                         <th>Sale Date</th>
                                         <th>Item</th>
+                                        <th>Total Quantity</th>
+                                        <th>Total Free Quantity</th>
                                         <th>Total Delivery Quantity</th>
                                         <th>Total Price</th>
                                         <th>Grand Total</th>

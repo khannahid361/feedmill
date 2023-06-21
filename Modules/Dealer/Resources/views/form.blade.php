@@ -131,7 +131,7 @@
                                                             <input type="text" name="products[{{ $key+1 }}][commission_rate]" class="form-control text-right"  value="{{ $item->commission_rate }}" onkeyup="generateCommissionPercentage({{ $key+1 }})" id="products_{{ $key+1 }}_commission_rate" >
                                                         </td>
                                                         <td>
-                                                            <input type="text" name="products[{{ $key+1 }}][commission_percentage]" value="{{ $item->product->base_unit_price > 0 ? number_format($item->commission_rate/$item->product->base_unit_price,4,'.',',') : 0 }}" class="form-control text-center " id="products_{{ $key+1 }}_commission_percentage" >
+                                                            <input type="text" name="products[{{ $key+1 }}][commission_percentage]" value="{{ $item->product->base_unit_price > 0 ? number_format($item->commission_rate * 100/$item->product->base_unit_price,2,'.',',') : 0 }}" class="form-control text-center " id="products_{{ $key+1 }}_commission_percentage" onkeyup="generateCommissionRate({{ $key+1 }})">
                                                         </td>
                                                         <td class="text-center">
                                                             <button type="button" class="btn btn-danger btn-sm remove" data-toggle="tooltip"

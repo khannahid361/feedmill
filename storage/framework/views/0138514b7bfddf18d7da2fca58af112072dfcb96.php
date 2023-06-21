@@ -137,7 +137,7 @@
                                         <th>Category</th>
                                         <th>Cost (KG)</th>
                                         <th>Unit</th>
-                                        <th>Price</th>
+                                        <th>Sale Price</th>
                                         <th>Stock Qty</th>
                                         <th>Alert Qty</th>
                                         <th>Status</th>
@@ -170,6 +170,7 @@
             "responsive": true, //Make table responsive in mobile device
             "bInfo": true, //TO show the total number of data
             "bFilter": false, //For datatable default search box show/hide
+            "ordering": false, //For datatable default search box show/hide
             "lengthMenu": [
                 [5, 10, 15, 25, 50, 100, 1000, 10000, -1],
                 [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]

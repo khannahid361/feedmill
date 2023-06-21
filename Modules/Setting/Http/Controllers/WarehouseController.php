@@ -14,7 +14,7 @@ class WarehouseController extends BaseController{
     }
     public function index(){
         if(permission('warehouse-access')){
-            $this->setPageData('Warehouse','Warehouse','fas fa-warehouse',[['name' => 'Warehouse']]);
+            $this->setPageData('DEPO','DEPO','fas fa-warehouse',[['name' => 'DEPO']]);
             $deletable = self::DELETABLE;
             $districts = DB::table('locations')->where([['type',1],['status',1]])->orderBy('id','asc')->pluck('name','id');
             return view('setting::warehouse.index',compact('deletable','districts'));

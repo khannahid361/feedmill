@@ -60,7 +60,6 @@ class SalesReportController extends BaseController
                     $row[]  = !empty($value->total_delivery_quantity) ? $value->total_delivery_quantity : '<button type="button" class="btn btn-danger btn-block"></button>';
                     $row[]  = $value->total_price;
                     $row[]  = $value->grand_total;
-                    $row[]  = $value->paid_amount;
                     $row[]  = $value->created_by;
                     $data[] = $row;
                 }

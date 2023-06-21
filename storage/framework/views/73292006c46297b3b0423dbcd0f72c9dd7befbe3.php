@@ -1,16 +1,15 @@
-@extends('layouts.app')
-@section('title', $page_title)
-@push('styles')
-<link href="{{asset('plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
-@endpush
-@section('content')
+<?php $__env->startSection('title', $page_title); ?>
+<?php $__env->startPush('styles'); ?>
+<link href="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.css')); ?>" rel="stylesheet" type="text/css" />
+<?php $__env->stopPush(); ?>
+<?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
         <div class="card card-custom gutter-b">
             <div class="card-header flex-wrap py-5">
-                <div class="card-title"><h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3></div>
+                <div class="card-title"><h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3></div>
                 <div class="card-toolbar">
-                    @if (permission('warehouse-add'))<a href="javascript:void(0);" onclick="showFormModal('Add New Warehouse','Save')" class="btn btn-primary btn-sm font-weight-bolder add-btn"><i class="fas fa-plus-circle"></i> Add New</a>@endif
+                    <?php if(permission('warehouse-add')): ?><a href="javascript:void(0);" onclick="showFormModal('Add New Warehouse','Save')" class="btn btn-primary btn-sm font-weight-bolder add-btn"><i class="fas fa-plus-circle"></i> Add New</a><?php endif; ?>
                 </div>
             </div>
         </div>
@@ -18,7 +17,18 @@
             <div class="card-header flex-wrap py-5">
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row">
-                        <x-form.textbox labelName="DEPO Name" name="name" col="col-md-4" />
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'DEPO Name','name' => 'name','col' => 'col-md-4']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'DEPO Name','name' => 'name','col' => 'col-md-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                         <div class="col-md-8">
                             <div style="margin-top:28px;">
                                 <div style="margin-top:28px;">
@@ -57,10 +67,10 @@
         </div>
     </div>
 </div>
-@include('setting::warehouse.modal')
-@endsection
-@push('scripts')
-<script src="{{asset('plugins/custom/datatables/datatables.bundle.js')}}" type="text/javascript"></script>
+<?php echo $__env->make('setting::warehouse.modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+<script src="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.js')); ?>" type="text/javascript"></script>
 <script>
 var table;
 $(document).ready(function(){
@@ -83,7 +93,7 @@ $(document).ready(function(){
             zeroRecords: '<strong class="text-danger">No Data Found</strong>'
         },
         "ajax": {
-            "url": "{{route('warehouse.datatable.data')}}",
+            "url": "<?php echo e(route('warehouse.datatable.data')); ?>",
             "type": "POST",
             "data": function (data) {
                 data.name = $("#form-filter #name").val();
@@ -109,7 +119,7 @@ $(document).ready(function(){
     $(document).on('click', '#save-btn', function () {
         let form = document.getElementById('store_or_update_form');
         let formData = new FormData(form);
-        let url = "{{route('warehouse.store.or.update')}}";
+        let url = "<?php echo e(route('warehouse.store.or.update')); ?>";
         let id = $('#update_id').val();
         let method;
         if (id) {
@@ -127,7 +137,7 @@ $(document).ready(function(){
         $('#store_or_update_form').find('.error').remove();
         if (id) {
             $.ajax({
-                url: "{{route('warehouse.edit')}}",
+                url: "<?php echo e(route('warehouse.edit')); ?>",
                 type: "POST",
                 data: { id: id,_token: _token},
                 dataType: "JSON",
@@ -160,7 +170,7 @@ $(document).ready(function(){
         let id    = $(this).data('id');
         let name  = $(this).data('name');
         let row   = table.row($(this).parent('tr'));
-        let url   = "{{ route('warehouse.delete') }}";
+        let url   = "<?php echo e(route('warehouse.delete')); ?>";
         delete_data(id, url, table, row, name);
     });
     function multi_delete(){
@@ -178,7 +188,7 @@ $(document).ready(function(){
                 icon: 'warning',
             });
         }else{
-            let url = "{{route('warehouse.bulk.delete')}}";
+            let url = "<?php echo e(route('warehouse.bulk.delete')); ?>";
             bulk_delete(ids,url,table,rows);
         }
     }
@@ -187,9 +197,11 @@ $(document).ready(function(){
         let name   = $(this).data('name');
         let status = $(this).data('status');
         let row    = table.row($(this).parent('tr'));
-        let url    = "{{ route('warehouse.change.status') }}";
+        let url    = "<?php echo e(route('warehouse.change.status')); ?>";
         change_status(id, url, table, row, name, status);
     });
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Setting\Resources/views/warehouse/index.blade.php ENDPATH**/ ?>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Modules\Sale\Entities\Sale;
 use Modules\Purchase\Entities\Purchase;
 use App\Http\Controllers\BaseController;
+use Modules\DealerSale\Entities\DealerSale;
 use Modules\Setting\Entities\Warehouse;
 
 class StockReturnController extends BaseController{
@@ -53,4 +54,23 @@ class StockReturnController extends BaseController{
         }
     }
 
+    public function returnDealerSale(Request $request)
+    {
+        if(permission('sale-return-access')){
+            $sale = DealerSale::with(['sale_products','dealer:id,name,shop_name','warehouse:id,name'])->where('memo_no',$request->get('memo_no'))->first();
+            // dd($sale);
+            if($sale){
+                $this->setPageData('Sale Return','Sale Return','fas fa-undo-alt',[['name' => 'Sale Return']]);
+                $data = [
+                    'sale'       => $sale,
+                    'warehouses' => Warehouse::all()
+                ];
+                return view('stockreturn::dealer-sale.edit',$data);
+            }else{
+                return redirect('return')->with(['status'=>'error','message'=>'No Data Found']);
+            }
+        }else{
+            return $this->access_blocked();
+        }
+    }
 }

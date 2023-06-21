@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', $page_title); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -56,9 +54,27 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="card card-custom card-border">
+                                <div class="card-header bg-primary">
+                                    <div class="card-title">
+                                        <h3 class="card-label text-white">Return From Dealer</h3>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                   <form class="form-inline col-md-12" action="<?php echo e(url('return/dealer-sale')); ?>" method="get">
+                                        <div class="form-group col-md-7">
+                                            <label for="memo_no">Memo No:</label>
+                                            <input type="text" name="memo_no"  class="form-control col-md-10" id="memo_no" placeholder="Enter Sale Memo No" required="required">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-md" style="margin-top:18px;">Serach</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    
+
+
                 </div>
                 <!--end: Datatable-->
             </div>

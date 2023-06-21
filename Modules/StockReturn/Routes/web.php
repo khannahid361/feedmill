@@ -16,10 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['auth']], function () {
     Route::get('return', 'StockReturnController@index')->name('return');
     Route::group(['prefix' => 'return', 'as'=>'return.'], function () {
+        Route::get('dealer-sale', 'StockReturnController@returnDealerSale')->name('dealer.sale');
         Route::get('sale', 'StockReturnController@return_sale')->name('sale');
         Route::get('purchase', 'StockReturnController@return_purchase')->name('purchase');
     });
-   
+
     //Sale Return Routes
     Route::get('sale-return', 'SaleReturnController@index')->name('sale.return');
     Route::group(['prefix' => 'sale-return', 'as'=>'sale.return.'], function () {
@@ -39,5 +40,14 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('delete', 'PurchaseReturnController@delete')->name('delete');
         Route::post('bulk-delete', 'PurchaseReturnController@bulk_delete')->name('bulk.delete');
     });
-       
+
+    //Dealer Sale Return Routes
+    Route::get('dealer-sale-return', 'DealerSaleReturnController@index')->name('dealer.sale.return');
+    Route::group(['prefix' => 'dealer-sale-return', 'as'=>'dealer.sale.return.'], function () {
+        Route::post('datatable-data', 'DealerSaleReturnController@get_datatable_data')->name('datatable.data');
+        Route::post('store', 'DealerSaleReturnController@store')->name('store');
+        Route::get('{id}/show', 'DealerSaleReturnController@show')->name('show');
+        Route::post('delete', 'DealerSaleReturnController@delete')->name('delete');
+        Route::post('bulk-delete', 'DealerSaleReturnController@bulk_delete')->name('bulk.delete');
+    });
 });
