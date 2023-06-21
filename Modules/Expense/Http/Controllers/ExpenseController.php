@@ -64,11 +64,11 @@ class ExpenseController extends BaseController
                     }
                     $row[] = $no;
                     $row[] = $value->date;
-                    $row[] = $value->warehouse->name;
-                    $row[] = $value->expense_item->name;
+                    $row[] = $value->warehouse->name ?? '';
+                    $row[] = $value->expense_item->name ?? '';
                     $row[] = $value->remarks;
                     $row[] = SALE_PAYMENT_METHOD[$value->payment_type];
-                    $row[] = $value->coa->name;
+                    $row[] = $value->coa->name ?? '';
                     $row[] = number_format($value->amount,2);
                     $row[] = action_button($action);//custom helper function for action button
                     $data[] = $row;
