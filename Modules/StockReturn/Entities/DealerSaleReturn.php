@@ -10,7 +10,7 @@ use Modules\DealerSale\Entities\DealerSale;
 class DealerSaleReturn extends BaseModel
 {
     protected $table = 'dealer_sale_return';
-    protected $fillable = ['return_no', 'memo_no', 'warehouse_id', 'customer_id', 'total_price', 'total_deduction', 'tax_rate', 'total_tax', 'grand_total','deducted_sr_commission', 'reason', 'date', 'return_date', 'created_by', 'modified_by'];
+    protected $fillable = ['return_no', 'memo_no', 'warehouse_id', 'dealer_id', 'total_price', 'total_deduction', 'tax_rate', 'total_tax', 'grand_total','deducted_sr_commission', 'reason', 'date', 'return_date', 'created_by', 'modified_by'];
     public function sale(){
         return $this->belongsTo(DealerSale::class,'memo_no','memo_no');
     }

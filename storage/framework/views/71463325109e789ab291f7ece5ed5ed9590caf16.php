@@ -1,19 +1,18 @@
-@extends('layouts.app')
-@section('title', $page_title)
-@push('styles')
-<link href="{{asset('plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
-<link href="{{asset('css/daterangepicker.min.css')}}" rel="stylesheet" type="text/css" />
-@endpush
-@section('content')
+<?php $__env->startSection('title', $page_title); ?>
+<?php $__env->startPush('styles'); ?>
+<link href="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.css')); ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo e(asset('css/daterangepicker.min.css')); ?>" rel="stylesheet" type="text/css" />
+<?php $__env->stopPush(); ?>
+<?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
         <div class="card card-custom gutter-b">
             <div class="card-header flex-wrap py-5">
-                <div class="card-title"><h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3></div>
+                <div class="card-title"><h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3></div>
                 <div class="card-toolbar">
-                    @if (permission('sale-return-add'))
-                    <a href="{{ route('return') }}"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add Return</a>
-                    @endif
+                    <?php if(permission('sale-return-add')): ?>
+                    <a href="<?php echo e(route('return')); ?>"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add Return</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -29,15 +28,47 @@
                                 <input type="hidden" id="end_date" name="end_date">
                             </div>
                         </div>
-                        <x-form.textbox labelName="Return No." name="return_no" col="col-md-4" />
-                        <x-form.textbox labelName="Memo No." name="memo_no" col="col-md-4" />
-                        <x-form.selectbox labelName="Dealer" name="dealer_id" col="col-md-4" class="selectpicker">
-                            @if (!$dealers->isEmpty())
-                                @foreach ($dealers as $value)
-                                    <option value="{{ $value->id }}">{{ $value->name.' - '.$value->phone }}</option>
-                                @endforeach
-                            @endif
-                        </x-form.selectbox>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Return No.','name' => 'return_no','col' => 'col-md-4']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Return No.','name' => 'return_no','col' => 'col-md-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Memo No.','name' => 'memo_no','col' => 'col-md-4']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Memo No.','name' => 'memo_no','col' => 'col-md-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Dealer','name' => 'dealer_id','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Dealer','name' => 'dealer_id','col' => 'col-md-4','class' => 'selectpicker']); ?>
+                            <?php if(!$dealers->isEmpty()): ?>
+                                <?php $__currentLoopData = $dealers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($value->id); ?>"><?php echo e($value->name.' - '.$value->phone); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                         <div class="col-md-3">
                             <div style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-left mr-2" type="button" data-toggle="tooltip" data-theme="dark" title="Reset"><i class="fas fa-undo-alt"></i></button>
@@ -74,12 +105,12 @@
         </div>
     </div>
 </div>
-@endsection
-@push('scripts')
-<script src="{{asset('plugins/custom/datatables/datatables.bundle.js')}}" type="text/javascript"></script>
-<script src="{{asset('js/moment.js')}}"></script>
-<script src="{{asset('js/knockout-3.4.2.js')}}"></script>
-<script src="{{asset('js/daterangepicker.min.js')}}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+<script src="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.js')); ?>" type="text/javascript"></script>
+<script src="<?php echo e(asset('js/moment.js')); ?>"></script>
+<script src="<?php echo e(asset('js/knockout-3.4.2.js')); ?>"></script>
+<script src="<?php echo e(asset('js/daterangepicker.min.js')); ?>"></script>
 <script>
 var table;
 $(document).ready(function(){
@@ -112,7 +143,7 @@ $(document).ready(function(){
             zeroRecords: '<strong class="text-danger">No Data Found</strong>'
         },
         "ajax": {
-            "url": "{{route('dealer.sale.return.datatable.data')}}",
+            "url": "<?php echo e(route('dealer.sale.return.datatable.data')); ?>",
             "type": "POST",
             "data": function (data) {
                 data.return_no   = $("#form-filter #return_no").val();
@@ -139,7 +170,7 @@ $(document).ready(function(){
                 "extend": 'print',
                 'text':'Print',
                 'className':'btn btn-secondary btn-sm text-white',
-                "title": "{{ $page_title }} List",
+                "title": "<?php echo e($page_title); ?> List",
                 "orientation": "landscape", //portrait
                 "pageSize": "legal", //A3,A5,A6,legal,letter
                 "exportOptions": {
@@ -157,8 +188,8 @@ $(document).ready(function(){
                 "extend": 'csv',
                 'text':'CSV',
                 'className':'btn btn-secondary btn-sm text-white',
-                "title": "{{ $page_title }} List",
-                "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                "title": "<?php echo e($page_title); ?> List",
+                "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                 "exportOptions": {
                     columns: ':visible:not(:eq(11))'
                 }
@@ -166,8 +197,8 @@ $(document).ready(function(){
                 "extend": 'excel',
                 'text':'Excel',
                 'className':'btn btn-secondary btn-sm text-white',
-                "title": "{{ $page_title }} List",
-                "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                "title": "<?php echo e($page_title); ?> List",
+                "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                 "exportOptions": {
                     columns: ':visible:not(:eq(11))'
                 }
@@ -175,8 +206,8 @@ $(document).ready(function(){
                 "extend": 'pdf',
                 'text':'PDF',
                 'className':'btn btn-secondary btn-sm text-white',
-                "title": "{{ $page_title }} List",
-                "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                "title": "<?php echo e($page_title); ?> List",
+                "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                 "orientation": "landscape", //portrait
                 "pageSize": "legal", //A3,A5,A6,legal,letter
                 "exportOptions": {
@@ -200,7 +231,7 @@ $(document).ready(function(){
         let id    = $(this).data('id');
         let name  = $(this).data('name');
         let row   = table.row($(this).parent('tr'));
-        let url   = "{{ route('dealer.sale.return.delete') }}";
+        let url   = "<?php echo e(route('dealer.sale.return.delete')); ?>";
         delete_data(id, url, table, row, name);
     });
 });
@@ -208,7 +239,7 @@ function customer_list() {
     let route_id = document.getElementById('route_id').value;
     let area_id = document.getElementById('area_id').value;
     $.ajax({
-        url:"{{ url('customer-list') }}",
+        url:"<?php echo e(url('customer-list')); ?>",
         type:"POST",
         data:{route_id:route_id,area_id:area_id,_token:_token},
         dataType:"JSON",
@@ -224,7 +255,7 @@ function customer_list() {
 }
 function getRouteList(upazila_id){
     $.ajax({
-        url:"{{ url('upazila-id-wise-route-list') }}/"+upazila_id,
+        url:"<?php echo e(url('upazila-id-wise-route-list')); ?>/"+upazila_id,
         type:"GET",
         dataType:"JSON",
         success:function(data){
@@ -239,7 +270,7 @@ function getRouteList(upazila_id){
 }
 function getAreaList(route_id,selector,area_id=''){
     $.ajax({
-        url:"{{ url('route-id-wise-area-list') }}/"+route_id,
+        url:"<?php echo e(url('route-id-wise-area-list')); ?>/"+route_id,
         type:"GET",
         dataType:"JSON",
         success:function(data){
@@ -253,4 +284,6 @@ function getAreaList(route_id,selector,area_id=''){
     });
 }
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/StockReturn\Resources/views/dealer-sale/index.blade.php ENDPATH**/ ?>

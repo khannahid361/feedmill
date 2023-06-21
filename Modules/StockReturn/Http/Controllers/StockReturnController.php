@@ -58,9 +58,8 @@ class StockReturnController extends BaseController{
     {
         if(permission('sale-return-access')){
             $sale = DealerSale::with(['sale_products','dealer:id,name,shop_name','warehouse:id,name'])->where('memo_no',$request->get('memo_no'))->first();
-            // dd($sale);
             if($sale){
-                $this->setPageData('Sale Return','Sale Return','fas fa-undo-alt',[['name' => 'Sale Return']]);
+                $this->setPageData('Dealer Sale Return','Dealer Sale Return','fas fa-undo-alt',[['name' => 'Dealer Sale Return']]);
                 $data = [
                     'sale'       => $sale,
                     'warehouses' => Warehouse::all()

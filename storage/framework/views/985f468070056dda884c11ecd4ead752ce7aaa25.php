@@ -196,7 +196,7 @@ function save_data(){
     }else{
         let form = document.getElementById('sale_update_form');
         let formData = new FormData(form);
-        let url = "<?php echo e(route('sale.return.store')); ?>";
+        let url = "<?php echo e(route('dealer.sale.return.store')); ?>";
         $.ajax({
             url: url,
             type: "POST",
@@ -225,7 +225,7 @@ function save_data(){
                 } else {
                     notification(data.status, data.message);
                     if (data.status == 'success') {
-                        window.location.replace("<?php echo e(route('sale.return')); ?>");
+                        window.location.replace("<?php echo e(route('dealer.sale.return')); ?>");
                     }
                 }
             },
