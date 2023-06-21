@@ -69,7 +69,7 @@ class WarehouseLedgerController extends BaseController
     public function productStock()
     {
         if (permission('product-stock-report-access')) {
-            $this->setPageData('Warehouse Product Ledger', 'Warehouse Product Ledger', 'fas fa-boxes', [['name' => 'Warehouse Product Ledger']]);
+            $this->setPageData('Warehouse Product', 'Warehouse Product', 'fas fa-boxes', [['name' => 'Warehouse Product']]);
             $data = [
                 'categories' => Category::with('warehouse_products')->whereHas('warehouse_products')->where([['type', 2], ['status', 1]])->get(),
                 'warehouses' => DB::table('warehouses')->where('status', 1)->pluck('name', 'id')

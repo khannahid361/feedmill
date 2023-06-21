@@ -99,10 +99,8 @@ class DealerSaleController extends BaseController
                 $row[]  = $value->total_delivery_quantity;
                 $row[]  = number_format($value->total_price, 2, '.', '');
                 $row[]  = number_format($value->grand_total, 2, '.', '');
-                $row[]  = number_format($value->paid_amount, 2, '.', '');
                 $row[]  = date('d-M-Y', strtotime($value->sale_date));
                 $row[]  = PAYMENT_STATUS_LABEL[$value->payment_status];
-                $row[]  = $value->payment_method ? SALE_PAYMENT_METHOD[$value->payment_method] : '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">N/A</span>';
                 $row[]  = ORDER_TYPE[$value->order_type];
                 $row[]  = $value->total_qty + $value->total_free_qty == $value->total_delivery_quantity ? '<span class="label label-success label-pill label-inline" style="min-width:70px !important;">Complete</span>' : '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Incomplete</span>';
                 $row[]  = SALE_STATUS[$value->status];

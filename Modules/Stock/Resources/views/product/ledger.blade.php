@@ -57,7 +57,7 @@
                                         <th>Product Name</th>
                                         <th>Product Code</th>
                                         <th>Category</th>
-                                        <th>Per Unit Cost</th>
+                                        <th>Per Unit Cost (KG)</th>
                                         <th>Bag</th>
                                         <th>Bag Cost</th>
                                         <th>Unbagged Quantity</th>

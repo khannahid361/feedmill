@@ -63,10 +63,8 @@
                                         <th>Total Delivery</th>
                                         <th>Total</th>
                                         <th>Grand Total</th>
-                                        <th>Paid Amount</th>
                                         <th>Sale Date</th>
                                         <th>Payment Status</th>
-                                        <th>Payment Method</th>
                                         <th>Order Type</th>
                                         <th>Delivery Status</th>
                                         <th>Status</th>
@@ -138,7 +136,7 @@ $(document).ready(function(){
             }
         },
         "columnDefs": [{
-                "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+                "targets": [0,1,2,3,4,5,6,7,8,9,10,11],
                 "orderable": false,
                 "className": "text-center"
             }

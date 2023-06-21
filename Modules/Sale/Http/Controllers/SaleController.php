@@ -119,7 +119,6 @@ class SaleController extends BaseController{
                     // $row[]  = number_format($value->paid_amount,2,'.','');
                     $row[]  = date('d-M-Y',strtotime($value->sale_date));
                     $row[]  = PAYMENT_STATUS_LABEL[$value->payment_status];
-                    $row[]  = $value->payment_method ? SALE_PAYMENT_METHOD[$value->payment_method] : '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">N/A</span>';
                     $row[]  = $value->total_qty + $value->total_free_qty == $value->total_delivery_quantity ? '<span class="label label-success label-pill label-inline" style="min-width:70px !important;">Complete</span>' : '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Incomplete</span>';
                     $row[]  = SALE_STATUS[$value->status];
                     $row[]  = action_button($action);

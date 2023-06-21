@@ -1,18 +1,17 @@
-@extends('layouts.app')
-@section('title', $page_title)
-@push('styles')
-<link href="{{asset('plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
-<link href="{{asset('css/daterangepicker.min.css')}}" rel="stylesheet" type="text/css" />
-<link href="{{asset('css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet" type="text/css" />
-@endpush
-@section('content')
+<?php $__env->startSection('title', $page_title); ?>
+<?php $__env->startPush('styles'); ?>
+<link href="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.css')); ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo e(asset('css/daterangepicker.min.css')); ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo e(asset('css/bootstrap-datetimepicker.min.css')); ?>" rel="stylesheet" type="text/css" />
+<?php $__env->stopPush(); ?>
+<?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
         <div class="card card-custom gutter-b">
             <div class="card-header flex-wrap py-5">
-                <div class="card-title"><h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3></div>
+                <div class="card-title"><h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3></div>
                 <div class="card-toolbar">
-                    <a href="{{ route('sale.add') }}"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add New</a>
+                    <a href="<?php echo e(route('sale.add')); ?>"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add New</a>
                 </div>
             </div>
         </div>
@@ -20,7 +19,18 @@
             <div class="card-header flex-wrap py-5">
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row">
-                        <x-form.textbox labelName="Memo No." name="memo_no" col="col-md-4" />
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Memo No.','name' => 'memo_no','col' => 'col-md-4']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Memo No.','name' => 'memo_no','col' => 'col-md-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                         <div class="form-group col-md-3">
                             <label for="name">Choose Your Date</label>
                             <div class="input-group">
@@ -30,18 +40,38 @@
                             </div>
                         </div>
 
-                        <x-form.selectbox labelName="Customer" name="customer_id" col="col-md-4" class="selectpicker">
-                            @if (!$customer->isEmpty())
-                                @foreach ($customer as $value)
-                                    <option value="{{ $value->id }}">{{ $value->name }}</option>
-                                @endforeach
-                            @endif
-                        </x-form.selectbox>
-                        <x-form.selectbox labelName="Payment Status" name="payment_status" col="col-md-4" class="selectpicker">
-                            @foreach (PAYMENT_STATUS as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                            @endforeach
-                        </x-form.selectbox>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Customer','name' => 'customer_id','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Customer','name' => 'customer_id','col' => 'col-md-4','class' => 'selectpicker']); ?>
+                            <?php if(!$customer->isEmpty()): ?>
+                                <?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($value->id); ?>"><?php echo e($value->name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Payment Status','name' => 'payment_status','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Payment Status','name' => 'payment_status','col' => 'col-md-4','class' => 'selectpicker']); ?>
+                            <?php $__currentLoopData = PAYMENT_STATUS; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                         <div class="col-md-2">
                             <div class="text-left" style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button" data-toggle="tooltip" data-theme="dark" title="Reset"><i class="fas fa-undo-alt"></i></button>
@@ -81,14 +111,14 @@
         </div>
     </div>
 </div>
-@include('sale::modal')
-@endsection
-@push('scripts')
-<script src="{{asset('plugins/custom/datatables/datatables.bundle.js')}}" type="text/javascript"></script>
-<script src="{{asset('js/moment.js')}}"></script>
-<script src="{{asset('js/knockout-3.4.2.js')}}"></script>
-<script src="{{asset('js/daterangepicker.min.js')}}"></script>
-<script src="{{asset('js/bootstrap-datetimepicker.min.js')}}"></script>
+<?php echo $__env->make('sale::modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+<script src="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.js')); ?>" type="text/javascript"></script>
+<script src="<?php echo e(asset('js/moment.js')); ?>"></script>
+<script src="<?php echo e(asset('js/knockout-3.4.2.js')); ?>"></script>
+<script src="<?php echo e(asset('js/daterangepicker.min.js')); ?>"></script>
+<script src="<?php echo e(asset('js/bootstrap-datetimepicker.min.js')); ?>"></script>
 <script>
     function _(x){
         return document.getElementById(x);
@@ -125,7 +155,7 @@ $(document).ready(function(){
             zeroRecords: '<strong class="text-danger">No Data Found</strong>'
         },
         "ajax": {
-            "url": "{{route('sale.datatable.data')}}",
+            "url": "<?php echo e(route('sale.datatable.data')); ?>",
             "type": "POST",
             "data": function (data) {
                 data.memo_no        = $("#form-filter #memo_no").val();
@@ -155,7 +185,7 @@ $(document).ready(function(){
         let id    = $(this).data('id');
         let name  = $(this).data('name');
         let row   = table.row($(this).parent('tr'));
-        let url   = "{{ route('sale.delete') }}";
+        let url   = "<?php echo e(route('sale.delete')); ?>";
         delete_data(id, url, table, row, name);
     });
     $(document).on('click','.change_status',function(){
@@ -164,8 +194,8 @@ $(document).ready(function(){
             keyboard: false,
             backdrop: 'static',
         });
-        $('#approve_status_modal .modal-title').html('<span>{{'Change Status'}}</span>');
-        $('#approve_status_modal #status-btn').text('{{'Change'}}');
+        $('#approve_status_modal .modal-title').html('<span><?php echo e('Change Status'); ?></span>');
+        $('#approve_status_modal #status-btn').text('<?php echo e('Change'); ?>');
     });
 });
 $(document).on('click','#status-btn',function(){
@@ -173,7 +203,7 @@ $(document).on('click','#status-btn',function(){
     let saleStatus      = _('sale_status').value;
     if(saleId && saleStatus){
         $.ajax({
-            url         : "{{route('sale.status.change')}}",
+            url         : "<?php echo e(route('sale.status.change')); ?>",
             type        : "POST",
             data        : {id:saleId,sale_status:saleStatus,_token:_token},
             dataType    : "JSON",
@@ -187,7 +217,7 @@ $(document).on('click','#status-btn',function(){
                 notification(data.status, data.message);
                 if(data.status == 'success'){
                     $('#approve_status_modal').modal('hide');
-                    window.location.replace("{{ route('sale') }}");
+                    window.location.replace("<?php echo e(route('sale')); ?>");
                 }
             },
             error       : function (xhr, ajaxOption, thrownError){
@@ -197,4 +227,6 @@ $(document).on('click','#status-btn',function(){
     }
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Sale\Resources/views/index.blade.php ENDPATH**/ ?>

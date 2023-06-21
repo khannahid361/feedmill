@@ -325,8 +325,8 @@ $(document).ready(function () {
             const cost     = $(`#products_${row}_id option:selected`).data('cost');
             const unitname = $(`#products_${row}_id option:selected`).data('unitname');
             const unitid   = $(`#products_${row}_id option:selected`).data('unitid');
-            $(`.net-unit-cost-${row}`).text(parseFloat(cost ? cost : 0));
-            $(`#products_${row}_net_unit_cost`).val(parseFloat(cost ? cost : 0));
+            $(`.net-unit-cost-${row}`).text(parseFloat(cost ? cost*50 : 0));
+            $(`#products_${row}_net_unit_cost`).val(parseFloat(cost ? cost*50 : 0));
             $(`.unit-name-${row}`).text(unitname ? unitname : '');
             $(`#products_${row}_unit_id`).val(unitid ? unitid : '');
         }

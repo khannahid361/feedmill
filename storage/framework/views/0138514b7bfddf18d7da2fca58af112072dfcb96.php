@@ -1,24 +1,22 @@
-@extends('layouts.app')
-
-@section('title', $page_title)
-@push('styles')
+<?php $__env->startSection('title', $page_title); ?>
+<?php $__env->startPush('styles'); ?>
 <link href="plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-@endpush
-@section('content')
+<?php $__env->stopPush(); ?>
+<?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
         <!--begin::Notice-->
         <div class="card card-custom gutter-b">
             <div class="card-header flex-wrap py-5">
                 <div class="card-title">
-                    <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
+                    <h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3>
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    @if (permission('product-add'))
-                    <a href="{{ route('product.add') }}"  class="btn btn-primary btn-sm font-weight-bolder">
+                    <?php if(permission('product-add')): ?>
+                    <a href="<?php echo e(route('product.add')); ?>"  class="btn btn-primary btn-sm font-weight-bolder">
                         <i class="fas fa-plus-circle"></i> Add New</a>
-                        @endif
+                        <?php endif; ?>
                     <!--end::Button-->
                 </div>
             </div>
@@ -29,29 +27,80 @@
             <div class="card-header flex-wrap py-5">
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row">
-                        <x-form.textbox labelName="Product Name" name="name" col="col-md-3" />
-                        <x-form.selectbox labelName="Category" name="category_id" col="col-md-3" class="selectpicker">
-                            @if (!$categories->isEmpty())
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-                            @endif
-                        </x-form.selectbox>
-                        <x-form.selectbox labelName="Product Type" name="type" col="col-md-3" class="selectpicker">
-                            @foreach (PRODUCT_TYPE as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                            @endforeach
-                        </x-form.selectbox>
-                        <x-form.selectbox labelName="Type" name="type" col="col-md-3" class="selectpicker">
-                            @foreach (TYPE as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                            @endforeach
-                        </x-form.selectbox>
-                        <x-form.selectbox labelName="Status" name="status" col="col-md-3" class="selectpicker">
-                            @foreach (STATUS as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                            @endforeach
-                        </x-form.selectbox>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Product Name','name' => 'name','col' => 'col-md-3']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Product Name','name' => 'name','col' => 'col-md-3']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Category','name' => 'category_id','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Category','name' => 'category_id','col' => 'col-md-3','class' => 'selectpicker']); ?>
+                            <?php if(!$categories->isEmpty()): ?>
+                                <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($category->id); ?>"><?php echo e($category->name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Product Type','name' => 'type','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Product Type','name' => 'type','col' => 'col-md-3','class' => 'selectpicker']); ?>
+                            <?php $__currentLoopData = PRODUCT_TYPE; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Type','name' => 'type','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Type','name' => 'type','col' => 'col-md-3','class' => 'selectpicker']); ?>
+                            <?php $__currentLoopData = TYPE; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Status','name' => 'status','col' => 'col-md-3','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Status','name' => 'status','col' => 'col-md-3','class' => 'selectpicker']); ?>
+                            <?php $__currentLoopData = STATUS; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                         <div class="col-md-9">
                             <div style="margin-top:28px;">
                                 <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
@@ -74,14 +123,14 @@
                             <table id="dataTable" class="table table-bordered table-hover">
                                 <thead class="bg-primary">
                                     <tr>
-                                        @if (permission('product-bulk-delete'))
+                                        <?php if(permission('product-bulk-delete')): ?>
                                         <th>
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="select_all" onchange="select_all()">
                                                 <label class="custom-control-label" for="select_all"></label>
                                             </div>
                                         </th>
-                                        @endif
+                                        <?php endif; ?>
                                         <th>Sl</th>
                                         <th>Image</th>
                                         <th>Name</th>
@@ -106,9 +155,9 @@
         <!--end::Card-->
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script src="plugins/custom/datatables/datatables.bundle.js" type="text/javascript"></script>
 <script>
     var table;
@@ -133,7 +182,7 @@
                 zeroRecords: '<strong class="text-danger">No Data Found</strong>'
             },
             "ajax": {
-                "url": "{{route('product.datatable.data')}}",
+                "url": "<?php echo e(route('product.datatable.data')); ?>",
                 "type": "POST",
                 "data": function (data) {
                     data.name = $("#form-filter #name").val();
@@ -145,28 +194,28 @@
                 }
             },
             "columnDefs": [{
-                    @if (permission('product-bulk-delete'))
+                    <?php if(permission('product-bulk-delete')): ?>
                     "targets": [0,11],
-                    @else
+                    <?php else: ?>
                     "targets": [10],
-                    @endif
+                    <?php endif; ?>
                     "orderable": false,
                     "className": "text-center"
                 },
                 {
-                    @if (permission('product-bulk-delete'))
+                    <?php if(permission('product-bulk-delete')): ?>
                     "targets": [1,2,4,6,8,9,10],
-                    @else
+                    <?php else: ?>
                     "targets": [0,1,3,5,7,8,9],
-                    @endif
+                    <?php endif; ?>
                     "className": "text-center"
                 },
                 {
-                    @if (permission('product-bulk-delete'))
+                    <?php if(permission('product-bulk-delete')): ?>
                     "targets": [5,7],
-                    @else
+                    <?php else: ?>
                     "targets": [4,6],
-                    @endif
+                    <?php endif; ?>
                     "className": "text-right"
                 }
 
@@ -176,7 +225,7 @@
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
 
             "buttons": [
-                @if (permission('product-report'))
+                <?php if(permission('product-report')): ?>
                 {
                     'extend':'colvis','className':'btn btn-secondary btn-sm text-white','text':'Column','columns': ':gt(0)'
                 },
@@ -184,15 +233,15 @@
                     "extend": 'print',
                     'text':'Print',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
+                    "title": "<?php echo e($page_title); ?> List",
                     "orientation": "landscape", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
-                        @if (permission('product-bulk-delete'))
+                        <?php if(permission('product-bulk-delete')): ?>
                         columns: ':visible:not(:eq(0),:eq(11))'
-                        @else
+                        <?php else: ?>
                         columns: ':visible:not(:eq(10))'
-                        @endif
+                        <?php endif; ?>
                     },
                     customize: function (win) {
                         $(win.document.body).addClass('bg-white');
@@ -207,44 +256,44 @@
                     "extend": 'csv',
                     'text':'CSV',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
-                    "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                    "title": "<?php echo e($page_title); ?> List",
+                    "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "exportOptions": {
-                       @if (permission('product-bulk-delete'))
+                       <?php if(permission('product-bulk-delete')): ?>
                         columns: ':visible:not(:eq(0),:eq(11))'
-                        @else
+                        <?php else: ?>
                         columns: ':visible:not(:eq(10))'
-                        @endif
+                        <?php endif; ?>
                     }
                 },
                 {
                     "extend": 'excel',
                     'text':'Excel',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
-                    "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                    "title": "<?php echo e($page_title); ?> List",
+                    "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "exportOptions": {
-                       @if (permission('product-bulk-delete'))
+                       <?php if(permission('product-bulk-delete')): ?>
                         columns: ':visible:not(:eq(0),:eq(11))'
-                        @else
+                        <?php else: ?>
                         columns: ':visible:not(:eq(10))'
-                        @endif
+                        <?php endif; ?>
                     },
                 },
                 {
                     "extend": 'pdf',
                     'text':'PDF',
                     'className':'btn btn-secondary btn-sm text-white',
-                    "title": "{{ $page_title }} List",
-                    "filename": "{{ strtolower(str_replace(' ','-',$page_title)) }}-list",
+                    "title": "<?php echo e($page_title); ?> List",
+                    "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "orientation": "landscape", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
-                       @if (permission('product-bulk-delete'))
+                       <?php if(permission('product-bulk-delete')): ?>
                         columns: ':visible:not(:eq(0),:eq(11))'
-                        @else
+                        <?php else: ?>
                         columns: ':visible:not(:eq(10))'
-                        @endif
+                        <?php endif; ?>
                     },
                     customize: function(doc) {
                         doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
@@ -252,8 +301,8 @@
                         doc.pageMargins = [5,5,5,5];
                     }
                 },
-                @endif
-                @if (permission('product-bulk-delete'))
+                <?php endif; ?>
+                <?php if(permission('product-bulk-delete')): ?>
                 {
                     'className':'btn btn-danger btn-sm delete_btn d-none text-white',
                     'text':'Delete',
@@ -261,7 +310,7 @@
                         multi_delete();
                     }
                 }
-                @endif
+                <?php endif; ?>
             ],
         });
 
@@ -279,7 +328,7 @@
             let id    = $(this).data('id');
             let name  = $(this).data('name');
             let row   = table.row($(this).parent('tr'));
-            let url   = "{{ route('product.delete') }}";
+            let url   = "<?php echo e(route('product.delete')); ?>";
             delete_data(id, url, table, row, name);
         });
 
@@ -298,7 +347,7 @@
                     icon: 'warning',
                 });
             }else{
-                let url = "{{route('product.bulk.delete')}}";
+                let url = "<?php echo e(route('product.bulk.delete')); ?>";
                 bulk_delete(ids,url,table,rows);
             }
         }
@@ -308,7 +357,7 @@
             let name   = $(this).data('name');
             let status = $(this).data('status');
             let row    = table.row($(this).parent('tr'));
-            let url    = "{{ route('product.change.status') }}";
+            let url    = "<?php echo e(route('product.change.status')); ?>";
             change_status(id, url, table, row, name, status);
         });
 
@@ -317,4 +366,6 @@
 
 
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Product\Resources/views/index.blade.php ENDPATH**/ ?>
