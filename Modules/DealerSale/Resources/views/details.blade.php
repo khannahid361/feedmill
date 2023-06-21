@@ -365,8 +365,8 @@
                                                 <tr>
                                                     <td class="text-center no">{{ $key+1 }}</td>
                                                     <td class="text-left">{{ $item->name }}</td>
-                                                    <td class="text-center qty">{{ $item->pivot->qty.' '.$unit_name }}</td>
-                                                    <td class="text-center qty">{{ $item->pivot->free_qty.' '.$unit_name }}</td>
+                                                    <td class="text-center qty">{{ $item->pivot->qty }}</td>
+                                                    <td class="text-center qty">{{ $item->pivot->free_qty }}</td>
                                                     <td class="text-right price">{{ number_format($item->pivot->net_unit_price,2,'.','') }}</td>
                                                     <td class="text-right tax">{{ number_format($item->pivot->tax,2,'.','') }}</td>
                                                     <td class="text-right total">

@@ -20,7 +20,7 @@
                     <!--begin::Button-->
                     <button type="button" class="btn btn-primary btn-sm mr-3" id="print-invoice"> <i class="fas fa-print"></i> Print</button>
 
-                    <a href="{{ route('sale.return') }}" class="btn btn-warning btn-sm font-weight-bolder">
+                    <a href="{{ route('dealer.sale.return') }}" class="btn btn-warning btn-sm font-weight-bolder">
                         <i class="fas fa-arrow-left"></i> Back</a>
                     <!--end::Button-->
                 </div>
@@ -371,6 +371,7 @@
                                     <tbody>
                                         @if (!$sale->return_products->isEmpty())
                                             @foreach ($sale->return_products as $key => $item)
+                                            @dd($item)
                                                 @php
                                                     $unit_name = '';
                                                     if($item->unit_id)
@@ -387,9 +388,9 @@
                                                     <td class="text-right discount">{{ number_format($item->deduction_rate,2) }}</td>
                                                     <td class="text-right total">
                                                         @if (config('settings.currency_position') == 2)
-                                                            {{ number_format($item->total,2) }} {{ config('settings.currency_symbol') }}
+                                                            {{ number_format($item->total + $item->deduction_amount,2) }} {{ config('settings.currency_symbol') }}
                                                         @else
-                                                            {{ config('settings.currency_symbol') }} {{ number_format($item->total,2) }}
+                                                            {{ config('settings.currency_symbol') }} {{ number_format($item->total + $item->deduction_amount,2) }}
                                                         @endif
                                                     </td>
                                                 </tr>
