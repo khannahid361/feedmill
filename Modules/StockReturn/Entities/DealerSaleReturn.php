@@ -40,10 +40,10 @@ class DealerSaleReturn extends BaseModel
        ->leftjoin('dealer_sales as s','sr.memo_no','=','s.memo_no')
        ->leftJoin('dealers as c','sr.dealer_id','=','c.id')
        ->select('sr.*','c.name as dealer_name','c.shop_name',
-       DB::raw('(SELECT SUM(srp.return_qty) FROM sale_return_products as srp
-       WHERE srp.sale_return_id = sr.id GROUP BY srp.sale_return_id) as total_return_qty'),
-       DB::raw('(SELECT COUNT(srp.id) FROM sale_return_products as srp
-       WHERE srp.sale_return_id = sr.id GROUP BY srp.sale_return_id) as total_return_items'));
+       DB::raw('(SELECT SUM(srp.return_qty) FROM dealer_sale_return_products as srp
+       WHERE srp.dealer_sale_return_id = sr.id GROUP BY srp.dealer_sale_return_id) as total_return_qty'),
+       DB::raw('(SELECT COUNT(srp.id) FROM dealer_sale_return_products as srp
+       WHERE srp.dealer_sale_return_id = sr.id GROUP BY srp.dealer_sale_return_id) as total_return_items'));
         if (!empty($this->_return_no)) {
             $query->where('sr.return_no', 'like', '%' . $this->_return_no . '%');
         }

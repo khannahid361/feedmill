@@ -55,7 +55,6 @@ class DealerSaleReturnController extends BaseController
                 }
                 $this->set_datatable_default_properties($request); //set datatable default properties
                 $list = $this->model->getDatatableList(); //get table data
-                dd($list);
                 $data = [];
                 $no = $request->input('start');
                 foreach ($list as $value) {

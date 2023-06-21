@@ -69,6 +69,7 @@ class DealerSaleController extends BaseController
             foreach ($list as $value) {
                 $no++;
                 $action = '';
+                $v = $value->total_qty + $value->total_free_qty;
                 $deliveries = DealerDelivery::where(['dealer_sale_id' => $value->id])->get();
                 if (permission('dealer-sale-edit') && $value->status == 1) {
                     $action .= ' <a class="dropdown-item" href="' . route("dealer.sale.edit", $value->id) . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
@@ -94,8 +95,7 @@ class DealerSaleController extends BaseController
                 $row    = [];
                 $row[]  = $value->memo_no;
                 $row[]  = $value->dealer_name;
-                //                $row[]  = $value->item.'('.$value->total_qty + $value->total_free_qty.')';
-                $row[]  = $value->item;
+                $row[]  = $value->item .'('.$v.')';
                 $row[]  = $value->total_delivery_quantity;
                 $row[]  = number_format($value->total_price, 2, '.', '');
                 $row[]  = number_format($value->grand_total, 2, '.', '');
