@@ -71,7 +71,6 @@ class DealerProductStockLedgerController extends BaseController
                                     <th>' . __('Date') . '</th>
                                     <th>' . __('Dealer') . '</th>
                                     <th>' . __('Product') . '</th>
-                                    <th>' . __('Unit') . '</th>
                                     <th>' . __('Category') . '</th>
                                      <th>' . __('Qty') . '</th>
                                     <th>' . __('Price') . '</th>
@@ -86,7 +85,6 @@ class DealerProductStockLedgerController extends BaseController
                           <td class="no">' . date('d-M-Y', strtotime($sale->saleDate)) . '</td>
                           <td class="no">' . $sale->partyName . '</td>
                           <td class="no">' . $sale->productName . '</td>
-                          <td class="no">' . $sale->unitName . '(' . $sale->unitCode . ')' . '</td>
                           <td class="no">' . $sale->categoryName . '</td>
                               <td class="no">' . number_format($sale->qty, 2) . '</td>
                           <td class="no">' . number_format($sale->price, 2) . '</td>
@@ -98,7 +96,7 @@ class DealerProductStockLedgerController extends BaseController
         }
         $table   .= '</tbody><tfoot>';
         $table   .= '<tr class="text-center">
-                       <td class="no" colspan="6">Total</td>
+                       <td class="no" colspan="5">Total</td>
                         <td class="no">' . number_format($saleQty, 2) . '</td>
                        <td class="no"></td>
                         <td class="no">' . number_format($saleScale, 2) . '</td>

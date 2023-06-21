@@ -13,7 +13,7 @@
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        <a href="{{ route('product') }}" class="btn btn-warning btn-sm font-weight-bolder">
+                        <a href="{{ url('product-stock-report') }}" class="btn btn-warning btn-sm font-weight-bolder">
                             <i class="fas fa-arrow-left"></i> Back</a>
                         <!--end::Button-->
                     </div>

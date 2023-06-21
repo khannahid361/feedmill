@@ -33,11 +33,6 @@ class ProductQtyConverterController extends BaseController
         } catch (Exception $e) {
             DB::rollback();
         }
-        if ($message) {
-            echo "<script>alert('Data Saved Successfull');</script>";
-        } else {
-            echo "<script>alert('Data could not be saved');</script>";
-        }
         return redirect()->back();
     }
 }

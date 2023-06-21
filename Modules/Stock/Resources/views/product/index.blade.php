@@ -59,7 +59,7 @@
                                         <th>Category</th>
                                         <th> Unit</th>
                                         <th>Per Unit Cost (KG)</th>
-                                        <th>Quantity</th>
+                                        <th>Quantity (KG)</th>
                                         <th>Total Unit Cost</th>
                                         <th>Bag</th>
                                         <th>Bag Uint</th>

@@ -114,7 +114,7 @@ class UserController extends BaseController
                     $avatar  = $this->upload_file($request->file('avatar'),USER_PHOTO_PATH);
                     if(!empty($request->old_avatar)){
                         $this->delete_file($request->old_avatar, USER_PHOTO_PATH);
-                    }  
+                    }
                 }
                 $collection   = $collection->merge(compact('avatar'));
                 $result       = $this->model->updateOrCreate(['id'=>$request->update_id],$collection->all());

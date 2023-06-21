@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                             <x-form.selectbox labelName="Control By" name="parent_id" required="required" col="col-md-6" class="selectpicker"/>
-                            <x-form.selectbox labelName="Depo" name="warehouse_id" required="required" col="col-md-6 warehouse d-none" class="selectpicker">
+                            <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-6 warehouse" class="selectpicker">
                                 @if (!$warehouses->isEmpty())
                                   @foreach ($warehouses as $value)
                                   <option value="{{ $value->id }}">{{ $value->name }}</option>

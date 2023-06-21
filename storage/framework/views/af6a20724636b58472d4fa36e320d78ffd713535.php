@@ -443,7 +443,6 @@ $(document).ready(function(){
                     if(data.status == 'error'){
                         notification(data.status,data.message)
                     }else{
-                        setWarehouse(data.role_id);
                         $('#store_or_update_form #update_id').val(data.id);
                         $('#store_or_update_form #name').val(data.name);
                         $('#store_or_update_form #username').val(data.username);
@@ -589,7 +588,6 @@ function showUserFormModal(modal_title, btn_text) {
     $('#store_or_update_form #update_id').val('');
     $('#store_or_update_form').find('.is-invalid').removeClass('is-invalid');
     $('#store_or_update_form').find('.error').remove();
-    $('#store_or_update_form .warehouse').addClass('d-none');
     $('#password, #password_confirmation').parents('.form-group').addClass('required');
     $('#store_or_update_form .selectpicker').selectpicker('refresh');
     $('#store_or_update_modal').modal({
