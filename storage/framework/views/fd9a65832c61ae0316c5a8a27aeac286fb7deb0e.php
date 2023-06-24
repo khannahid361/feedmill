@@ -43,7 +43,8 @@
                                 <?php if(!$suppliers->isEmpty()): ?>
                                     <?php $__currentLoopData = $suppliers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $supplier): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($supplier->id); ?>" data-coaid="<?php echo e($supplier->coa->id); ?>"
-                                            data-name="<?php echo e($supplier->name); ?>"><?php echo e($supplier->name . ' - ' . $supplier->mobile); ?>
+                                            data-name="<?php echo e($supplier->name); ?>">
+                                            <?php echo e($supplier->name . ' - ' . $supplier->mobile); ?>
 
                                         </option>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -134,6 +135,7 @@
             }
         });
         var table;
+        var previousBalance = 0;
         $(document).ready(function() {
 
             table = $('#dataTable').DataTable({
@@ -148,7 +150,7 @@
                     [5, 10, 15, 25, 50, 100, 1000, 10000, -1],
                     [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
                 ],
-                "pageLength": -1, //number of data show per page
+                "pageLength": 5, //number of data show per page
                 "language": {
                     processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
                     emptyTable: '<strong class="text-danger">No Data Found</strong>',
@@ -269,6 +271,14 @@
                             typeof i === 'number' ?
                             i : 0;
                     };
+                    if (start > 0) {
+                        var previousBalanceData = api.column(5, {
+                            page: 'previous'
+                        }).data();
+                        previousBalance = calculateSum(previousBalanceData);
+                    } else {
+                        previousBalance = 0;
+                    }
                     var debit = 0;
                     var credit = 0;
                     var balance = 0;
@@ -298,6 +308,21 @@
                     balance = (currency_position == 1) ? currency_symbol + ' ' + number_format((debit -
                         credit)) : number_format((debit - credit)) + ' ' + currency_symbol;
                     $(api.column(5).footer()).html(balance);
+
+                    function calculateSum(array) {
+                        var sum = 0;
+                        for (var i = 0; i < array.length; i++) {
+                            var value = parseFloat(array[i].replace(',',
+                                ''));
+                            if (!isNaN(value)) {
+                                // console.log(value);
+                                sum += value;
+                                // console.log(sum);
+                            }
+                        }
+                        return sum;
+                    }
+                    console.log(previousBalance);
                 }
             });
             $('#btn-filter').click(function() {

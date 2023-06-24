@@ -244,7 +244,7 @@ class MobileBankController extends BaseController
             $ledger_data = $query->where('t.voucher_date','>=',$from_date)
                                 ->where('t.voucher_date','<=',$to_date)
                                 ->where('t.approve',1)
-                                ->orderBy('t.voucher_date','desc')
+                                ->orderBy('t.voucher_date','asc')
                                 ->get();
             $ledger_data = $ledger_data->toArray();
             // dd($ledger_data);
