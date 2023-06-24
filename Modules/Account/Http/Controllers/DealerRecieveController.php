@@ -58,7 +58,6 @@ class DealerRecieveController extends BaseController
                     }
                     $row    = [];
                     $row[]  = $no;
-                    $row[]  = Warehouse::find($value->warehouse_id)->name;
                     $row[]  = $value->customer_name;
                     $row[]  = $value->voucher_no;
                     $row[]  = date('d-M-Y', strtotime($value->voucher_date));
@@ -79,8 +78,8 @@ class DealerRecieveController extends BaseController
         if (permission('dealer-receive-access')) {
             $this->setPageData('Dealer Receive', 'Dealer Receive', 'far fa-money-bill-alt', [['name' => 'Accounts'], ['name' => 'Dealer Receive']]);
             $voucher_no = 'DR-' . date('ymd') . rand(1, 999);
-            $warehouses = DB::table('warehouses')->where('status', 1)->pluck('name', 'id');
-            return view('account::dealer-receive.create', compact('voucher_no', 'warehouses'));
+            $dealers = DB::table('dealers')->where('status', 1)->pluck('name', 'id');
+            return view('account::dealer-receive.create', compact('voucher_no', 'dealers'));
         } else {
             return $this->access_blocked();
         }

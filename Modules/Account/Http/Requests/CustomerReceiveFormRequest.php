@@ -16,7 +16,6 @@ class CustomerReceiveFormRequest extends FormRequest
         return [
             'voucher_no'   => 'required',
             'voucher_date' => 'required',
-            'warehouse_id' => 'required',
             'customer_id'  => 'required',
             'payment_type' => 'required',
             'account_id'   => 'required',

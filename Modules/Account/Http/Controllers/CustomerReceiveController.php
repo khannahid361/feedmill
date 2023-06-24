@@ -53,7 +53,6 @@ class CustomerReceiveController extends BaseController{
                     }
                     $row    = [];
                     $row[]  = $no;
-                    $row[]  = Warehouse::find($value->warehouse_id)->name;
                     $row[]  = $value->customer_name;
                     $row[]  = $value->voucher_no;
                     $row[]  = date('d-M-Y',strtotime($value->voucher_date));
@@ -74,7 +73,8 @@ class CustomerReceiveController extends BaseController{
             $this->setPageData('Customer Receive','Customer Receive','far fa-money-bill-alt',[['name'=>'Accounts'],['name'=>'Customer Receive']]);
             $voucher_no = 'CR-'.date('ymd').rand(1,999);
             $warehouses = DB::table('warehouses')->where('status',1)->pluck('name','id');
-            return view('account::customer-receive.create',compact('voucher_no','warehouses'));
+            $customers = Customer::where('status',1)->get();
+            return view('account::customer-receive.create',compact('voucher_no','customers'));
         }else{
             return $this->access_blocked();
         }

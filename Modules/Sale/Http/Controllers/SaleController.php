@@ -105,7 +105,7 @@ class SaleController extends BaseController{
                     }
                     foreach ($products as $item){
                         $i = $item->qty + $item->free_qty;
-                        $productList[] = $item->product->name.' ( '. $i .' pcs)';
+                        $productList[] = $item->product->name.' ( '. $i .')';
                     }
                     $productImplode =implode('<br/>',$productList);
                     $row    = [];

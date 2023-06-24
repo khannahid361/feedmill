@@ -17,6 +17,13 @@
                         <form id="customer-receive-form" method="post">
                             @csrf
                             <div class="row">
+                                <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-4" required="required" class="selectpicker">
+                                    @if (!$warehouses->isEmpty())
+                                        @foreach ($warehouses as $id => $name)
+                                            <option value="{{ $id }}" data-name="{{ $name }}">{{ $name }}</option>
+                                        @endforeach
+                                    @endif
+                                </x-form.selectbox>
                                 <div class="form-group col-md-4 required">
                                     <label for="voucher_no">Voucher No</label>
                                     <input type="text" class="form-control" name="voucher_no" id="voucher_no" value="{{ $voucher_no }}" readonly />
@@ -25,13 +32,7 @@
                                     <label for="voucher_date">Date</label>
                                     <input type="text" class="form-control date" name="voucher_date" id="voucher_date" value="{{ date('Y-m-d') }}" readonly />
                                 </div>
-                                <x-form.selectbox labelName="Customer" name="customer_id" onchange="dueAmount(this.value)" required="required" col="col-md-4" class="selectpicker">
-                                    @if (!empty($customers))
-                                        @foreach ($customers as $customer)
-                                            <option value="{{ $customer->id }}">{{ $customer->name }} - {{ $customer->mobile }}</option>
-                                        @endforeach
-                                    @endif
-                                </x-form.selectbox>
+                                <x-form.selectbox labelName="Customer" name="customer_id" onchange="dueAmount(this.value)" required="required" col="col-md-4" class="selectpicker" />
                                 <div class="form-group col-md-4">
                                     <label for="due_amount">Due Amount</label>
                                     <input type="text" class="form-control"  id="due_amount" readonly />
@@ -81,10 +82,6 @@
                 url: "{{url('customer/previous-balance')}}/"+customer_id,
                 type: "GET",
                 dataType: "JSON",
-                beforeSend: function()
-                {
-                    $('#due_amount').val('0.00');
-                },
                 success: function (data) {
                     data ? $('#due_amount').val(parseFloat(data).toFixed(2)) : $('#due_amount').val('0.00');
                 },
@@ -93,7 +90,23 @@
                 }
             });
         }
-
+        $(document).on('change','#warehouse_id',function(){
+            let warehouseId = document.getElementById('warehouse_id').value;
+            $.ajax({
+                url:"{{ url('warehouse-wise-customer-list') }}",
+                type:"POST",
+                data:{warehouse_id:warehouseId,_token:_token},
+                dataType:"JSON",
+                success:function(data){
+                    html = `<option value="">Select Please</option>`;
+                    $.each(data, function(key, value) {
+                        html += `<option value="${value.id}">${value.name} - ${value.mobile} (${value.shop_name})</option>`;
+                    });
+                    $('#customer-receive-form #customer_id').empty().append(html);
+                    $('#customer-receive-form #customer_id.selectpicker').selectpicker('refresh');
+                },
+            });
+        });
         function store_data(){
             let form = document.getElementById('customer-receive-form');
             let formData = new FormData(form);

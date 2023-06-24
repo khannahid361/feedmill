@@ -371,7 +371,6 @@
                                     <tbody>
                                         @if (!$sale->return_products->isEmpty())
                                             @foreach ($sale->return_products as $key => $item)
-                                            @dd($item)
                                                 @php
                                                     $unit_name = '';
                                                     if($item->unit_id)
