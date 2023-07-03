@@ -98,9 +98,12 @@
                                     <tbody></tbody>
                                     <tfoot>
                                         <tr class="bg-primary">
-                                            <th></th>
-                                            <th></th>
                                             <th style="text-align: right !important;font-weight:bold;">Total</th>
+                                            <th style="text-align: right !important;font-weight:bold;">Previous Balance =
+                                                <span id="previousBalance"></span>
+                                            </th>
+                                            <th style="text-align: right !important;font-weight:bold;">Total Balance = <span
+                                                    id="totalBalance"></span></th>
                                             <th style="text-align: right !important;font-weight:bold;"></th>
                                             <th style="text-align: right !important;font-weight:bold;"></th>
                                             <th style="text-align: right !important;font-weight:bold;"></th>
@@ -135,7 +138,7 @@
             }
         });
         var table;
-        var previousBalance = 0;
+        var previousPageBalance = 0;
         $(document).ready(function() {
 
             table = $('#dataTable').DataTable({
@@ -147,10 +150,10 @@
                 "bFilter": false, //For datatable default search box show/hide
                 "ordering": false, //
                 "lengthMenu": [
-                    [5, 10, 15, 25, 50, 100, 1000, 10000, -1],
-                    [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
+                    [100],
+                    [100]
                 ],
-                "pageLength": 5, //number of data show per page
+                "pageLength": 100, //number of data show per page
                 "language": {
                     processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
                     emptyTable: '<strong class="text-danger">No Data Found</strong>',
@@ -271,14 +274,6 @@
                             typeof i === 'number' ?
                             i : 0;
                     };
-                    if (start > 0) {
-                        var previousBalanceData = api.column(5, {
-                            page: 'previous'
-                        }).data();
-                        previousBalance = calculateSum(previousBalanceData);
-                    } else {
-                        previousBalance = 0;
-                    }
                     var debit = 0;
                     var credit = 0;
                     var balance = 0;
@@ -309,21 +304,15 @@
                         credit)) : number_format((debit - credit)) + ' ' + currency_symbol;
                     $(api.column(5).footer()).html(balance);
 
-                    function calculateSum(array) {
-                        var sum = 0;
-                        for (var i = 0; i < array.length; i++) {
-                            var value = parseFloat(array[i].replace(',',
-                                ''));
-                            if (!isNaN(value)) {
-                                // console.log(value);
-                                sum += value;
-                                // console.log(sum);
-                            }
-                        }
-                        return sum;
-                    }
-                    console.log(previousBalance);
-                }
+                    // Get the current page number
+                    var currentPage = api.page.info().page + 1;
+                    console.log("Current Page:", currentPage);
+
+                    // Get the number of filtered data
+                    var filteredDataCount = api.page.info().length;
+                    console.log("Data Count:", filteredDataCount);
+                    previousPageData(currentPage, filteredDataCount);
+                },
             });
             $('#btn-filter').click(function() {
                 table.ajax.reload();
@@ -336,6 +325,27 @@
                 table.ajax.reload();
             });
         });
+
+        function previousPageData(page, length) {
+            $.ajax({
+                url: "<?php echo e(route('get.supplier.ledger.previous.data')); ?>",
+                type: "POST",
+                data: {
+                    _token: _token,
+                    page: page,
+                    length: length,
+                    _token: _token,
+                    supplier_id: $("#form-filter #supplier_id option:selected").val(),
+                    from_date: $("#form-filter #from_date").val(),
+                    to_date: $("#form-filter #to_date").val()
+                },
+                dataType: "JSON",
+                success: function(response) {
+                    $('#previousBalance').text(response.prev_balance);
+                    $('#totalBalance').text(response.new_balance);
+                }
+            });
+        }
     </script>
 <?php $__env->stopPush(); ?>
 

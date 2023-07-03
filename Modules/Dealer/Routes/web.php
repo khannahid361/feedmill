@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth']], function () {
     //dealer Ledger Routes
     Route::get('dealer-ledger', 'DealerLedgerController@index')->name('dealer.ledger');
     Route::post('dealer-ledger/datatable-data', 'DealerLedgerController@get_datatable_data')->name('dealer.ledger.datatable.data');
+    Route::post('dealer-previous-ledger-data', 'DealerLedgerController@getLedgerPreviousData')->name('get.dealer.ledger.previous.data');
 
     //dealer Advance Routes
     Route::get('dealer-advance', 'DealerAdvanceController@index')->name('dealer.advance');

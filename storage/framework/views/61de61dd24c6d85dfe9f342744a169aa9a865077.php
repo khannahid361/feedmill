@@ -107,6 +107,7 @@
                                         <th>Memo No.</th>
                                         <th>Supplier Name</th>
                                         <th>Total Item</th>
+                                        <th>Material List</th>
                                         <th>Total</th>
                                         <th>Grand Total</th>
                                         <th>Purchase Date</th>
@@ -181,7 +182,7 @@ $(document).ready(function(){
             }
         },
         "columnDefs": [{
-                "targets": [0,1,2,3,4,5,6,7,8],
+                "targets": [0,1,2,3,4,5,6,7,8,9],
                 "orderable": false,
                 "className": "text-center"
             },

@@ -50,9 +50,9 @@
                                 @endforeach
                             @endif
                         </x-form.selectbox>
-                        
+
                         <div class="col-md-4">
-                            <div style="margin-top:28px;">     
+                            <div style="margin-top:28px;">
                                 <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                 data-toggle="tooltip" data-theme="dark" title="Reset">
                                 <i class="fas fa-undo-alt"></i></button>
@@ -84,9 +84,12 @@
                                 <tbody></tbody>
                                 <tfoot>
                                     <tr class="bg-primary">
-                                        <th></th>
-                                        <th></th>
                                         <th style="text-align: right !important;font-weight:bold;">Total</th>
+                                        <th style="text-align: right !important;font-weight:bold;">Previous Balance =
+                                            <span id="previousBalance"></span> Tk
+                                        </th>
+                                        <th style="text-align: right !important;font-weight:bold;">Total Balance = <span
+                                                id="totalBalance"></span> Tk</th>
                                         <th style="text-align: right !important;font-weight:bold;"></th>
                                         <th style="text-align: right !important;font-weight:bold;"></th>
                                         <th style="text-align: right !important;font-weight:bold;"></th>
@@ -131,11 +134,11 @@ $(document).ready(function(){
         "bInfo": true, //TO show the total number of data
         "bFilter": false, //For datatable default search box show/hide
         "lengthMenu": [
-            [5, 10, 15, 25, 50, 100, 1000, 10000, -1],
-            [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
+            [100],
+            [100]
         ],
-        "pageLength": 25, //number of data show per page
-        "language": { 
+        "pageLength": 100, //number of data show per page
+        "language": {
             processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
             emptyTable: '<strong class="text-danger">No Data Found</strong>',
             infoEmpty: '',
@@ -232,7 +235,7 @@ $(document).ready(function(){
                 },
                 footer:true,
                 customize: function(doc) {
-                    doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
+                    doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
                     doc.styles.tableHeader.fontSize = 7;
                     doc.styles.tableFooter.fontSize = 7;
                     doc.pageMargins = [5,5,5,5];
@@ -268,15 +271,24 @@ $(document).ready(function(){
                     }else{
                         credit = pageTotal;
                     }
-                    
-                    
-                
+
+
+
                 var total = (currency_position == 1) ? currency_symbol+' '+number_format(pageTotal) : number_format(pageTotal)+' '+currency_symbol;
                 // Update footer
                 $(api.column( index ).footer()).html('= '+total+' Tk');
             }
             balance = (currency_position == 1) ? currency_symbol+' '+number_format((debit - credit)) : number_format((debit - credit))+' '+currency_symbol;
             $(api.column(5).footer()).html('= '+balance+' Tk');
+
+                // Get the current page number
+            var currentPage = api.page.info().page + 1;
+            console.log("Current Page:", currentPage);
+
+                // Get the number of filtered data
+            var filteredDataCount = api.page.info().length;
+            console.log("Data Count:", filteredDataCount);
+            previousPageData(currentPage, filteredDataCount);
         }
     });
 
@@ -292,6 +304,25 @@ $(document).ready(function(){
         table.ajax.reload();
     });
 });
-
+function previousPageData(page, length) {
+            $.ajax({
+                url: "{{ route('get.dealer.ledger.previous.data') }}",
+                type: "POST",
+                data: {
+                    _token: _token,
+                    page: page,
+                    length: length,
+                    _token: _token,
+                    dealer_id : $("#form-filter #dealer_id").val(),
+                    start_date  : $("#form-filter #start_date").val(),
+                    end_date    : $("#form-filter #end_date").val(),
+                },
+                dataType: "JSON",
+                success: function(response) {
+                    $('#previousBalance').text(response.prev_balance);
+                    $('#totalBalance').text(response.new_balance);
+                }
+            });
+        }
 </script>
 @endpush

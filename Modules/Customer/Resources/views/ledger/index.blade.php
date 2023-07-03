@@ -124,9 +124,12 @@
                                     <tr class="bg-primary">
                                         <th></th>
                                         <th></th>
-                                        <th></th>
-                                        <th></th>
                                         <th style="text-align: right !important;font-weight:bold;">Total</th>
+                                        <th style="text-align: right !important;font-weight:bold;">Previous Balance =
+                                            <span id="previousBalance"></span> Tk
+                                        </th>
+                                        <th style="text-align: right !important;font-weight:bold;">Total Balance = <span
+                                                id="totalBalance"></span> Tk</th>
                                         <th style="text-align: right !important;font-weight:bold;"></th>
                                         <th style="text-align: right !important;font-weight:bold;"></th>
                                         <th style="text-align: right !important;font-weight:bold;"></th>
@@ -171,10 +174,10 @@ $(document).ready(function(){
         "bInfo": true, //TO show the total number of data
         "bFilter": false, //For datatable default search box show/hide
         "lengthMenu": [
-            [5, 10, 15, 25, 50, 100, 1000, 10000, -1],
-            [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
+            [100],
+            [100]
         ],
-        "pageLength": 25, //number of data show per page
+        "pageLength": 100, //number of data show per page
         "language": {
             processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
             emptyTable: '<strong class="text-danger">No Data Found</strong>',
@@ -321,6 +324,15 @@ $(document).ready(function(){
             }
             balance = (currency_position == 1) ? currency_symbol+' '+number_format((debit - credit)) : number_format((debit - credit))+' '+currency_symbol;
             $(api.column(7).footer()).html('= '+balance);
+
+               // Get the current page number
+            var currentPage = api.page.info().page + 1;
+            console.log("Current Page:", currentPage);
+
+                // Get the number of filtered data
+            var filteredDataCount = api.page.info().length;
+            console.log("Data Count:", filteredDataCount);
+            previousPageData(currentPage, filteredDataCount);
         }
     });
 
@@ -415,5 +427,30 @@ function getAreaList(upazila_id,selector,area_id=''){
     });
 }
 
+
+ function previousPageData(page, length) {
+            $.ajax({
+                url: "{{ route('get.customer.ledger.previous.data') }}",
+                type: "POST",
+                data: {
+                    _token: _token,
+                    page: page,
+                    length: length,
+                    _token: _token,
+                    district_id : $("#form-filter #district_id").val(),
+                    upazila_id  : $("#form-filter #upazila_id").val(),
+                    warehouse_id    : $("#form-filter #warehouse_id").val(),
+                    area_id     : $("#form-filter #area_id").val(),
+                    customer_id : $("#form-filter #customer_id").val(),
+                    start_date  : $("#form-filter #start_date").val(),
+                    end_date    : $("#form-filter #end_date").val(),
+                },
+                dataType: "JSON",
+                success: function(response) {
+                    $('#previousBalance').text(response.prev_balance);
+                    $('#totalBalance').text(response.new_balance);
+                }
+            });
+        }
 </script>
 @endpush

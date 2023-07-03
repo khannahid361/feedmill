@@ -17,19 +17,19 @@ class CustomerLedgerController extends BaseController
 
     public function index()
     {
-        if(permission('customer-ledger-access')){
-            $this->setPageData('Customer Ledger','Customer Ledger','fas fa-file-invoice-dollar',[['name'=>'Customer','link'=>route('customer')],['name'=>'Customer Ledger']]);
+        if (permission('customer-ledger-access')) {
+            $this->setPageData('Customer Ledger', 'Customer Ledger', 'fas fa-file-invoice-dollar', [['name' => 'Customer', 'link' => route('customer')], ['name' => 'Customer Ledger']]);
             $locations = DB::table('locations')->where('status', 1)->get();
-            $warehouses = Warehouse::where('status',1)->pluck('name','id');
-            return view('customer::ledger.index',compact('locations','warehouses'));
-        }else{
+            $warehouses = Warehouse::where('status', 1)->pluck('name', 'id');
+            return view('customer::ledger.index', compact('locations', 'warehouses'));
+        } else {
             return $this->access_blocked();
         }
     }
 
     public function get_datatable_data(Request $request)
     {
-        if($request->ajax()){
+        if ($request->ajax()) {
             if (!empty($request->district_id)) {
                 $this->model->setDistrictID($request->district_id);
             }
@@ -55,8 +55,8 @@ class CustomerLedgerController extends BaseController
                 $this->model->setEndDate($request->end_date);
             }
 
-            $this->set_datatable_default_properties($request);//set datatable default properties
-            $list = $this->model->getDatatableList();//get table data
+            $this->set_datatable_default_properties($request); //set datatable default properties
+            $list = $this->model->getDatatableList(); //get table data
             $data = [];
             $debit = $credit = $balance = 0;
             foreach ($list as $value) {
@@ -69,16 +69,90 @@ class CustomerLedgerController extends BaseController
                 $row[] = $value->voucher_type;
                 $row[] = $value->description;
                 $row[] = $value->voucher_no;
-                $row[] = $value->debit ? number_format($value->debit,2, '.', ',') :  number_format(0,2, '.', ',');
-                $row[] = $value->credit ? number_format($value->credit,2, '.', ',') :  number_format(0,2, '.', ',');
-                $row[] = number_format(($balance),2, '.', ',');
+                $row[] = $value->debit ? number_format($value->debit, 2, '.', ',') :  number_format(0, 2, '.', ',');
+                $row[] = $value->credit ? number_format($value->credit, 2, '.', ',') :  number_format(0, 2, '.', ',');
+                $row[] = number_format(($balance), 2, '.', ',');
                 $data[] = $row;
             }
-            return $this->datatable_draw($request->input('draw'),$this->model->count_all(),
-            $this->model->count_filtered(), $data);
-            
-        }else{
+            return $this->datatable_draw(
+                $request->input('draw'),
+                $this->model->count_all(),
+                $this->model->count_filtered(),
+                $data
+            );
+        } else {
             return response()->json($this->unauthorized());
         }
+    }
+
+    public function getLedgerPreviousData(Request $request)
+    {
+        // previous total data
+        $query = DB::table('transactions')
+            ->select(DB::raw('SUM(transactions.debit) AS total_debit'), DB::raw('SUM(transactions.credit) AS total_credit'))
+            ->join('chart_of_accounts as coa', 'transactions.chart_of_account_id', '=', 'coa.id')
+            ->join('customers as c', 'coa.customer_id', 'c.id')
+            ->where(['transactions.approve' => 1]);
+
+
+        if (!empty($request->customer_id)) {
+            $query->where('c.id', $request->customer_id);
+        }
+        if (!empty($request->district_id)) {
+            $query->where('c.district_id', $request->district_id);
+        }
+        if (!empty($request->upazila_id)) {
+            $query->where('c.upazila_id', $request->upazila_id);
+        }
+        if (!empty($request->area_id)) {
+            $query->where('c.area_id', $request->area_id);
+        }
+        if (!empty($request->start_date)) {
+            $query->where('transactions.voucher_date', '<', $request->start_date);
+        }
+
+        $result = $query->first();
+
+        $totalDebit = $result->total_debit;
+        $totalCredit = $result->total_credit;
+        $balance =  $totalDebit - $totalCredit;
+        if (empty($request->start_date)) {
+            $balance = 0;
+        }
+
+        //previous page data
+        $count = $request->page * $request->length;
+        $p_pageData = DB::table('transactions')
+            ->join('chart_of_accounts as coa', 'transactions.chart_of_account_id', '=', 'coa.id')
+            ->join('customers as c', 'coa.customer_id', 'c.id')
+            ->where(['transactions.approve' => 1]);
+
+        if (!empty($request->customer_id)) {
+            $p_pageData->where('c.id', $request->customer_id);
+        }
+        if (!empty($request->district_id)) {
+            $p_pageData->where('c.district_id', $request->district_id);
+        }
+        if (!empty($request->upazila_id)) {
+            $p_pageData->where('c.upazila_id', $request->upazila_id);
+        }
+        if (!empty($request->area_id)) {
+            $p_pageData->where('c.area_id', $request->area_id);
+        }
+        if (!empty($request->start_date)) {
+            $p_pageData->where('transactions.voucher_date', '>=', $request->start_date);
+        }
+        if (!empty($request->end_date)) {
+            $p_pageData->where('transactions.voucher_date', '<=', $request->end_date);
+        }
+
+        $prev_PageResult = $p_pageData->take($count)->get(['transactions.debit', 'transactions.credit']);
+        $newBalance = 0;
+        foreach ($prev_PageResult as $result1) {
+            $newBalance += $result1->debit - $result1->credit;
+        }
+        $newBalance += $balance;
+        $data = ['prev_balance' => $balance, 'new_balance' => $newBalance];
+        return response()->json($data);
     }
 }

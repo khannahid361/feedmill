@@ -39,4 +39,5 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('supplier-ledger', 'SupplierLedgerController@index')->name('supplier.ledger');
     Route::post('datatable-data', 'SupplierLedgerController@get_datatable_data')->name('supplier.ledger.datatable.data');
+    Route::post('previous-ledger-data', 'SupplierLedgerController@getLedgerPreviousData')->name('get.supplier.ledger.previous.data');
 });

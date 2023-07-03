@@ -55,5 +55,5 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::post('area-wise-customer-list', 'CustomerAdvanceController@area_wise_customer_list')->name('area.wise.customer.list');
-
+    Route::post('customer-previous-ledger-data', 'CustomerLedgerController@getLedgerPreviousData')->name('get.customer.ledger.previous.data');
 });

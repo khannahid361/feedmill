@@ -63,6 +63,8 @@ class PurchaseController extends BaseController{
             foreach ($list as $value) {
                 $no++;
                 $action = '';
+                $productList = [];
+                $products   = MaterialPurchase::where(['purchase_id' => $value->id])->get();
                 if(permission('purchase-edit') && $value->purchase_status != 1 && $value->purchase_status != 2){
                     $action .= ' <a class="dropdown-item" href="'.route("purchase.edit",$value->id).'">'.self::ACTION_BUTTON['Edit'].'</a>';
                 }
@@ -84,10 +86,16 @@ class PurchaseController extends BaseController{
                 if(permission('purchase-delete') && $value->purchase_status != 1 && $value->purchase_status != 2){
                     $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->chalan_no . '">'.self::ACTION_BUTTON['Delete'].'</a>';
                 }
+                foreach ($products as $item){
+                    $i = $item->qty + $item->free_qty;
+                    $productList[] = $item->material->material_name.' ( '. $i .')';
+                }
+                $productImplode =implode('<br/>',$productList);
                 $row   = [];
                 $row[] = $value->memo_no;
                 $row[] = $value->supplier->name.''.($value->supplier->mobile ? ' - '.$value->supplier->mobile : '');
                 $row[] = $value->item.'('.$value->total_qty.')';
+                $row[] = $productImplode;
                 $row[] = number_format($value->total_cost,2);
                 $row[] = number_format($value->grand_total,2);
                 // $row[] = number_format($value->paid_amount,2);

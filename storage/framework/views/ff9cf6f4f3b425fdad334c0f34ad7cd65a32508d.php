@@ -19,8 +19,10 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</button>
                         <div class="dropdown-menu" style="">
-                            <a class="dropdown-item" href="<?php echo e(url('dealer')); ?>">Dealer</a>
-                            <a class="dropdown-item" href="<?php echo e(url('dealer-advance')); ?>">Dealer Advance</a>
+                            <a class="dropdown-item" href="<?php echo e(url('customer')); ?>">Customer</a>
+                            <a class="dropdown-item" href="<?php echo e(url('credit-customer')); ?>">Credit Customer</a>
+                            <a class="dropdown-item" href="<?php echo e(url('paid-customer')); ?>">Paid Customer</a>
+                            <a class="dropdown-item" href="<?php echo e(url('customer-advance')); ?>">Customer Advance</a>
                         </div>
                     </div>
                     <!--end::Button-->
@@ -41,15 +43,58 @@
                                 <input type="hidden" id="end_date" name="end_date" value="<?php echo e(date('Y-m-d')); ?>">
                             </div>
                         </div>
+                        <?php if(Auth::user()->warehouse_id): ?>
+                        <input type="hidden" name="warehouse_id" id="warehouse_id" value="<?php echo e(Auth::user()->warehouse_id); ?>">
+                        <?php else: ?>
                         <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Dealer','name' => 'dealer_id','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Depo','name' => 'warehouse_id','col' => 'col-md-4','class' => 'selectpicker']]); ?>
 <?php $component->withName('form.selectbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Dealer','name' => 'dealer_id','col' => 'col-md-4','class' => 'selectpicker']); ?>
-                            <?php if(!$dealers->isEmpty()): ?>
-                                <?php $__currentLoopData = $dealers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dealer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($dealer->id); ?>"><?php echo e($dealer->name.' - '.$dealer->mobile); ?></option>
+<?php $component->withAttributes(['labelName' => 'Depo','name' => 'warehouse_id','col' => 'col-md-4','class' => 'selectpicker']); ?>
+                            <?php if(!$warehouses->isEmpty()): ?>
+                                <?php $__currentLoopData = $warehouses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php endif; ?>
+
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'District','name' => 'district_id','col' => 'col-md-4','class' => 'selectpicker','onchange' => 'getUpazilaList(this.value,1);customer_list();']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'District','name' => 'district_id','col' => 'col-md-4','class' => 'selectpicker','onchange' => 'getUpazilaList(this.value,1);customer_list();']); ?>
+                            <?php if(!$locations->isEmpty()): ?>
+                                <?php $__currentLoopData = $locations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $location): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php if($location->type == 1 && $location->parent_id == null): ?>
+                                    <option value="<?php echo e($location->id); ?>"><?php echo e($location->name); ?></option>
+                                    <?php endif; ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Upazila','name' => 'upazila_id','col' => 'col-md-4','class' => 'selectpicker','onchange' => 'getAreaList(this.value,1);customer_list();']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Upazila','name' => 'upazila_id','col' => 'col-md-4','class' => 'selectpicker','onchange' => 'getAreaList(this.value,1);customer_list();']); ?>
+                            <?php if(!$locations->isEmpty()): ?>
+                                <?php $__currentLoopData = $locations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $location): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php if($location->type == 2 && $location->parent_id == auth()->user()->district_id): ?>
+                                    <option value="<?php echo e($location->id); ?>"><?php echo e($location->name); ?></option>
+                                    <?php endif; ?>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <?php endif; ?>
                          <?php echo $__env->renderComponent(); ?>
@@ -59,7 +104,39 @@
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
 
-                        <div class="col-md-4">
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Area','name' => 'area_id','col' => 'col-md-4','class' => 'selectpicker','onchange' => 'customer_list()']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Area','name' => 'area_id','col' => 'col-md-4','class' => 'selectpicker','onchange' => 'customer_list()']); ?>
+                            <?php if(!$locations->isEmpty()): ?>
+                                <?php $__currentLoopData = $locations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $location): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php if($location->type == 4 && $location->grand_grand_parent_id == auth()->user()->district_id): ?>
+                                    <option value="<?php echo e($location->id); ?>"><?php echo e($location->name); ?></option>
+                                    <?php endif; ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Customer','name' => 'customer_id','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Customer','name' => 'customer_id','col' => 'col-md-4','class' => 'selectpicker']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+
+                        <div class="<?php echo e(Auth::user()->warehouse_id ? 'col-md-4' : 'col-md-12'); ?>">
                             <div style="margin-top:28px;">
                                 <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
                                 data-toggle="tooltip" data-theme="dark" title="Reset">
@@ -82,6 +159,8 @@
                                 <thead class="bg-primary">
                                     <tr>
                                         <th>Date</th>
+                                        <th>Depo</th>
+                                        <th>Voucher Type</th>
                                         <th>Narration</th>
                                         <th>Voucher No</th>
                                         <th>Debit</th>
@@ -92,6 +171,8 @@
                                 <tbody></tbody>
                                 <tfoot>
                                     <tr class="bg-primary">
+                                        <th></th>
+                                        <th></th>
                                         <th style="text-align: right !important;font-weight:bold;">Total</th>
                                         <th style="text-align: right !important;font-weight:bold;">Previous Balance =
                                             <span id="previousBalance"></span> Tk
@@ -153,10 +234,14 @@ $(document).ready(function(){
             zeroRecords: '<strong class="text-danger">No Data Found</strong>'
         },
         "ajax": {
-            "url": "<?php echo e(route('dealer.ledger.datatable.data')); ?>",
+            "url": "<?php echo e(route('customer.ledger.datatable.data')); ?>",
             "type": "POST",
             "data": function (data) {
-                data.dealer_id = $("#form-filter #dealer_id").val();
+                data.district_id = $("#form-filter #district_id").val();
+                data.upazila_id  = $("#form-filter #upazila_id").val();
+                data.warehouse_id    = $("#form-filter #warehouse_id").val();
+                data.area_id     = $("#form-filter #area_id").val();
+                data.customer_id = $("#form-filter #customer_id").val();
                 data.start_date  = $("#form-filter #start_date").val();
                 data.end_date    = $("#form-filter #end_date").val();
                 data._token      = _token;
@@ -164,11 +249,11 @@ $(document).ready(function(){
         },
         "columnDefs": [
             {
-                "targets": [0,2],
+                "targets": [0,1,2,4],
                 "className": "text-center"
             },
             {
-                "targets": [3,4,5],
+                "targets": [5,6,7],
                 "className": "text-right"
             },
         ],
@@ -184,7 +269,7 @@ $(document).ready(function(){
                 "extend": 'print',
                 'text':'Print',
                 'className':'btn btn-secondary btn-sm text-white',
-                "title":'dealers Ledger From ' +$('#form-filter #start_date').val() + ' To ' +$('#form-filter #end_date').val(),
+                "title":'Customers Ledger From ' +$('#form-filter #start_date').val() + ' To ' +$('#form-filter #end_date').val(),
                 "orientation": "portrait", //portrait
                 "pageSize": "A4", //A3,A5,A6,legal,letter
                 "exportOptions": {
@@ -207,7 +292,7 @@ $(document).ready(function(){
                 'text':'CSV',
                 'className':'btn btn-secondary btn-sm text-white',
                 "title": "<?php echo e($page_title); ?> List",
-                "filename": 'dealers Ledger From ' +$('#form-filter #start_date').val() + ' To ' +$('#form-filter #end_date').val(),
+                "filename": 'Customers Ledger From ' +$('#form-filter #start_date').val() + ' To ' +$('#form-filter #end_date').val(),
                 "exportOptions": {
                     columns: function (index, data, node) {
                         return table.column(index).visible();
@@ -220,7 +305,7 @@ $(document).ready(function(){
                 'text':'Excel',
                 'className':'btn btn-secondary btn-sm text-white',
                 "title": "<?php echo e($page_title); ?> List",
-                "filename": 'dealers Ledger From ' +$('#form-filter #start_date').val() + ' To ' +$('#form-filter #end_date').val(),
+                "filename": 'Customers Ledger From ' +$('#form-filter #start_date').val() + ' To ' +$('#form-filter #end_date').val(),
                 "exportOptions": {
                     columns: function (index, data, node) {
                         return table.column(index).visible();
@@ -233,7 +318,7 @@ $(document).ready(function(){
                 'text':'PDF',
                 'className':'btn btn-secondary btn-sm text-white',
                 "title": "<?php echo e($page_title); ?> List",
-                "filename": 'dealers Ledger From ' +$('#form-filter #start_date').val() + ' To ' +$('#form-filter #end_date').val(),
+                "filename": 'Customers Ledger From ' +$('#form-filter #start_date').val() + ' To ' +$('#form-filter #end_date').val(),
                 "orientation": "portrait", //portrait
                 "pageSize": "A4", //A3,A5,A6,legal,letter
                 "exportOptions": {
@@ -266,7 +351,7 @@ $(document).ready(function(){
             var currency_symbol = "<?php echo e(config('settings.currency_symbol')); ?>";
             var currency_position = "<?php echo e(config('settings.currency_position')); ?>";
             // Total over all pages
-            for (let index = 3; index <= 4; index++) {
+            for (let index = 5; index <= 6; index++) {
                 // Total over this page
                 pageTotal = api
                     .column( index, { page: 'current'} )
@@ -274,7 +359,7 @@ $(document).ready(function(){
                     .reduce( function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0 );
-                    if(index == 3){
+                    if(index == 5){
                         debit = pageTotal;
                     }else{
                         credit = pageTotal;
@@ -284,12 +369,12 @@ $(document).ready(function(){
 
                 var total = (currency_position == 1) ? currency_symbol+' '+number_format(pageTotal) : number_format(pageTotal)+' '+currency_symbol;
                 // Update footer
-                $(api.column( index ).footer()).html('= '+total+' Tk');
+                $(api.column( index ).footer()).html('= '+total);
             }
             balance = (currency_position == 1) ? currency_symbol+' '+number_format((debit - credit)) : number_format((debit - credit))+' '+currency_symbol;
-            $(api.column(5).footer()).html('= '+balance+' Tk');
+            $(api.column(7).footer()).html('= '+balance);
 
-                // Get the current page number
+               // Get the current page number
             var currentPage = api.page.info().page + 1;
             console.log("Current Page:", currentPage);
 
@@ -310,18 +395,102 @@ $(document).ready(function(){
         $('#form-filter #start_date').val('');
         $('#form-filter #end_date').val('');
         table.ajax.reload();
+        customer_list();
     });
 });
-function previousPageData(page, length) {
+customer_list();
+function customer_list()
+{
+    let district_id = document.getElementById('district_id').value;
+    let upazila_id = document.getElementById('upazila_id').value;
+    let area_id = document.getElementById('area_id').value;
+    $.ajax({
+        url:"<?php echo e(url('customer-list')); ?>",
+        type:"POST",
+        data:{district_id:district_id,upazila_id:upazila_id,area_id:area_id,_token:_token},
+        dataType:"JSON",
+        success:function(data){
+            html = `<option value="">Select Please</option>`;
+            $.each(data, function(key, value) {
+                html += `<option value="${value.id}">${value.name} - ${value.mobile} (${value.shop_name})</option>`;
+            });
+            $('#form-filter #customer_id').empty().append(html);
+            $('#form-filter #customer_id.selectpicker').selectpicker('refresh');
+
+        },
+    });
+
+}
+function getUpazilaList(district_id,selector,upazila_id=''){
+    $.ajax({
+        url:"<?php echo e(url('district-id-wise-upazila-list')); ?>/"+district_id,
+        type:"GET",
+        dataType:"JSON",
+        success:function(data){
+            html = `<option value="">Select Please</option>`;
+            $.each(data, function(key, value) {
+                html += '<option value="'+ key +'">'+ value +'</option>';
+            });
+            if(selector == 1)
+            {
+                $('#form-filter #upazila_id').empty();
+                $('#form-filter #upazila_id').append(html);
+            }else{
+                $('#store_or_update_form #upazila_id').empty();
+                $('#store_or_update_form #upazila_id').append(html);
+            }
+            $('.selectpicker').selectpicker('refresh');
+            if(upazila_id){
+                $('#store_or_update_form #upazila_id').val(upazila_id);
+                $('#store_or_update_form #upazila_id.selectpicker').selectpicker('refresh');
+            }
+
+        },
+    });
+}
+function getAreaList(upazila_id,selector,area_id=''){
+    $.ajax({
+        url:"<?php echo e(url('upazila-id-wise-area-list')); ?>/"+upazila_id,
+        type:"GET",
+        dataType:"JSON",
+        success:function(data){
+            html = `<option value="">Select Please</option>`;
+            $.each(data, function(key, value) {
+                html += '<option value="'+ key +'">'+ value +'</option>';
+            });
+            if(selector == 1)
+            {
+                $('#form-filter #area_id').empty();
+                $('#form-filter #area_id').append(html);
+            }else{
+                $('#store_or_update_form #area_id').empty();
+                $('#store_or_update_form #area_id').append(html);
+            }
+            $('.selectpicker').selectpicker('refresh');
+            if(area_id){
+                $('#store_or_update_form #area_id').val(area_id);
+                $('#store_or_update_form #area_id.selectpicker').selectpicker('refresh');
+            }
+
+        },
+    });
+}
+
+
+ function previousPageData(page, length) {
             $.ajax({
-                url: "<?php echo e(route('get.dealer.ledger.previous.data')); ?>",
+                url: "<?php echo e(route('get.customer.ledger.previous.data')); ?>",
                 type: "POST",
                 data: {
                     _token: _token,
                     page: page,
                     length: length,
                     _token: _token,
-                    dealer_id : $("#form-filter #dealer_id").val(),
+                    district_id : $("#form-filter #district_id").val(),
+                    upazila_id  : $("#form-filter #upazila_id").val(),
+                    warehouse_id    : $("#form-filter #warehouse_id").val(),
+                    area_id     : $("#form-filter #area_id").val(),
+                    customer_id : $("#form-filter #customer_id").val(),
                     start_date  : $("#form-filter #start_date").val(),
                     end_date    : $("#form-filter #end_date").val(),
                 },
@@ -335,4 +504,4 @@ function previousPageData(page, length) {
 </script>
 <?php $__env->stopPush(); ?>
 
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Dealer\Resources/views/ledger/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Customer\Resources/views/ledger/index.blade.php ENDPATH**/ ?>
