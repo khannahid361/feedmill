@@ -160,7 +160,7 @@ class DealerAdvanceController extends BaseController
                 'approve'             => 1,
                 'created_by'          => auth()->user()->name,
                 'created_at'          => date('Y-m-d H:i:s')
-            ); 
+            );
 
             return $this->model->insert([
                 $dealer_accledger,$cc
@@ -208,7 +208,7 @@ class DealerAdvanceController extends BaseController
             }else{
                 return false;
             }
-           
+
         }
     }
 
@@ -281,7 +281,7 @@ class DealerAdvanceController extends BaseController
         }
     }
 
-    
+
 }
 
 

@@ -1,5 +1,4 @@
-<div class="modal fade" id="store_or_update_modal" tabindex="-1" role="dialog" aria-labelledby="model-1"
-    aria-hidden="true">
+<div class="modal fade" id="store_or_update_modal" tabindex="-1" role="dialog" aria-labelledby="model-1" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
 
         <!-- Modal Content -->
@@ -19,23 +18,31 @@
                 <div class="modal-body">
                     <div class="row">
                         <input type="hidden" name="update_id" id="update_id" />
-                        @if(Auth::user()->warehouse_id)
-                        <input type="hidden" name="warehouse_id" id="warehouse_id" value="{{ Auth::user()->warehouse_id }}">
+                        @if (Auth::user()->warehouse_id)
+                            <input type="hidden" name="warehouse_id" id="warehouse_id"
+                                value="{{ Auth::user()->warehouse_id }}">
                         @else
-                        <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-4" required="required" class="selectpicker">
-                            @if (!$warehouses->isEmpty())
-                            @foreach ($warehouses as $id => $name)
-                                <option value="{{ $id }}" data-name="{{ $name }}">{{ $name }}</option>
-                            @endforeach
-                            @endif
-                        </x-form.selectbox>
+                            <x-form.selectbox labelName="Depo" name="warehouse_id" col="col-md-4" required="required"
+                                class="selectpicker">
+                                @if (!$warehouses->isEmpty())
+                                    @foreach ($warehouses as $id => $name)
+                                        <option value="{{ $id }}" data-name="{{ $name }}">
+                                            {{ $name }}</option>
+                                    @endforeach
+                                @endif
+                            </x-form.selectbox>
                         @endif
-
                         <x-form.selectbox labelName="Dealer" name="dealer" col="col-md-4" class="selectpicker">
                             @if (!$dealers->isEmpty())
-                            @foreach ($dealers as $dealer)
-                            <option value="{{ $dealer->id }}"  data-coaid="{{ $dealer->coa->id }}" data-name="{{ $dealer->name }}">{{ $dealer->name.' - '.$dealer->mobile.' ('.$dealer->warehouse->name.')' }}</option>
-                            @endforeach
+                                @foreach ($dealers as $dealer)
+                                    <option value="{{ $dealer->id }}" data-coaid="{{ $dealer->coa->id }}"
+                                        data-name="{{ $dealer->name }}">
+                                        {{ $dealer->name }} - {{ $dealer->mobile }}
+                                        @if (isset($dealer->warehouse))
+                                            ({{ $dealer->warehouse->name }})
+                                        @endif
+                                    </option>
+                                @endforeach
                             @endif
                         </x-form.selectbox>
 
@@ -51,7 +58,7 @@
                         <x-form.selectbox labelName="Payment Method" name="payment_method" required="required"
                             col="col-md-4" class="selectpicker">
                             @foreach (PAYMENT_METHOD as $key => $value)
-                            <option value="{{ $key }}">{{ $value }}</option>
+                                <option value="{{ $key }}">{{ $value }}</option>
                             @endforeach
                         </x-form.selectbox>
 
