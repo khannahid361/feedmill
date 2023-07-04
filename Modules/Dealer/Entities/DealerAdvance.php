@@ -12,7 +12,7 @@ class DealerAdvance extends BaseModel
     protected $order = ['transactions.id' => 'desc'];
     protected $fillable = ['chart_of_account_id', 'warehouse_id', 'voucher_no', 'voucher_type', 'voucher_date',
      'description', 'debit', 'credit', 'is_opening', 'posted', 'approve', 'created_by', 'modified_by'];
-    private const TYPE = 'Advance'; 
+    private const TYPE = 'Advance';
 
     public function coa()
     {
@@ -29,9 +29,9 @@ class DealerAdvance extends BaseModel
      * * * Begin :: Custom Datatable Code * * *
     *******************************************/
     //custom search column property
-    protected $_dealer_id; 
-    protected $_start_date; 
-    protected $_end_date; 
+    protected $_dealer_id;
+    protected $_start_date;
+    protected $_end_date;
 
     //methods to set custom search property value
     public function setDealerID($dealer_id)
@@ -52,8 +52,8 @@ class DealerAdvance extends BaseModel
         //set column sorting index table column name wise (should match with frontend table header)
 
         $this->column_order = ['transactions.id','c.name', 'c.shop_name','c.mobile','c.warehouse_id',null,null,'transactions.created_at',null,null,null];
-        
-        
+
+
         $query = self::select('transactions.*','coa.id as coa_id','coa.code','c.id as dealer_id','c.name as dealer_name',
         'c.shop_name','c.mobile','w.name as warehouse_name')
         ->join('chart_of_accounts as coa','transactions.chart_of_account_id','=','coa.id')
@@ -63,10 +63,10 @@ class DealerAdvance extends BaseModel
             'transactions.voucher_type'=>self::TYPE,
             'transactions.approve'=>1,
         ]);
-        if(auth()->user()->warehouse_id)
-        {
-            $query->where('transactions.warehouse_id',  auth()->user()->warehouse_id);
-        }
+        // if(auth()->user()->warehouse_id)
+        // {
+        //     $query->where('transactions.warehouse_id',  auth()->user()->warehouse_id);
+        // }
         //search query
         if (!empty($this->_dealer_id)) {
             $query->where('c.id', $this->_dealer_id);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Dealer\Entities\Dealer;
 use App\Http\Controllers\BaseController;
+use Exception;
 use Modules\Dealer\Entities\DealerAdvance;
 use Modules\Dealer\Http\Requests\DealerAdvanceFormRequest;
 
@@ -72,8 +73,8 @@ class DealerAdvanceController extends BaseController
                 $row[] = $value->dealer_name;
                 $row[] = $value->shop_name;
                 $row[] = $value->mobile;
-                $row[] = $value->warehouse_name;
-                $row[] = ($value->debit != 0) ? 'Receive' : 'Payment' ;
+                $row[] = $value->warehouse_name ?? '';
+                $row[] = ($value->debit != 0) ? 'Payment' : 'Receive' ;
                 $row[] = ($value->debit != 0) ? number_format($value->debit,2,'.',',') : number_format($value->credit,2,'.',',');
                 $row[] = date(config('settings.date_format'),strtotime($value->created_at));
                 $row[] = $payment_method;

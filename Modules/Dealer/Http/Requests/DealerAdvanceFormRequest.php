@@ -14,7 +14,7 @@ class DealerAdvanceFormRequest extends FormRequest
      */
     public function rules()
     {
-        $this->rules['warehouse_id']   = ['required'];
+        $this->rules['warehouse_id']   = ['nullable'];
         $this->rules['dealer']       = ['required'];
         $this->rules['type']           = ['required'];
         $this->rules['amount']         = ['required','numeric','gt:0'];
