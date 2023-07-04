@@ -477,11 +477,12 @@
                         $('#products_stock_qty_' + row).val(data.bag_qty);
                         $('#products_free_stock_qty_' + row).val(data.bag_qty);
                         $('#tax_rate_vl_' + row).val(data.tax_rate);
+                        //discount issue
                         if (product_price[rowindex] == 'undefined') {
-                            product_price.push(parseFloat(data.price) + parseFloat(data.price *
+                            product_price.push(parseFloat(data.price) - parseFloat(data.price *
                                 customer_group_rate));
                         } else {
-                            product_price[rowindex] = (parseFloat(data.price) + parseFloat(data.price *
+                            product_price[rowindex] = (parseFloat(data.price) - parseFloat(data.price *
                                 customer_group_rate));
                         }
                         product_qty.push(data.bag_qty);
