@@ -38,26 +38,25 @@ class MonthlyTargetController extends BaseController
     }
 
     public function store(CommissionMonthlyFormRequest $request)
-    {
-        if ($request->ajax()) {
-            DB::beginTransaction();
-            try {
-                $collection = [];
+{
+    if ($request->ajax()) {
+        DB::beginTransaction();
+        try {
+            $collection = [];
+            foreach ($request->month as $month) {
                 if ($request->has('commission')) {
-
                     foreach ($request->commission as $com) {
-
                         if (!empty($com['dealer_id']) && !empty($com['qty']) && !empty($com['commission_amount'])) {
-                            $existing = MonthlyTarget::where(['dealer_id' => $com['dealer_id'], 'month' => $request->month, 'year' => $request->year])->first();
+                            $existing = MonthlyTarget::where(['dealer_id' => $com['dealer_id'], 'month' => $month, 'year' => $request->year])->first();
                             if (!empty($existing) && $existing->acheived_qty == 0) {
                                 $existing->delete();
                             }
                             if (empty($existing) || $existing->acheived_qty == 0) {
                                 $collection[] = [
-                                    'dealer_id'         => $com['dealer_id'],
-                                    'year'              => $request->year,
-                                    'month'             => $request->month,
-                                    'qty'               => $com['qty'],
+                                    'dealer_id' => $com['dealer_id'],
+                                    'year' => $request->year,
+                                    'month' => $month,
+                                    'qty' => $com['qty'],
                                     'commission_amount' => $com['commission_amount'],
                                     'created_at' => date("Y-m-d H:i:s"),
                                     'created_by' => auth()->user()->name,
@@ -67,19 +66,20 @@ class MonthlyTargetController extends BaseController
                         }
                     }
                 }
-                $data = MonthlyTarget::insert($collection);
-                $output = ['status' => 'success', 'message' => 'Monthly Target Commission Data Saved Successfully'];
-                DB::commit();
-            } catch (Exception $e) {
-                DB::rollBack();
-                $output = ['status' => 'error', 'message' => $e->getMessage()];
             }
-            return response()->json($output);
-        } else {
-            $output = ['status' => 'error', 'message' => 'Failed To Save Commission Data'];
-            return response()->json($this->unauthorized());
+            $data = MonthlyTarget::insert($collection);
+            $output = ['status' => 'success', 'message' => 'Monthly Target Commission Data Saved Successfully'];
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            $output = ['status' => 'error', 'message' => $e->getMessage()];
         }
+        return response()->json($output);
+    } else {
+        $output = ['status' => 'error', 'message' => 'Failed To Save Commission Data'];
+        return response()->json($this->unauthorized());
     }
+}
     public function datatableData(Request $request)
     {
         if ($request->ajax()) {
@@ -153,8 +153,6 @@ class MonthlyTargetController extends BaseController
                     $row[]  = $value->qty;
                     $row[]  = $value->acheived_qty;
                     $row[]  = $value->commission_amount;
-                    // $row[]  = $value->paid_amount;
-                    // $row[]  = $value->due_amount;
                     $row[]  = $value->created_by;
                     $row[]  = action_button($action);
                     $data[] = $row;
