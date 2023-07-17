@@ -1,8 +1,9 @@
+
+
 <?php $__env->startSection('title', $page_title); ?>
 
 <?php $__env->startPush('styles'); ?>
 <link href="plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-<link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -16,10 +17,10 @@
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    <?php if(permission('expense-add')): ?>
-                    <a href="javascript:void(0);" onclick="showFormModal('Add New Expense','Save')" class="btn btn-primary btn-sm font-weight-bolder">
+                    <?php if(permission('supplier-add')): ?>
+                    <a href="javascript:void(0);" onclick="showNewFormModal('Add New Supplier','Save')" class="btn btn-primary btn-sm font-weight-bolder"> 
                         <i class="fas fa-plus-circle"></i> Add New</a>
-                        <?php endif; ?>
+                    <?php endif; ?>
                     <!--end::Button-->
                 </div>
             </div>
@@ -31,50 +32,66 @@
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row">
                         <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Depo','name' => 'warehouse_id','col' => 'col-md-4','class' => 'selectpicker']]); ?>
-<?php $component->withName('form.selectbox'); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Name','name' => 'name','col' => 'col-md-3']]); ?>
+<?php $component->withName('form.textbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Depo','name' => 'warehouse_id','col' => 'col-md-4','class' => 'selectpicker']); ?>
-                            <?php if(!$warehouses->isEmpty()): ?>
-                                <?php $__currentLoopData = $warehouses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($value->id); ?>"><?php echo e($value->name); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            <?php endif; ?>
-                         <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['labelName' => 'Name','name' => 'name','col' => 'col-md-3']); ?>
+<?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
 <?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
                         <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Expense Type','name' => 'expense_item_id','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Mobile','name' => 'mobile','col' => 'col-md-3']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Mobile','name' => 'mobile','col' => 'col-md-3']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Email','name' => 'email','col' => 'col-md-3']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Email','name' => 'email','col' => 'col-md-3']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Status','name' => 'status','col' => 'col-md-3','class' => 'selectpicker']]); ?>
 <?php $component->withName('form.selectbox'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['labelName' => 'Expense Type','name' => 'expense_item_id','col' => 'col-md-4','class' => 'selectpicker']); ?>
-                        <?php if(!$expense_items->isEmpty()): ?>
-                            <?php $__currentLoopData = $expense_items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($value->id); ?>"><?php echo e($value->name); ?></option>
+<?php $component->withAttributes(['labelName' => 'Status','name' => 'status','col' => 'col-md-3','class' => 'selectpicker']); ?>
+                            <?php $__currentLoopData = STATUS; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        <?php endif; ?>
                          <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
 <?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
-                        <div class="col-md-4">
-                            <div style="margin-top:28px;">
-                                <div style="margin-top:28px;">
-                                    <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
-                                    data-toggle="tooltip" data-theme="dark" title="Reset">
-                                    <i class="fas fa-undo-alt"></i></button>
+                        <div class="col-md-12"> 
+                            <div style="margin-top:0px;">    
+                                <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
+                                data-toggle="tooltip" data-theme="dark" title="Reset">
+                                <i class="fas fa-undo-alt"></i></button>
 
-                                    <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right" type="button"
-                                    data-toggle="tooltip" data-theme="dark" title="Search">
-                                    <i class="fas fa-search"></i></button>
-                                </div>
+                                <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-right" type="button"
+                                data-toggle="tooltip" data-theme="dark" title="Search">
+                                <i class="fas fa-search"></i></button>
+
                             </div>
                         </div>
                     </div>
@@ -88,7 +105,7 @@
                             <table id="dataTable" class="table table-bordered table-hover">
                                 <thead class="bg-primary">
                                     <tr>
-                                        <?php if(permission('expense-bulk-delete')): ?>
+                                        <?php if(permission('supplier-bulk-delete')): ?>
                                         <th>
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="select_all" onchange="select_all()">
@@ -97,13 +114,14 @@
                                         </th>
                                         <?php endif; ?>
                                         <th>Sl</th>
-                                        <th>Date</th>
-                                        <th>Branch</th>
-                                        <th>Type</th>
-                                        <th>Remarks</th>
-                                        <th>Payment Type</th>
-                                        <th>Account</th>
-                                        <th>Amount</th>
+                                        <th>Name</th>
+                                        <th>Address</th>
+                                        <th>Mobile</th>
+                                        <th>Email</th>
+                                        <th>City</th>
+                                        <th>Zipcode</th>
+                                        <th>Status</th>
+                                        <th>Balance</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -118,18 +136,15 @@
         <!--end::Card-->
     </div>
 </div>
-<?php echo $__env->make('expense::expense.modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('supplier::modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
 <script src="plugins/custom/datatables/datatables.bundle.js" type="text/javascript"></script>
-<script src="js/moment.js"></script>
-<script src="js/bootstrap-datetimepicker.min.js"></script>
 <script>
-    $('.date').datetimepicker({format: 'YYYY-MM-DD',ignoreReadonly: true});
     var table;
     $(document).ready(function(){
-
+    
         table = $('#dataTable').DataTable({
             "processing": true, //Feature control the processing indicator
             "serverSide": true, //Feature control DataTable server side processing mode
@@ -142,53 +157,57 @@
                 [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
             ],
             "pageLength": 25, //number of data show per page
-            "language": {
+            "language": { 
                 processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
                 emptyTable: '<strong class="text-danger">No Data Found</strong>',
                 infoEmpty: '',
                 zeroRecords: '<strong class="text-danger">No Data Found</strong>'
             },
             "ajax": {
-                "url": "<?php echo e(route('expense.datatable.data')); ?>",
+                "url": "<?php echo e(route('supplier.datatable.data')); ?>",
                 "type": "POST",
                 "data": function (data) {
-                    data.warehouse_id = $("#form-filter #warehouse_id option:selected").val();
-                    data.expense_item_id = $("#form-filter #expense_item_id option:selected").val();
-                    data._token    = _token;
+                    data.name   = $("#form-filter #name").val();
+                    data.mobile = $("#form-filter #mobile").val();
+                    data.email  = $("#form-filter #email").val();
+                    data.status = $("#form-filter #status").val();
+                    data._token = _token;
                 }
             },
             "columnDefs": [{
-                    <?php if(permission('expense-bulk-delete')): ?>
-                    "targets": [0,9],
+
+                    <?php if(permission('supplier-bulk-delete')): ?>
+                    "targets": [0,10],
                     <?php else: ?>
-                    "targets": [8],
+                    "targets": [9],
                     <?php endif; ?>
                     "orderable": false,
                     "className": "text-center"
                 },
                 {
-                    <?php if(permission('expense-bulk-delete')): ?>
-                    "targets": [1,2,6],
+                    <?php if(permission('supplier-bulk-delete')): ?>
+                    "targets": [1,4,6,7,8],
                     <?php else: ?>
-                    "targets": [0,1,5],
+                    "targets": [0,3,5,6,7],
                     <?php endif; ?>
                     "className": "text-center"
                 },
                 {
-                    <?php if(permission('expense-bulk-delete')): ?>
-                    "targets": [8],
+                    <?php if(permission('supplier-bulk-delete')): ?>
+                    "targets": [9],
                     <?php else: ?>
-                    "targets": [7],
+                    "targets": [8],
                     <?php endif; ?>
-                    "className": "text-right"
-                }
+                    "className": "text-right",
+                    "orderable": false,
+                },
             ],
             "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
-
+    
             "buttons": [
-                <?php if(permission('expense-report')): ?>
+                <?php if(permission('supplier-report')): ?>
                 {
                     'extend':'colvis','className':'btn btn-secondary btn-sm text-white','text':'Column','columns': ':gt(0)'
                 },
@@ -200,19 +219,19 @@
                     "orientation": "landscape", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
-                        <?php if(permission('expense-bulk-delete')): ?>
-                        columns: ':visible:not(:eq(0),:eq(9))'
+                        <?php if(permission('supplier-bulk-delete')): ?>
+                        columns: ':visible:not(:eq(0),:eq(10))' 
                         <?php else: ?>
-                        columns: ':visible:not(:eq(8))'
+                        columns: ':visible:not(:eq(9))' 
                         <?php endif; ?>
                     },
                     customize: function (win) {
                         $(win.document.body).addClass('bg-white');
-                        $(win.document.body).find('table thead').css({'background':'#034d97'});
-                        $(win.document.body).find('table tfoot tr').css({'background-color':'#034d97'});
-                        $(win.document.body).find('h1').css('text-align', 'center');
-                        $(win.document.body).find('h1').css('font-size', '15px');
-                        $(win.document.body).find('table').css( 'font-size', 'inherit' );
+                    $(win.document.body).find('table thead').css({'background':'#034d97'});
+                    $(win.document.body).find('table tfoot tr').css({'background-color':'#034d97'});
+                    $(win.document.body).find('h1').css('text-align', 'center');
+                    $(win.document.body).find('h1').css('font-size', '15px');
+                    $(win.document.body).find('table').css( 'font-size', 'inherit' );
                     },
                 },
                 {
@@ -222,10 +241,10 @@
                     "title": "<?php echo e($page_title); ?> List",
                     "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "exportOptions": {
-                        <?php if(permission('expense-bulk-delete')): ?>
-                        columns: ':visible:not(:eq(0),:eq(9))'
+                       <?php if(permission('supplier-bulk-delete')): ?>
+                        columns: ':visible:not(:eq(0),:eq(10))' 
                         <?php else: ?>
-                        columns: ':visible:not(:eq(8))'
+                        columns: ':visible:not(:eq(9))' 
                         <?php endif; ?>
                     }
                 },
@@ -236,10 +255,10 @@
                     "title": "<?php echo e($page_title); ?> List",
                     "filename": "<?php echo e(strtolower(str_replace(' ','-',$page_title))); ?>-list",
                     "exportOptions": {
-                        <?php if(permission('expense-bulk-delete')): ?>
-                        columns: ':visible:not(:eq(0),:eq(9))'
+                       <?php if(permission('supplier-bulk-delete')): ?>
+                        columns: ':visible:not(:eq(0),:eq(10))' 
                         <?php else: ?>
-                        columns: ':visible:not(:eq(8))'
+                        columns: ':visible:not(:eq(9))' 
                         <?php endif; ?>
                     }
                 },
@@ -252,20 +271,20 @@
                     "orientation": "landscape", //portrait
                     "pageSize": "A4", //A3,A5,A6,legal,letter
                     "exportOptions": {
-                        <?php if(permission('expense-bulk-delete')): ?>
-                        columns: ':visible:not(:eq(0),:eq(9))'
+                       <?php if(permission('supplier-bulk-delete')): ?>
+                        columns: ':visible:not(:eq(0),:eq(10))' 
                         <?php else: ?>
-                        columns: ':visible:not(:eq(8))'
+                        columns: ':visible:not(:eq(9))' 
                         <?php endif; ?>
                     },
                     customize: function(doc) {
-                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10
+                        doc.defaultStyle.fontSize = 7; //<-- set fontsize to 16 instead of 10 
                         doc.styles.tableHeader.fontSize = 7;
                         doc.pageMargins = [5,5,5,5];
-                    }
+                    }  
                 },
-                <?php endif; ?>
-                <?php if(permission('expense-bulk-delete')): ?>
+                <?php endif; ?> 
+                <?php if(permission('supplier-bulk-delete')): ?>
                 {
                     'className':'btn btn-danger btn-sm delete_btn d-none text-white',
                     'text':'Delete',
@@ -276,20 +295,21 @@
                 <?php endif; ?>
             ],
         });
-
+    
         $('#btn-filter').click(function () {
             table.ajax.reload();
         });
-
+    
         $('#btn-reset').click(function () {
             $('#form-filter')[0].reset();
+            $('#form-filter .selectpicker').selectpicker('refresh');
             table.ajax.reload();
         });
-
+    
         $(document).on('click', '#save-btn', function () {
             let form = document.getElementById('store_or_update_form');
             let formData = new FormData(form);
-            let url = "<?php echo e(route('expense.store.or.update')); ?>";
+            let url = "<?php echo e(route('supplier.store.or.update')); ?>";
             let id = $('#update_id').val();
             let method;
             if (id) {
@@ -299,16 +319,15 @@
             }
             store_or_update_data(table, method, url, formData);
         });
-
+    
         $(document).on('click', '.edit_data', function () {
             let id = $(this).data('id');
             $('#store_or_update_form')[0].reset();
-            $('#store_or_update_form .select').val('');
             $('#store_or_update_form').find('.is-invalid').removeClass('is-invalid');
             $('#store_or_update_form').find('.error').remove();
             if (id) {
                 $.ajax({
-                    url: "<?php echo e(route('expense.edit')); ?>",
+                    url: "<?php echo e(route('supplier.edit')); ?>",
                     type: "POST",
                     data: { id: id,_token: _token},
                     dataType: "JSON",
@@ -317,23 +336,26 @@
                             notification(data.status,data.message)
                         }else{
                             $('#store_or_update_form #update_id').val(data.id);
-                            $('#store_or_update_form #date').val(data.date);
-                            $('#store_or_update_form #warehouse_id').val(data.warehouse_id);
-                            $('#store_or_update_form #expense_item_id').val(data.expense_item_id);
-                            $('#store_or_update_form #payment_type').val(data.payment_type);
-                            $('#store_or_update_form #amount').val(data.amount);
-                            $('#store_or_update_form #remarks').val(data.remarks);
-                            $('#store_or_update_form .selectpicker').selectpicker('refresh');
-                            account_list(data.payment_type,data.account_id);
+                            $('#store_or_update_form #name,#store_or_update_form #old_name').val(data.name);
+                            $('#store_or_update_form #company_name').val(data.company_name);
+                            $('#store_or_update_form #mobile').val(data.mobile);
+                            $('#store_or_update_form #email').val(data.email);
+                            $('#store_or_update_form #city').val(data.city);
+                            $('#store_or_update_form #zipcode').val(data.zipcode);
+                            $('#store_or_update_form #address').val(data.address);
+                            $('#store_or_update_form #details').val(data.details);
+                            $('#store_or_update_form .pbalance').addClass('d-none');
+                            // $('#store_or_update_form #previous_balance, #store_or_update_form #old_previous_balance').val(data.previous_balance.debit);
+                            $('#store_or_update_form #type.selectpicker').selectpicker('refresh');
                             $('#store_or_update_modal').modal({
                                 keyboard: false,
                                 backdrop: 'static',
                             });
                             $('#store_or_update_modal .modal-title').html(
-                                '<i class="fas fa-edit text-white"></i> <span>Edit Data</span>');
+                                '<i class="fas fa-edit text-white"></i> <span>Edit ' + data.name + '</span>');
                             $('#store_or_update_modal #save-btn').text('Update');
                         }
-
+                        
                     },
                     error: function (xhr, ajaxOption, thrownError) {
                         console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
@@ -341,15 +363,15 @@
                 });
             }
         });
-
+    
         $(document).on('click', '.delete_data', function () {
             let id    = $(this).data('id');
             let name  = $(this).data('name');
             let row   = table.row($(this).parent('tr'));
-            let url   = "<?php echo e(route('expense.delete')); ?>";
+            let url   = "<?php echo e(route('supplier.delete')); ?>";
             delete_data(id, url, table, row, name);
         });
-
+    
         function multi_delete(){
             let ids = [];
             let rows;
@@ -365,35 +387,38 @@
                     icon: 'warning',
                 });
             }else{
-                let url = "<?php echo e(route('expense.bulk.delete')); ?>";
+                let url = "<?php echo e(route('supplier.bulk.delete')); ?>";
                 bulk_delete(ids,url,table,rows);
             }
         }
 
-    });
-
-    function account_list(payment_type,account_id='')
-    {
-        $.ajax({
-            url: "<?php echo e(route('account.list')); ?>",
-            type: "POST",
-            data: { payment_method: payment_type,_token: _token},
-            success: function (data) {
-                $('#store_or_update_form #account_id').html('');
-                $('#store_or_update_form #account_id').html(data);
-                $('#store_or_update_form #account_id.selectpicker').selectpicker('refresh');
-                if(account_id)
-                {
-                    $('#store_or_update_form #account_id').val(account_id);
-                    $('#store_or_update_form #account_id.selectpicker').selectpicker('refresh');
-                }
-            },
-            error: function (xhr, ajaxOption, thrownError) {
-                console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
-            }
+        $(document).on('click', '.change_status', function () {
+            let id     = $(this).data('id');
+            let name   = $(this).data('name');
+            let status = $(this).data('status');
+            let row    = table.row($(this).parent('tr'));
+            let url    = "<?php echo e(route('supplier.change.status')); ?>";
+            change_status(id, url, table, row, name, status);
         });
+    
+    
+    });
+    function showNewFormModal(modal_title, btn_text) {
+        $('#store_or_update_form')[0].reset();
+        $('#store_or_update_form #update_id').val('');
+        $('#store_or_update_form').find('.is-invalid').removeClass('is-invalid');
+        $('#store_or_update_form').find('.error').remove();
+        $('#store_or_update_form .selectpicker').selectpicker('refresh');
+        $('#store_or_update_form .pbalance').removeClass('d-none');
+
+        $('#store_or_update_modal').modal({
+            keyboard: false,
+            backdrop: 'static',
+        });
+        $('#store_or_update_modal .modal-title').html('<i class="fas fa-plus-square text-white"></i> '+modal_title);
+        $('#store_or_update_modal #save-btn').text(btn_text);
     }
     </script>
 <?php $__env->stopPush(); ?>
 
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Expense\Resources/views/expense/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Supplier\Resources/views/index.blade.php ENDPATH**/ ?>
