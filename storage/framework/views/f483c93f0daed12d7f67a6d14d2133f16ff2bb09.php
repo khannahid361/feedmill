@@ -606,7 +606,7 @@
                 }
                 $('#due_amount').val((payable_amount - parseFloat($('#paid_amount').val())).toFixed(2));
             });
-            var count = 1;
+            var count = 2;
             $('#material_table').on('click', '.add-material', function() {
                 count++;
                 material_row_add(count);
@@ -678,7 +678,7 @@
         }
 
         function materialSearch(data, row) {
-            var rowindex = $('#material_list_' + row).closest('tr').index();
+            rowindex = $('#material_list_' + row).closest('tr').index();
             var temp_data = $('#material_list_' + row).val();
 
             $.ajax({
