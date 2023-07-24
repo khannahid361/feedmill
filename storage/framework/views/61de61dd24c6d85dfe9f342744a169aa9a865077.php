@@ -1,19 +1,18 @@
-@extends('layouts.app')
-@section('title', $page_title)
-@push('styles')
-<link href="{{asset('css/daterangepicker.min.css')}}" rel="stylesheet" type="text/css" />
-<link href="{{asset('plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
-@endpush
-@section('content')
+<?php $__env->startSection('title', $page_title); ?>
+<?php $__env->startPush('styles'); ?>
+<link href="<?php echo e(asset('css/daterangepicker.min.css')); ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.css')); ?>" rel="stylesheet" type="text/css" />
+<?php $__env->stopPush(); ?>
+<?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
         <div class="card card-custom gutter-b">
             <div class="card-header flex-wrap py-5">
-                <div class="card-title"><h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3></div>
+                <div class="card-title"><h3 class="card-label"><i class="<?php echo e($page_icon); ?> text-primary"></i> <?php echo e($sub_title); ?></h3></div>
                 <div class="card-toolbar">
-                    @if (permission('purchase-add'))
-                    <a href="{{ route('purchase.create') }}"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add New</a>
-                    @endif
+                    <?php if(permission('purchase-add')): ?>
+                    <a href="<?php echo e(route('purchase.create')); ?>"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add New</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -21,7 +20,18 @@
             <div class="card-header flex-wrap py-5">
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row">
-                        <x-form.textbox labelName="Memo No." name="memo_no" col="col-md-4" />
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.textbox','data' => ['labelName' => 'Memo No.','name' => 'memo_no','col' => 'col-md-4']]); ?>
+<?php $component->withName('form.textbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Memo No.','name' => 'memo_no','col' => 'col-md-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
 
                         <div class="form-group col-md-4">
                             <label for="name">Choose Date</label>
@@ -31,23 +41,53 @@
                                 <input type="hidden" id="end_date" name="end_date">
                             </div>
                         </div>
-                        <x-form.selectbox labelName="Supplier" name="supplier_id" col="col-md-4" class="selectpicker">
-                            @if (!$suppliers->isEmpty())
-                                @foreach ($suppliers as $supplier)
-                                    <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
-                                @endforeach
-                            @endif
-                        </x-form.selectbox>
-                        <x-form.selectbox labelName="Purchase Status" name="purchase_status" col="col-md-4" class="selectpicker">
-                            @foreach (PURCHASE_STATUS as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                            @endforeach
-                        </x-form.selectbox>
-                        <x-form.selectbox labelName="Payment Status" name="payment_status" col="col-md-4" class="selectpicker">
-                            @foreach (PAYMENT_STATUS as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                            @endforeach
-                        </x-form.selectbox>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Supplier','name' => 'supplier_id','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Supplier','name' => 'supplier_id','col' => 'col-md-4','class' => 'selectpicker']); ?>
+                            <?php if(!$suppliers->isEmpty()): ?>
+                                <?php $__currentLoopData = $suppliers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $supplier): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($supplier->id); ?>"><?php echo e($supplier->name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Purchase Status','name' => 'purchase_status','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Purchase Status','name' => 'purchase_status','col' => 'col-md-4','class' => 'selectpicker']); ?>
+                            <?php $__currentLoopData = PURCHASE_STATUS; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                        <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.form.selectbox','data' => ['labelName' => 'Payment Status','name' => 'payment_status','col' => 'col-md-4','class' => 'selectpicker']]); ?>
+<?php $component->withName('form.selectbox'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes(['labelName' => 'Payment Status','name' => 'payment_status','col' => 'col-md-4','class' => 'selectpicker']); ?>
+                            <?php $__currentLoopData = PAYMENT_STATUS; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
                         <div class="col-md-4">
                             <div style="margin-top:28px;">
                                 <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button" data-toggle="tooltip" data-theme="dark" title="Reset"><i class="fas fa-undo-alt"></i></button>
@@ -72,7 +112,7 @@
                                         <th>Grand Total</th>
                                         <th>Purchase Date</th>
                                         <th>Purchase Status</th>
-                                        {{-- <th>Payment Status</th --}}
+                                        
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -85,15 +125,15 @@
         </div>
     </div>
 </div>
-@include('purchase::payment.add')
-@include('purchase::payment.paymentListModal')
-@include('purchase::statusModal')
-@endsection
-@push('scripts')
-<script src="{{asset('plugins/custom/datatables/datatables.bundle.js')}}" type="text/javascript"></script>
-<script src="{{asset('js/moment.js')}}"></script>
-<script src="{{asset('js/knockout-3.4.2.js')}}"></script>
-<script src="{{asset('js/daterangepicker.min.js')}}"></script>
+<?php echo $__env->make('purchase::payment.add', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('purchase::payment.paymentListModal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('purchase::statusModal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+<script src="<?php echo e(asset('plugins/custom/datatables/datatables.bundle.js')); ?>" type="text/javascript"></script>
+<script src="<?php echo e(asset('js/moment.js')); ?>"></script>
+<script src="<?php echo e(asset('js/knockout-3.4.2.js')); ?>"></script>
+<script src="<?php echo e(asset('js/daterangepicker.min.js')); ?>"></script>
 <script>
     function _(x){
         return document.getElementById(x);
@@ -129,7 +169,7 @@ $(document).ready(function(){
             zeroRecords: '<strong class="text-danger">No Data Found</strong>'
         },
         "ajax": {
-            "url" : "{{route('purchase.datatable.data')}}",
+            "url" : "<?php echo e(route('purchase.datatable.data')); ?>",
             "type": "POST",
             "data": function (data) {
                 data.memo_no         = $("#form-filter #memo_no").val();
@@ -161,7 +201,7 @@ $(document).ready(function(){
         let id    = $(this).data('id');
         let name  = $(this).data('name');
         let row   = table.row($(this).parent('tr'));
-        let url   = "{{ route('purchase.delete') }}";
+        let url   = "<?php echo e(route('purchase.delete')); ?>";
         delete_data(id, url, table, row, name);
     });
     $(document).on('click', '.add_payment', function () {
@@ -238,7 +278,7 @@ $(document).ready(function(){
         let form = document.getElementById('payment_form');
         let formData = new FormData(form);
         $.ajax({
-            url: "{{route('purchase.payment.store.or.update')}}",
+            url: "<?php echo e(route('purchase.payment.store.or.update')); ?>",
             type: "POST",
             data: formData,
             dataType: "JSON",
@@ -302,7 +342,7 @@ $(document).ready(function(){
         }).then((result) => {
             if (result.value) {
                 $.ajax({
-                    url: "{{ route('purchase.payment.delete') }}",
+                    url: "<?php echo e(route('purchase.payment.delete')); ?>",
                     type: "POST",
                     data: { id: id, _token: _token},
                     dataType: "JSON",
@@ -333,7 +373,7 @@ $(document).ready(function(){
     });
     function account_list(payment_method,account_id='') {
         $.ajax({
-                url: "{{route('account.list')}}",
+                url: "<?php echo e(route('account.list')); ?>",
                 type: "POST",
                 data: { payment_method: payment_method,_token: _token},
                 success: function (data) {
@@ -350,7 +390,7 @@ $(document).ready(function(){
     }
     function payment_list(id) {
         $.ajax({
-            url: "{{route('purchase.payment.show')}}",
+            url: "<?php echo e(route('purchase.payment.show')); ?>",
             type: "POST",
             data: { id: id,_token: _token},
             success: function (data) {
@@ -376,7 +416,7 @@ $(document).on('click','#change-status-btn',function(){
     // console.log(id,status);
     if(status != ''){
         $.ajax({
-            url        : "{{url('purchase/change-status')}}" + "/" + + id + "/" + status,
+            url        : "<?php echo e(url('purchase/change-status')); ?>" + "/" + + id + "/" + status,
             dataType   : "JSON",
             beforeSend : function(){
                 $('#change-status-btn').addClass('kt-spinner kt-spinner--md kt-spinner--light');
@@ -387,39 +427,41 @@ $(document).on('click','#change-status-btn',function(){
             success: function (data) {
                 notification(data.status, data.message);
                 if (data.status == 'success') {
-                    window.location.replace("{{ route('purchase') }}");
+                    window.location.replace("<?php echo e(route('purchase')); ?>");
                 }
             },
             error: function (xhr, ajaxOption, thrownError) { console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText); }
         });
     }
-    {{--var sale_id     = $('#approve_status_form #sale_id').val();--}}
-    {{--var sale_status =  $('#approve_status_form #sale_status option:selected').val();--}}
-    {{--if(sale_id && sale_status)--}}
-    {{--{--}}
-    {{--    $.ajax({--}}
-    {{--        url: "{{route('sale.change.status')}}",--}}
-    {{--        type: "POST",--}}
-    {{--        data: {sale_id:sale_id,sale_status:sale_status,_token:_token},--}}
-    {{--        dataType: "JSON",--}}
-    {{--        beforeSend: function(){--}}
-    {{--            $('#status-btn').addClass('kt-spinner kt-spinner--md kt-spinner--light');--}}
-    {{--        },--}}
-    {{--        complete: function(){--}}
-    {{--            $('#status-btn').removeClass('kt-spinner kt-spinner--md kt-spinner--light');--}}
-    {{--        },--}}
-    {{--        success: function (data) {--}}
-    {{--            notification(data.status, data.message);--}}
-    {{--            if (data.status == 'success') {--}}
-    {{--                $('#approve_status_modal').modal('hide');--}}
-    {{--                table.ajax.reload(null, false);--}}
-    {{--            }--}}
-    {{--        },--}}
-    {{--        error: function (xhr, ajaxOption, thrownError) {--}}
-    {{--            console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);--}}
-    {{--        }--}}
-    {{--    });--}}
-    {{--}--}}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\insaf\Modules/Purchase\Resources/views/index.blade.php ENDPATH**/ ?>
