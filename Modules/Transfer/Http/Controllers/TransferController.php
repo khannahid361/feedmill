@@ -58,9 +58,9 @@ class TransferController extends BaseController{
             foreach ($list as $value) {
                 $no++;
                 $action = '';
-                if(permission('transfer-inventory-edit') && $value->receive_status == 3 && empty(auth()->user()->warehouse_id)){
-                    $action .= ' <a class="dropdown-item" href="'.route("transfer.inventory.edit",$value->id).'">'.self::ACTION_BUTTON['Edit'].'</a>';
-                }
+                // if(permission('transfer-inventory-edit') && $value->receive_status == 3 && empty(auth()->user()->warehouse_id)){
+                //     $action .= ' <a class="dropdown-item" href="'.route("transfer.inventory.edit",$value->id).'">'.self::ACTION_BUTTON['Edit'].'</a>';
+                // }
                 if(permission('transfer-inventory-view')){
                     $action .= ' <a class="dropdown-item view_data" href="'.route("transfer.inventory.view",$value->id).'">'.self::ACTION_BUTTON['View'].'</a>';
                 }
