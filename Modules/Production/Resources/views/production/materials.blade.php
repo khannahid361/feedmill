@@ -7,8 +7,8 @@
         <div class="col-md-12 text-center">
             <div class="row">
                 <div class="col-md-6"></div>
-                <div class="col-md-2">
-                    <label style="padding-top: 10px;">Total Finished Quantity</label>
+                <div class="col-md-2 required">
+                    <label style="padding-top: 10px;">Total Finished Quantity </label>
                 </div>
                 <div class="col-md-4 mb-4">
                     <input type="text" class="form-control text-center finishedQty finished-qty" value=""

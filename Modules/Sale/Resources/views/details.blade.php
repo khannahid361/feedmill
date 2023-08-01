@@ -470,7 +470,7 @@
                                                 @endif
                                             </td>
                                         </tr>
-                                        <tr>
+                                        {{-- <tr>
                                             <td colspan="5"></td>
                                             <td  class="text-right">PREVIOUS DUE</td>
                                             <td class="text-right">
@@ -491,7 +491,7 @@
                                                     {{ config('settings.currency_symbol') }} {{ number_format(($sale->grand_total + $sale->previous_due),2,'.','') }}
                                                 @endif
                                             </td>
-                                        </tr>
+                                        </tr> --}}
                                         <tr>
                                             <td colspan="5"></td>
                                             <td  class="text-right">PAID AMOUNT</td>
@@ -508,9 +508,9 @@
                                             <td  class="text-right">DUE AMOUNT</td>
                                             <td class="text-right">
                                                 @if (config('settings.currency_position') == 2)
-                                                    {{ number_format($sale->due_amount,2,'.','') }} {{ config('settings.currency_symbol') }}
+                                                    {{ number_format($sale->due_amount-$sale->previous_due,2,'.','') }} {{ config('settings.currency_symbol') }}
                                                 @else
-                                                    {{ config('settings.currency_symbol') }} {{ number_format($sale->due_amount,2,'.','') }}
+                                                    {{ config('settings.currency_symbol') }} {{ number_format($sale->due_amount-$sale->previous_due,2,'.','') }}
                                                 @endif
                                             </td>
                                         </tr>

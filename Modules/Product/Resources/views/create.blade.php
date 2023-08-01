@@ -253,7 +253,8 @@
             function add_more_material_field(row) {
                 html = ` <div class="row row_remove">
                     <div class="form-group col-md-5 required">
-                        <select name="materials[` + row + `][id]" id="materials_` + row + `_id" required="required" class="form-control selectpicker material">
+                        <select name="materials[` + row + `][id]" id="materials_` + row + `_id" required="required" class="form-control selectpicker material" data-live-search="true"
+                                                    data-live-search-placeholder="Search">
                             <option value="">Select Please</option>
                             @if (!$materials->isEmpty())
                                 @foreach ($materials as $material)

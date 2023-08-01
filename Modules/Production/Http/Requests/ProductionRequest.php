@@ -15,9 +15,14 @@ class ProductionRequest extends FormRequest
         if(request()->update_id)
         {
             $this->rules['batch_no'][1] = 'unique:productions,batch_no,'.request()->update_id;
+            $this->rules['production.1.base_unit_qty'] = ['required'];
+            // production[{{ $key + 1 }}][base_unit_qty]
         }
         $this->rules['start_date']   = ['required','date','date_format:Y-m-d'];
         $this->rules['warehouse_id'] = ['required'];
+        if(!request()->update_id){
+            $this->rules['production.1.expected_unit_qty'] = ['required'];
+        }
 
 //        $collection = collect(request());
 //        if($collection->has('production')){

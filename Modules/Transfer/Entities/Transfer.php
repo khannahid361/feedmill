@@ -242,13 +242,13 @@ class Transfer extends BaseModel
                 ])->first();
                 if($to_warehouse)
                 {
-                    $to_warehouse->qty += $value['receive_qty'];
+                    $to_warehouse->bag_qty += $value['receive_qty'];
                     $to_warehouse->update();
                 }else{
                     WarehouseProduct::create([
                         'warehouse_id'=> $request->to_warehouse_id,
                         'product_id'=>$value['id'],
-                        'qty'=> $value['receive_qty']
+                        'bag_qty'=> $value['receive_qty']
                     ]);
                 }
 

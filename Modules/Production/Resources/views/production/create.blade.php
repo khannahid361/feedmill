@@ -302,6 +302,12 @@
                     $('#store_or_update_form').find('.error').remove();
                     if (data.status == false) {
                         $.each(data.errors, function(key, value) {
+                            if(key == 'production.1.expected_unit_qty')
+                            {
+                                $('#store_or_update_form input#finished_qty').addClass('is-invalid');
+                                $('#store_or_update_form #finished_qty').parent().append(
+                                    '<small class="error text-danger">Please Enter Finish Quantity</small>');
+                            }
                             var key = key.split('.').join('_');
                             $('#store_or_update_form input#' + key).addClass('is-invalid');
                             $('#store_or_update_form textarea#' + key).addClass('is-invalid');
