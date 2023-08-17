@@ -51,26 +51,26 @@ class WarehouseProductDeliveryController extends BaseController
 
             $this->set_datatable_default_properties($request);
             $list = $this->model->getDatatableList();
-            // dd($list);
             $data = [];
             $no = $request->input('start');
             foreach ($list as $value) {
                 $no++;
+                if($value->type == 'Dealer'){
+                    $type = '<span class="label label-info label-pill label-inline" style="min-width:70px !important;">Dealer</span>';
+                }
+                else{
+                    $type = '<span class="label label-warning label-pill label-inline" style="min-width:70px !important;">Customer</span>';
+                }
                 $row    = [];
                 $row[]  = $no;
                 $row[]  = $value->warehouse_name;
                 $row[]  = $value->product_name;
+                $row[]  = date("d-m-Y", strtotime($value->delivery_date));
                 $row[]  = $value->category_name;
                 $row[]  = $value->invoice_no;
                 $row[]  = $value->name;
-                $row[]  = $value->type;
+                $row[]  = $type;
                 $row[]  = $value->quantity;
-                // $row[]  = number_format($value->cost, 2);
-                // $row[]  = $value->bag_qty;
-                // $row[]  = number_format(($value->cost * $value->bag_qty * 50), 2);
-                // $row[]  = $value->qty;
-                // $row[]  = number_format(($value->cost * $value->qty), 2);
-                // $row[]  = number_format(($value->cost * $value->qty) + ($value->cost * $value->bag_qty * 50), 2);
                 $data[] = $row;
             }
             return $this->datatable_draw($request->input('draw'), $this->model->count_all(), $this->model->count_filtered(), $data);

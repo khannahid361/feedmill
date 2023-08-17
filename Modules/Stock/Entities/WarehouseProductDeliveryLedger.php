@@ -55,7 +55,7 @@ class WarehouseProductDeliveryLedger extends BaseModel
             ->join('customers', 'deliveries.customer_id', '=', 'customers.id')
             ->join('products', 'delivery_products.product_id', 'products.id')
             ->join('categories', 'products.category_id', 'categories.id')
-            ->select('customers.name as name', 'products.name as product_name', 'delivery_products.delivery_qty as quantity', DB::raw("'customer' as type"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'sales.memo_no as invoice_no', 'deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id');
+            ->select('customers.name as name', 'products.name as product_name', 'delivery_products.delivery_qty as quantity', DB::raw("'Customer' as type"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'sales.memo_no as invoice_no', 'deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id');
 
         if (!empty($this->_warehouse)) {
             $deliveries->where('deliveries.warehouse_id',  $this->_warehouse);
@@ -80,7 +80,7 @@ class WarehouseProductDeliveryLedger extends BaseModel
             ->join('dealers', 'dealer_deliveries.dealer_id', '=', 'dealers.id')
             ->join('products', 'dealer_delivery_products.product_id', 'products.id')
             ->join('categories', 'products.category_id', 'categories.id')
-            ->select('dealers.name as name', 'products.name as product_name', 'dealer_delivery_products.delivery_qty as quantity', DB::raw("'dealer' as type"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'dealer_sales.memo_no as invoice_no', 'dealer_deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id');
+            ->select('dealers.name as name', 'products.name as product_name', 'dealer_delivery_products.delivery_qty as quantity', DB::raw("'Dealer' as type"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'dealer_sales.memo_no as invoice_no', 'dealer_deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id');
 
         if (!empty($this->_warehouse)) {
             $dealerDeliveries->where('dealer_deliveries.warehouse_id',  $this->_warehouse);
