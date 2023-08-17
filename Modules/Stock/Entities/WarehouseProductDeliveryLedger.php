@@ -26,7 +26,7 @@ class WarehouseProductDeliveryLedger extends BaseModel
 
     public function setFromDate($from_date)
     {
-        $this->from_date = $from_date;
+        $this->_from_date = $from_date;
     }
     public function setToDate($to_date)
     {
@@ -57,6 +57,22 @@ class WarehouseProductDeliveryLedger extends BaseModel
             ->join('categories', 'products.category_id', 'categories.id')
             ->select('customers.name as name', 'products.name as product_name', 'delivery_products.delivery_qty as quantity', DB::raw("'customer' as type"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'sales.memo_no as invoice_no', 'deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id');
 
+        if (!empty($this->_warehouse)) {
+            $deliveries->where('deliveries.warehouse_id',  $this->_warehouse);
+        }
+        if (!empty($this->_from_date)) {
+            $deliveries->where('deliveries.delivery_date', '>=', $this->_from_date);
+        }
+        if (!empty($this->_to_date)) {
+            $deliveries->where('deliveries.delivery_date', '<=', $this->_to_date);
+        }
+        if (!empty($this->_category)) {
+            $deliveries->where('products.category_id', $this->_category);
+        }
+        if (!empty($this->_warehouse)) {
+            $deliveries->where('deliveries.warehouse_id',  $this->_warehouse);
+        }
+
         $dealerDeliveries = DB::table('dealer_deliveries')
             ->join('dealer_sales', 'dealer_deliveries.dealer_sale_id', 'dealer_sales.id')
             ->join('warehouses', 'dealer_deliveries.warehouse_id', 'warehouses.id')
@@ -66,76 +82,32 @@ class WarehouseProductDeliveryLedger extends BaseModel
             ->join('categories', 'products.category_id', 'categories.id')
             ->select('dealers.name as name', 'products.name as product_name', 'dealer_delivery_products.delivery_qty as quantity', DB::raw("'dealer' as type"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'dealer_sales.memo_no as invoice_no', 'dealer_deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id');
 
-        if (empty($this->_party)) {
-            $query = $dealerDeliveries->union($deliveries);
-            if (!empty($this->_warehouse)) {
-                $query->where('dealer_deliveries.warehouse_id',  $this->_warehouse);
-            }
-            if (!empty($this->_warehouse)) {
-                $query->where('deliveries.warehouse_id',  $this->_warehouse);
-            }
-            if (!empty($this->_from_date)) {
-                $query->where('dealer_deliveries.delivery_date', '>=', $this->_from_date);
-            }
-            // if (!empty($this->_from_date)) {
-            //     $query->where('deliveries.delivery_date', '>=', $this->_from_date);
-            // }
-            if (!empty($this->_to_date)) {
-                $query->where('dealer_deliveries.delivery_date', '<=', $this->_to_date);
-            }
-            // if (!empty($this->_to_date)) {
-            //     $query->where('deliveries.delivery_date', '<=', $this->_to_date);
-            // }
-            if (!empty($this->_category)) {
-                $query->where('dealer_delivery_products.category_id', $this->_category);
-            }
-            if (!empty($this->_category)) {
-                $query->where('products.category_id', $this->_category);
-            }
-            if (!empty($this->_warehouse)) {
-                $query->where('dealer_deliveries.warehouse_id',  $this->_warehouse);
-            }
-            if (!empty($this->_warehouse)) {
-                $query->where('deliveries.warehouse_id',  $this->_warehouse);
-            }
+        if (!empty($this->_warehouse)) {
+            $dealerDeliveries->where('dealer_deliveries.warehouse_id',  $this->_warehouse);
         }
-
-        if (!empty($this->_party) && $this->_party == 1) {
-            $query = $deliveries;
-            if (!empty($this->_warehouse)) {
-                $query->where('deliveries.warehouse_id',  $this->_warehouse);
-            }
-            if (!empty($this->_from_date)) {
-                $query->where('deliveries.delivery_date', '>=', $this->_from_date);
-            }
-            if (!empty($this->_to_date)) {
-                $query->where('deliveries.delivery_date', '<=', $this->_to_date);
-            }
-            if (!empty($this->_category)) {
-                $query->where('products.category_id', $this->_category);
-            }
-            if (!empty($this->_warehouse)) {
-                $query->where('deliveries.warehouse_id',  $this->_warehouse);
-            }
+        if (!empty($this->_from_date)) {
+            $dealerDeliveries->where('dealer_deliveries.delivery_date', '>=', $this->_from_date);
+        }
+        if (!empty($this->_to_date)) {
+            $dealerDeliveries->where('dealer_deliveries.delivery_date', '<=', $this->_to_date);
+        }
+        if (!empty($this->_category)) {
+            $dealerDeliveries->where('products.category_id', $this->_category);
+        }
+        if (!empty($this->_warehouse)) {
+            $dealerDeliveries->where('dealer_deliveries.warehouse_id',  $this->_warehouse);
         }
 
         if (!empty($this->_party) && $this->_party == 2) {
             $query = $dealerDeliveries;
-            if (!empty($this->_warehouse)) {
-                $query->where('dealer_deliveries.warehouse_id',  $this->_warehouse);
-            }
-            if (!empty($this->_from_date)) {
-                $query->where('dealer_deliveries.delivery_date', '>=', $this->_from_date);
-            }
-            if (!empty($this->_to_date)) {
-                $query->where('dealer_deliveries.delivery_date', '<=', $this->_to_date);
-            }
-            if (!empty($this->_category)) {
-                $query->where('products.category_id', $this->_category);
-            }
-            if (!empty($this->_warehouse)) {
-                $query->where('dealer_deliveries.warehouse_id',  $this->_warehouse);
-            }
+        }
+        elseif(!empty($this->_party) && $this->_party == 1)
+        {
+            $query = $deliveries;
+        }
+
+        else {
+            $query = $dealerDeliveries->union($deliveries);
         }
         // if (isset($this->orderValue) && isset($this->dirValue)) {
         //     $query->orderBy($this->column_order[$this->orderValue], $this->dirValue);
@@ -159,12 +131,24 @@ class WarehouseProductDeliveryLedger extends BaseModel
     }
     public function count_all()
     {
-        return DB::table('warehouse_product as wp')
-            ->selectRaw('w.name as warehouse_name,p.name as product_name,p.code as product_code,c.name as category_name,u.unit_name as unit_name,p.base_unit_price,wp.qty')
-            ->join('warehouses as w', 'wp.warehouse_id', '=', 'w.id')
-            ->join('products as p', 'wp.product_id', '=', 'p.id')
-            ->join('categories as c', 'p.category_id', '=', 'c.id')
-            ->join('units as u', 'p.base_unit_id', '=', 'u.id')
-            ->get()->count();
+        $deliveries = DB::table('deliveries')
+        ->join('sales', 'deliveries.sale_id', 'sales.id')
+        ->join('warehouses', 'deliveries.warehouse_id', 'warehouses.id')
+        ->join('delivery_products', 'deliveries.id', '=', 'delivery_products.delivery_id')
+        ->join('customers', 'deliveries.customer_id', '=', 'customers.id')
+        ->join('products', 'delivery_products.product_id', 'products.id')
+        ->join('categories', 'products.category_id', 'categories.id')
+        ->select('customers.name as name', 'products.name as product_name', 'delivery_products.delivery_qty as quantity', DB::raw("'customer' as type"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'sales.memo_no as invoice_no', 'deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id');
+
+        $dealerDeliveries = DB::table('dealer_deliveries')
+        ->join('dealer_sales', 'dealer_deliveries.dealer_sale_id', 'dealer_sales.id')
+        ->join('warehouses', 'dealer_deliveries.warehouse_id', 'warehouses.id')
+        ->join('dealer_delivery_products', 'dealer_deliveries.id', '=', 'dealer_delivery_products.dealer_delivery_id')
+        ->join('dealers', 'dealer_deliveries.dealer_id', '=', 'dealers.id')
+        ->join('products', 'dealer_delivery_products.product_id', 'products.id')
+        ->join('categories', 'products.category_id', 'categories.id')
+        ->select('dealers.name as name', 'products.name as product_name', 'dealer_delivery_products.delivery_qty as quantity', DB::raw("'dealer' as type"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'dealer_sales.memo_no as invoice_no', 'dealer_deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id')->union($deliveries)->get()->count();;
+
+        return $dealerDeliveries;
     }
 }
