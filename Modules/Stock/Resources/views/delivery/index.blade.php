@@ -12,7 +12,7 @@
                         <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
                     </div>
                     <div class="card-toolbar">
-                        <a href="{{ route('convert.product.bag') }}" class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add Product Bag</a>
+                        
                     </div>
                 </div>
             </div>

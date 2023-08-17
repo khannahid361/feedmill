@@ -18,7 +18,7 @@ class WarehouseProductDeliveryController extends BaseController
     public function delivery()
     {
         if (permission('product-stock-report-access')) {
-            $this->setPageData('DEPO Product Ledger', 'DEPO Product Ledger', 'fas fa-boxes', [['name' => 'DEPO Product Ledger']]);
+            $this->setPageData('DEPO Wise Sales Delivery Ledger', 'DEPO Wise Sales Delivery Ledger', 'fas fa-boxes', [['name' => 'DEPO Wise Sales Delivery Ledger']]);
             $data = [
                 'categories' => Category::with('warehouse_products')->whereHas('warehouse_products')->where([['type', 2], ['status', 1]])->get(),
                 'warehouses' => DB::table('warehouses')->where('status', 1)->pluck('name', 'id')
