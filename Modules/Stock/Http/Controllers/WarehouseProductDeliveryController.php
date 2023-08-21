@@ -55,22 +55,22 @@ class WarehouseProductDeliveryController extends BaseController
             $no = $request->input('start');
             foreach ($list as $value) {
                 $no++;
-                if($value->type == 'Dealer'){
+                if ($value->type == 'Dealer') {
                     $type = '<span class="label label-info label-pill label-inline" style="min-width:70px !important;">Dealer</span>';
-                }
-                else{
+                } else {
                     $type = '<span class="label label-warning label-pill label-inline" style="min-width:70px !important;">Customer</span>';
                 }
                 $row    = [];
                 $row[]  = $no;
                 $row[]  = $value->warehouse_name;
                 $row[]  = $value->product_name;
-                $row[]  = date("d-m-Y", strtotime($value->delivery_date));
+                $row[]  = date("d-m-Y", strtotime($value->delivery_date != 0 ? $value->delivery_date : $value->return_date));
                 $row[]  = $value->category_name;
                 $row[]  = $value->invoice_no;
                 $row[]  = $value->name;
                 $row[]  = $type;
                 $row[]  = $value->quantity;
+                $row[]  = $value->return_qty;
                 $data[] = $row;
             }
             return $this->datatable_draw($request->input('draw'), $this->model->count_all(), $this->model->count_filtered(), $data);

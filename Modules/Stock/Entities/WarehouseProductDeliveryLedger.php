@@ -55,7 +55,7 @@ class WarehouseProductDeliveryLedger extends BaseModel
             ->join('customers', 'deliveries.customer_id', '=', 'customers.id')
             ->join('products', 'delivery_products.product_id', 'products.id')
             ->join('categories', 'products.category_id', 'categories.id')
-            ->select('customers.name as name', 'products.name as product_name', 'delivery_products.delivery_qty as quantity', DB::raw("'Customer' as type"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'sales.memo_no as invoice_no', 'deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id');
+            ->select('customers.name as name', 'products.name as product_name', 'delivery_products.delivery_qty as quantity', DB::raw("'Customer' as type"), DB::raw("'0' as return_qty"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'sales.memo_no as invoice_no', 'deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id', DB::raw("'0' as return_date"));
 
         if (!empty($this->_warehouse)) {
             $deliveries->where('deliveries.warehouse_id',  $this->_warehouse);
@@ -80,7 +80,7 @@ class WarehouseProductDeliveryLedger extends BaseModel
             ->join('dealers', 'dealer_deliveries.dealer_id', '=', 'dealers.id')
             ->join('products', 'dealer_delivery_products.product_id', 'products.id')
             ->join('categories', 'products.category_id', 'categories.id')
-            ->select('dealers.name as name', 'products.name as product_name', 'dealer_delivery_products.delivery_qty as quantity', DB::raw("'Dealer' as type"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'dealer_sales.memo_no as invoice_no', 'dealer_deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id');
+            ->select('dealers.name as name', 'products.name as product_name', 'dealer_delivery_products.delivery_qty as quantity', DB::raw("'Dealer' as type"), DB::raw("'0' as return_qty"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'dealer_sales.memo_no as invoice_no', 'dealer_deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id', DB::raw("'0' as return_date"));
 
         if (!empty($this->_warehouse)) {
             $dealerDeliveries->where('dealer_deliveries.warehouse_id',  $this->_warehouse);
@@ -98,22 +98,76 @@ class WarehouseProductDeliveryLedger extends BaseModel
             $dealerDeliveries->where('dealer_deliveries.warehouse_id',  $this->_warehouse);
         }
 
-        if (!empty($this->_party) && $this->_party == 2) {
-            $query = $dealerDeliveries;
+        $customerReturns = DB::table('sale_returns')
+            ->join('sales', 'sale_returns.memo_no', 'sales.memo_no')
+            ->join('warehouses', 'sale_returns.warehouse_id', 'warehouses.id')
+            ->join('sale_return_products', 'sale_returns.id', '=', 'sale_return_products.sale_return_id')
+            ->join('customers', 'sale_returns.customer_id', '=', 'customers.id')
+            ->join('products', 'sale_return_products.product_id', 'products.id')
+            ->join('categories', 'products.category_id', 'categories.id')
+            ->select('customers.name as name', 'products.name as product_name', DB::raw("'0' as quantity"), DB::raw("'Customer' as type"), 'sale_return_products.return_qty as return_qty', 'warehouses.name as warehouse_name', 'categories.name as category_name', 'sales.memo_no as invoice_no', DB::raw("'0' as delivery_date"), 'warehouses.id as warehouse_id', 'categories.id as category_id', 'sale_returns.return_date as return_date');
+
+        if (!empty($this->_warehouse)) {
+            $customerReturns->where('sale_returns.warehouse_id',  $this->_warehouse);
         }
-        elseif(!empty($this->_party) && $this->_party == 1)
-        {
-            $query = $deliveries;
+        if (!empty($this->_from_date)) {
+            $customerReturns->where('sale_returns.return_date', '>=', $this->_from_date);
+        }
+        if (!empty($this->_to_date)) {
+            $customerReturns->where('sale_returns.return_date', '<=', $this->_to_date);
+        }
+        if (!empty($this->_category)) {
+            $customerReturns->where('products.category_id', $this->_category);
+        }
+        if (!empty($this->_warehouse)) {
+            $customerReturns->where('sale_returns.warehouse_id',  $this->_warehouse);
         }
 
-        else {
-            $query = $dealerDeliveries->union($deliveries);
+        $dealerReturns = DB::table('dealer_sale_return')
+            ->join('dealer_sales', 'dealer_sale_return.memo_no', 'dealer_sales.memo_no')
+            ->join('warehouses', 'dealer_sale_return.warehouse_id', 'warehouses.id')
+            ->join('dealer_sale_return_products', 'dealer_sale_return.id', '=', 'dealer_sale_return_products.dealer_sale_return_id')
+            ->join('dealers', 'dealer_sale_return.dealer_id', '=', 'dealers.id')
+            ->join('products', 'dealer_sale_return_products.product_id', 'products.id')
+            ->join('categories', 'products.category_id', 'categories.id')
+            ->select('dealers.name as name', 'products.name as product_name', DB::raw("'0' as quantity"), DB::raw("'Dealer' as type"), 'dealer_sale_return_products.return_qty as return_qty', 'warehouses.name as warehouse_name', 'categories.name as category_name', 'dealer_sales.memo_no as invoice_no', DB::raw("'0' as delivery_date"), 'warehouses.id as warehouse_id', 'categories.id as category_id', 'dealer_sale_return.return_date as return_date');
+
+        if (!empty($this->_warehouse)) {
+            $dealerReturns->where('dealer_sale_return.warehouse_id',  $this->_warehouse);
         }
-        // if (isset($this->orderValue) && isset($this->dirValue)) {
-        //     $query->orderBy($this->column_order[$this->orderValue], $this->dirValue);
-        // } else if (isset($this->order)) {
-        //     $query->orderBy(key($this->order), $this->order[key($this->order)]);
-        // }
+        if (!empty($this->_from_date)) {
+            $dealerReturns->where('dealer_sale_return.return_date', '>=', $this->_from_date);
+        }
+        if (!empty($this->_to_date)) {
+            $dealerReturns->where('dealer_sale_return.return_date', '<=', $this->_to_date);
+        }
+        if (!empty($this->_category)) {
+            $dealerReturns->where('products.category_id', $this->_category);
+        }
+        if (!empty($this->_warehouse)) {
+            $dealerReturns->where('dealer_sale_return.warehouse_id',  $this->_warehouse);
+        }
+
+
+        // party chose
+        if (!empty($this->_party) && $this->_party == 2) {
+            $query = $dealerDeliveries->union($dealerReturns);
+            // $query = $dealerReturns;
+        } elseif (!empty($this->_party) && $this->_party == 1) {
+            $query = $deliveries->union($customerReturns);
+            // $query = $customerReturns;
+        } else {
+            $firstUnion = $dealerDeliveries->union($dealerReturns)->toSql();
+
+            $secondUnion = $deliveries->union($customerReturns)->toSql();
+
+            $query = DB::query()->from(DB::raw("({$firstUnion} UNION {$secondUnion}) as combined"))
+                ->mergeBindings($dealerDeliveries)
+                ->mergeBindings($dealerReturns)
+                ->mergeBindings($deliveries)
+                ->mergeBindings($customerReturns);
+            // $query = $customerReturns->union($dealerReturns);
+        }
         return $query;
     }
     public function getDatatableList()
@@ -132,23 +186,41 @@ class WarehouseProductDeliveryLedger extends BaseModel
     public function count_all()
     {
         $deliveries = DB::table('deliveries')
-        ->join('sales', 'deliveries.sale_id', 'sales.id')
-        ->join('warehouses', 'deliveries.warehouse_id', 'warehouses.id')
-        ->join('delivery_products', 'deliveries.id', '=', 'delivery_products.delivery_id')
-        ->join('customers', 'deliveries.customer_id', '=', 'customers.id')
-        ->join('products', 'delivery_products.product_id', 'products.id')
-        ->join('categories', 'products.category_id', 'categories.id')
-        ->select('customers.name as name', 'products.name as product_name', 'delivery_products.delivery_qty as quantity', DB::raw("'customer' as type"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'sales.memo_no as invoice_no', 'deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id');
+            ->join('sales', 'deliveries.sale_id', 'sales.id')
+            ->join('warehouses', 'deliveries.warehouse_id', 'warehouses.id')
+            ->join('delivery_products', 'deliveries.id', '=', 'delivery_products.delivery_id')
+            ->join('customers', 'deliveries.customer_id', '=', 'customers.id')
+            ->join('products', 'delivery_products.product_id', 'products.id')
+            ->join('categories', 'products.category_id', 'categories.id')
+            ->select('customers.name as name', 'products.name as product_name', 'delivery_products.delivery_qty as quantity', DB::raw("'customer' as type"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'sales.memo_no as invoice_no', 'deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', DB::raw("'0' as return_qty"), 'categories.id as category_id');
 
         $dealerDeliveries = DB::table('dealer_deliveries')
-        ->join('dealer_sales', 'dealer_deliveries.dealer_sale_id', 'dealer_sales.id')
-        ->join('warehouses', 'dealer_deliveries.warehouse_id', 'warehouses.id')
-        ->join('dealer_delivery_products', 'dealer_deliveries.id', '=', 'dealer_delivery_products.dealer_delivery_id')
-        ->join('dealers', 'dealer_deliveries.dealer_id', '=', 'dealers.id')
-        ->join('products', 'dealer_delivery_products.product_id', 'products.id')
-        ->join('categories', 'products.category_id', 'categories.id')
-        ->select('dealers.name as name', 'products.name as product_name', 'dealer_delivery_products.delivery_qty as quantity', DB::raw("'dealer' as type"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'dealer_sales.memo_no as invoice_no', 'dealer_deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id')->union($deliveries)->get()->count();;
+            ->join('dealer_sales', 'dealer_deliveries.dealer_sale_id', 'dealer_sales.id')
+            ->join('warehouses', 'dealer_deliveries.warehouse_id', 'warehouses.id')
+            ->join('dealer_delivery_products', 'dealer_deliveries.id', '=', 'dealer_delivery_products.dealer_delivery_id')
+            ->join('dealers', 'dealer_deliveries.dealer_id', '=', 'dealers.id')
+            ->join('products', 'dealer_delivery_products.product_id', 'products.id')
+            ->join('categories', 'products.category_id', 'categories.id')
+            ->select('dealers.name as name', 'products.name as product_name', 'dealer_delivery_products.delivery_qty as quantity', DB::raw("'dealer' as type"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'dealer_sales.memo_no as invoice_no', 'dealer_deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', DB::raw("'0' as return_qty"), 'categories.id as category_id')->union($deliveries)->get()->count();
 
-        return $dealerDeliveries;
+        $dealerReturns = DB::table('dealer_sale_return')
+            ->join('dealer_sales', 'dealer_sale_return.memo_no', 'dealer_sales.memo_no')
+            ->join('warehouses', 'dealer_sale_return.warehouse_id', 'warehouses.id')
+            ->join('dealer_sale_return_products', 'dealer_sale_return.id', '=', 'dealer_sale_return_products.dealer_sale_return_id')
+            ->join('dealers', 'dealer_sale_return.dealer_id', '=', 'dealers.id')
+            ->join('products', 'dealer_sale_return_products.product_id', 'products.id')
+            ->join('categories', 'products.category_id', 'categories.id')
+            ->select('dealers.name as name', 'products.name as product_name', DB::raw("'0' as quantity"), DB::raw("'Dealer' as type"), 'dealer_sale_return_products.return_qty as return_qty', 'warehouses.name as warehouse_name', 'categories.name as category_name', 'dealer_sales.memo_no as invoice_no', DB::raw("'0' as delivery_date"), 'warehouses.id as warehouse_id', 'categories.id as category_id', 'dealer_sale_return.return_date as return_date');
+
+        $customerReturns = DB::table('sale_returns')
+            ->join('sales', 'sale_returns.memo_no', 'sales.memo_no')
+            ->join('warehouses', 'sale_returns.warehouse_id', 'warehouses.id')
+            ->join('sale_return_products', 'sale_returns.id', '=', 'sale_return_products.sale_return_id')
+            ->join('customers', 'sale_returns.customer_id', '=', 'customers.id')
+            ->join('products', 'sale_return_products.product_id', 'products.id')
+            ->join('categories', 'products.category_id', 'categories.id')
+            ->select('customers.name as name', 'products.name as product_name', DB::raw("'0' as quantity"), DB::raw("'Customer' as type"), 'sale_return_products.return_qty as return_qty', 'warehouses.name as warehouse_name', 'categories.name as category_name', 'sales.memo_no as invoice_no', DB::raw("'0' as delivery_date"), 'warehouses.id as warehouse_id', 'categories.id as category_id', 'sale_returns.return_date as return_date')->union($dealerReturns)->get()->count();
+        $rows = $dealerDeliveries + $customerReturns;
+        return $rows;
     }
 }

@@ -12,7 +12,7 @@
                         <h3 class="card-label"><i class="{{ $page_icon }} text-primary"></i> {{ $sub_title }}</h3>
                     </div>
                     <div class="card-toolbar">
-                        
+
                     </div>
                 </div>
             </div>
@@ -22,11 +22,13 @@
                         <div class="row">
                             <div class="form-group col-md-3">
                                 <label for="">From</label>
-                                <input type="date" name="from_date" id="from_date" class="form-control" value="{{ date('Y-m-d') }}">
+                                <input type="date" name="from_date" id="from_date" class="form-control"
+                                    value="{{ date('Y-m-d') }}">
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="">To</label>
-                                <input type="date" name="to_date" id="to_date" class="form-control" value="{{ date('Y-m-d') }}">
+                                <input type="date" name="to_date" id="to_date" class="form-control"
+                                    value="{{ date('Y-m-d') }}">
                             </div>
                             <x-form.selectbox labelName="Category" name="category" col="col-md-3" class="selectpicker">
                                 <option value="0" selected>All Category</option>
@@ -36,22 +38,29 @@
                                     @endforeach
                                 @endif
                             </x-form.selectbox>
-                            <x-form.selectbox labelName="Depo" name="warehouse" col="col-md-3" required="required" class="selectpicker">
+                            <x-form.selectbox labelName="Depo" name="warehouse" col="col-md-3" required="required"
+                                class="selectpicker">
                                 @if (!$warehouses->isEmpty())
                                     @foreach ($warehouses as $id => $name)
                                         <option value="{{ $id }}">{{ $name }}</option>
                                     @endforeach
                                 @endif
                             </x-form.selectbox>
-                            <x-form.selectbox labelName="Party" name="party" col="col-md-3" required="required" class="selectpicker">
-                                <option value="1">Customer</option>
-                                <option value="2">Dealer</option>
-                            </x-form.selectbox>
+                            <div class="col-md-3 form-group required">
+                                <label for="">Party</label>
+                                <select name="party" class="form-control required" id="party">
+                                    <option value="1">Customer</option>
+                                    <option value="2">Dealer</option>
+                                </select>
+                            </div>
                             <div class="col-md-3">
                                 <div style="margin-top:28px;">
-                                    <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-left mr-2" type="button" data-toggle="tooltip" data-theme="dark" title="Reset"><i
+                                    <button id="btn-reset"
+                                        class="btn btn-danger btn-sm btn-elevate btn-icon float-left mr-2" type="button"
+                                        data-toggle="tooltip" data-theme="dark" title="Reset"><i
                                             class="fas fa-undo-alt"></i></button>
-                                    <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon float-left" type="button" data-toggle="tooltip" data-theme="dark" title="Search"><i
+                                    <button id="btn-filter" class="btn btn-primary btn-sm btn-elevate btn-icon float-left"
+                                        type="button" data-toggle="tooltip" data-theme="dark" title="Search"><i
                                             class="fas fa-search"></i></button>
                                 </div>
                             </div>
@@ -74,6 +83,7 @@
                                             <th>Party Name</th>
                                             <th>Party Type</th>
                                             <th>Delivered Qty</th>
+                                            <th>Return Qty</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -111,6 +121,7 @@
                 "responsive": true,
                 "bInfo": true,
                 "bFilter": false,
+                "ordering": false,
                 "lengthMenu": [
                     [5, 10, 15, 25, 50, 100, 1000, 10000, -1],
                     [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
@@ -135,11 +146,12 @@
                     }
                 },
                 "columnDefs": [{
-                    "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                    "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
                     "orderable": false,
                     "className": "text-center"
                 }, ],
-                "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" + "<'row'<'col-sm-12'tr>>" +
+                "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" +
+                    "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
                 "buttons": [
                     @if (permission('product-stock-report-access'))
