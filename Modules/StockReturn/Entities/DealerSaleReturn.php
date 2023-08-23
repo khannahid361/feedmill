@@ -5,6 +5,7 @@ namespace Modules\StockReturn\Entities;
 use App\Models\BaseModel;
 use Illuminate\Support\Facades\DB;
 use Modules\Dealer\Entities\Dealer;
+use Modules\Setting\Entities\Warehouse;
 use Modules\DealerSale\Entities\DealerSale;
 
 class DealerSaleReturn extends BaseModel

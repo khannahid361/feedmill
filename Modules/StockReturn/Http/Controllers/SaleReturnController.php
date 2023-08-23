@@ -16,6 +16,8 @@ use Modules\Product\Entities\ProductVariant;
 use Modules\StockReturn\Entities\SaleReturn;
 use Modules\Product\Entities\WarehouseProduct;
 use Modules\StockReturn\Entities\SaleReturnProduct;
+use Modules\Material\Entities\Material;
+use Modules\Material\Entities\WarehouseMaterial;
 use Modules\StockReturn\Http\Requests\SaleReturnRequest;
 
 class SaleReturnController extends BaseController
@@ -27,23 +29,22 @@ class SaleReturnController extends BaseController
 
     public function index()
     {
-        if(permission('sale-return-access')){
-            $this->setPageData('Sale Return','Sale Return','fas fa-file',[['name' => 'Sale Return']]);
+        if (permission('sale-return-access')) {
+            $this->setPageData('Sale Return', 'Sale Return', 'fas fa-file', [['name' => 'Sale Return']]);
             $data = [
-                'salesmen'    => DB::table('salesmen')->where('status',1)->select('name','id','phone')->get(),
+                'salesmen'    => DB::table('salesmen')->where('status', 1)->select('name', 'id', 'phone')->get(),
                 'locations'   => DB::table('locations')->where('status', 1)->get(),
             ];
-            return view('stockreturn::sale.index',$data);
-        }else{
+            return view('stockreturn::sale.index', $data);
+        } else {
             return $this->access_blocked();
         }
-
     }
 
     public function get_datatable_data(Request $request)
     {
-        if($request->ajax()){
-            if(permission('sale-return-access')){
+        if ($request->ajax()) {
+            if (permission('sale-return-access')) {
 
                 if (!empty($request->return_no)) {
                     $this->model->setReturnNo($request->return_no);
@@ -63,59 +64,60 @@ class SaleReturnController extends BaseController
                 if (!empty($request->customer_id)) {
                     $this->model->setCustomerID($request->customer_id);
                 }
-//                if (!empty($request->area_id)) {
-//                    $this->model->setAreaID($request->area_id);
-//                }
-//                if (!empty($request->upazila_id)) {
-//                    $this->model->setUpazilaID($request->upazila_id);
-//                }
-//                if (!empty($request->route_id)) {
-//                    $this->model->setRouteID($request->route_id);
-//                }
+                //                if (!empty($request->area_id)) {
+                //                    $this->model->setAreaID($request->area_id);
+                //                }
+                //                if (!empty($request->upazila_id)) {
+                //                    $this->model->setUpazilaID($request->upazila_id);
+                //                }
+                //                if (!empty($request->route_id)) {
+                //                    $this->model->setRouteID($request->route_id);
+                //                }
 
-                $this->set_datatable_default_properties($request);//set datatable default properties
-                $list = $this->model->getDatatableList();//get table data
+                $this->set_datatable_default_properties($request); //set datatable default properties
+                $list = $this->model->getDatatableList(); //get table data
                 $data = [];
                 $no = $request->input('start');
                 foreach ($list as $value) {
                     $no++;
                     $action = '';
-                    $action .= ' <a class="dropdown-item view_data" href="'.route("sale.return.show",$value->id).'">'.self::ACTION_BUTTON['View'].'</a>';
-                    $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->return_no . '">'.self::ACTION_BUTTON['Delete'].'</a>';
+                    $action .= ' <a class="dropdown-item view_data" href="' . route("sale.return.show", $value->id) . '">' . self::ACTION_BUTTON['View'] . '</a>';
+                    $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->return_no . '">' . self::ACTION_BUTTON['Delete'] . '</a>';
                     $row = [];
                     $row[] = $no;
                     $row[] = $value->return_no;
                     $row[] = $value->memo_no;
-                    $row[] = $value->shop_name.' - '.$value->customer_name;
+                    $row[] = $value->shop_name . ' - ' . $value->customer_name;
                     $row[] = $value->salesman_name;
-                    $row[] = $value->total_return_items.'('.$value->total_return_qty.')';
-                    $row[] = date('d-M-Y',strtotime($value->return_date));
-                    $row[] = number_format($value->total_deduction,2,'.','');
-                    $row[] = number_format($value->grand_total,2,'.','');
-                    $row[] = action_button($action);//custom helper function for action button
+                    $row[] = $value->total_return_items . '(' . $value->total_return_qty . ')';
+                    $row[] = date('d-M-Y', strtotime($value->return_date));
+                    $row[] = number_format($value->total_deduction, 2, '.', '');
+                    $row[] = number_format($value->grand_total, 2, '.', '');
+                    $row[] = action_button($action); //custom helper function for action button
                     $data[] = $row;
                 }
-                return $this->datatable_draw($request->input('draw'),$this->model->count_all(), $this->model->count_filtered(), $data);
+                return $this->datatable_draw($request->input('draw'), $this->model->count_all(), $this->model->count_filtered(), $data);
             }
-        }else{
+        } else {
             return response()->json($this->unauthorized());
         }
     }
 
-    public function store(SaleReturnRequest $request){
-        if($request->ajax()){
-            if(permission('sale-return-access')){
+    public function store(SaleReturnRequest $request)
+    {
+        if ($request->ajax()) {
+            if (permission('sale-return-access')) {
                 DB::beginTransaction();
                 try {
                     $sr_commission_rate = $request->sr_commission_rate ? $request->sr_commission_rate : 0;
-                    if($sr_commission_rate > 0) {
-                        $deducted_commission = $request->grand_total_price * ($sr_commission_rate/100);
-                    }else{
+                    if ($sr_commission_rate > 0) {
+                        $deducted_commission = $request->grand_total_price * ($sr_commission_rate / 100);
+                    } else {
                         $deducted_commission = 0;
                     }
                     $warehouse_id = $request->warehouse_id;
                     $sale_return_date = [
-                        'return_no'              => 'SRINV-'.date('ymd').rand(1,999),
+                        'return_no'              => 'SRINV-' . date('ymd') . rand(1, 999),
                         'memo_no'                => $request->memo_no,
                         'customer_id'            => $request->customer_id,
                         'total_price'            => $request->total_price,
@@ -127,17 +129,23 @@ class SaleReturnController extends BaseController
                         'reason'                 => $request->reason,
                         'date'                   => $request->sale_date,
                         'return_date'            => $request->return_date,
-                        'created_by'             => Auth::user()->name
+                        'created_by'             => Auth::user()->name,
+                        'warehouse_id'           => $warehouse_id
                     ];
                     $sale_return  = $this->model->create($sale_return_date);
                     $products = [];
-                    if($request->has('products')) {
+                    if ($request->has('products')) {
                         foreach ($request->products as $key => $value) {
-                            if($value['return'] == 1){
-                                $unit = Unit::where('unit_name',$value['unit'])->first();
-                                if($unit->operator == '*'){
+                            if (isset($value['material_id'])) {
+                                $value['material_id'] = $value['material_id'];
+                            } else {
+                                $value['material_id'] = null;
+                            }
+                            if ($value['return'] == 1) {
+                                $unit = Unit::where('unit_name', $value['unit'])->first();
+                                if ($unit->operator == '*') {
                                     $qty = $value['return_qty'] * $unit->operation_value;
-                                }else{
+                                } else {
                                     $qty = $value['return_qty'] / $unit->operation_value;
                                 }
                                 $products[] = [
@@ -145,21 +153,45 @@ class SaleReturnController extends BaseController
                                     'memo_no'            => $request->memo_no,
                                     'product_id'         => $value['id'],
                                     'return_qty'         => $value['return_qty'],
+                                    'product_condition'  => $value['product_condition'],
+                                    'material_id'        => $value['material_id'],
                                     'unit_id'            => $unit ? $unit->id : null,
                                     'product_rate'       => $value['net_unit_price'],
                                     'deduction_rate'     => $value['deduction_rate'] ? $value['deduction_rate'] : null,
                                     'deduction_amount'   => $value['deduction_amount'] ? $value['deduction_amount'] : null,
                                     'total'              => $value['total']
                                 ];
-                                $warehouseProduct = WarehouseProduct::where([['warehouse_id',$warehouse_id],['product_id',$value['id']]])->first();
-                                if(!empty($warehouseProduct)){
-                                    $warehouseProduct->update(['bag_qty' => $warehouseProduct->bag_qty + $value['return_qty']]);
-                                }else{
-                                    WarehouseProduct::create([
-                                       'warehouse_id' => $warehouse_id,
-                                       'product_id'   => $value['id'],
-                                       'bag_qty'      => $value['return_qty']
-                                    ]);
+                                if ($value['material_id'] == null) {
+                                    $warehouseProduct = WarehouseProduct::where([['warehouse_id', $warehouse_id], ['product_id', $value['id']]])->first();
+                                    if (!empty($warehouseProduct)) {
+                                        $warehouseProduct->update(['bag_qty' => $warehouseProduct->bag_qty + $value['return_qty']]);
+                                    } else {
+                                        WarehouseProduct::create([
+                                            'warehouse_id' => $warehouse_id,
+                                            'product_id'   => $value['id'],
+                                            'bag_qty'      => $value['return_qty']
+                                        ]);
+                                    }
+                                } else {
+                                    $material                  = Material::find($value['material_id']);
+                                    $warehouseMaterialQuantity = WarehouseMaterial::where(['material_id' => $value['material_id']])->sum('qty');
+                                    $newQuantity = $value['return_qty'] * 50;
+                                    if (!empty($material)) {
+                                        $material->update([
+                                            'qty'   => $material->qty + $newQuantity
+                                        ]);
+                                    }
+                                    $warehouse_material = WarehouseMaterial::where(['warehouse_id' => $warehouse_id, 'material_id'  => $value['material_id']])->first();
+                                    if ($warehouse_material) {
+                                        $warehouse_material->qty += $newQuantity;
+                                        $warehouse_material->update();
+                                    } else {
+                                        WarehouseMaterial::create([
+                                            'warehouse_id' => $warehouse_id,
+                                            'material_id'  => $value['material_id'],
+                                            'qty'          => $newQuantity
+                                        ]);
+                                    }
                                 }
                                 // $warehouse_product = WarehouseProduct::where([
                                 //     'warehouse_id'=> $warehouse_id,
@@ -171,17 +203,18 @@ class SaleReturnController extends BaseController
                                 // }
                             }
                         }
-                        if(count($products) > 0) {
-                            SaleReturnProduct::insert($products);
-                        }
                     }
+                    if (count($products) > 0) {
+                        SaleReturnProduct::insert($products);
+                    }
+
                     $customer = Customer::with('coa')->find($request->customer_id);
                     $customer_credit = array(
                         'chart_of_account_id' => $customer->coa->id,
                         'voucher_no'          => $request->memo_no,
                         'voucher_type'        => 'Return',
                         'voucher_date'        => $request->return_date,
-                        'description'         => 'Customer '.$customer->name.' credit for Product Return Invoice NO- ' . $request->invoice_no,
+                        'description'         => 'Customer ' . $customer->name . ' credit for Product Return Invoice NO- ' . $request->invoice_no,
                         'debit'               => 0,
                         'credit'              => $request->grand_total_price,
                         'posted'              => 1,
@@ -191,13 +224,13 @@ class SaleReturnController extends BaseController
                     );
                     Transaction::create($customer_credit);
                     $salesmen = Salesmen::with('coa')->find($request->salesmen_id);
-                    if($deducted_commission){
+                    if ($deducted_commission) {
                         $sr_commission_info_return = array(
                             'chart_of_account_id' => $salesmen->coa->id,
                             'voucher_no'          => $request->memo_no,
                             'voucher_type'        => 'Return',
                             'voucher_date'        => $request->return_date,
-                            'description'         => 'Return Total SR Commission For Invoice NO - ' . $request->invoice_no . ' Sales Men ' .$salesmen->name,
+                            'description'         => 'Return Total SR Commission For Invoice NO - ' . $request->invoice_no . ' Sales Men ' . $salesmen->name,
                             'debit'               => $deducted_commission,
                             'credit'              => 0,
                             'posted'              => 1,
@@ -211,73 +244,74 @@ class SaleReturnController extends BaseController
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollback();
-                    $output = ['status' => 'error','message' => $e->getMessage()];
+                    $output = ['status' => 'error', 'message' => $e->getMessage()];
                 }
                 return response()->json($output);
-            }else{
+            } else {
                 return response()->json($this->unauthorized());
             }
-        }else{
+        } else {
             return response()->json($this->unauthorized());
         }
     }
-    public function show(int $id){
-        if(permission('sale-return-access')){
-            $this->setPageData('Sale Return Details','Sale Return Details','fas fa-file',[['name' => 'Sale Return Details']]);
-            $sale = $this->model->with('return_products','customer','sale')->find($id);
-            if($sale)
-            {
-                return view('stockreturn::sale.details',compact('sale'));
-            }else{
-                return redirect('sale.return')->with('error','No Data Available');
+    public function show(int $id)
+    {
+        if (permission('sale-return-access')) {
+            $this->setPageData('Sale Return Details', 'Sale Return Details', 'fas fa-file', [['name' => 'Sale Return Details']]);
+            $sale = $this->model->with('return_products', 'customer', 'sale', 'warehouse')->find($id);
+            if ($sale) {
+                return view('stockreturn::sale.details', compact('sale'));
+            } else {
+                return redirect('sale.return')->with('error', 'No Data Available');
             }
-        }else{
+        } else {
             return $this->access_blocked();
         }
     }
-    public function delete(Request $request){
-        if($request->ajax()){
-            if(permission('sale-return-access')) {
+    public function delete(Request $request)
+    {
+        if ($request->ajax()) {
+            if (permission('sale-return-access')) {
                 DB::beginTransaction();
                 try {
-                    $saleData = $this->model->with('sale','return_products')->find($request->id);
-                    if(!$saleData->return_products->isEmpty()) {
+                    $saleData = $this->model->with('sale', 'return_products')->find($request->id);
+                    if (!$saleData->return_products->isEmpty()) {
                         foreach ($saleData->return_products as  $return_product) {
                             $return_qty = $return_product->return_qty;
                             $sale_unit = Unit::find($return_product->unit_id);
-                            if($sale_unit->operator == '*'){
+                            if ($sale_unit->operator == '*') {
                                 $return_qty = $return_qty * $sale_unit->operation_value;
-                            }else{
+                            } else {
                                 $return_qty = $return_qty / $sale_unit->operation_value;
                             }
                             $warehouse_product = WarehouseProduct::where([
-                                'warehouse_id'=> $saleData->sale->warehouse_id,
-                                'product_id'=> $return_product->product_id,
-                                ])->first();
-                            if($warehouse_product){
+                                'warehouse_id' => $saleData->sale->warehouse_id,
+                                'product_id' => $return_product->product_id,
+                            ])->first();
+                            if ($warehouse_product) {
                                 $warehouse_product->bag_qty -= $return_qty;
                                 $warehouse_product->update();
                             }
                         }
                         $saleData->return_products()->delete();
                     }
-                    Transaction::where(['voucher_no'=>$saleData->memo_no,'voucher_type'=>'Return'])->delete();
+                    Transaction::where(['voucher_no' => $saleData->memo_no, 'voucher_type' => 'Return'])->delete();
                     $result = $saleData->delete();
-                    if($result) {
-                        $output = ['status' => 'success','message' => 'Data has been deleted successfully'];
-                    }else{
-                        $output = ['status' => 'error','message' => 'Failed to delete data'];
+                    if ($result) {
+                        $output = ['status' => 'success', 'message' => 'Data has been deleted successfully'];
+                    } else {
+                        $output = ['status' => 'error', 'message' => 'Failed to delete data'];
                     }
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollback();
-                    $output = ['status' => 'error','message' => $e->getMessage()];
+                    $output = ['status' => 'error', 'message' => $e->getMessage()];
                 }
                 return response()->json($output);
-            }else{
+            } else {
                 return response()->json($this->unauthorized());
             }
-        }else{
+        } else {
             return response()->json($this->unauthorized());
         }
     }
