@@ -14,6 +14,7 @@ class TransferReceiveFormRequest extends FormRequest
     {
 
 
+        $this->rules['from_warehouse_id']     = ['required'];
         if(request()->has('products'))
         {
             foreach (request()->products as $key => $value) {
@@ -21,6 +22,9 @@ class TransferReceiveFormRequest extends FormRequest
                 $this->messages['products.'.$key.'.receive_qty.required'] = 'This field is required';
                 $this->messages['products.'.$key.'.receive_qty.numeric']  = 'The value must be numeric';
                 $this->messages['products.'.$key.'.receive_qty.gt']       = 'The value must be greater than 0';
+
+                $this->rules['products.'.$key.'.product_condition']     = ['required','numeric'];
+                $this->rules['products.'.$key.'.material_id'] = ['nullable','numeric'];
             }
         }
         return $this->rules;

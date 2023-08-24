@@ -58,6 +58,8 @@
                                 <table class="table table-bordered" id="product_table">
                                     <thead class="bg-primary">
                                         <th>Product</th>
+                                        <th>Condition</th>
+                                        <th>Material</th>
                                         <th class="text-center">Unit</th>
                                         <th class="text-center">Available Qty</th>
                                         <th class="text-center">Transfer Qty</th>
@@ -95,15 +97,38 @@
                                                                 @endif
                                                             </select>
                                                         </td>
+
+                                                        <td>
+                                                            <select name="products[{{ $key+1 }}][product_condition]"
+                                                                class="form-control"
+                                                                id="products_{{ $key+1 }}_product_condition"
+                                                                onchange="getProductOrMaterials({{ $key+1 }});">
+                                                                <option value="1" {{ $item->product_condition == 1 ? 'selected' : '' }}>Intact</option>
+                                                                <option value="2" {{ $item->product_condition == 2 ? 'selected' : '' }}>Damaged</option>
+                                                            </select>
+                                                        </td>
+
+                                                        <td>
+                                                            <select name="products[{{ $key+1 }}][material_id]"
+                                                                id="products_{{ $key+1 }}_material_id"
+                                                                class="form-control selectpicker"
+                                                                data-live-search="true"></select>
+                                                        </td>
+
                                                         <td class="unit-name-{{ $key+1 }} text-center">{{ $item->unit->unit_name }}</td>
+
                                                         <td class="stock-qty-{{ $key+1 }} text-center">{{ $stock_qty }}</td>
+
                                                         <td>
                                                             <input type="text" class="form-control transfer_qty text-center"
                                                             value="{{ $item->transfer_qty }}" name="products[{{ $key+1 }}][transfer_qty]"
                                                             id="products_{{ $key+1 }}_transfer_qty">
                                                         </td>
+
                                                         <td class="net-unit-cost-{{ $key+1 }} text-center">{{ number_format($item->net_unit_cost,2,'.','') }}</td>
+
                                                         <td class="sub-total-{{ $key+1 }} subtotal text-center">{{ number_format($item->total,2,'.','') }}</td>
+
                                                         <td class="text-center">
                                                             @if($key != 0 )
                                                             <button type="button" class="btn btn-danger btn-sm remove-product small-btn"><i class="fas fa-trash"></i></button>
@@ -135,13 +160,38 @@
                                                     @endif
                                                 </select>
                                             </td>
+
+                                            <td>
+                                                <select name="products[1][product_condition]"
+                                                    class="form-control"
+                                                    id="products_1_product_condition"
+                                                    onchange="getProductOrMaterials(1);">
+                                                    <option value="1">Intact</option>
+                                                    <option value="2">Damaged</option>
+                                                </select>
+                                            </td>
+
+                                            <td>
+                                                <select name="products[1][material_id]"
+                                                    id="products_1_material_id"
+                                                    class="form-control selectpicker"
+                                                    data-live-search="true"></select>
+                                            </td>
+
                                             <td class="unit-name-1 text-center"></td>
+
                                             <td class="stock-qty-1 text-center"></td>
+
                                             <td><input type="text" class="form-control transfer_qty text-center" name="products[1][transfer_qty]" id="products_1_transfer_qty"></td>
+
                                             <td class="net-unit-cost-1 text-center"></td>
+
                                             <td class="sub-total-1 subtotal text-center"></td>
+
                                             <td class="text-center"></td>
+
                                             <input type="hidden" name="products[1][unit_id]" id="products_1_unit_id">
+
                                             <input type="hidden" class="stock_qty" name="products[1][stock_qty]" id="products_1_stock_qty">
                                             <input type="hidden" class="net_unit_cost" name="products[1][net_unit_cost]" id="products_1_net_unit_cost">
                                             <input type="hidden" class="sub_total"  name="products[1][subtotal]" id="products_1_subtotal">
@@ -149,7 +199,7 @@
                                         @endif
                                     </tbody>
                                     <tfoot class="bg-primary">
-                                        <th colspan="3" class="font-weight-bolder">Total</th>
+                                        <th colspan="5" class="font-weight-bolder">Total</th>
                                         <th id="total-qty" class="text-center font-weight-bolder">{{ isset($transfer) ? $transfer->total_qty : '0' }}</th>
                                         <th></th>
                                         <th id="total" class="text-center font-weight-bolder">{{ isset($transfer) ? number_format($transfer->grand_total,2,'.','') : '0.00' }}</th>
@@ -235,6 +285,24 @@ $(document).ready(function () {
                             @endif
                         </select>
                     </td>
+
+                    <td>
+                        <select name="products[${count}][product_condition]"
+                            class="form-control"
+                            id="products_${count}_product_condition"
+                            onchange="getProductOrMaterials(${count});">
+                            <option value="1">Intact</option>
+                            <option value="2">Damaged</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <select name="products[${count}][material_id]"
+                            id="products_${count}_material_id"
+                            class="form-control selectpicker"
+                            data-live-search="true"></select>
+                    </td>
+
                     <td class="unit-name-${count} text-center"></td>
                     <td class="stock-qty-${count} text-center"></td>
                     <td><input type="text" class="form-control transfer_qty text-center" name="products[${count}][transfer_qty]" id="products_${count}_transfer_qty"></td>
@@ -299,17 +367,28 @@ $(document).ready(function () {
     }
     function getProductStockQty(product_id,row) {
         var warehouse_id = document.getElementById('from_warehouse_id').value;
+        console.log(row);
+        let condition = $('#products_' + row + '_product_condition').val();
         if (warehouse_id) {
             $.ajax({
                 url: '{{ url("warehouse-wise-product-qty-for-transfer") }}',
                 type: 'POST',
                 data: {
-                    product_id: product_id,_token:_token,warehouse_id:warehouse_id
+                    product_id: product_id,
+                    _token:_token,
+                    warehouse_id:warehouse_id
                 },
                 success: function(data) {
                     console.log(data);
-                    $(`.stock-qty-${row}`).text(data.bag_qty);
-                    $(`#products_${row}_stock_qty`).val(data.bag_qty);
+                    if(condition == 1)
+                    {
+                        $(`.stock-qty-${row}`).text(data.bag_qty);
+                        $(`#products_${row}_stock_qty`).val(data.bag_qty);
+                    }
+                    else{
+                         $(`.stock-qty-${row}`).text(data.damaged_bag_qty);
+                        $(`#products_${row}_stock_qty`).val(data.damaged_bag_qty);
+                    }
                 }
             });
         }
@@ -359,5 +438,35 @@ $(document).ready(function () {
             });
         }
     }
+
+    function getProductOrMaterials(index) {
+            // Using Chat GPT
+            let materials = @json($materials);
+            let condition = $('#products_' + index + '_product_condition').val();
+            $('#products_' + index + '_material_id').empty();
+
+            if (condition == 2) {
+                let html = '';
+                for (let ko in materials) {
+                    if (materials.hasOwnProperty(ko)) {
+                        html += `<option value="${ko}">${materials[ko]}</option>`;
+                    }
+                }
+                $('#products_' + index + '_material_id').append(html);
+            }
+            $('.selectpicker').selectpicker('refresh');
+            let product_id = $('#products_' + index + '_id').val();
+            getProductStockQty(product_id,index);
+        }
+
+    $(document).ready(function () {
+        @if (isset($transfer))
+            @if (!$transfer->hasManyProducts->isEmpty())
+                    @foreach ($transfer->hasManyProducts as $key => $item)
+                        getProductOrMaterials({{ $key+1 }});
+                    @endforeach
+                @endif
+        @endif
+    });
 </script>
 @endpush

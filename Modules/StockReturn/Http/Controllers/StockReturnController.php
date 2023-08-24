@@ -31,7 +31,7 @@ class StockReturnController extends BaseController
                 $data = [
                     'sale'       => $sale,
                     'warehouses' => Warehouse::all(),
-                    'materials'  => Material::where('category_id', 23)->pluck('material_name', 'id')->toArray()
+                    // 'materials'  => Material::where('category_id', 23)->pluck('material_name', 'id')->toArray()
                 ];
                 return view('stockreturn::sale.edit', $data);
             } else {
@@ -69,7 +69,7 @@ class StockReturnController extends BaseController
                 $data = [
                     'sale'       => $sale,
                     'warehouses' => Warehouse::all(),
-                    'materials'  => Material::where('category_id', 23)->pluck('material_name', 'id')->toArray()
+                    // 'materials'  => Material::where('category_id', 23)->pluck('material_name', 'id')->toArray()
                 ];
                 return view('stockreturn::dealer-sale.edit', $data);
             } else {

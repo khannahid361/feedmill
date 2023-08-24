@@ -23,6 +23,7 @@
                 @php
                     $total_damage_cost = 0;
                 @endphp
+                <input type="hidden" name="from_warehouse_id" id="" value="{{ $transfer->from_warehouse_id }}">
                 @if (!$transfer->hasManyProducts->isEmpty())
                     @foreach ($transfer->hasManyProducts as $key => $item)
                     @php
@@ -38,6 +39,10 @@
                                 <input type="hidden" class="transfer_qty" name="products[{{ $key+1 }}][transfer_qty]" id="products_{{ $key+1 }}_transfer_qty" value="{{ $item->transfer_qty }}" />
                                 <input type="hidden" name="products[{{ $key+1 }}][net_unit_cost]" id="products_{{ $key+1 }}_net_unit_cost" value="{{ $item->net_unit_cost }}" />
                                 <input type="hidden" class="damage_cost" name="products[{{ $key+1 }}][damage_cost]" id="products_{{ $key+1 }}_damage_cost" value="{{ $item->net_unit_cost * $item->damage_qty  }}" />
+
+                                <input type="hidden"  name="products[{{ $key+1 }}][product_condition]" id="products_{{ $key+1 }}_product_condition" value="{{ $item->product_condition }}" />
+
+                                <input type="hidden"  name="products[{{ $key+1 }}][material_id]" id="products_{{ $key+1 }}_material_id" value="{{ $item->material_id ?? '' }}" />
                             </td>
                             <td class="text-center">
                                 <input type="text" class="form-control text-center receive_qty" name="products[{{ $key+1 }}][receive_qty]" id="products_{{ $key+1 }}_receive_qty" value="{{ $item->receive_qty ? $item->receive_qty : '' }}" onkeyup="calculateQty({{ $key+1 }})" />

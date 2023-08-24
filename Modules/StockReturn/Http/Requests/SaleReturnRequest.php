@@ -24,7 +24,7 @@ class SaleReturnRequest extends FormRequest
                     $this->rules['products.'.$key.'.return_qty']     = ['required','numeric','gt:0','lte:'.$value['sold_qty']];
                     $this->rules['products.'.$key.'.deduction_rate'] = ['nullable','numeric','gt:0'];
                     $this->rules['products.'.$key.'.product_condition']     = ['required','numeric'];
-                    $this->rules['products.'.$key.'.material_id'] = ['nullable','numeric'];
+                    // $this->rules['products.'.$key.'.material_id'] = ['nullable','numeric'];
 
                     $this->messages['products.'.$key.'.return_qty.required']    = 'The return quantity field is required';
                     $this->messages['products.'.$key.'.return_qty.numeric']     = 'The return quantity value must be numeric';

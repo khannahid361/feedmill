@@ -26,6 +26,8 @@ class CreateTransferProductsTable extends Migration
             $table->foreign('unit_id')->references('id')->on('units');
             $table->double('net_unit_cost');
             $table->double('total');
+            $table->tinyInteger('product_condition')->default(1);
+            $table->bigInteger('material_id')->nullable();
             $table->timestamps();
         });
     }

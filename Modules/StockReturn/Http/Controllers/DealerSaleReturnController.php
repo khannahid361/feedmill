@@ -117,13 +117,6 @@ class DealerSaleReturnController extends BaseController
                     $products = [];
                     if ($request->has('products')) {
                         foreach ($request->products as $key => $value) {
-                            if(isset($value['material_id']))
-                            {
-                                $value['material_id'] = $value['material_id'];
-                            }
-                            else{
-                                $value['material_id'] = null;
-                            }
                             if ($value['return'] == 1) {
                                 $unit = Unit::where('unit_name', $value['unit'])->first();
                                 if ($unit->operator == '*') {
@@ -137,14 +130,13 @@ class DealerSaleReturnController extends BaseController
                                     'product_id'         => $value['id'],
                                     'return_qty'         => $value['return_qty'],
                                     'product_condition'  => $value['product_condition'],
-                                    'material_id'        => $value['material_id'],
                                     'unit_id'            => $unit ? $unit->id : null,
                                     'product_rate'       => $value['net_unit_price'],
                                     'deduction_rate'     => $value['deduction_rate'] ? $value['deduction_rate'] : null,
                                     'deduction_amount'   => $value['deduction_amount'] ? $value['deduction_amount'] : null,
                                     'total'              => $value['total']
                                 ];
-                                if ($value['material_id'] == null) {
+                                if ($value['product_condition'] == 1) {
                                     $warehouseProduct = WarehouseProduct::where([['warehouse_id', $warehouse_id], ['product_id', $value['id']]])->first();
                                     if (!empty($warehouseProduct)) {
                                         $warehouseProduct->update(['bag_qty' => $warehouseProduct->bag_qty + $value['return_qty']]);
@@ -156,24 +148,14 @@ class DealerSaleReturnController extends BaseController
                                         ]);
                                     }
                                 } else {
-                                    $material                  = Material::find($value['material_id']);
-                                    $warehouseMaterialQuantity = WarehouseMaterial::where(['material_id' => $value['material_id']])->sum('qty');
-                                    $newQuantity = $value['return_qty'] * 50;
-                                    if (!empty($material)) {
-                                        $material->update([
-                                            'qty'   => $material->qty + $newQuantity
-                                        ]);
-                                    }
-                                    $warehouse_material = WarehouseMaterial::where(['warehouse_id' => $warehouse_id, 'material_id'  => $value['material_id']])->first();
-                                    if ($warehouse_material) {
-                                        $warehouse_material->qty += $newQuantity;
-                                        $warehouse_material->update();
-                                    }
-                                    else{
-                                        WarehouseMaterial::create([
+                                    $warehouseProduct = WarehouseProduct::where([['warehouse_id', $warehouse_id], ['product_id', $value['id']]])->first();
+                                    if (!empty($warehouseProduct)) {
+                                        $warehouseProduct->update(['damaged_bag_qty' => $warehouseProduct->damaged_bag_qty + $value['return_qty']]);
+                                    } else {
+                                        WarehouseProduct::create([
                                             'warehouse_id' => $warehouse_id,
-                                            'material_id'  => $value['material_id'],
-                                            'qty'          => $newQuantity
+                                            'product_id'   => $value['id'],
+                                            'damaged_bag_qty'      => $value['return_qty']
                                         ]);
                                     }
                                 }

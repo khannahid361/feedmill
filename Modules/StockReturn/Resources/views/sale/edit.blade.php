@@ -70,7 +70,6 @@
                                             <th class="text-center">Sold Bag Qty</th>
                                             <th class="text-center">Return Bag Qty</th>
                                             <th class="text-center">Product Condition</th>
-                                            <th class="text-center">Material</th>
                                             <th class="text-right">Net Unit Price</th>
                                             <th class="text-right">Deduction (%)</th>
                                             <th class="text-right">Subtotal</th>
@@ -114,17 +113,10 @@
                                                             <select name="products[{{ $key + 1 }}][product_condition]"
                                                                 class="form-control"
                                                                 id="products_{{ $key + 1 }}_product_condition"
-                                                                onchange="getProductOrMaterials({{ $key + 1 }})">
+                                                                >
                                                                 <option value="1">Intact</option>
                                                                 <option value="2">Damaged</option>
                                                             </select>
-                                                        </td>
-
-                                                        <td>
-                                                            <select name="products[{{ $key + 1 }}][material_id]"
-                                                                id="products_{{ $key + 1 }}_material_id"
-                                                                class="form-control selectpicker"
-                                                                data-live-search="true"></select>
                                                         </td>
 
                                                         <td><input type="text"
@@ -178,7 +170,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td colspan="7" rowspan="3">
+                                                <td colspan="6" rowspan="3">
                                                     <label for="reason">Reason</label>
                                                     <textarea class="form-control" name="reason" id="reason"></textarea><br>
                                                 </td>
@@ -334,25 +326,6 @@
                     }
                 });
             }
-        }
-
-        function getProductOrMaterials(index) {
-            // Using Chat GPT
-            let materials = @json($materials);
-            let condition = $('#products_' + index + '_product_condition').val();
-            console.log(condition);
-            $('#products_' + index + '_material_id').empty();
-
-            if (condition == 2) {
-                let html = '';
-                for (let ko in materials) {
-                    if (materials.hasOwnProperty(ko)) {
-                        html += `<option value="${ko}">${materials[ko]}</option>`;
-                    }
-                }
-                $('#products_' + index + '_material_id').append(html);
-            }
-            $('.selectpicker').selectpicker('refresh');
         }
     </script>
 @endpush

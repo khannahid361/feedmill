@@ -39,6 +39,8 @@ class TransferFormRequest extends FormRequest
         {
             foreach (request()->products as $key => $value) {
                 $this->rules   ['products.'.$key.'.transfer_qty']          = ['required','numeric','gt:0','lte:'.$value['stock_qty']];
+                $this->rules['products.'.$key.'.product_condition']     = ['required','numeric'];
+                $this->rules['products.'.$key.'.material_id'] = ['nullable','numeric'];
                 $this->messages['products.'.$key.'.transfer_qty.required'] = 'This field is required';
                 $this->messages['products.'.$key.'.transfer_qty.numeric']  = 'The value must be numeric';
                 $this->messages['products.'.$key.'.transfer_qty.gt']       = 'The value must be greater than 0';

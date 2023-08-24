@@ -10,7 +10,7 @@ class TransferProduct extends Model
 {
 
     protected $fillable = [
-       'transfer_id','product_id','transfer_qty','receive_qty','damage_qty','unit_id','net_unit_cost','total'
+        'transfer_id', 'product_id', 'transfer_qty', 'receive_qty', 'damage_qty', 'unit_id', 'net_unit_cost', 'total', 'product_condition', 'material_id'
     ];
     public function product()
     {
