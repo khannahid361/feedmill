@@ -55,7 +55,7 @@ class WarehouseProductDeliveryLedger extends BaseModel
             ->join('customers', 'deliveries.customer_id', '=', 'customers.id')
             ->join('products', 'delivery_products.product_id', 'products.id')
             ->join('categories', 'products.category_id', 'categories.id')
-            ->select('customers.name as name', 'products.name as product_name', 'delivery_products.delivery_qty as quantity', DB::raw("'Customer' as type"), DB::raw("'0' as return_qty"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'sales.memo_no as invoice_no', 'deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id', DB::raw("'0' as return_date"));
+            ->select('customers.name as name', 'products.name as product_name', 'delivery_products.delivery_qty as quantity', DB::raw("'Customer' as type"), DB::raw("'0' as return_qty"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'sales.memo_no as invoice_no', 'deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id', DB::raw("'0' as return_date"), DB::raw("'' as product_condition"));
 
         if (!empty($this->_warehouse)) {
             $deliveries->where('deliveries.warehouse_id',  $this->_warehouse);
@@ -80,7 +80,7 @@ class WarehouseProductDeliveryLedger extends BaseModel
             ->join('dealers', 'dealer_deliveries.dealer_id', '=', 'dealers.id')
             ->join('products', 'dealer_delivery_products.product_id', 'products.id')
             ->join('categories', 'products.category_id', 'categories.id')
-            ->select('dealers.name as name', 'products.name as product_name', 'dealer_delivery_products.delivery_qty as quantity', DB::raw("'Dealer' as type"), DB::raw("'0' as return_qty"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'dealer_sales.memo_no as invoice_no', 'dealer_deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id', DB::raw("'0' as return_date"));
+            ->select('dealers.name as name', 'products.name as product_name', 'dealer_delivery_products.delivery_qty as quantity', DB::raw("'Dealer' as type"), DB::raw("'0' as return_qty"), 'warehouses.name as warehouse_name', 'categories.name as category_name', 'dealer_sales.memo_no as invoice_no', 'dealer_deliveries.delivery_date as delivery_date', 'warehouses.id as warehouse_id', 'categories.id as category_id', DB::raw("'0' as return_date"), DB::raw("'' as product_condition"));
 
         if (!empty($this->_warehouse)) {
             $dealerDeliveries->where('dealer_deliveries.warehouse_id',  $this->_warehouse);
@@ -105,7 +105,7 @@ class WarehouseProductDeliveryLedger extends BaseModel
             ->join('customers', 'sale_returns.customer_id', '=', 'customers.id')
             ->join('products', 'sale_return_products.product_id', 'products.id')
             ->join('categories', 'products.category_id', 'categories.id')
-            ->select('customers.name as name', 'products.name as product_name', DB::raw("'0' as quantity"), DB::raw("'Customer' as type"), 'sale_return_products.return_qty as return_qty', 'warehouses.name as warehouse_name', 'categories.name as category_name', 'sales.memo_no as invoice_no', DB::raw("'0' as delivery_date"), 'warehouses.id as warehouse_id', 'categories.id as category_id', 'sale_returns.return_date as return_date');
+            ->select('customers.name as name', 'products.name as product_name', DB::raw("'0' as quantity"), DB::raw("'Customer' as type"), 'sale_return_products.return_qty as return_qty', 'warehouses.name as warehouse_name', 'categories.name as category_name', 'sales.memo_no as invoice_no', DB::raw("'0' as delivery_date"), 'warehouses.id as warehouse_id', 'categories.id as category_id', 'sale_returns.return_date as return_date', 'sale_return_products.product_condition as product_condition');
 
         if (!empty($this->_warehouse)) {
             $customerReturns->where('sale_returns.warehouse_id',  $this->_warehouse);
@@ -130,7 +130,7 @@ class WarehouseProductDeliveryLedger extends BaseModel
             ->join('dealers', 'dealer_sale_return.dealer_id', '=', 'dealers.id')
             ->join('products', 'dealer_sale_return_products.product_id', 'products.id')
             ->join('categories', 'products.category_id', 'categories.id')
-            ->select('dealers.name as name', 'products.name as product_name', DB::raw("'0' as quantity"), DB::raw("'Dealer' as type"), 'dealer_sale_return_products.return_qty as return_qty', 'warehouses.name as warehouse_name', 'categories.name as category_name', 'dealer_sales.memo_no as invoice_no', DB::raw("'0' as delivery_date"), 'warehouses.id as warehouse_id', 'categories.id as category_id', 'dealer_sale_return.return_date as return_date');
+            ->select('dealers.name as name', 'products.name as product_name', DB::raw("'0' as quantity"), DB::raw("'Dealer' as type"), 'dealer_sale_return_products.return_qty as return_qty', 'warehouses.name as warehouse_name', 'categories.name as category_name', 'dealer_sales.memo_no as invoice_no', DB::raw("'0' as delivery_date"), 'warehouses.id as warehouse_id', 'categories.id as category_id', 'dealer_sale_return.return_date as return_date', 'dealer_sale_return_products.product_condition as product_condition');
 
         if (!empty($this->_warehouse)) {
             $dealerReturns->where('dealer_sale_return.warehouse_id',  $this->_warehouse);

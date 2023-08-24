@@ -106,6 +106,7 @@ class WarehouseLedgerController extends BaseController
                 $row[]  = $value->category_name;
                 $row[]  = $value->bag_qty;
                 $row[]  = $value->qty;
+                $row[]  = $value->damaged_bag_qty;
                 $data[] = $row;
             }
             return $this->datatable_draw($request->input('draw'), $this->model->count_all(), $this->model->count_filtered(), $data);

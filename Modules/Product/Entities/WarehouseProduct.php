@@ -33,7 +33,7 @@ class WarehouseProduct extends BaseModel{
         $this->column_order = ['p.id','w.name','p.name','p.code','c.category_name','u.unit_name','p.base_unit_price','wp.qty',null];
 
         $query              = DB::table('warehouse_product as wp')
-                            ->selectRaw('w.name as warehouse_name,p.name as product_name,p.code as product_code,c.name as category_name,u.unit_name as unit_name,p.base_unit_price,p.cost,wp.qty,wp.unit as wpunit,wp.bag_qty')
+                            ->selectRaw('w.name as warehouse_name,p.name as product_name,p.code as product_code,c.name as category_name,u.unit_name as unit_name,p.base_unit_price,p.cost,wp.qty,wp.unit as wpunit,wp.bag_qty,wp.damaged_bag_qty')
                             ->join('warehouses as w','wp.warehouse_id','=','w.id')
                             ->join('products as p','wp.product_id','=','p.id')
                             ->join('categories as c','p.category_id','=','c.id')

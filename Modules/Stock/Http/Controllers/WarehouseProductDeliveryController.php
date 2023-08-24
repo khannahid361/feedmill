@@ -61,6 +61,7 @@ class WarehouseProductDeliveryController extends BaseController
                     $type = '<span class="label label-warning label-pill label-inline" style="min-width:70px !important;">Customer</span>';
                 }
                 $row    = [];
+                $condition = '';
                 $row[]  = $no;
                 $row[]  = $value->warehouse_name;
                 $row[]  = $value->product_name;
@@ -69,8 +70,14 @@ class WarehouseProductDeliveryController extends BaseController
                 $row[]  = $value->invoice_no;
                 $row[]  = $value->name;
                 $row[]  = $type;
-                $row[]  = $value->quantity;
-                $row[]  = $value->return_qty;
+                $row[]  = '<b>' . $value->quantity . '</b>';
+                if ($value->product_condition == 2 && $value->return_qty > 0) {
+                    $condition = '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Damaged</span>';
+                }
+                if ($value->product_condition == 1 && $value->return_qty > 0) {
+                    $condition = '<span class="label label-primary label-pill label-inline" style="min-width:70px !important;">Intact</span>';
+                }
+                $row[]  = '<b>' . $value->return_qty . '</b> &nbsp; &nbsp; &nbsp;' . $condition;
                 $data[] = $row;
             }
             return $this->datatable_draw($request->input('draw'), $this->model->count_all(), $this->model->count_filtered(), $data);
