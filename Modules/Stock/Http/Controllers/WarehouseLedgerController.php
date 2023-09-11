@@ -54,7 +54,7 @@ class WarehouseLedgerController extends BaseController
                 $row[]  = $value->category_name;
                 $row[]  = number_format($value->cost, 2);
                 $row[]  = $value->bag_qty;
-                $row[]  = number_format(($value->cost * $value->bag_qty * 50), 2);
+                $row[]  = number_format(($value->cost * $value->bag_qty * $value->wpunit), 2);
                 $row[]  = $value->qty;
                 $row[]  = number_format(($value->cost * $value->qty), 2);
                 $row[]  = number_format(($value->cost * $value->qty) + ($value->cost * $value->bag_qty * 50), 2);

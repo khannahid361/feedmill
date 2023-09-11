@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Product\Entities\Product;
 use Modules\Material\Entities\Material;
+use Modules\Material\Entities\WarehouseMaterial;
 use Modules\Product\Entities\WarehouseProduct;
 
 class ProductQtyConverterController extends BaseController
@@ -28,7 +29,6 @@ class ProductQtyConverterController extends BaseController
 
     public function store(Request $request)
     {
-        // dd($request->all());
         DB::beginTransaction();
         try {
             $warehouseProduct = WarehouseProduct::where(['product_id' => $request->product_id])->first();
@@ -45,6 +45,12 @@ class ProductQtyConverterController extends BaseController
                     ->where('id', $warehouseMaterial->id)
                     ->update(['qty' => $warehouseMaterial->qty - $request->material_qty]);
             }
+
+            $materialSum = WarehouseMaterial::where('material_id', $request->material_id)->sum('qty');
+
+            Material::where('id', $request->material_id)->update([
+                'qty' => $materialSum
+            ]);
 
             $message = $warehouseProduct->update();
             DB::commit();

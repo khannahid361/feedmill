@@ -249,7 +249,6 @@ class TransferController extends BaseController
     }
     public function receive_transfered_products(TransferReceiveFormRequest $request)
     {
-        // dd($request->all());
         if (($request->ajax() && permission('transfer-inventory-add')) || ($request->ajax() && permission('transfer-inventory-edit'))) {
             DB::beginTransaction();
             try {

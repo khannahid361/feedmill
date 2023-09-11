@@ -1,3 +1,6 @@
+@php
+    use Modules\Account\Entities\Transaction;
+@endphp
 @extends('layouts.app')
 @section('title', $page_title)
 @section('content')
@@ -35,6 +38,9 @@
                                     <div style="width:100%;height:2px;padding:5px 0;"></div>
                                     <div style="width:100%;height:2px;border-bottom:1px dotted #454d55;padding-bottom:25px;"></div>
                                     <div style="width:100%;height:2px;padding-top:5px;"></div>
+                                    @php
+                                        $account_head = Transaction::with('coa')->where('voucher_no',$data->voucher_no)->orderBy('id','desc')->first();
+                                    @endphp
                                     <table class="table table-borderless" style="width:100%;" id="invoice-table" border="0">
                                         <tr>
                                             <td width="25%"><b>Voucher No</b></td><td width="5%"><b>:</b></td><td width="70%" class="text-left">{{ $data->voucher_no }}</td>
@@ -44,6 +50,9 @@
                                         </tr>
                                         <tr>
                                             <td width="25%"><b>Amount</b></td><td width="5%"><b>:</b></td><td width="70%" class="text-left">{{ number_format($data->debit,2,'.',',') }}Tk</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="25%"><b>Account</b></td><td width="5%"><b>:</b></td><td width="70%" class="text-left">{{ $account_head->coa->name }}</td>
                                         </tr>
                                         <tr>
                                             <td width="25%"><b>Remarks</b></td><td width="5%"><b>:</b></td><td width="70%" class="text-left">{{ $data->description }}</td>
