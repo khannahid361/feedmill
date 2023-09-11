@@ -281,6 +281,7 @@ class Transfer extends BaseModel
                         ['warehouse_id', $request->to_warehouse_id],
                         ['product_id', $value['id']]
                     ])->first();
+                    $productsUnit = WarehouseProduct::where([['product_id', $value['id']], ['unit', '!=', 0]])->value('unit');
                     if ($to_warehouse) {
                         $to_warehouse->bag_qty += $value['receive_qty'];
                         $to_warehouse->update();
@@ -288,7 +289,8 @@ class Transfer extends BaseModel
                         WarehouseProduct::create([
                             'warehouse_id' => $request->to_warehouse_id,
                             'product_id' => $value['id'],
-                            'bag_qty' => $value['receive_qty']
+                            'bag_qty' => $value['receive_qty'],
+                            'unit' => $productsUnit
                         ]);
                     }
                 } else {
