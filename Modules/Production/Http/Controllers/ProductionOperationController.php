@@ -139,13 +139,13 @@ class ProductionOperationController extends BaseController
                                     }
                                 }
                                 $production_products = DB::table('production_products')->where('production_id',$request->production_id)->get();
+
                                 if(!$production_products->isEmpty()) {
                                     foreach ($production_products as  $value) {
                                         $product                  = Product::find($value->product_id);
                                         $warehouseProductQuantity = 0;
                                         $warehouse_product        = WarehouseProduct::where([['warehouse_id', $warehouse_id], ['product_id', $value->product_id]])->first();
                                         $productionWastage = ProductionWastage::where('product_id',$value->product_id)->first();
-
                                         //calculating new avg price
                                         if($warehouse_product)
                                         {
@@ -170,9 +170,13 @@ class ProductionOperationController extends BaseController
                                         }
                                         if($productionWastage)
                                         {
-                                            $productionWastage->recyclable_wastage += $value->recyclable_wastage_qty - $value->used_wastage_qty;
-                                            $productionWastage->permanent_wastage += $value->permanent_wastage_qty;
-                                            $productionWastage->update();
+                                            $wastage = ProductionWastage::where('product_id',$value->product_id)->update([
+                                                'recyclable_wastage' => $productionWastage->recyclable_wastage + $value->recyclable_wastage_qty - $value->used_wastage_qty,
+                                                'permanent_wastage'  => $productionWastage->permanent_wastage + $value->permanent_wastage_qty
+                                            ]);
+                                            // $productionWastage->recyclable_wastage += $value->recyclable_wastage_qty - $value->used_wastage_qty;
+                                            // $productionWastage->permanent_wastage += $value->permanent_wastage_qty;
+                                            // $productionWastage->update();
                                         }
                                         else{
                                             ProductionWastage::create([

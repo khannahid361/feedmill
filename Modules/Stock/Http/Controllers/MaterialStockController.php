@@ -50,9 +50,11 @@ class MaterialStockController extends BaseController{
                 $row[]  = $value->material_code;
                 $row[]  = $value->category_name;
                 $row[]  = $value->unit_name;
-                $row[]  = number_format($value->cost,2);
+                // $row[]  = number_format($value->cost,2);
+                $row[] = $value->cost ? number_format($value->cost,2,'.',',') : ($value->opening_cost ? number_format($value->opening_cost,2,'.',','): 0);
                 $row[]  = number_format($value->qty,2);
-                $row[]  = number_format(($value->cost * $value->qty),2);
+                // $row[]  = number_format(($value->cost * $value->qty),2);
+                $row[] = $value->cost ? number_format($value->qty * $value->cost,2,'.',',') : ($value->opening_cost ? number_format($value->qty * $value->opening_cost,2,'.',','): 0);
                 $data[] = $row;
             }
             return $this->datatable_draw($request->input('draw'),$this->model->count_all(), $this->model->count_filtered(), $data);

@@ -149,13 +149,15 @@ class DealerSaleReturnController extends BaseController
                                     }
                                 } else {
                                     $warehouseProduct = WarehouseProduct::where([['warehouse_id', $warehouse_id], ['product_id', $value['id']]])->first();
+                                    $productsUnitObj = WarehouseProduct::where([['product_id', $value['id']], ['unit', '!=', 0]])->first('unit');
                                     if (!empty($warehouseProduct)) {
                                         $warehouseProduct->update(['damaged_bag_qty' => $warehouseProduct->damaged_bag_qty + $value['return_qty']]);
                                     } else {
                                         WarehouseProduct::create([
                                             'warehouse_id' => $warehouse_id,
                                             'product_id'   => $value['id'],
-                                            'damaged_bag_qty'      => $value['return_qty']
+                                            'damaged_bag_qty'      => $value['return_qty'],
+                                            'unit' => $productsUnitObj->unit ?? 0
                                         ]);
                                     }
                                 }

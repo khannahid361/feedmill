@@ -114,7 +114,7 @@ class TransferController extends BaseController
                 'products'    => Product::with('unit')->get(),
                 'users'       => User::with('role:id,role_name')->whereNotIn('role_id', [1, 2])->get(),
                 'challan_no'  => 'CH-' . date('dmhyhi'),
-                'materials'   => Material::where('category_id', 23)->pluck('material_name', 'id')->toArray()
+                'materials'   => Material::where('category_id', 9)->pluck('material_name', 'id')->toArray()
             ];
             return view('transfer::form', $data);
         } else {

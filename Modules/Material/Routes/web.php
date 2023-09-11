@@ -30,4 +30,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('material-search', 'MaterialController@search_material')->name('material.search');
     Route::post('warehouse-wise-materials', 'MaterialController@warehouse_wise_materials')->name('warehouse.wise.materials');
     Route::post('material-search-by-id', 'MaterialController@search_material_by_id')->name('material.search.by.id');
+    Route::post('material-available-bag-qty', 'MaterialController@getAvailableBagQty')->name('material.available.bag.qty');
 });

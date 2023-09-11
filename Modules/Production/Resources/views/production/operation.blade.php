@@ -42,8 +42,8 @@
                                             <th class="text-center">Unit Name</th>
                                             <th class="text-center">Expected Finish Goods Qty <sup class="text-danger font-weight-bolder">*</sup></th>
                                             <th class="text-center">Actual Finish Goods Qty <sup class="text-danger font-weight-bolder">*</sup></th>
-                                            <th class="text-center">Recyclable Waste/Mixture</th>
-                                            <th class="text-center">Permanent Waste</th>
+                                            <th class="text-center">Recyclable Dust</th>
+                                            <th class="text-center">Permanent Dust</th>
                                         </thead>
                                         <tbody>
                                             <tr>
@@ -51,7 +51,7 @@
                                                 <td class="text-center">{{ date('d-M-Y',strtotime($item->exp_date)) }}</td>
                                                 <td class="text-center">{{ $item->product->unit->unit_name.' ('.$item->product->unit->unit_code.')' }}</td>
                                                 <td>
-                                                    <input type="text" class="form-control text-center" value="{{ $item->expected_unit_qty + $item->used_wastage_qty }}" name="production[{{ $key+1 }}][expected_unit_qty]" id="production_{{ $key+1 }}_expected_unit_qty" readonly>
+                                                    <input type="text" class="form-control text-center" value="{{ $item->expected_unit_qty }}" name="production[{{ $key+1 }}][expected_unit_qty]" id="production_{{ $key+1 }}_expected_unit_qty" readonly>
 
                                                     <input type="hidden" class="form-control" name="production[{{ $key+1 }}][production_product_id]" value="{{ $item->id }}">
                                                 </td>

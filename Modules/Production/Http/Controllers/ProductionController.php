@@ -255,7 +255,7 @@ class ProductionController extends BaseController
                                     // 'per_unit_cost'   => $product['per_unit_cost'],
 
                                     'base_unit_qty'   => $product['expected_unit_qty'],
-                                    'expected_unit_qty'   => $product['expected_unit_qty']
+                                    'expected_unit_qty'   => $product['expected_unit_qty'] + $request->used_wastage_qty
                                 ];
                                 $productData = ProductionProduct::create($product_data);
                                 if ($product) {
@@ -350,7 +350,7 @@ class ProductionController extends BaseController
                                         'mfg_date'        => $product['mfg_date'],
                                         'exp_date'        => $product['exp_date'],
                                         'base_unit_qty'   => $product['base_unit_qty'],
-                                        'expected_unit_qty'   => $product['base_unit_qty'],
+                                        'expected_unit_qty'   => $product['base_unit_qty'] + $request->used_wastage_qty,
                                         'used_wastage_qty'=> $request->used_wastage_qty,
                                     ]);
 

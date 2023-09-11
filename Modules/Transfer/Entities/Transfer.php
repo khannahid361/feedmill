@@ -294,7 +294,8 @@ class Transfer extends BaseModel
                 } else {
                     $material                  = Material::find($value['material_id']);
                     $warehouseMaterialQuantity = WarehouseMaterial::where(['material_id' => $value['material_id']])->sum('qty');
-                    $newQuantity = $value['receive_qty'] * 50;
+                    $productsUnitObj = WarehouseProduct::where([['product_id', $value['id']], ['unit', '!=', 0]])->first('unit');
+                    $newQuantity = $value['receive_qty'] * $productsUnitObj->unit;
                     if (!empty($material)) {
                         $material->update([
                             'qty'   => $material->qty + $newQuantity

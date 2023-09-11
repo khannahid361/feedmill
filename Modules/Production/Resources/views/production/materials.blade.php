@@ -100,11 +100,11 @@
 </div>
 <div class="col-md-6"></div>
 <div class="form-group col-md-3 required">
-    <label for="">Remaining Mixture</label>
+    <label for="">Remaining Dust</label>
     <input type="text" class="form-control" name="" id="remaining_mixture" value="{{ $wastage->recyclable_wastage??'0' }}" readonly />
 </div>
 <div class="form-group col-md-3 required">
-    <label for="">Used Mixture</label>
+    <label for="">Used Dust</label>
     <input type="text" class="form-control" name="used_wastage_qty" id="used_wastage_qty" onkeyup="checkUsedMixtureQty();" value="0" required />
 </div>
 {{-- <div class="col-md-7"></div> --}}

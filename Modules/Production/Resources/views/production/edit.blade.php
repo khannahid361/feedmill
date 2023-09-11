@@ -57,7 +57,7 @@
                                     property="readonly" required="required" col="col-md-4" />
                                 <x-form.textbox labelName="Date" name="start_date" required="required" col="col-md-4"
                                     property="readonly" class="date" value="{{ $production->start_date }}" />
-                                <x-form.selectbox labelName="Depo" name="warehouse_id" required="required" col="col-md-4"
+                                <x-form.selectbox labelName="Factory" name="warehouse_id" required="required" col="col-md-4"
                                     class="selectpicker">
                                     @if (!$warehouses->isEmpty())
                                         @foreach ($warehouses as $warehouse)
@@ -130,7 +130,7 @@
                                                                         value="{{ $item->exp_date }}"
                                                                         onblur="setExpireTime();" readonly />
                                                                 </div>
-                                                                <div class="form-group col-md-3 required">
+                                                                <div class="form-group col-md-3 required d-none">
                                                                     <label for="production_1_year">Total Months </label>
                                                                     <input type="text" name="production[1][year]"
                                                                         id="production_1_year" class="form-control "
@@ -293,13 +293,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-3 required">
-                                                    <label for="">Remaining Mixture</label>
+                                                    <label for="">Remaining Dust</label>
                                                     <input type="text" class="form-control" name=""
                                                         id="remaining_mixture"
                                                         value="{{ $wastage->recyclable_wastage ?? '0' }}" readonly />
                                                 </div>
                                                 <div class="form-group col-md-3 required">
-                                                    <label for="">Used Mixture</label>
+                                                    <label for="">Used Dust</label>
                                                     <input type="text" class="form-control" name="used_wastage_qty"
                                                         id="used_wastage_qty" onkeyup="checkUsedMixtureQty();"
                                                         value="{{ $item->used_wastage_qty }}" required />
@@ -540,6 +540,17 @@
                 }
             })
             _('g_tl').value = total;
+        }
+
+        function setExpireTime() {
+            let expiredDate = $('#production_1_exp_date').val();
+            let mfgDate = $('#production_1_mfg_date').val();
+            mfgDate = new Date(mfgDate);
+            expiredDate = new Date(expiredDate);
+            let monthDiff = expiredDate.getMonth() - mfgDate.getMonth();
+            let yearDiff = expiredDate.getYear() - mfgDate.getYear();
+            let months = monthDiff + yearDiff * 12;
+            $('#production_1_year').val(months);
         }
     </script>
 @endpush

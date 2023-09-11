@@ -51,10 +51,11 @@
                                                     <th class="text-center">Mfg. Date</th>
                                                     <th class="text-center">Exp. Date</th>
                                                     <th class="text-center">Unit Name</th>
-                                                    <th class="text-center">Finish Goods Qty</th>
+                                                    <th class="text-center">Used Materials</th>
                                                     <th class="text-center">Mixture Used (Previous)</th>
-                                                    <th class="text-center">Recyclable Wastage Qty</th>
-                                                    <th class="text-center">Permanent Wastage Qty</th>
+                                                    <th class="text-center">Finish Goods Qty</th>
+                                                    <th class="text-center">Recyclable Dust</th>
+                                                    <th class="text-center">Permanent Dust</th>
                                                     @if ($item->has_coupon == 1)
                                                         <th class="text-center">Total Coupon</th>
                                                         <th class="text-center">Coupon Price</th>
@@ -71,10 +72,14 @@
                                                         <td class="text-center">
                                                             {{ $item->product->unit->unit_name . ' (' . $item->product->unit->unit_code . ')' }}
                                                         </td>
-                                                        <td class="text-center">{{ $item->base_unit_qty }}</td>
+                                                        <td class="text-center">{{ $item->expected_unit_qty }}</td>
                                                         <td class="text-center">{{ $item->used_wastage_qty }}</td>
+                                                        <td class="text-center">{{ $item->base_unit_qty }}</td>
                                                         <td class="text-center">{{ $item->recyclable_wastage_qty }}</td>
-                                                        <td class="text-center">{{ $item->permanent_wastage_qty }}</td>
+                                                        @php
+                                                            $permanentDustPercentage = ($item->permanent_wastage_qty * 100)/ $item->base_unit_qty;
+                                                        @endphp
+                                                        <td class="text-center">{{ $item->permanent_wastage_qty }} &nbsp; &nbsp;({{ number_format($permanentDustPercentage, 2) }}%)</td>
                                                         @if ($item->has_coupon == 1)
                                                             <td class="text-center">{{ $item->total_coupon }}</td>
                                                             <td class="text-center">

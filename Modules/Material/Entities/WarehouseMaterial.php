@@ -32,7 +32,7 @@ class WarehouseMaterial extends BaseModel{
     private function get_datatable_query(){
         $this->column_order = ['m.id','w.name','m.material_name','m.material_code','m.unit_id','m.cost','wm.qty',null];
         $query = DB::table('warehouse_material as wm')
-            ->selectRaw('wm.qty,w.name as warehouse_name,m.id,m.material_name,m.material_code,m.cost,c.name as category_name,u.unit_name')
+            ->selectRaw('wm.qty,w.name as warehouse_name,m.id,m.material_name,m.material_code,m.cost,m.opening_cost,c.name as category_name,u.unit_name')
             ->join('warehouses as w','wm.warehouse_id','=','w.id')
             ->join('materials as m','wm.material_id','=','m.id')
             ->join('categories as c','m.category_id','=','c.id')

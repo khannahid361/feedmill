@@ -27,7 +27,7 @@
                         enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-                            <div class="col-md-10">
+                            <div class="col-md-12">
                                 <div class="row">
                                     <x-form.selectbox labelName="Product" name="product_id" col="col-md-3"
                                         class="selectpicker" onchange="setProductQty();">
@@ -37,15 +37,40 @@
                                         @endforeach
                                     </x-form.selectbox>
 
-                                    <x-form.textbox labelName="Available Qty" name="available_qty" required col="col-md-3" />
+                                    <x-form.textbox labelName="Available Qty" name="available_qty" required col="col-md-3"
+                                        property="readonly" />
 
                                     <x-form.selectbox labelName="Unit" name="unit" required col="col-md-3"
                                         class="selectpicker" onchange="convertToBag();">
+                                        <option value="25">25 Kg Bag</option>
+                                        <option value="30">30 Kg Bag</option>
+                                        <option value="40">40 Kg Bag</option>
                                         <option value="50">50 Kg Bag</option>
                                     </x-form.selectbox>
 
-                                    <x-form.textbox labelName="Bag Quantity" name="bag_qty" required col="col-md-3" />
+                                    <div class="form-group col-md-3 required">
+                                        <label for="">Converted Bag Quantity</label>
+                                        <input type="text" name="bag_qty" id="bag_qty" required class="form-control"
+                                            readonly>
+                                    </div>
+                                    {{-- <x-form.textbox labelName="Converted Bag Quantity" name="bag_qty" readonly required col="col-md-3" /> --}}
+
                                     <x-form.textbox labelName="Remaining Quantity" name="qty" required col="col-md-3" />
+
+                                    <x-form.selectbox labelName="Select Bag" name="material_id" required col="col-md-3"
+                                        class="selectpicker" onchange="getAvailableBagQty(this.value);">
+                                        @foreach ($materials as $item)
+                                            <option value="{{ $item->id }}">{{ $item->material_name }}</option>
+                                        @endforeach
+                                    </x-form.selectbox>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="">Available Bag Quantity</label>
+                                        <input type="text" name="" id="available_bag_qty" required
+                                            class="form-control" readonly>
+                                    </div>
+
+                                    <x-form.textbox labelName="Used Bag Qty" name="material_qty" required col="col-md-3" />
                                 </div>
                                 <input type="submit" name="" id="" value="Convert"
                                     class="btn btn-primary btn-md" onclick="return validateForm();">
@@ -75,7 +100,7 @@
             if (unit != 0) {
                 let qty = $('#available_qty').val();
                 let bag = qty / unit;
-                let newQty = qty%unit;
+                let newQty = qty % unit;
                 bag = parseInt(bag);
                 $('#bag_qty').val(bag);
                 $('#qty').val(newQty);
@@ -90,12 +115,43 @@
             let qty = $('#qty').val();
             let unit = $('#unit').val();
             let bag_qty = $('#bag_qty').val();
-
+            let availableBagQty = $('#available_bag_qty').val();
+            availableBagQty = parseFloat(availableBagQty);
+            let materialQty = $('#material_qty').val();
+            materialQty = parseFloat(materialQty);
+            console.log(`available ${availableBagQty},  used ${materialQty}`);
             if (product_id === '' || qty === '' || unit === '' || bag_qty === '') {
-                alert('Please fill in all the fields.');
+                notification('error', 'Please fill in all the fields.');
+                return false;
+            }
+            if(availableBagQty < materialQty)
+            {
+                notification('error', 'Used bag quantity can not be greater than available bag quantity.');
                 return false;
             }
             return true;
+        }
+
+        function getAvailableBagQty(value) {
+            let url = "{{ route('material.available.bag.qty') }}";
+            $('#available_bag_qty').val('');
+            if (value != '') {
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        material_id: value,
+                        _token: _token
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        $('#available_bag_qty').val(data.qty);
+                    },
+                    error: function(xhr, ajaxOption, thrownError) {
+                        console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
+                    }
+                });
+            }
         }
     </script>
 @endpush
