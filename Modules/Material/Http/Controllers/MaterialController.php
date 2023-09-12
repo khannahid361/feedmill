@@ -64,9 +64,9 @@ class MaterialController extends BaseController
                 foreach ($list as $value) {
                     $no++;
                     $action = '';
-                    if (permission('material-edit')) {
-                        $action .= ' <a class="dropdown-item edit_data" data-id="' . $value->id . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
-                    }
+                    // if (permission('material-edit')) {
+                    //     $action .= ' <a class="dropdown-item edit_data" data-id="' . $value->id . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
+                    // }
                     if (permission('material-view')) {
                         $action .= ' <a class="dropdown-item view_data" data-id="' . $value->id . '" data-name="' . $value->material_name . '">' . self::ACTION_BUTTON['View'] . '</a>';
                     }
