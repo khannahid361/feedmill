@@ -109,7 +109,7 @@ class DealerAdvance extends BaseModel
         'c.shop_name','c.mobile','w.name as warehouse_name')
         ->join('chart_of_accounts as coa','transactions.chart_of_account_id','=','coa.id')
         ->join('dealers as c','coa.dealer_id','c.id')
-        ->join('warehouses as w', 'c.warehouse_id', '=', 'w.id')
+        ->leftjoin('warehouses as w', 'c.warehouse_id', '=', 'w.id')
         ->where([
             'transactions.voucher_type'=>self::TYPE,
             'transactions.approve'=>1,
