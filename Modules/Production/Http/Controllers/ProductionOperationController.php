@@ -150,6 +150,7 @@ class ProductionOperationController extends BaseController
                                         if($warehouse_product)
                                         {
                                             $warehouseProductQuantity  = $warehouse_product->qty;
+                                            $warehouseProductQuantity  += $warehouse_product->bag_qty * $warehouse_product->unit;
                                         }
                                         $previousCost = $product->cost * $warehouseProductQuantity;
                                         $currenCost = $value->per_unit_cost * $value->base_unit_qty;
