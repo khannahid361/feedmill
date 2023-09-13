@@ -46,14 +46,14 @@ class SettingController extends BaseController{
                     }
                 }
                 if($request->hasFile('logo')){
-                    $logo    = $this->upload_file($request->file('logo'),LOGO_PATH,$file_name='milon-logo','public');
+                    $logo    = $this->upload_file($request->file('logo'),LOGO_PATH);
                     if(!empty($request->old_logo)){
                         $this->delete_file($request->old_logo, LOGO_PATH);
                     }
                     Setting::set('logo', $logo);
                 }
                 if($request->hasFile('favicon')){
-                    $favicon    = $this->upload_file($request->file('favicon'),LOGO_PATH,$file_name='milon-favicon','public');
+                    $favicon    = $this->upload_file($request->file('favicon'),LOGO_PATH);
                     if(!empty($request->old_favicon)){
                         $this->delete_file($request->old_favicon, LOGO_PATH);
                     }

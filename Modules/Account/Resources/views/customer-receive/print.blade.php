@@ -32,6 +32,8 @@
                                         <table width="100%" style="margin:0;padding:0;">
                                             <tr>
                                                 <td width="100%" class="text-center">
+                                                    <img src="{{ asset('storage/' . LOGO_PATH . config('settings.logo')) }}"
+                                                    style="width: 100px;" alt="Logo" />
                                                     <h3 style="margin:0;">
                                                         {{ config('settings.title') ? config('settings.title') : env('APP_NAME') }}
                                                     </h3>

@@ -28,6 +28,8 @@
                                     <table width="100%" style="margin:0;padding:0;">
                                         <tr>
                                             <td width="100%" class="text-center">
+                                                <img src="{{ asset('storage/' . LOGO_PATH . config('settings.logo')) }}"
+                                                    style="width: 100px;" alt="Logo" />
                                                 <h3 style="margin:0;">{{ config('settings.title') ? config('settings.title') : env('APP_NAME') }}</h3>
                                                 @if(config('settings.contact_no'))<p style="font-weight: normal;margin:0;"><b>Contact: </b>{{ config('settings.contact_no') }}, @if(config('settings.email'))<b>Email: </b>{{ config('settings.email') }}@endif</p>@endif
                                                 @if(config('settings.address'))<p style="font-weight: normal;margin:0;">{{ config('settings.address') }}</p>@endif

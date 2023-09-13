@@ -66,6 +66,7 @@ return [
     |
     */
 
-    'links' => [ '/home/demoff/milonfood.demoff.xyz/storage' => storage_path('app/public'), ],
+    // 'links' => [ '/home/demoff/milonfood.demoff.xyz/storage' => storage_path('app/public'), ],
+    'links' => [ '/home/demoffxy/insaf.demoff.xyz/storage' => storage_path('app/public'), ],
 
 ];

@@ -314,12 +314,11 @@
                                 <table>
                                     <tr>
                                         <td class="text-center">
-                                            <img src="{{asset('./images/mfbl-logo.png')}}" style="width: 60px;" alt="Logo" />
-                                            <h1 class="name m-0" style="text-transform: uppercase;"><b>{{ config('settings.title') ? config('settings.title') : env('APP_NAME') }}</b></h1>
-                                            @if(config('settings.address'))<p style="font-weight: normal;margin:0;"><b>Address: </b>{{ config('settings.address') }}</p>@endif
+                                            <img src="{{ asset('storage/'.LOGO_PATH.config('settings.logo'))}}" style="width: 100px;" alt="Logo" />
+                                            <h2 class="name m-0" style="text-transform: uppercase;"><b>{{ config('settings.title') ? config('settings.title') : env('APP_NAME') }}</b></h2>
+                                            @if(config('settings.address'))<p style="font-weight: normal;margin:0;">{{ config('settings.address') }}</p>@endif
                                             @if(config('settings.contact_no'))<p style="font-weight: normal;margin:0;"><b>Contact No.: </b>{{ config('settings.contact_no') }}, @if(config('settings.email'))<b>Email: </b>{{ config('settings.email') }}@endif</p>@endif
-
-                                            <p style="font-weight: normal;margin:0;"><b>Factory Address: </b>Bakua, Ullapara-6760, Sirajganj</p>
+                                            <p style="font-weight: normal;margin:0;"><b>Date: </b>{{ date('d-M-Y') }}</p>
                                         </td>
                                     </tr>
                                 </table>
@@ -514,9 +513,9 @@
                                 </table>
                             </div>
 
-                            <div class="no_screen" style="position: absolute;top:40%;left:10%;opacity:0.2;">
+                            {{-- <div class="no_screen" style="position: absolute;top:40%;left:10%;opacity:0.2;">
                                 <img src="{{ asset('storage/'.LOGO_PATH.config('settings.logo'))}}" style="width: 80%;" alt="Logo" />
-                            </div>
+                            </div> --}}
                         </div>
 
                         <!--***********************-->
