@@ -134,10 +134,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('dealer-report/datatable-data', 'DealerReportController@get_datatable_data')->name('dealer.report.datatable.data');
 
     //Income Statement
-    Route::get('income-statement-report','IncomeStatementReportController@report')->name('income.statement.report');
+    Route::get('income-statement-report', 'IncomeStatementReportController@report')->name('income.statement.report');
 
     //Dealer sales Report Route
     Route::get('dealer-sales-report', 'DealerSalesReportController@index')->name('dealer.sales.report');
     Route::post('dealer-sales-report/datatable-data', 'DealerSalesReportController@get_datatable_data')->name('dealer.sales.report.datatable.data');
 
+    //Dealer monthly sales report
+    Route::get('monthly-sales-report', 'MonthlyDealerSaleReportController@index')->name('monthly.dealer.sales.report');
+    Route::post('monthly-sales-report/data', 'MonthlyDealerSaleReportController@productLedgerData')->name('monthly.dealer.sales.report.data');
 });
