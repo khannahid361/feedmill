@@ -18,6 +18,7 @@ use Modules\Material\Http\Requests\MaterialFormRequest;
 class MaterialController extends BaseController
 {
     use UploadAble;
+
     public function __construct(Material $model)
     {
         $this->model = $model;
@@ -28,9 +29,9 @@ class MaterialController extends BaseController
         if (permission('material-access')) {
             $this->setPageData('Material', 'Material', 'fas fa-toolbox', [['name' => 'Material']]);
             $data = [
-                'units'      => Unit::where('status', 1)->get(),
-                'taxes'      => Tax::activeTaxes(),
-                'warehouses' =>  Warehouse::where('status', 1)->get(),
+                'units' => Unit::where('status', 1)->get(),
+                'taxes' => Tax::activeTaxes(),
+                'warehouses' => Warehouse::where('status', 1)->get(),
                 'categories' => Category::allMaterialCategories(),
             ];
             return view('material::index', $data);
@@ -87,7 +88,11 @@ class MaterialController extends BaseController
                     $row[] = $value->cost ? number_format($value->cost, 2, '.', ',') : ($value->opening_cost ? number_format($value->opening_cost, 2, '.', ',') : 0);
                     $row[] = $value->unit->unit_name;
                     $row[] = $value->purchase_unit->unit_name;
-                    $row[] = $value->qty ? $value->qty : "<span class='label label-rounded label-danger'>0</span>";
+                    if ($value->alert_qty >= $value->qty) {
+                        $row[] = $value->qty ? "<span class='label label-rounded label-danger'>" . $value->qty . "</span>" : "<span class='label label-rounded label-danger'>0</span>";
+                    } else {
+                        $row[] = $value->qty ? $value->qty : "<span class='label label-rounded label-danger'>0</span>";
+                    }
                     $row[] = $value->alert_qty ? $value->alert_qty : "<span class='label label-rounded label-danger'>0</span>";
                     $row[] = permission('material-edit') ? change_status($value->id, $value->status, $value->material_name) : STATUS_LABEL[$value->status];
                     $row[] = action_button($action); //custom helper function for action button
@@ -113,16 +118,16 @@ class MaterialController extends BaseController
                 try {
                     $collection = collect($request->validated())->except('alert_qty', 'tax_id', 'material_image');
                     if (empty($request->update_id)) {
-                        $cost       = $request->opening_cost ? $request->opening_cost : 0;
+                        $cost = $request->opening_cost ? $request->opening_cost : 0;
                         $collection = $collection->merge(compact('cost'));
                     }
-                    $alert_qty  = $request->alert_qty ? $request->alert_qty : 0;
-                    $tax_id     = ($request->tax_id != 0) ? $request->tax_id : null;
-                    $has_opening_stock     = $request->has_opening_stock ? $request->has_opening_stock : 2;
-                    $opening_cost     = $request->opening_cost ? $request->opening_cost : 0;
+                    $alert_qty = $request->alert_qty ? $request->alert_qty : 0;
+                    $tax_id = ($request->tax_id != 0) ? $request->tax_id : null;
+                    $has_opening_stock = $request->has_opening_stock ? $request->has_opening_stock : 2;
+                    $opening_cost = $request->opening_cost ? $request->opening_cost : 0;
                     $material_image = $request->old_material_image;
                     if ($request->hasFile('material_image')) {
-                        $material_image  = $this->upload_file($request->file('material_image'), MATERIAL_IMAGE_PATH);
+                        $material_image = $this->upload_file($request->file('material_image'), MATERIAL_IMAGE_PATH);
                         if (!empty($request->old_material_image)) {
                             $this->delete_file($request->old_material_image, MATERIAL_IMAGE_PATH);
                         }
@@ -193,10 +198,10 @@ class MaterialController extends BaseController
                                 $material_old_data->update();
                             }
                         }
-                        $result     = $this->model->updateOrCreate(['id' => $request->update_id], $collection->all());
+                        $result = $this->model->updateOrCreate(['id' => $request->update_id], $collection->all());
                     } else {
 
-                        $result     = $this->model->updateOrCreate(['id' => $request->update_id], $collection->all());
+                        $result = $this->model->updateOrCreate(['id' => $request->update_id], $collection->all());
                         if ($has_opening_stock == 1) {
                             $material = $this->model->find($result->id);
                             $material->qty = $request->opening_stock_qty;
@@ -208,14 +213,14 @@ class MaterialController extends BaseController
                             ]);
                         }
                     }
-                    $output     = $this->store_message($result, $request->update_id);
+                    $output = $this->store_message($result, $request->update_id);
                     DB::commit();
                 } catch (\Throwable $th) {
                     DB::rollback();
                     $output = ['status' => 'error', 'message' => $th->getMessage()];
                 }
             } else {
-                $output     = $this->unauthorized();
+                $output = $this->unauthorized();
             }
             return response()->json($output);
         } else {
@@ -237,10 +242,10 @@ class MaterialController extends BaseController
     {
         if ($request->ajax()) {
             if (permission('material-edit')) {
-                $data   = $this->model->findOrFail($request->id);
+                $data = $this->model->findOrFail($request->id);
                 $output = $this->data_message($data); //if data found then it will return data otherwise return error message
             } else {
-                $output       = $this->unauthorized();
+                $output = $this->unauthorized();
             }
             return response()->json($output);
         } else {
@@ -253,15 +258,15 @@ class MaterialController extends BaseController
         if ($request->ajax()) {
             if (permission('material-delete')) {
                 WarehouseMaterial::where('material_id', $request->id)->delete();
-                $material  = $this->model->find($request->id);
+                $material = $this->model->find($request->id);
                 $old_image = $material ? $material->material_image : '';
-                $result    = $material->delete();
+                $result = $material->delete();
                 if ($result && $old_image != '') {
                     $this->delete_file($old_image, MATERIAL_IMAGE_PATH);
                 }
-                $output   = $this->delete_message($result);
+                $output = $this->delete_message($result);
             } else {
-                $output   = $this->unauthorized();
+                $output = $this->unauthorized();
             }
             return response()->json($output);
         } else {
@@ -275,16 +280,16 @@ class MaterialController extends BaseController
             if (permission('material-bulk-delete')) {
                 WarehouseMaterial::whereIn('material_id', $request->ids)->delete();
                 foreach ($request->ids as $id) {
-                    $material  = $this->model->find($request->id);
+                    $material = $this->model->find($request->id);
                     $old_image = $material ? $material->material_image : '';
-                    $result    = $material->delete();
+                    $result = $material->delete();
                     if ($result && $old_image != '') {
                         $this->delete_file($old_image, MATERIAL_IMAGE_PATH);
                     }
                 }
-                $output   = $this->bulk_delete_message($result);
+                $output = $this->bulk_delete_message($result);
             } else {
-                $output   = $this->unauthorized();
+                $output = $this->unauthorized();
             }
             return response()->json($output);
         } else {
@@ -296,11 +301,11 @@ class MaterialController extends BaseController
     {
         if ($request->ajax()) {
             if (permission('material-edit')) {
-                $result   = $this->model->find($request->id)->update(['status' => $request->status]);
-                $output   = $result ? ['status' => 'success', 'message' => 'Status Has Been Changed Successfully']
+                $result = $this->model->find($request->id)->update(['status' => $request->status]);
+                $output = $result ? ['status' => 'success', 'message' => 'Status Has Been Changed Successfully']
                     : ['status' => 'error', 'message' => 'Failed To Change Status'];
             } else {
-                $output       = $this->unauthorized();
+                $output = $this->unauthorized();
             }
             return response()->json($output);
         } else {
@@ -330,15 +335,15 @@ class MaterialController extends BaseController
             $output = array();
             if (!$data->isEmpty()) {
                 foreach ($data as $row) {
-                    $temp_array             = array();
-                    $temp_array['code']     = $row->material_code;
-                    $temp_array['value']    = $row->material_code . ' - ' . $row->material_name;
-                    $temp_array['label']    = $row->material_code . ' - ' . $row->material_name;
-                    $output[]               = $temp_array;
+                    $temp_array = array();
+                    $temp_array['code'] = $row->material_code;
+                    $temp_array['value'] = $row->material_code . ' - ' . $row->material_name;
+                    $temp_array['label'] = $row->material_code . ' - ' . $row->material_name;
+                    $output[] = $temp_array;
                 }
             } else {
-                $output['value']            = '';
-                $output['label']            = 'No Record Found';
+                $output['value'] = '';
+                $output['label'] = 'No Record Found';
             }
             return $output;
         }
@@ -350,17 +355,17 @@ class MaterialController extends BaseController
 
         $material_data = $this->model->where('material_code', $request['data'])->first();
         if ($material_data) {
-            $material['id']         = $material_data->id;
-            $material['name']       = $material_data->material_name;
-            $material['code']       = $material_data->material_code;
-            $material['cost']       = $material_data->cost;
-            $material['tax_rate']   = $material_data->tax->rate ? $material_data->tax->rate : 0;
-            $material['tax_name']   = $material_data->tax->name;
+            $material['id'] = $material_data->id;
+            $material['name'] = $material_data->material_name;
+            $material['code'] = $material_data->material_code;
+            $material['cost'] = $material_data->cost;
+            $material['tax_rate'] = $material_data->tax->rate ? $material_data->tax->rate : 0;
+            $material['tax_name'] = $material_data->tax->name;
             $material['tax_method'] = $material_data->tax_method;
 
             $units = Unit::where('base_unit', $material_data->unit_id)->orWhere('id', $material_data->unit_id)->get();
-            $unit_name            = [];
-            $unit_operator        = [];
+            $unit_name = [];
+            $unit_operator = [];
             $unit_operation_value = [];
             if ($units) {
                 foreach ($units as $unit) {
@@ -388,17 +393,17 @@ class MaterialController extends BaseController
 
         $material_data = $this->model->where('id', $request->data)->first();
         if ($material_data) {
-            $material['id']         = $material_data->id;
-            $material['name']       = $material_data->material_name;
-            $material['code']       = $material_data->material_code;
-            $material['cost']       = $material_data->cost;
-            $material['tax_rate']   = $material_data->tax->rate ? $material_data->tax->rate : 0;
-            $material['tax_name']   = $material_data->tax->name;
+            $material['id'] = $material_data->id;
+            $material['name'] = $material_data->material_name;
+            $material['code'] = $material_data->material_code;
+            $material['cost'] = $material_data->cost;
+            $material['tax_rate'] = $material_data->tax->rate ? $material_data->tax->rate : 0;
+            $material['tax_name'] = $material_data->tax->name;
             $material['tax_method'] = $material_data->tax_method;
 
             $units = Unit::where('base_unit', $material_data->unit_id)->orWhere('id', $material_data->unit_id)->get();
-            $unit_name            = [];
-            $unit_operator        = [];
+            $unit_name = [];
+            $unit_operator = [];
             $unit_operation_value = [];
             if ($units) {
                 foreach ($units as $unit) {
