@@ -12,7 +12,7 @@ class Recipe extends BaseModel
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'base_unit_id', 'id');
+        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
 
@@ -20,7 +20,7 @@ class Recipe extends BaseModel
     protected $_recipe_name;
     protected $_recipe_code;
     protected $_status;
-    protected $_product_type;
+    protected $_product_id;
 
     //methods to set custom search property value
     public function setName($recipe_name)
@@ -33,9 +33,13 @@ class Recipe extends BaseModel
         $this->_status = $status;
     }
 
-    public function setProductType($product_type)
+    public function setRecipeCode($recipe_code)
     {
-        $this->_product_type = $product_type;
+        $this->_recipe_code = $recipe_code;
+    }
+    public function setProduct($product_id)
+    {
+        $this->_product_id = $product_id;
     }
 
 
@@ -56,6 +60,9 @@ class Recipe extends BaseModel
         }
         if (!empty($this->_status)) {
             $query->where('status', $this->_status);
+        }
+        if (!empty($this->_product_id)) {
+            $query->where('product_id', $this->_product_id);
         }
 
         //order by data fetching code

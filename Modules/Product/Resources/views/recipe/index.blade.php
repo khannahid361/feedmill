@@ -15,8 +15,8 @@
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    @if (permission('product-add'))
-                    <a href="{{ route('product.add') }}"  class="btn btn-primary btn-sm font-weight-bolder">
+                    @if (permission('recipe-add'))
+                    <a href="{{ route('recipe.add') }}"  class="btn btn-primary btn-sm font-weight-bolder">
                         <i class="fas fa-plus-circle"></i> Add New</a>
                         @endif
                     <!--end::Button-->
@@ -29,23 +29,13 @@
             <div class="card-header flex-wrap py-5">
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row">
-                        <x-form.textbox labelName="Product Name" name="name" col="col-md-3" />
-                        <x-form.selectbox labelName="Category" name="category_id" col="col-md-3" class="selectpicker">
-                            @if (!$categories->isEmpty())
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        <x-form.textbox labelName="Recipe Name" name="recipe_name" col="col-md-3" />
+                        <x-form.selectbox labelName="Product" name="product_id" col="col-md-3" class="selectpicker">
+                            @if (!$products->isEmpty())
+                                @foreach ($products as $value)
+                                    <option value="{{ $value->id }}">{{ $value->name }}</option>
                                 @endforeach
                             @endif
-                        </x-form.selectbox>
-                        <x-form.selectbox labelName="Product Type" name="type" col="col-md-3" class="selectpicker">
-                            @foreach (PRODUCT_TYPE as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                            @endforeach
-                        </x-form.selectbox>
-                        <x-form.selectbox labelName="Type" name="type" col="col-md-3" class="selectpicker">
-                            @foreach (TYPE as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                            @endforeach
                         </x-form.selectbox>
                         <x-form.selectbox labelName="Status" name="status" col="col-md-3" class="selectpicker">
                             @foreach (STATUS as $key => $value)
@@ -137,11 +127,9 @@
                 "url": "{{route('product.datatable.data')}}",
                 "type": "POST",
                 "data": function (data) {
-                    data.name = $("#form-filter #name").val();
-                    data.category_id  = $("#form-filter #category_id option:selected").val();
+                    data.recipe_name = $("#form-filter #recipe_name").val();
+                    data.product_id  = $("#form-filter #product_id option:selected").val();
                     data.status       = $("#form-filter #status option:selected").val();
-                    data.product_type       = $("#form-filter #product_type option:selected").val();
-                    data.type       = $("#form-filter #type option:selected").val();
                     data._token       = _token;
                 }
             },

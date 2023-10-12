@@ -25,12 +25,12 @@ class RecipeController extends BaseController
 
     public function index()
     {
-        if (permission('product-access')) {
-            $this->setPageData('Product Manage', 'Product Manage', 'fas fa-box', [['name' => 'Product Manage']]);
+        if (permission('recipe-access')) {
+            $this->setPageData('Recipe Manage', 'Recipe Manage', 'fas fa-box', [['name' => 'Recipe Manage']]);
             $data = [
-                'categories' => Category::allProductCategories(),
+                'products' => Product::where('status', 1)->get(),
             ];
-            return view('product::index', $data);
+            return view('product::recipe.index', $data);
         } else {
             return $this->access_blocked();
         }
@@ -39,7 +39,7 @@ class RecipeController extends BaseController
     public function get_datatable_data(Request $request)
     {
         if ($request->ajax()) {
-            if (permission('product-access')) {
+            if (permission('recipe-access')) {
 
                 if (!empty($request->name)) {
                     $this->model->setName($request->name);
@@ -64,20 +64,17 @@ class RecipeController extends BaseController
                 foreach ($list as $value) {
                     $no++;
                     $action = '';
-                    if (permission('product-edit')) {
+                    if (permission('recipe-edit')) {
                         $action .= ' <a class="dropdown-item" href="' . route("product.edit", $value->id) . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
                     }
-                    if (permission('product-view')) {
+                    if (permission('recipe-view')) {
                         $action .= ' <a class="dropdown-item" href="' . url("product/view/" . $value->id) . '">' . self::ACTION_BUTTON['View'] . '</a>';
                     }
-                    if (permission('product-delete')) {
+                    if (permission('recipe-delete')) {
                         $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->name . '">' . self::ACTION_BUTTON['Delete'] . '</a>';
                     }
 
                     $row = [];
-                    if (permission('product-bulk-delete')) {
-                        $row[] = row_checkbox($value->id); //custom helper function to show the table each row checkbox
-                    }
 
                     $row[] = $no;
                     $row[] = $this->table_image(PRODUCT_IMAGE_PATH, $value->image, $value->name);
@@ -91,7 +88,7 @@ class RecipeController extends BaseController
                     // $row[] = $value->unit_qty ?? 0;
                     $row[] = (!$value->warehouse_product->isEmpty()) ? number_format($value->warehouse_product[0]->qty, 2, '.', '') : 0;
                     $row[] = $value->alert_quantity ?? 0;
-                    $row[] = permission('product-edit') ? change_status($value->id, $value->status, $value->name) : STATUS_LABEL[$value->status];
+                    $row[] = permission('recipe-edit') ? change_status($value->id, $value->status, $value->name) : STATUS_LABEL[$value->status];
                     $row[] = action_button($action); //custom helper function for action button
                     $data[] = $row;
                 }
@@ -113,11 +110,9 @@ class RecipeController extends BaseController
             $this->setPageData('Add Product', 'Add Product', 'fab fa-product-hunt', [['name' => 'Product', 'link' => route('product')], ['name' => 'Add Product']]);
             $data = [
                 'materials'  => Material::where('status', 1)->get(),
-                'categories' => Category::allProductCategories(),
-                'units'      => Unit::all(),
-                'taxes'      => Tax::activeTaxes(),
+                'products'   => Product::where('status', 1)->get(),
             ];
-            return view('product::create', $data);
+            return view('product::recipe.create', $data);
         } else {
             return $this->access_blocked();
         }
@@ -127,7 +122,7 @@ class RecipeController extends BaseController
     public function store_or_update(ProductFormRequest $request)
     {
         if ($request->ajax()) {
-            if (permission('product-add')) {
+            if (permission('recipe-add')) {
                 DB::beginTransaction();
                 try {
                     $collection = collect($request->except(['materials', 'image', 'product_id']));
@@ -174,7 +169,7 @@ class RecipeController extends BaseController
     public function edit(int $id)
     {
 
-        if (permission('product-edit')) {
+        if (permission('recipe-edit')) {
             $this->setPageData('Edit Product', 'Edit Product', 'fab fa-pencil', [['name' => 'Product', 'link' => route('product')], ['name' => 'Edit Product']]);
             $data = [
                 'materials'  => Material::where('status', 1)->get(),
@@ -184,7 +179,7 @@ class RecipeController extends BaseController
                 'product' => Product::with('product_materials')->find($id)
             ];
             //            return $data;
-            return view('product::edit', $data);
+            return view('product::recipe.edit', $data);
         } else {
             return $this->access_blocked();
         }
@@ -228,11 +223,11 @@ class RecipeController extends BaseController
     public function show(int $id)
     {
 
-        if (permission('product-view')) {
+        if (permission('recipe-view')) {
             $this->setPageData('Product Details', 'Product Details', 'fas fa-paste', [['name' => 'Product', 'link' => route('product')], ['name' => 'Product Details']]);
             $product = $this->model->with('category', 'tax', 'base_unit', 'product_material','product_materials')->findOrFail($id);
             // return response()->json($product);
-            return view('product::details', compact('product'));
+            return view('product::recipe.details', compact('product'));
         } else {
             return $this->access_blocked();
         }
@@ -241,7 +236,7 @@ class RecipeController extends BaseController
     public function delete(Request $request)
     {
         if ($request->ajax()) {
-            if (permission('product-delete')) {
+            if (permission('recipe-delete')) {
                 DB::beginTransaction();
                 try {
                     $sale_product = SaleProduct::where('product_id', $request->id)->get()->count();

@@ -50,4 +50,17 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('convert-to-bag', 'ProductQtyConverterController@create')->name('convert.product.bag');
     Route::post('convert-to-bag/store', 'ProductQtyConverterController@store')->name('convert.product.bag.store');
+
+    Route::get('manage-recipe', 'RecipeController@index')->name('product');
+    Route::group(['prefix' => 'product', 'as'=>'product.'], function () {
+        Route::get('add', 'RecipeController@create')->name('add');
+        Route::post('datatable-data', 'RecipeController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'RecipeController@store_or_update')->name('store.or.update');
+        Route::get('edit/{id}', 'RecipeController@edit')->name('edit');
+        Route::get('view/{id}', 'RecipeController@show');
+        Route::post('delete', 'RecipeController@delete')->name('delete');
+        Route::post('bulk-delete', 'RecipeController@bulk_delete')->name('bulk.delete');
+        Route::post('change-status', 'RecipeController@change_status')->name('change.status');
+        Route::get('generate-code', 'RecipeController@generateProductCode')->name('generate.code');
+    });
 });
