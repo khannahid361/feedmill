@@ -68,7 +68,7 @@
                 <div class="bg-white text-center py-3  rounded-xl">
                     <span class="svg-icon svg-icon-3x svg-icon-danger d-block my-3"><img src="{{asset('images/salesman-due.png')}}" alt="sr" class="icon"></span>
                     <h6 id="sr_due" class="m-0">{{ number_format(0,2) }}TK</h6>
-                    <a href="javascript::void(0);" class="font-weight-bold font-size-h7 mt-2">SR Commission Due</a>
+                    <a href="javascript::void(0);" class="font-weight-bold font-size-h7 mt-2">Commission Due</a>
                 </div>
             </div>
             <div class="col-md-3 mb-5">
