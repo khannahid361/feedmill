@@ -64,14 +64,6 @@
                             <table id="dataTable" class="table table-bordered table-hover">
                                 <thead class="bg-primary">
                                     <tr>
-                                        @if (permission('product-bulk-delete'))
-                                        <th>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="select_all" onchange="select_all()">
-                                                <label class="custom-control-label" for="select_all"></label>
-                                            </div>
-                                        </th>
-                                        @endif
                                         <th>Sl</th>
                                         <th>Image</th>
                                         <th>Name</th>
@@ -124,7 +116,7 @@
                 zeroRecords: '<strong class="text-danger">No Data Found</strong>'
             },
             "ajax": {
-                "url": "{{route('product.datatable.data')}}",
+                "url": "{{route('recipe.datatable.data')}}",
                 "type": "POST",
                 "data": function (data) {
                     data.recipe_name = $("#form-filter #recipe_name").val();
@@ -242,15 +234,6 @@
                     }
                 },
                 @endif
-                @if (permission('product-bulk-delete'))
-                {
-                    'className':'btn btn-danger btn-sm delete_btn d-none text-white',
-                    'text':'Delete',
-                    action:function(e,dt,node,config){
-                        multi_delete();
-                    }
-                }
-                @endif
             ],
         });
 
@@ -268,36 +251,16 @@
             let id    = $(this).data('id');
             let name  = $(this).data('name');
             let row   = table.row($(this).parent('tr'));
-            let url   = "{{ route('product.delete') }}";
+            let url   = "{{ route('recipe.delete') }}";
             delete_data(id, url, table, row, name);
         });
-
-        function multi_delete(){
-            let ids = [];
-            let rows;
-            $('.select_data:checked').each(function(){
-                ids.push($(this).val());
-                rows = table.rows($('.select_data:checked').parents('tr'));
-            });
-            if(ids.length == 0){
-                Swal.fire({
-                    type:'error',
-                    title:'Error',
-                    text:'Please checked at least one row of table!',
-                    icon: 'warning',
-                });
-            }else{
-                let url = "{{route('product.bulk.delete')}}";
-                bulk_delete(ids,url,table,rows);
-            }
-        }
 
         $(document).on('click', '.change_status', function () {
             let id     = $(this).data('id');
             let name   = $(this).data('name');
             let status = $(this).data('status');
             let row    = table.row($(this).parent('tr'));
-            let url    = "{{ route('product.change.status') }}";
+            let url    = "{{ route('recipe.change.status') }}";
             change_status(id, url, table, row, name, status);
         });
 

@@ -3,6 +3,7 @@
 namespace Modules\Product\Entities;
 
 use App\Models\BaseModel;
+use Modules\Material\Entities\Material;
 
 class Recipe extends BaseModel
 {
@@ -15,6 +16,14 @@ class Recipe extends BaseModel
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
+    public function product_material(){
+        return $this->belongsToMany(Material::class,'product_material','recipe_id','material_id','id','id')
+                    ->withTimestamps();
+    }
+
+    public function product_materials(){
+        return $this->hasMany(ProductMaterial::class,'recipe_id','id');
+    }
 
     //custom search column property
     protected $_recipe_name;

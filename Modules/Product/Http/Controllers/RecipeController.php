@@ -13,6 +13,7 @@ use Modules\Material\Entities\Material;
 use Modules\Product\Entities\Product;
 use Modules\Product\Entities\Recipe;
 use Modules\Product\Http\Requests\ProductFormRequest;
+use Modules\Product\Http\Requests\RecipeFormRequest;
 use Modules\Sale\Entities\SaleProduct;
 
 class RecipeController extends BaseController
@@ -26,7 +27,7 @@ class RecipeController extends BaseController
     public function index()
     {
         if (permission('recipe-access')) {
-            $this->setPageData('Recipe Manage', 'Recipe Manage', 'fas fa-box', [['name' => 'Recipe Manage']]);
+            $this->setPageData('Recipe Manage', 'Recipe Manage', 'fas fa-mortar-pestle', [['name' => 'Recipe Manage']]);
             $data = [
                 'products' => Product::where('status', 1)->get(),
             ];
@@ -106,11 +107,12 @@ class RecipeController extends BaseController
 
     public function create()
     {
-        if (permission('product-add')) {
-            $this->setPageData('Add Product', 'Add Product', 'fab fa-product-hunt', [['name' => 'Product', 'link' => route('product')], ['name' => 'Add Product']]);
+        if (permission('recipe-add')) {
+            $this->setPageData('Add Product Recipe', 'Add Product Recipe', 'fas fa-mortar-pestle', [['name' => 'Product', 'link' => route('recipe')], ['name' => 'Add Product Recipe']]);
             $data = [
                 'materials'  => Material::where('status', 1)->get(),
                 'products'   => Product::where('status', 1)->get(),
+                'code'      => 'RCP-'.date('ymd').rand(1,999)
             ];
             return view('product::recipe.create', $data);
         } else {
@@ -119,25 +121,14 @@ class RecipeController extends BaseController
     }
 
 
-    public function store_or_update(ProductFormRequest $request)
+    public function store_or_update(RecipeFormRequest $request)
     {
         if ($request->ajax()) {
             if (permission('recipe-add')) {
                 DB::beginTransaction();
                 try {
-                    $collection = collect($request->except(['materials', 'image', 'product_id']));
+                    $collection = collect($request->except(['materials']));
                     $collection = $this->track_data($collection, $request->update_id);
-
-                    $image = $request->old_image;
-                    if ($request->hasFile('image')) {
-                        $image = $this->upload_file($request->file('image'), PRODUCT_IMAGE_PATH);
-                        if (!empty($request->old_image)) {
-                            $this->delete_file($request->old_image, PRODUCT_IMAGE_PATH);
-                        }
-                    }
-
-                    $tax_id = $request->tax_id ?? null;
-                    $collection = $collection->merge(compact('tax_id', 'image'));
 
                     $result = $this->model->updateOrCreate(['id' => $request->update_id], $collection->all());
                     $product = $this->model->with('product_material')->find($result->id);
@@ -145,7 +136,7 @@ class RecipeController extends BaseController
                     $product_materials = [];
                     if ($request->has('materials')) {
                         foreach ($request->materials as $value) {
-                            $product_materials[$value['id']] = ['qty' => $value['qty']];
+                            $product_materials[$value['id']] = ['qty' => $value['qty'],'product_id'=>$request->product_id];
                         }
                     }
 

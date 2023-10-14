@@ -13,7 +13,7 @@
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        <a href="{{ route('product') }}" class="btn btn-warning btn-sm font-weight-bolder">
+                        <a href="{{ route('recipe') }}" class="btn btn-warning btn-sm font-weight-bolder">
                             <i class="fas fa-arrow-left"></i> Back</a>
                         <!--end::Button-->
                     </div>
@@ -26,126 +26,35 @@
                     <form id="store_or_update_form" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-                            <div class="col-md-10">
+                            <div class="col-md-12">
                                 <div class="row">
-                                    <input type="hidden" name="product_id" id="product_id">
-                                    <x-form.textbox labelName="Product Name" name="name" required="required"
-                                        col="col-md-4" placeholder="Enter product name" />
-                                    <div class="col-md-4 form-group code required">
-                                        <label for="code">Barcode</label>
-                                        <div class="input-group" id="code_section">
-                                            <input type="text" class="form-control" name="code" id="code">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text bg-primary" id="generate-code"
-                                                    data-toggle="tooltip" data-theme="dark" title="Generate Code"
-                                                    style="border-top-right-radius: 0.42rem;border-bottom-right-radius: 0.42rem;border:0;cursor: pointer;">
-                                                    <i class="fas fa-retweet text-white"></i>
-                                                </span>
-                                            </div>
-                                        </div>
+                                    <div class="col-md-4 form-group required">
+                                        <label for="recipe_date">Date</label>
+                                        <input type="date" name="recipe_date" id="recipe_date" value="{{ date('Y-m-d') }}" class="form-control">
+                                    </div>
+                                    <div class="col-md-4 form-group required">
+                                        <label for="recipe_code">Recipe Code</label>
+                                        <input type="text" name="recipe_code" id="recipe_code" value="{{ $code }}" class="form-control" readonly>
+                                    </div>
+                                    <div class="col-md-4 form-group required">
+                                        <label for="recipe_name">Recipe Name</label>
+                                        <input type="text" name="recipe_name" id="recipe_name" value="" class="form-control">
                                     </div>
 
-                                    <x-form.selectbox labelName="Barcode Symbol" name="barcode_symbology" col="col-md-4"
-                                        class="selectpicker">
-                                        @foreach (BARCODE_SYMBOL as $key => $value)
-                                            <option value="{{ $key }}" {{ $key == 1 ? 'selected' : '' }}>
-                                                {{ $value }}</option>
-                                        @endforeach
-                                    </x-form.selectbox>
-
-
-                                    <x-form.selectbox labelName="Category" name="category_id" required="required"
-                                        col="col-md-4" class="selectpicker">
-                                        @if (!$categories->isEmpty())
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    <x-form.selectbox labelName="Product" name="product_id" required="required" col="col-md-4" class="selectpicker">
+                                        @if (!$products->isEmpty())
+                                            @foreach ($products as $product)
+                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
                                             @endforeach
                                         @endif
                                     </x-form.selectbox>
-
-                                    <div class="form-group col-md-4 required">
-                                        <label for="base_unit_id">Unit</label>
-                                        <select name="base_unit_id" id="base_unit_id" onchange="populate_unit(this.value,1)"
-                                            class="form-control selectpicker" data-live-search="true"
-                                            data-live-search-placeholder="Search">
-                                            <option value="">Select Please</option>
-                                            @if (!$units->isEmpty())
-                                                @foreach ($units as $unit)
-                                                    @if ($unit->base_unit == null)
-                                                        <option value="{{ $unit->id }}">
-                                                            {{ $unit->unit_name . ' (' . $unit->unit_code . ')' }}</option>
-                                                    @endif
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-
-                                    {{-- <div class="form-group col-md-4 required">
-                                    <label for="unit_id">Unit</label>
-                                    <select name="unit_id" id="unit_id"  class="form-control selectpicker" data-live-search="true"  data-live-search-placeholder="Search"></select>
-                                </div> --}}
-
-                                    {{-- <x-form.textbox labelName="Unit Price" name="unit_price" required="required" col="col-md-4" /> --}}
-                                    <x-form.textbox labelName="Price" name="base_unit_price" required="required"
-                                        col="col-md-4" />
-
-
-                                    <x-form.textbox labelName="Alert Quantity" name="alert_quantity" col="col-md-4" />
-
-                                    <div class="col-md-4 form-group">
-                                        <label for="tax_id">Product Tax</label>
-                                        <select name="tax_id" id="tax_id" required="required"
-                                            class="form-control selectpicker">
-                                            <option value="0" selected>No Tax</option>
-                                            @if (!$taxes->isEmpty())
-                                                @foreach ($taxes as $tax)
-                                                    <option value="{{ $tax->id }}"
-                                                        {{ isset($product) ? ($product->tax_id == $tax->id ? 'selected' : '') : '' }}>
-                                                        {{ $tax->name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-4 form-group">
-                                        <label for="tax_method">Tax Method<span class="text-danger">*</span> <i
-                                                class="fas fa-info-circle" data-toggle="tooltip" data-placement="top"
-                                                data-theme="dark"
-                                                title="Exclusive: Poduct price = Actual product price + Tax. Inclusive: Actual product price = Product price - Tax"></i></label>
-                                        <select name="tax_method" id="tax_method" class="form-control selectpicker">
-                                            @foreach (TAX_METHOD as $key => $value)
-                                                <option value="{{ $key }}"
-                                                    @if ($key == 1) {{ 'selected' }} @endif>
-                                                    {{ $value }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="row">
-                                    <div class="form-group col-md-12 mb-0 text-center">
-                                        <label for="logo" class="form-control-label">Product Image</label>
-                                        <div class="col=md-12 px-0  text-center">
-                                            <div id="image">
-                                            </div>
-                                        </div>
-                                        <div class="text-center"><span class="text-muted">Maximum Allowed File Size 2MB and
-                                                Format (png,jpg,jpeg,svg,webp)</span></div>
-                                        <input type="hidden" name="old_image" id="old_image">
-                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-md-12 mt-5">
-                                <label for="description">Description</label>
-                                <textarea class="form-control" name="description" id="description"></textarea>
-                            </div>
 
                             <div class="col-md-12 pt-5" id="material-section">
-                                <div class="row"
-                                    style="position: relative;border: 1px solid #E4E6EF;padding: 10px 0 0 0; margin: 0;border-radius:5px;">
+                                <div class="row" style="position: relative;border: 1px solid #E4E6EF;padding: 10px 0 0 0; margin: 0;border-radius:5px;">
                                     <div
                                         style="width: 100px;background: #fa8c15;text-align: center;margin: 0 auto;color: white;padding: 5px 0;
                                     position: absolute;top:-16px;left:10px;">
@@ -155,8 +64,7 @@
                                             <div class="form-group col-md-5 required">
                                                 <label for="materials_1_id" class="form-control-label">Material
                                                     Name</label>
-                                                <select name="materials[1][id]" id="materials_1_id" required="required"
-                                                    class="form-control selectpicker material" data-live-search="true"
+                                                <select name="materials[1][id]" id="materials_1_id" required="required" class="form-control selectpicker material" data-live-search="true"
                                                     data-live-search-placeholder="Search">
                                                     <option value="">Select Please</option>
                                                     @if (!$materials->isEmpty())
@@ -171,15 +79,12 @@
                                             <div class="form-group col-md-5 required">
                                                 <label for="materials_qty_1" class="form-control-label">Material
                                                     Quantity</label>
-                                                <input type="text" class="form-control qty text-center material-qty"
-                                                    name="materials[1][qty]" id="materials_qty_1" required data-row="1"
+                                                <input type="text" class="form-control qty text-center material-qty" name="materials[1][qty]" id="materials_qty_1" required data-row="1"
                                                     data-select-id="materials_1_id" onkeyup="getMaterialQuantity()">
                                             </div>
 
                                             <div class="form-group col-md-2" style="padding-top: 28px;">
-                                                <button type="button" id="add-material" class="btn btn-success btn-sm"
-                                                    data-toggle="tooltip" data-placement="top"
-                                                    data-original-title="Add More">
+                                                <button type="button" id="add-material" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="Add More">
                                                     <i class="fas fa-plus-square"></i>
                                                 </button>
                                             </div>
@@ -192,10 +97,8 @@
                             </div>
 
                             <div class="form-group col-md-12 pt-5">
-                                <button type="button" class="btn btn-primary btn-sm" id="save-btn-1"
-                                    onclick="storeData(1)">Save</button>
-                                <button type="button" class="btn btn-success btn-sm ml-3" id="save-btn-2"
-                                    onclick="storeData(2)">Save & Add Another</button>
+                                <button type="button" class="btn btn-primary btn-sm" id="save-btn-1" onclick="storeData(1)">Save</button>
+                                {{-- <button type="button" class="btn btn-success btn-sm ml-3" id="save-btn-2" onclick="storeData(2)">Save & Add Another</button> --}}
                             </div>
                         </div>
                     </form>
@@ -216,7 +119,7 @@
                     let material = $(this).attr('data-select-id');
                     let materialQty = $('#' + material).find(":selected").val();
                     if (materialQty != '') {
-                        totalMaterial = totalMaterial + parseFloat($(this).val()||0);
+                        totalMaterial = totalMaterial + parseFloat($(this).val() || 0);
                     }
                 });
                 $('#materialQty').text(totalMaterial);
@@ -224,30 +127,6 @@
         });
         $(document).ready(function() {
 
-            /** Start :: Product Image **/
-            $("#image").spartanMultiImagePicker({
-                fieldName: 'image',
-                maxCount: 1,
-                rowHeight: '150px',
-                groupClassName: 'col-md-12 col-sm-12 col-xs-12',
-                maxFileSize: '',
-                dropFileLabel: "Drop Here",
-                allowedExt: '',
-                // onExtensionErr : function(index, file){
-                //     Swal.fire({icon: 'error',title: 'Oops...',text: 'Only png,jpg,jpeg file format allowed!'});
-                // },
-
-            });
-
-            $("input[name='image']").prop('required', true);
-
-            $('.remove-files').on('click', function() {
-                $(this).parents(".col-md-12").remove();
-            });
-            /** End :: Product Image **/
-
-
-            /** Start :: Add More Material Field **/
             var material_count = 1;
 
             function add_more_material_field(row) {
@@ -288,33 +167,6 @@
                 $(this).closest('.row_remove').remove();
                 getMaterialQuantity();
             });
-            /** End :: Add More Material Field **/
-
-
-
-            //Generate Code
-            $(document).on('click', '#generate-code', function() {
-                $.ajax({
-                    url: "{{ route('product.generate.code') }}",
-                    type: "GET",
-                    dataType: "JSON",
-                    beforeSend: function() {
-                        $('#generate-code').addClass('spinner spinner-white spinner-right');
-                    },
-                    complete: function() {
-                        $('#generate-code').removeClass('spinner spinner-white spinner-right');
-                    },
-                    success: function(data) {
-                        data ? $('#store_or_update_form #code').val(data) : $(
-                            '#store_or_update_form #code').val('');
-                    },
-                    error: function(xhr, ajaxOption, thrownError) {
-                        console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr
-                            .responseText);
-                    }
-                });
-            });
-
         });
 
         function storeData(btn) {
@@ -322,7 +174,7 @@
             let formData = new FormData(form);
 
             $.ajax({
-                url: "{{ route('product.store.or.update') }}",
+                url: "{{ route('recipe.store.or.update') }}",
                 type: "POST",
                 data: formData,
                 dataType: "JSON",
@@ -364,9 +216,9 @@
                         notification(data.status, data.message);
                         if (data.status == 'success') {
                             if (btn == 1) {
-                                window.location.replace("{{ route('product') }}");
+                                window.location.replace("{{ route('recipe') }}");
                             } else {
-                                window.location.replace("{{ route('product.add') }}");
+                                window.location.replace("{{ route('recipe.add') }}");
                             }
                         }
                     }
@@ -374,23 +226,6 @@
                 error: function(xhr, ajaxOption, thrownError) {
                     console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
                 }
-            });
-        }
-
-        function populate_unit(unit_id) {
-            $.ajax({
-                url: "{{ url('populate-unit') }}/" + unit_id,
-                type: "GET",
-                dataType: "JSON",
-                success: function(data) {
-                    var units = '';
-                    $.each(data, function(key, value) {
-                        units += '<option value="' + key + '">' + value + '</option>';
-                    });
-                    $('#unit_id').empty().append(units);
-                    $('#unit_id.selectpicker').selectpicker('refresh');
-
-                },
             });
         }
 
