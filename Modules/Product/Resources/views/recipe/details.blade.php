@@ -25,85 +25,31 @@
             <div class="card card-custom" style="padding-bottom: 100px !important;">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-12">
-                            <h4 class="text-center p-3">{{ $product->name }}</h4>
-                        </div>
-                        @if (!empty($product->image))
-                            <div class="col-md-3">
-                                <img src="{{ asset('storage/' . PRODUCT_IMAGE_PATH . $product->image) }}"
-                                    alt="{{ $product->name }}" style="max-width: 100%;">
-                            </div>
-                        @else
-                            <div class="col-md-3">
-                                <img src="{{ asset('images/product.svg') }}" alt="{{ $product->name }}"
-                                    style="max-width: 60%;">
-                            </div>
-                        @endif
-                        <div class="col-md-9 pt-5 table-responsive">
+                        <div class="col-md-12 pt-5 table-responsive">
                             <table class="table table-borderless table-hover">
                                 <tr>
-                                    <td><b>Category</b></td>
+                                    <td><b>Recipe Name</b></td>
                                     <td class="text-center"><b>:</b></td>
-                                    <td>{{ $product->category->name }}</td>
-                                    <td><b>Barcode Symbol</b></td>
+                                    <td>{{ $product->recipe_name }}</td>
+                                    <td><b>Recipe Code</b></td>
                                     <td class="text-center"><b>:</b></td>
-                                    <td>{{ BARCODE_SYMBOL[$product->barcode_symbology] ?? '' }}</td>
+                                    <td>{{ $product->recipe_code }}</td>
                                 </tr>
                                 <tr>
-                                    <td><b>Barcode</b></td>
+                                    <td><b>Product</b></td>
                                     <td class="text-center"><b>:</b></td>
-                                    <td>{{ $product->code }}</td>
-                                    <td><b>Cost</b></td>
+                                    <td>{{ $product->product->name }}</td>
+                                    <td><b>Created Date</b></td>
                                     <td class="text-center"><b>:</b></td>
-                                    <td>BDT {{ number_format($product->cost, 2) }}</td>
-                                </tr>
-                                <tr>
-                                    <td><b>Unit</b></td>
-                                    <td class="text-center"><b>:</b></td>
-                                    <td>{{ $product->base_unit->unit_name . '(' . $product->base_unit->unit_code . ')' }}</td>
-                                    {{-- <td><b>Unit</b></td> <td class="text-center"><b>:</b></td> <td>{{ $product->unit->unit_name.'('.$product->unit->unit_name.')' }}</td> --}}
-
-                                    <td><b>Price</b></td>
-                                    <td class="text-center"><b>:</b></td>
-                                    <td>BDT {{ number_format($product->base_unit_price, 2) }}</td>
-                                    {{-- <td><b>Unit Price</b></td> <td class="text-center"><b>:</b></td> <td>BDT {{ number_format($product->unit_price,2) }}</td> --}}
-                                </tr>
-                                <tr>
-                                    <td><b>Stock Qunatity Base Unit</b></td>
-                                    <td class="text-center"><b>:</b></td>
-                                    <td>{{ number_format($product->base_unit_qty, 2) }}</td>
-                                    {{-- <td><b>Stock Qunatity Unit</b></td> <td class="text-center"><b>:</b></td> <td>{{ number_format($product->unit_qty,2) }}</td> --}}
-                                    <td><b>Alert Quantity</b></td>
-                                    <td class="text-center"><b>:</b></td>
-                                    <td>{{ $product->alert_quantity }}</td>
-
-                                </tr>
-                                <tr>
-                                    <td><b>Tax</b></td>
-                                    <td class="text-center"><b>:</b></td>
-                                    <td>{{ $product->tax->rate }}%</td>
-                                    <td><b>Tax Method</b></td>
-                                    <td class="text-center"><b>:</b></td>
-                                    <td>{{ TAX_METHOD[$product->tax_method] }}</td>
-
+                                    <td>{{ date("d-m-Y", strtotime($product->recipe_date)) }}</td>
                                 </tr>
                                 <tr>
                                     <td><b>Created By</b></td>
                                     <td class="text-center"><b>:</b></td>
                                     <td>{{ $product->created_by }}</td>
-                                    <td><b>Created At</b></td>
+                                    <td><b>Modified By</b></td>
                                     <td class="text-center"><b>:</b></td>
-                                    <td>{{ date('j-F-Y h:i:sA', strtotime($product->created_at)) }}</td>
-
-                                </tr>
-                                <tr>
-                                    <td><b>Updated By</b></td>
-                                    <td class="text-center"><b>:</b></td>
-                                    <td>{{ $product->modified_by ? $product->modified_by : '' }}</td>
-                                    <td><b>Updated At</b></td>
-                                    <td class="text-center"><b>:</b></td>
-                                    <td>{{ $product->modified_by ? date('j-F-Y h:i:sA', strtotime($product->updated_at)) : '' }}
-                                    </td>
+                                    <td>{{ $product->modified_by ?? "<span class='label label-rounded label-danger'></span>" }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -116,10 +62,6 @@
                                     <li class="nav-item">
                                         <a class="nav-link active" data-toggle="tab" href="#materials">Materials</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#description">Description</a>
-                                    </li>
-
                                 </ul>
                             </div>
                         </div>
@@ -129,7 +71,7 @@
                                     $totalQty = 0;
                                 @endphp
                                 <div class="tab-pane fade show active" id="materials" role="tabpanel"
-                                    aria-labelledby="materials">
+                                     aria-labelledby="materials">
                                     @if (!$product->product_material->isEmpty())
                                         <table class="table table-bordered table-striped" style="width: 50%">
                                             @foreach ($product->product_material as $key => $item)
@@ -147,11 +89,6 @@
                                             </tr>
                                         </table>
                                     @endif
-                                </div>
-                                <div class="tab-pane fade" id="description" role="tabpanel" aria-labelledby="description">
-                                    <div class="padding-top-10px text-justify">
-                                        {{ $product->description ?? '' }}
-                                    </div>
                                 </div>
                             </div>
                         </div>

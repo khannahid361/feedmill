@@ -58,7 +58,7 @@ class Recipe extends BaseModel
         $this->column_order = ['recipe_name', 'recipe_code', 'product_id', 'recipe_date', 'created_by',
             'modified_by', 'status', null];
 
-        $query = self::with('product:name');
+        $query = self::with('product');
 
         //search query
         if (!empty($this->_recipe_name)) {

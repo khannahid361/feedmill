@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Material\Entities\Material;
 use Modules\Product\Entities\Product;
+use Modules\Product\Entities\ProductMaterial;
 use Modules\Product\Entities\Recipe;
 use Modules\Product\Http\Requests\ProductFormRequest;
 use Modules\Product\Http\Requests\RecipeFormRequest;
@@ -19,6 +20,7 @@ use Modules\Sale\Entities\SaleProduct;
 class RecipeController extends BaseController
 {
     use UploadAble;
+
     public function __construct(Recipe $model)
     {
         $this->model = $model;
@@ -42,22 +44,18 @@ class RecipeController extends BaseController
         if ($request->ajax()) {
             if (permission('recipe-access')) {
 
-                if (!empty($request->name)) {
-                    $this->model->setName($request->name);
+                if (!empty($request->recipe_name)) {
+                    $this->model->setName($request->recipe_name);
                 }
-                if (!empty($request->category_id)) {
-                    $this->model->setCategoryID($request->category_id);
+                if (!empty($request->recipe_code)) {
+                    $this->model->setRecipeCode($request->recipe_code);
                 }
                 if (!empty($request->status)) {
                     $this->model->setStatus($request->status);
                 }
-                if (!empty($request->product_type)) {
-                    $this->model->setProductType($request->product_type);
+                if (!empty($request->product_id)) {
+                    $this->model->setProduct($request->product_id);
                 }
-                if (!empty($request->type)) {
-                    $this->model->setType($request->type);
-                }
-
                 $this->set_datatable_default_properties($request); //set datatable default properties
                 $list = $this->model->getDatatableList(); //get table data
                 $data = [];
@@ -66,10 +64,10 @@ class RecipeController extends BaseController
                     $no++;
                     $action = '';
                     if (permission('recipe-edit')) {
-                        $action .= ' <a class="dropdown-item" href="' . route("product.edit", $value->id) . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
+                        $action .= ' <a class="dropdown-item" href="' . route("recipe.edit", $value->id) . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
                     }
                     if (permission('recipe-view')) {
-                        $action .= ' <a class="dropdown-item" href="' . url("product/view/" . $value->id) . '">' . self::ACTION_BUTTON['View'] . '</a>';
+                        $action .= ' <a class="dropdown-item" href="' . url("recipe/view/" . $value->id) . '">' . self::ACTION_BUTTON['View'] . '</a>';
                     }
                     if (permission('recipe-delete')) {
                         $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->name . '">' . self::ACTION_BUTTON['Delete'] . '</a>';
@@ -78,19 +76,14 @@ class RecipeController extends BaseController
                     $row = [];
 
                     $row[] = $no;
-                    $row[] = $this->table_image(PRODUCT_IMAGE_PATH, $value->image, $value->name);
-                    $row[] = $value->name;
-                    $row[] = $value->category->name;
-                    $row[] = number_format($value->cost, 2, '.', '');
-                    $row[] = $value->base_unit->unit_name . ' (' . $value->base_unit->unit_code . ')';
-                    // $row[] = $value->unit->unit_name.' ('.$value->unit->unit_code.')';
-                    // $row[] = number_format($value->unit_price,2,'.','');
-                    $row[] = number_format($value->base_unit_price, 2, '.', '');
-                    // $row[] = $value->unit_qty ?? 0;
-                    $row[] = (!$value->warehouse_product->isEmpty()) ? number_format($value->warehouse_product[0]->qty, 2, '.', '') : 0;
-                    $row[] = $value->alert_quantity ?? 0;
-                    $row[] = permission('recipe-edit') ? change_status($value->id, $value->status, $value->name) : STATUS_LABEL[$value->status];
-                    $row[] = action_button($action); //custom helper function for action button
+                    $row[] = $value->recipe_code;
+                    $row[] = $value->recipe_name;
+                    $row[] = $value->product->name;
+                    $row[] = date("d-m-Y", strtotime($value->recipe_date));
+                    $row[] = $value->created_by;
+                    $row[] = $value->modified_by ?? "<span class='label label-rounded label-danger'></span>";
+                    $row[] = permission('recipe-edit') ? change_status($value->id, $value->status, $value->recipe_name) : STATUS_LABEL[$value->status];
+                    $row[] = action_button($action);
                     $data[] = $row;
                 }
                 return $this->datatable_draw(
@@ -110,9 +103,9 @@ class RecipeController extends BaseController
         if (permission('recipe-add')) {
             $this->setPageData('Add Product Recipe', 'Add Product Recipe', 'fas fa-mortar-pestle', [['name' => 'Product', 'link' => route('recipe')], ['name' => 'Add Product Recipe']]);
             $data = [
-                'materials'  => Material::where('status', 1)->get(),
-                'products'   => Product::where('status', 1)->get(),
-                'code'      => 'RCP-'.date('ymd').rand(1,999)
+                'materials' => Material::where('status', 1)->get(),
+                'products' => Product::where('status', 1)->get(),
+                'code' => 'RCP-' . date('ymd') . rand(1, 999)
             ];
             return view('product::recipe.create', $data);
         } else {
@@ -136,7 +129,7 @@ class RecipeController extends BaseController
                     $product_materials = [];
                     if ($request->has('materials')) {
                         foreach ($request->materials as $value) {
-                            $product_materials[$value['id']] = ['qty' => $value['qty'],'product_id'=>$request->product_id];
+                            $product_materials[$value['id']] = ['qty' => $value['qty'], 'product_id' => $request->product_id];
                         }
                     }
 
@@ -149,7 +142,23 @@ class RecipeController extends BaseController
                     $output = ['status' => 'error', 'message' => $th->getMessage()];
                 }
             } else {
-                $output     = $this->unauthorized();
+                $output = $this->unauthorized();
+            }
+            return response()->json($output);
+        } else {
+            return response()->json($this->unauthorized());
+        }
+    }
+
+    public function change_status(Request $request)
+    {
+        if ($request->ajax()) {
+            if (permission('recipe-edit')) {
+                $result = $this->model->find($request->id)->update(['status' => $request->status]);
+                $output = $result ? ['status' => 'success', 'message' => 'Status Has Been Changed Successfully']
+                    : ['status' => 'error', 'message' => 'Failed To Change Status'];
+            } else {
+                $output = $this->unauthorized();
             }
             return response()->json($output);
         } else {
@@ -161,53 +170,16 @@ class RecipeController extends BaseController
     {
 
         if (permission('recipe-edit')) {
-            $this->setPageData('Edit Product', 'Edit Product', 'fab fa-pencil', [['name' => 'Product', 'link' => route('product')], ['name' => 'Edit Product']]);
+            $this->setPageData('Edit Product Recipe', 'Edit Product Recipe', 'fas fa-mortar-pestle', [['name' => 'Recipe', 'link' => route('recipe')], ['name' => 'Edit Product Recipe']]);
             $data = [
-                'materials'  => Material::where('status', 1)->get(),
-                'categories' => Category::allProductCategories(),
-                'units'      => Unit::all(),
-                'taxes'      => Tax::activeTaxes(),
-                'product' => Product::with('product_materials')->find($id)
+                'materials' => Material::where('status', 1)->get(),
+                'products'  => Product::where('status', 1)->get(),
+                'recipe'    => $this->model->with('product_materials')->findOrFail($id)
             ];
-            //            return $data;
+//            return response()->json($data);
             return view('product::recipe.edit', $data);
         } else {
             return $this->access_blocked();
-        }
-    }
-
-    public function update(ProductFormRequest $request)
-    {
-        if ($request->ajax()) {
-            if (permission('product-add')) {
-                DB::beginTransaction();
-                try {
-                    $collection = collect($request->validated())->except(['materials', 'image', 'product_id']);
-                    $collection = $this->track_data($collection, $request->update_id);
-                    $image      = $request->old_image;
-                    if ($request->hasFile('image')) {
-                        $image = $this->upload_file($request->file('image'), PRODUCT_IMAGE_PATH);
-                        if (!empty($request->old_image)) {
-                            $this->delete_file($request->old_image, PRODUCT_IMAGE_PATH);
-                        }
-                    }
-                    $tax_id = $request->tax_id ? $request->tax_id : null;
-                    $collection = $collection->merge(compact('tax_id', 'image'));
-                    $result       = $this->model->updateOrCreate(['id' => $request->update_id], $collection->all());
-                    $product = $this->model->with('product_material')->find($result->id);
-
-                    $output = $this->store_message($result, $request->update_id);
-                    DB::commit();
-                } catch (\Throwable $th) {
-                    DB::rollback();
-                    $output = ['status' => 'error', 'message' => $th->getMessage()];
-                }
-            } else {
-                $output     = $this->unauthorized();
-            }
-            return response()->json($output);
-        } else {
-            return response()->json($this->unauthorized());
         }
     }
 
@@ -215,9 +187,8 @@ class RecipeController extends BaseController
     {
 
         if (permission('recipe-view')) {
-            $this->setPageData('Product Details', 'Product Details', 'fas fa-paste', [['name' => 'Product', 'link' => route('product')], ['name' => 'Product Details']]);
-            $product = $this->model->with('category', 'tax', 'base_unit', 'product_material','product_materials')->findOrFail($id);
-            // return response()->json($product);
+            $this->setPageData('Product Recipe Details', 'Product Recipe Details', 'fas fa-paste', [['name' => 'Recipe', 'link' => route('recipe')], ['name' => 'Product Recipe Details']]);
+            $product = $this->model->with('product', 'product_material', 'product_materials')->findOrFail($id);
             return view('product::recipe.details', compact('product'));
         } else {
             return $this->access_blocked();
@@ -230,26 +201,17 @@ class RecipeController extends BaseController
             if (permission('recipe-delete')) {
                 DB::beginTransaction();
                 try {
-                    $sale_product = SaleProduct::where('product_id', $request->id)->get()->count();
-                    if ($sale_product > 0) {
-                        $output = ['status' => 'error', 'message' => 'Cannot delete because this product is realted with sale and purchase data'];
-                    } else {
-
-                        $product  = $this->model->find($request->id);
-                        $old_image = $product ? $product->image : '';
-                        $result    = $product->delete();
-                        if ($result && $old_image != '') {
-                            $this->delete_file($old_image, PRODUCT_IMAGE_PATH);
-                        }
-                        $output   = $this->delete_message($result);
-                    }
+                    $recipe = $this->model->find($request->id);
+                    $deleteProductMaterials = ProductMaterial::Where('recipe_id', $request->id)->delete();
+                    $result = $recipe->delete();
+                    $output = $this->delete_message($result);
                     DB::commit();
                 } catch (\Throwable $th) {
                     DB::rollback();
                     $output = ['status' => 'error', 'message' => $th->getMessage()];
                 }
             } else {
-                $output   = $this->unauthorized();
+                $output = $this->unauthorized();
             }
             return response()->json($output);
         } else {
