@@ -39,15 +39,6 @@ class ProductFormRequest extends FormRequest
         $this->messages['base_unit_id.required'] = 'The unit field is required';
         $this->messages['base_unit_price.required'] = 'The price field is required';
 
-        $collection = collect(request());
-        if($collection->has('materials')){
-            foreach (request()->materials as $key => $value) {
-                $this->rules   ['materials.'.$key.'.id']           = ['required','integer'];
-
-                $this->messages['materials.'.$key.'.id.required']  = 'The material name field is required';
-                $this->messages['materials.'.$key.'.id.integer']   = 'The material name field value must be integer';
-            }
-        }
         return $this->rules;
     }
 

@@ -31,12 +31,12 @@
                         @if (!empty($product->image))
                             <div class="col-md-3">
                                 <img src="{{ asset('storage/' . PRODUCT_IMAGE_PATH . $product->image) }}"
-                                    alt="{{ $product->name }}" style="max-width: 100%;">
+                                     alt="{{ $product->name }}" style="max-width: 100%;">
                             </div>
                         @else
                             <div class="col-md-3">
                                 <img src="{{ asset('images/product.svg') }}" alt="{{ $product->name }}"
-                                    style="max-width: 60%;">
+                                     style="max-width: 60%;">
                             </div>
                         @endif
                         <div class="col-md-9 pt-5 table-responsive">
@@ -114,10 +114,7 @@
                                 <ul class="nav nav-bold nav-pills">
 
                                     <li class="nav-item">
-                                        <a class="nav-link active" data-toggle="tab" href="#materials">Materials</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#description">Description</a>
+                                        <a class="nav-link active" data-toggle="tab" href="#description">Description</a>
                                     </li>
 
                                 </ul>
@@ -128,27 +125,8 @@
                                 @php
                                     $totalQty = 0;
                                 @endphp
-                                <div class="tab-pane fade show active" id="materials" role="tabpanel"
-                                    aria-labelledby="materials">
-                                    @if (!$product->product_material->isEmpty())
-                                        <table class="table table-bordered table-striped" style="width: 50%">
-                                            @foreach ($product->product_material as $key => $item)
-                                                <tr>
-                                                    <td>{{ $item->material_name }}</td>
-                                                    <td>{{ $product->product_materials[$key]->qty }}</td>
-                                                    @php
-                                                        $totalQty += $product->product_materials[$key]->qty;
-                                                    @endphp
-                                                </tr>
-                                            @endforeach
-                                            <tr>
-                                                <td><strong>Total</strong></td>
-                                                <td><strong>{{ $totalQty }}</strong></td>
-                                            </tr>
-                                        </table>
-                                    @endif
-                                </div>
-                                <div class="tab-pane fade" id="description" role="tabpanel" aria-labelledby="description">
+                                <div class="tab-pane fade show active" id="description" role="tabpanel"
+                                     aria-labelledby="description">
                                     <div class="padding-top-10px text-justify">
                                         {{ $product->description ?? '' }}
                                     </div>

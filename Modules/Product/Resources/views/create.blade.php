@@ -143,53 +143,6 @@
                                 <textarea class="form-control" name="description" id="description"></textarea>
                             </div>
 
-                            <div class="col-md-12 pt-5" id="material-section">
-                                <div class="row"
-                                    style="position: relative;border: 1px solid #E4E6EF;padding: 10px 0 0 0; margin: 0;border-radius:5px;">
-                                    <div
-                                        style="width: 100px;background: #fa8c15;text-align: center;margin: 0 auto;color: white;padding: 5px 0;
-                                    position: absolute;top:-16px;left:10px;">
-                                        Materials</div>
-                                    <div class="col-md-12 pt-5 material_section">
-                                        <div class="row">
-                                            <div class="form-group col-md-5 required">
-                                                <label for="materials_1_id" class="form-control-label">Material
-                                                    Name</label>
-                                                <select name="materials[1][id]" id="materials_1_id" required="required"
-                                                    class="form-control selectpicker material" data-live-search="true"
-                                                    data-live-search-placeholder="Search">
-                                                    <option value="">Select Please</option>
-                                                    @if (!$materials->isEmpty())
-                                                        @foreach ($materials as $material)
-                                                            <option value="{{ $material->id }}">
-                                                                {{ $material->material_name }} --
-                                                                {{ $material->unit->unit_name }}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-md-5 required">
-                                                <label for="materials_qty_1" class="form-control-label">Material
-                                                    Quantity</label>
-                                                <input type="text" class="form-control qty text-center material-qty"
-                                                    name="materials[1][qty]" id="materials_qty_1" required data-row="1"
-                                                    data-select-id="materials_1_id" onkeyup="getMaterialQuantity()">
-                                            </div>
-
-                                            <div class="form-group col-md-2" style="padding-top: 28px;">
-                                                <button type="button" id="add-material" class="btn btn-success btn-sm"
-                                                    data-toggle="tooltip" data-placement="top"
-                                                    data-original-title="Add More">
-                                                    <i class="fas fa-plus-square"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 pt-5 text-center">
-                                        <h5 style="margin-left:50%">Total Material Quantity <span id="materialQty">0</span></h5>
-                                    </div>
-                                </div>
-                            </div>
 
                             <div class="form-group col-md-12 pt-5">
                                 <button type="button" class="btn btn-primary btn-sm" id="save-btn-1"
@@ -209,19 +162,6 @@
 @push('scripts')
     <script src="js/spartan-multi-image-picker.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $(document).on('change', '.material', function() {
-                let totalMaterial = 0;
-                $('.material-qty').each(function() {
-                    let material = $(this).attr('data-select-id');
-                    let materialQty = $('#' + material).find(":selected").val();
-                    if (materialQty != '') {
-                        totalMaterial = totalMaterial + parseFloat($(this).val()||0);
-                    }
-                });
-                $('#materialQty').text(totalMaterial);
-            });
-        });
         $(document).ready(function() {
 
             /** Start :: Product Image **/
@@ -245,52 +185,6 @@
                 $(this).parents(".col-md-12").remove();
             });
             /** End :: Product Image **/
-
-
-            /** Start :: Add More Material Field **/
-            var material_count = 1;
-
-            function add_more_material_field(row) {
-                html = ` <div class="row row_remove">
-                    <div class="form-group col-md-5 required">
-                        <select name="materials[` + row + `][id]" id="materials_` + row + `_id" required="required" class="form-control selectpicker material" data-live-search="true"
-                                                    data-live-search-placeholder="Search">
-                            <option value="">Select Please</option>
-                            @if (!$materials->isEmpty())
-                                @foreach ($materials as $material)
-                                    <option value="{{ $material->id }}">{{ $material->material_name }} -- {{ $material->unit->unit_name }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                    </div>
-                    <div class="form-group col-md-5 required">
-                        <input type="text" class="form-control qty text-center material-qty" name="materials[` + row +
-                    `][qty]" id="materials_` + row +
-                    `_qty" value="1" data-row="${row}" data-select-id="materials_` + row + `_id" onkeyup="getMaterialQuantity()">
-                    </div>
-                    <div class="form-group col-md-2">
-                        <button type="button" class="btn btn-danger btn-sm remove" data-toggle="tooltip"
-                            data-placement="top" data-original-title="Remove">
-                            <i class="fas fa-minus-square"></i>
-                        </button>
-                    </div>
-                </div>`;
-                $('.material_section').append(html);
-                $('.selectpicker').selectpicker('refresh');
-            }
-
-            $(document).on('click', '#add-material', function() {
-                material_count++;
-                add_more_material_field(material_count);
-            });
-            $(document).on('click', '.remove', function() {
-                material_count--;
-                $(this).closest('.row_remove').remove();
-                getMaterialQuantity();
-            });
-            /** End :: Add More Material Field **/
-
-
 
             //Generate Code
             $(document).on('click', '#generate-code', function() {
@@ -394,8 +288,5 @@
             });
         }
 
-        function getMaterialQuantity() {
-            $('.material').trigger('change');
-        }
     </script>
 @endpush

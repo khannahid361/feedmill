@@ -145,17 +145,6 @@ class ProductController extends BaseController
                     $collection = $collection->merge(compact('tax_id', 'image'));
 
                     $result = $this->model->updateOrCreate(['id' => $request->update_id], $collection->all());
-                    $product = $this->model->with('product_material')->find($result->id);
-
-                    $product_materials = [];
-                    if ($request->has('materials')) {
-                        foreach ($request->materials as $value) {
-                            $product_materials[$value['id']] = ['qty' => $value['qty']];
-                        }
-                    }
-
-                    $product->product_material()->sync($product_materials);
-
                     $output = $this->store_message($result, null);
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -230,7 +219,7 @@ class ProductController extends BaseController
 
         if (permission('product-view')) {
             $this->setPageData('Product Details', 'Product Details', 'fas fa-paste', [['name' => 'Product', 'link' => route('product')], ['name' => 'Product Details']]);
-            $product = $this->model->with('category', 'tax', 'base_unit', 'product_material','product_materials')->findOrFail($id);
+            $product = $this->model->with('category', 'tax', 'base_unit')->findOrFail($id);
             // return response()->json($product);
             return view('product::details', compact('product'));
         } else {

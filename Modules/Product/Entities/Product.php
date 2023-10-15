@@ -37,14 +37,14 @@ class Product extends BaseModel
         return $this->belongsTo(Tax::class)->withDefault(['name'=>'No Tax','rate' => 0]);
     }
 
-    public function product_material(){
-        return $this->belongsToMany(Material::class,'product_material','product_id','material_id','id','id')
-                    ->withTimestamps();
-    }
-
-    public function product_materials(){
-        return $this->hasMany(ProductMaterial::class,'product_id','id');
-    }
+//    public function product_material(){
+//        return $this->belongsToMany(Material::class,'product_material','product_id','material_id','id','id')
+//                    ->withTimestamps();
+//    }
+//
+//    public function product_materials(){
+//        return $this->hasMany(ProductMaterial::class,'product_id','id');
+//    }
 
     public function warehouse_product()
     {
