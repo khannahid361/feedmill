@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Product\Entities\Product;
 use Modules\Material\Entities\Material;
+use Modules\Product\Entities\Recipe;
 use Modules\Setting\Entities\Warehouse;
 use App\Http\Controllers\BaseController;
 use Modules\Production\Entities\Production;
@@ -245,6 +246,7 @@ class ProductionController extends BaseController
                                 $product_data = [
                                     'production_id'   => $production->id,
                                     'product_id'      => $product['product_id'],
+                                    'recipe_id'       => $product['recipe_id'],
                                     'year'            => $product['year'],
                                     'mfg_date'        => $product['mfg_date'],
                                     'exp_date'        => $product['exp_date'],
@@ -346,6 +348,7 @@ class ProductionController extends BaseController
                                 if ($production_product) {
                                     $production_product->update([
                                         'product_id'      => $product['product_id'],
+                                        'recipe_id'       => $product['recipe_id'],
                                         'year'            => $product['year'],
                                         'mfg_date'        => $product['mfg_date'],
                                         'exp_date'        => $product['exp_date'],
@@ -538,10 +541,16 @@ class ProductionController extends BaseController
         $materials = DB::table('product_material as pm')
             ->join('materials as m', 'pm.material_id', '=', 'm.id')
             ->leftJoin('units as u', 'm.unit_id', '=', 'u.id')
-            ->select('pm.product_id', 'pm.material_id', 'pm.qty as q_ty', 'm.material_name', 'm.material_code', 'm.cost', 'm.qty', 'm.type', 'm.unit_id', 'u.unit_name', 'u.unit_code')
-            ->where('pm.product_id', $request->product_id)
+            ->select('pm.product_id','pm.recipe_id', 'pm.material_id', 'pm.qty as q_ty', 'm.material_name', 'm.material_code', 'm.cost', 'm.qty', 'm.type', 'm.unit_id', 'u.unit_name', 'u.unit_code')
+            ->where('pm.recipe_id', $request->recipe_id)
             ->get();
         $wastage = ProductionWastage::where('product_id', $request->product_id)->first();
         return view('production::production.materials', compact('materials', 'tab', 'wastage'))->render();
+    }
+
+    public function getRecipes(Request $request)
+    {
+        $recipes = Recipe::Where('product_id', $request->product_id)->get();
+        return response()->json($recipes);
     }
 }

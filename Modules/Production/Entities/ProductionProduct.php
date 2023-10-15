@@ -6,13 +6,14 @@ use App\Models\BaseModel;
 use Illuminate\Support\Facades\DB;
 use Modules\Product\Entities\Product;
 use Modules\Material\Entities\Material;
+use Modules\Product\Entities\Recipe;
 use Modules\Production\Entities\Production;
 use Modules\Production\Entities\ProductionCoupon;
 
 class ProductionProduct extends BaseModel
 {
 
-    protected $fillable = ['production_id', 'product_id', 'year', 'mfg_date', 'exp_date','labor_cost','other_cost','sub_total', 'base_unit_qty', 'per_unit_cost','expected_unit_qty','recyclable_wastage_qty','permanent_wastage_qty','used_wastage_qty'];
+    protected $fillable = ['production_id', 'product_id', 'year', 'mfg_date', 'exp_date','labor_cost','other_cost','sub_total', 'base_unit_qty', 'per_unit_cost','expected_unit_qty','recyclable_wastage_qty','permanent_wastage_qty','used_wastage_qty', 'recipe_id'];
 
     public function production()
     {
@@ -32,6 +33,10 @@ class ProductionProduct extends BaseModel
         ->withTimeStamps();
     }
 
+    public function recipe()
+    {
+        return $this->belongsTo(Recipe::class, 'recipe_id', 'id');
+    }
     // public function coupons()
     // {
     //     return $this->hasMany(ProductionCoupon::class,'production_product_id','id');

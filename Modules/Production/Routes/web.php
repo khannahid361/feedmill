@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('change-status', 'ProductionController@change_status')->name('change.status');
 
         Route::post('product-materials', 'ProductionController@product_material_list')->name('product.materials');
+        Route::post('product-recipes', 'ProductionController@getRecipes')->name('product.recipes');
 
         Route::get('operation/{id}', 'ProductionOperationController@index')->name('operation');
         Route::post('store-operation', 'ProductionOperationController@store')->name('store.operation');

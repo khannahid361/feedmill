@@ -32,6 +32,7 @@ class CreateProductionProductsTable extends Migration
             $table->double('recyclable_wastage_qty')->nullable();
             $table->double('permanent_wastage_qty')->nullable();
             $table->double('used_wastage_qty')->nullable();
+            $table->bigInteger('recipe_id')->nullable();
             $table->timestamps();
         });
     }

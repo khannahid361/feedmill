@@ -3,7 +3,7 @@
 @section('title', $page_title)
 
 @push('styles')
-    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
     <style>
         #form-tab li a.active {
             background: #034d97 !important;
@@ -53,11 +53,12 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <x-form.textbox labelName="Batch No." name="batch_no" value="{{ $batch_no }}"
-                                    required="required" property="readonly" col="col-md-4" />
+                                                required="required" property="readonly" col="col-md-4"/>
                                 <x-form.textbox labelName="Date" name="start_date" required="required" col="col-md-4"
-                                    class="date" property="readonly" value="{{ date('Y-m-d') }}" />
-                                <x-form.selectbox labelName="Factory" name="warehouse_id" required="required" col="col-md-4"
-                                    class="selectpicker">
+                                                class="date" property="readonly" value="{{ date('Y-m-d') }}"/>
+                                <x-form.selectbox labelName="Factory" name="warehouse_id" required="required"
+                                                  col="col-md-4"
+                                                  class="selectpicker">
                                     @if (!$warehouses->isEmpty())
                                         @foreach ($warehouses as $warehouse)
                                             <option value="{{ $warehouse->id }}"
@@ -84,15 +85,15 @@
                                     <div class="row" id="production_1">
                                         <div class="col-md-12 px-0" style="border-top: 5px solid #024c96;">
                                             <div class="card card-custom card-fit card-border"
-                                                style="border-radius: 0 !important;">
+                                                 style="border-radius: 0 !important;">
                                                 <div class="card-body py-5">
                                                     <div class="row">
-                                                        <div class="form-group col-md-12 required">
+                                                        <div class="form-group col-md-8 required">
                                                             <label>Product</label>
                                                             <select name="production[1][product_id]"
-                                                                id="production_1_product_id"
-                                                                onchange="materialData(this.value,1)"
-                                                                class="form-control selectpicker">
+                                                                    id="production_1_product_id"
+                                                                    onchange="getRecipe(this.value,1);"
+                                                                    class="form-control selectpicker">
                                                                 <option value="">Select Please</option>
                                                                 @if (!$products->isEmpty())
                                                                     @foreach ($products as $id => $name)
@@ -102,25 +103,37 @@
                                                                 @endif
                                                             </select>
                                                         </div>
+                                                        <div class="form-group col-md-4 required">
+                                                            <label>Recipe</label>
+                                                            <select id="production_1_recipe_id"
+                                                                    name="production[1][recipe_id]"
+                                                                    class="form-control selectpicker"
+                                                                    onchange="materialData(this.value,1);" data-live-search="true">
+
+                                                            </select>
+                                                        </div>
                                                         <div class="form-group col-md-3 required">
                                                             <label for="mfg_date">Mfg. Date</label>
                                                             <input type="text" class="form-control date total-time"
-                                                                name="production[1][mfg_date]" id="production_1_mfg_date"
-                                                                value="{{ date('Y-m-d') }}" readonly
-                                                                onblur="setExpireTime();" />
+                                                                   name="production[1][mfg_date]"
+                                                                   id="production_1_mfg_date"
+                                                                   value="{{ date('Y-m-d') }}" readonly
+                                                                   onblur="setExpireTime();"/>
                                                         </div>
                                                         <div class="form-group col-md-3 required">
                                                             <label for="exp_date">Exp. Date</label>
                                                             <input type="text" class="form-control date total-time"
-                                                                name="production[1][exp_date]" id="production_1_exp_date"
-                                                                value="{{ date('Y-m-d') }}" onblur="setExpireTime();"
-                                                                readonly />
+                                                                   name="production[1][exp_date]"
+                                                                   id="production_1_exp_date"
+                                                                   value="{{ date('Y-m-d') }}" onblur="setExpireTime();"
+                                                                   readonly/>
                                                         </div>
                                                         <div class="form-group col-md-3 required d-none">
                                                             <label for="production_1_year">Total Months </label>
                                                             <input type="text" name="production[1][year]"
-                                                                id="production_1_year" class="form-control " value="0"
-                                                                placeholder="" readonly>
+                                                                   id="production_1_year" class="form-control "
+                                                                   value="0"
+                                                                   placeholder="" readonly>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -137,7 +150,8 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-primary btn-sm mr-5 float-right"
-                            onclick="check_material_stock()" id="save-btn"><i class="fas fa-save"></i> Save</button>
+                                onclick="check_material_stock()" id="save-btn"><i class="fas fa-save"></i> Save
+                        </button>
                     </div>
                 </form>
             </div>
@@ -155,7 +169,7 @@
         // function _(x){
         //     return document.getElementById(x);
         // }
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.date').datetimepicker({
                 format: 'YYYY-MM-DD',
                 ignoreReadonly: true
@@ -183,25 +197,25 @@
                     tab + `)" class="form-control selectpicker">
                                                             <option value="">Select Please</option>
                                                             @if (!$products->isEmpty())
-                                                                @foreach ($products as $id => $name)
-                                                                <option value="{{ $id }}">{{ $name }}</option>
+                    @foreach ($products as $id => $name)
+                    <option value="{{ $id }}">{{ $name }}</option>
                                                                 @endforeach
-                                                            @endif
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-3 required">
-                                                        <label >Total Year</label>
-                                                        <select name="production[` + tab + `][year]" id="production_` +
+                    @endif
+                    </select>
+                </div>
+                <div class="form-group col-md-3 required">
+                    <label >Total Year</label>
+                    <select name="production[` + tab + `][year]" id="production_` +
                     tab + `_year"  onchange="generateDate(this.value,` + tab +
                     `)" class="form-control selectpicker">
                                                             @for ($i = 1; $i <= 3; $i++)
-                                                            <option value="{{ $i }}" {{ $i == 1 ? 'selected' : '' }}>{{ $i }}</option>
+                    <option value="{{ $i }}" {{ $i == 1 ? 'selected' : '' }}>{{ $i }}</option>
                                                             @endfor
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-3 required">
-                                                        <label for="mfg_date">Mfg. Date</label>
-                                                        <input type="text" class="form-control date" name="production[` +
+                    </select>
+                </div>
+                <div class="form-group col-md-3 required">
+                    <label for="mfg_date">Mfg. Date</label>
+                    <input type="text" class="form-control date" name="production[` +
                     tab + `][mfg_date]" id="production_` + tab +
                     `_mfg_date" value="{{ date('Y-m-d') }}" readonly />
                                                     </div>
@@ -229,11 +243,11 @@
                 });
             }
 
-            $(document).on('click', '#add-new-tab', function() {
+            $(document).on('click', '#add-new-tab', function () {
                 tabcount++;
                 add_new_tab(tabcount);
             });
-            $(document).on('click', '.remove-tab', function() {
+            $(document).on('click', '.remove-tab', function () {
                 var tab = $(this).data('tab');
                 Swal.fire({
                     title: 'Are you sure to delete Tab-' + tab + '?',
@@ -258,17 +272,43 @@
         });
 
 
-        function materialData(product_id, tab) {
+        function materialData(recipe_id, tab) {
+            let product_id = $('#production_1_product_id').val();
             $.ajax({
                 url: "{{ url('production/product-materials') }}",
+                data: {
+                    recipe_id: recipe_id,
+                    product_id : product_id,
+                    tab: tab,
+                    _token: _token
+                },
+                type: "POST",
+                success: function (data) {
+                    $('#production_materials_' + tab).empty().html(data);
+                },
+            });
+        }
+
+        function getRecipe(product_id, tab) {
+            $.ajax({
+                url: "{{ url('production/product-recipes') }}",
                 data: {
                     product_id: product_id,
                     tab: tab,
                     _token: _token
                 },
                 type: "POST",
-                success: function(data) {
-                    $('#production_materials_' + tab).empty().html(data);
+                success: function (data) {
+                    let $selectBox = $('#production_' + tab + '_recipe_id');
+                    $selectBox.empty();
+                    $selectBox.append(`<option>Select Recipe</option>`);
+                    data.forEach(recipe => {
+                        $selectBox.append(`<option value="${recipe.id}">${recipe.recipe_name}(${recipe.recipe_code})</option>`);
+                    });
+                    $selectBox.selectpicker('refresh');
+                },
+                error: function (error) {
+                    console.error('Error fetching data:', error);
                 },
             });
         }
@@ -291,22 +331,22 @@
                 contentType: false,
                 processData: false,
                 cache: false,
-                beforeSend: function() {
+                beforeSend: function () {
                     $('#save-btn').addClass('spinner spinner-white spinner-right');
                 },
-                complete: function() {
+                complete: function () {
                     $('#save-btn').removeClass('spinner spinner-white spinner-right');
                 },
-                success: function(data) {
+                success: function (data) {
                     $('#store_or_update_form').find('.is-invalid').removeClass('is-invalid');
                     $('#store_or_update_form').find('.error').remove();
                     if (data.status == false) {
-                        $.each(data.errors, function(key, value) {
+                        $.each(data.errors, function (key, value) {
                             if (key == 'production.1.expected_unit_qty') {
                                 $('#store_or_update_form input#finished_qty').addClass('is-invalid');
                                 $('#store_or_update_form #finished_qty').parent().append(
                                     '<small class="error text-danger">Please Enter Finish Quantity</small>'
-                                    );
+                                );
                             }
                             var key = key.split('.').join('_');
                             $('#store_or_update_form input#' + key).addClass('is-invalid');
@@ -330,7 +370,7 @@
                         }
                     }
                 },
-                error: function(xhr, ajaxOption, thrownError) {
+                error: function (xhr, ajaxOption, thrownError) {
                     console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
                 }
             });
@@ -348,13 +388,13 @@
                 contentType: false,
                 processData: false,
                 cache: false,
-                beforeSend: function() {
+                beforeSend: function () {
                     $('#save-btn').addClass('spinner spinner-white spinner-right');
                 },
-                complete: function() {
+                complete: function () {
                     $('#save-btn').removeClass('spinner spinner-white spinner-right');
                 },
-                success: function(data) {
+                success: function (data) {
                     $('#store_or_update_form').find('.is-invalid').removeClass('is-invalid');
                     $('#store_or_update_form').find('.error').remove();
                     notification(data.status, data.message);
@@ -362,7 +402,7 @@
                         window.location.replace("{{ url('production') }}");
                     }
                 },
-                error: function(xhr, ajaxOption, thrownError) {
+                error: function (xhr, ajaxOption, thrownError) {
                     console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
                 }
             });
@@ -370,15 +410,15 @@
     </script>
 
     <script>
-        $(document).ready(function() {
-            $(document).on('keyup', '.finished-qty', function() {
+        $(document).ready(function () {
+            $(document).on('keyup', '.finished-qty', function () {
                 let totalMaterial = 0;
                 let totalMoney = 0;
-                $('.material-qty').each(function() {
+                $('.material-qty').each(function () {
                     let materialQty = $(this).val();
                     totalMaterial = totalMaterial + parseFloat(materialQty);
                 });
-                $('.material-amount').each(function() {
+                $('.material-amount').each(function () {
                     let materialAmnt = $(this).val();
                     totalMoney = totalMoney + parseFloat(materialAmnt);
                 });
@@ -391,7 +431,7 @@
             return document.getElementById(x);
         }
 
-        $(document).on('input', '.other_cost', function() {
+        $(document).on('input', '.other_cost', function () {
             let other_cost = $(this).val();
             let grand_t = $('#grand_total').val();
             let finishedqty = $('#finished_qty').val();
@@ -401,11 +441,11 @@
             _('cost_per_unit').value = a / finishedqty;
         });
 
-        $(document).on('input', '.finishedQty', function() {
+        $(document).on('input', '.finishedQty', function () {
 
             // console.log(qty);
             let finishedQty = $(this).val();
-            $('.track').each(function(i, k) {
+            $('.track').each(function (i, k) {
                 let s_qt = $(this).data('stock_qty') ? $(this).data('stock_qty') : 0;
                 let qtys = $(this).data('qtys');
                 let trackAmount = $(this).data('qtys') * $(this).data(
@@ -414,7 +454,7 @@
                 document.getElementById($(this).data('total')).value = trackAmount;
 
             });
-            $('.track_qty').each(function(i, k) {
+            $('.track_qty').each(function (i, k) {
                 let s_qt = $(this).data('stock_qty') ? $(this).data('stock_qty') : 0;
                 let qty = $(this).data('qtys');
                 let totalQty = $(this).data('qtys') * finishedQty;
@@ -425,7 +465,7 @@
 
         function calculation() {
             let total = 0;
-            $('.total').each(function() {
+            $('.total').each(function () {
                 if ($(this).val() == '') {
                     total += +0;
                 } else {
@@ -434,6 +474,7 @@
             })
             _('g_tl').value = total;
         }
+
         // function calculations(){
         //     let s_qt        = $('.stock_qty').val();
         //     let qty         = $('.qty').val();

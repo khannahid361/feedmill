@@ -42,7 +42,7 @@
                                     <div class="row pt-5">
                                         <div class="col-md-12 text-center">
                                             <h3 class="py-3 bg-warning text-white" style="margin: 10px auto 10px auto;">
-                                                {{ $item->product->name }}</h3>
+                                                {{ $item->product->name }} - {{ $item->recipe->recipe_name }} ({{ $item->recipe->recipe_code }})</h3>
                                         </div>
                                         <div class="col-md-12">
                                             <table class="table table-bordered pb-5"

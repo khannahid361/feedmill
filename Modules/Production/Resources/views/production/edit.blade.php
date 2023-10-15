@@ -3,7 +3,7 @@
 @section('title', $page_title)
 
 @push('styles')
-    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
     <style>
         #form-tab li a.active {
             background: #034d97 !important;
@@ -53,12 +53,14 @@
                     <div class="card-body">
                         <div class="col-md-12">
                             <div class="row">
-                                <x-form.textbox labelName="Batch No." name="batch_no" value="{{ $production->batch_no }}"
-                                    property="readonly" required="required" col="col-md-4" />
+                                <x-form.textbox labelName="Batch No." name="batch_no"
+                                                value="{{ $production->batch_no }}"
+                                                property="readonly" required="required" col="col-md-4"/>
                                 <x-form.textbox labelName="Date" name="start_date" required="required" col="col-md-4"
-                                    property="readonly" class="date" value="{{ $production->start_date }}" />
-                                <x-form.selectbox labelName="Factory" name="warehouse_id" required="required" col="col-md-4"
-                                    class="selectpicker">
+                                                property="readonly" class="date" value="{{ $production->start_date }}"/>
+                                <x-form.selectbox labelName="Factory" name="warehouse_id" required="required"
+                                                  col="col-md-4"
+                                                  class="selectpicker">
                                     @if (!$warehouses->isEmpty())
                                         @foreach ($warehouses as $warehouse)
                                             <option value="{{ $warehouse->id }}"
@@ -79,8 +81,8 @@
                                     @foreach ($production->products as $key => $item)
                                         <li class="nav-item mx-0 mb-3" id="tab{{ $key + 1 }}">
                                             <a class="nav-link {{ $key == 0 ? 'active' : '' }} text-center step  step-{{ $key + 1 }}"
-                                                data-toggle="tab" href="#tab-{{ $key + 1 }}"
-                                                role="tab">Product-{{ $key + 1 }}</a>
+                                               data-toggle="tab" href="#tab-{{ $key + 1 }}"
+                                               role="tab">Product-{{ $key + 1 }}</a>
                                         </li>
                                     @endforeach
                                 @endif
@@ -91,51 +93,61 @@
                             <div class="tab-content">
                                 @if (!$production->products->isEmpty())
                                     @foreach ($production->products as $key => $item)
-                                        <div class="tab-pane {{ $key == 0 ? 'active' : '' }}  step step-{{ $key + 1 }}  p-3"
+                                        <div
+                                            class="tab-pane {{ $key == 0 ? 'active' : '' }}  step step-{{ $key + 1 }}  p-3"
                                             id="tab-{{ $key + 1 }}" role="tabpanel">
                                             <div class="row" id="production_{{ $key + 1 }}">
                                                 <div class="col-md-12 px-0" style="border-top: 5px solid #024c96;">
                                                     <div class="card card-custom card-fit card-border"
-                                                        style="border-radius: 0 !important;">
+                                                         style="border-radius: 0 !important;">
                                                         <div class="card-body py-5">
                                                             <div class="row">
-                                                                <div class="form-group col-md-12 required">
+                                                                <div class="form-group col-md-8 required">
                                                                     <label>Product</label>
                                                                     <input type="text" class="form-control"
-                                                                        value="{{ $item->product->name }}">
+                                                                           value="{{ $item->product->name }}" readonly>
                                                                     <input type="hidden" class="form-control"
-                                                                        value="{{ $item->id }}"
-                                                                        name="production[{{ $key + 1 }}][production_product_id]"
-                                                                        id="production_{{ $key + 1 }}_production_product_id">
+                                                                           value="{{ $item->id }}"
+                                                                           name="production[{{ $key + 1 }}][production_product_id]"
+                                                                           id="production_{{ $key + 1 }}_production_product_id">
                                                                     <input type="hidden" class="form-control"
-                                                                        value="{{ $item->product_id }}"
-                                                                        name="production[{{ $key + 1 }}][product_id]"
-                                                                        id="production_{{ $key + 1 }}_product_id">
+                                                                           value="{{ $item->product_id }}"
+                                                                           name="production[{{ $key + 1 }}][product_id]"
+                                                                           id="production_{{ $key + 1 }}_product_id">
+                                                                </div>
+                                                                <div class="form-group col-md-4 required">
+                                                                    <label>Recipe</label>
+                                                                    <input type="text" class="form-control"
+                                                                           value="{{ $item->recipe->recipe_name }} ({{ $item->recipe->recipe_code }})" readonly>
+                                                                    <input type="hidden" class="form-control"
+                                                                           value="{{ $item->recipe_id }}"
+                                                                           name="production[{{ $key + 1 }}][recipe_id]"
+                                                                           id="production_{{ $key + 1 }}_recipe_id">
                                                                 </div>
                                                                 <div class="form-group col-md-3 required">
                                                                     <label for="mfg_date">Mfg. Date</label>
                                                                     <input type="text"
-                                                                        class="form-control date total-time"
-                                                                        name="production[1][mfg_date]"
-                                                                        id="production_1_mfg_date"
-                                                                        value="{{ $item->mfg_date }}" readonly
-                                                                        onblur="setExpireTime();" />
+                                                                           class="form-control date total-time"
+                                                                           name="production[1][mfg_date]"
+                                                                           id="production_1_mfg_date"
+                                                                           value="{{ $item->mfg_date }}" readonly
+                                                                           onblur="setExpireTime();"/>
                                                                 </div>
                                                                 <div class="form-group col-md-3 required">
                                                                     <label for="exp_date">Exp. Date</label>
                                                                     <input type="text"
-                                                                        class="form-control date total-time"
-                                                                        name="production[1][exp_date]"
-                                                                        id="production_1_exp_date"
-                                                                        value="{{ $item->exp_date }}"
-                                                                        onblur="setExpireTime();" readonly />
+                                                                           class="form-control date total-time"
+                                                                           name="production[1][exp_date]"
+                                                                           id="production_1_exp_date"
+                                                                           value="{{ $item->exp_date }}"
+                                                                           onblur="setExpireTime();" readonly/>
                                                                 </div>
                                                                 <div class="form-group col-md-3 required d-none">
                                                                     <label for="production_1_year">Total Months </label>
                                                                     <input type="text" name="production[1][year]"
-                                                                        id="production_1_year" class="form-control "
-                                                                        value="{{ $item->year }}" placeholder=""
-                                                                        readonly>
+                                                                           id="production_1_year" class="form-control "
+                                                                           value="{{ $item->year }}" placeholder=""
+                                                                           readonly>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -151,7 +163,7 @@
                                                                         Materials</h5>
                                                                 </div>
                                                                 <table class="table table-bordered pb-5"
-                                                                    id="material_table_{{ $key + 1 }}">
+                                                                       id="material_table_{{ $key + 1 }}">
                                                                     <div class="col-md-12 text-center">
                                                                         <div class="row">
                                                                             <div class="col-md-6"></div>
@@ -161,131 +173,135 @@
                                                                             </div>
                                                                             <div class="col-md-4 mb-4">
                                                                                 <input type="text"
-                                                                                    class="form-control text-center finishedQty finished-qty"
-                                                                                    value="{{ $item->base_unit_qty }}"
-                                                                                    name="production[{{ $key + 1 }}][base_unit_qty]"
-                                                                                    id="finished_qty">
+                                                                                       class="form-control text-center finishedQty finished-qty"
+                                                                                       value="{{ $item->base_unit_qty }}"
+                                                                                       name="production[{{ $key + 1 }}][base_unit_qty]"
+                                                                                       id="finished_qty">
                                                                             </div>
 
                                                                         </div>
                                                                     </div>
                                                                     <thead class="bg-primary">
-                                                                        <th width="30%">Material</th>
-                                                                        {{--                                                                    <th width="5%" class="text-center">Type</th> --}}
-                                                                        <th width="10%" class="text-center">Material Qty
-                                                                        </th>
-                                                                        <th width="10%" class="text-right">Rate</th>
-                                                                        <th width="15%" class="text-center">Stk. Avl.
-                                                                            Qty</th>
-                                                                        <th width="15%" class="text-center">Received
-                                                                            QTY</th>
-                                                                        <th width="17%" class="text-right">Total</th>
+                                                                    <th width="30%">Material</th>
+                                                                    {{--                                                                    <th width="5%" class="text-center">Type</th> --}}
+                                                                    <th width="10%" class="text-center">Material Qty
+                                                                    </th>
+                                                                    <th width="10%" class="text-right">Rate</th>
+                                                                    <th width="15%" class="text-center">Stk. Avl.
+                                                                        Qty
+                                                                    </th>
+                                                                    <th width="15%" class="text-center">Received
+                                                                        QTY
+                                                                    </th>
+                                                                    <th width="17%" class="text-right">Total</th>
                                                                     </thead>
                                                                     @php
                                                                         $totalMaterial = 0;
                                                                         $totalAmnt = 0;
                                                                     @endphp
                                                                     <tbody>
-                                                                        @foreach ($item->materials as $index => $value)
+                                                                    @foreach ($item->materials as $index => $value)
                                                                         @php
                                                                             $productId = $item->product_id;
                                                                             // $materialUnitQty =
                                                                         @endphp
-                                                                            <tr>
-                                                                                @php
-                                                                                    $totalMaterial += $value->pivot->qty;
-
-                                                                                    $totalAmnt += $value->pivot->cost * $value->pivot->qty;
-                                                                                @endphp
-                                                                                <td>
-                                                                                    {{ $value->material_name . ' (' . $value->material_code . ')' }}
-                                                                                    <input type="hidden"
-                                                                                        class="form-control text-center"
-                                                                                        value="{{ $value->pivot->id }}"
-                                                                                        name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][production_material_id]"
-                                                                                        id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_production_material_id"
-                                                                                        data-id="{{ $index + 1 }}"
-                                                                                        readonly>
-                                                                                    <input type="hidden"
-                                                                                        class="form-control text-center"
-                                                                                        value="{{ $value->id }}"
-                                                                                        name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][material_id]"
-                                                                                        id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_material_id"
-                                                                                        data-id="{{ $index + 1 }}"
-                                                                                        readonly>
-                                                                                    <input type="hidden"
-                                                                                        class="form-control"
-                                                                                        value="{{ $value->unit_id }}"
-                                                                                        name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][unit_id]"
-                                                                                        id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_unit_id"
-                                                                                        data-id="{{ $index + 1 }}">
-                                                                                    <input type="hidden"
-                                                                                        class="form-control text-right"
-                                                                                        value="{{ $value->pivot->cost }}"
-                                                                                        name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][cost]"
-                                                                                        id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_cost"
-                                                                                        data-id="{{ $index + 1 }}"
-                                                                                        readonly>
-                                                                                    <input type="hidden"
-                                                                                        class="form-control text-right stock_qty"
-                                                                                        value="{{ $value->qty }}"
-                                                                                        name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][stock_qty]"
-                                                                                        id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_stock_qty"
-                                                                                        data-id="{{ $index + 1 }}">
-
-                                                                                    <input type="hidden" class="track"
-                                                                                        data-qty="{{ $value->pivot->qty }}"
-                                                                                        data-cost="{{ round($value->pivot->cost,2) }}"
-                                                                                        data-stock_qty="{{ $value->qty }}"
-                                                                                        data-total="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_total"
-                                                                                        data-tab="{{ $index + 1 }}" />
-
-                                                                                    <input type="hidden" readonly
-                                                                                        name=""
-                                                                                        value="{{ $value->pivot->used_qty / $item->base_unit_qty }}"
-                                                                                        class="unit-qty" id=""
-                                                                                        data-id="{{ $index + 1 }}" data-tab="{{ $key + 1 }}" data-unitcost={{ $value->pivot->cost }}>
-                                                                                </td>
-                                                                                <td class="text-center">
-                                                                                    {{ $value->pivot->used_qty / $item->base_unit_qty }}
-                                                                                </td>
-                                                                                <td class="text-right">
-                                                                                    {{ number_format($value->pivot->cost, 2, '.', '') }}
-
-                                                                                </td>
-                                                                                <td class="text-center">
-                                                                                    {{ $value->qty }}
-                                                                                    ({{ $value->unit->unit_name }})
-                                                                                </td>
-                                                                                <td class="text-center">
-                                                                                    <input type="text"
-                                                                                        class="form-control text-right"
-                                                                                        value="{{ $value->pivot->qty }}"
-                                                                                        name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][qty]"
-                                                                                        id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_q_ty"
-                                                                                        data-id="{{ $index + 1 }}"
-                                                                                        readonly>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="text"
-                                                                                        class="form-control text-right total material-amount"
-                                                                                        value="{{ number_format($value->pivot->cost * $value->pivot->qty, 2, '.', '') }}"
-                                                                                        name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][total]"
-                                                                                        id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_total"
-                                                                                        data-id="{{ $index + 1 }}"
-                                                                                        readonly>
-                                                                                </td>
-                                                                            </tr>
-                                                                        @endforeach
                                                                         <tr>
-                                                                            <td colspan="3">Total</td>
-                                                                            <td class="text-right"><span
-                                                                                    id="materialQty">{{ $totalMaterial }}</span>
+                                                                            @php
+                                                                                $totalMaterial += $value->pivot->qty;
+
+                                                                                $totalAmnt += $value->pivot->cost * $value->pivot->qty;
+                                                                            @endphp
+                                                                            <td>
+                                                                                {{ $value->material_name . ' (' . $value->material_code . ')' }}
+                                                                                <input type="hidden"
+                                                                                       class="form-control text-center"
+                                                                                       value="{{ $value->pivot->id }}"
+                                                                                       name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][production_material_id]"
+                                                                                       id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_production_material_id"
+                                                                                       data-id="{{ $index + 1 }}"
+                                                                                       readonly>
+                                                                                <input type="hidden"
+                                                                                       class="form-control text-center"
+                                                                                       value="{{ $value->id }}"
+                                                                                       name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][material_id]"
+                                                                                       id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_material_id"
+                                                                                       data-id="{{ $index + 1 }}"
+                                                                                       readonly>
+                                                                                <input type="hidden"
+                                                                                       class="form-control"
+                                                                                       value="{{ $value->unit_id }}"
+                                                                                       name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][unit_id]"
+                                                                                       id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_unit_id"
+                                                                                       data-id="{{ $index + 1 }}">
+                                                                                <input type="hidden"
+                                                                                       class="form-control text-right"
+                                                                                       value="{{ $value->pivot->cost }}"
+                                                                                       name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][cost]"
+                                                                                       id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_cost"
+                                                                                       data-id="{{ $index + 1 }}"
+                                                                                       readonly>
+                                                                                <input type="hidden"
+                                                                                       class="form-control text-right stock_qty"
+                                                                                       value="{{ $value->qty }}"
+                                                                                       name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][stock_qty]"
+                                                                                       id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_stock_qty"
+                                                                                       data-id="{{ $index + 1 }}">
+
+                                                                                <input type="hidden" class="track"
+                                                                                       data-qty="{{ $value->pivot->qty }}"
+                                                                                       data-cost="{{ round($value->pivot->cost,2) }}"
+                                                                                       data-stock_qty="{{ $value->qty }}"
+                                                                                       data-total="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_total"
+                                                                                       data-tab="{{ $index + 1 }}"/>
+
+                                                                                <input type="hidden" readonly
+                                                                                       name=""
+                                                                                       value="{{ $value->pivot->used_qty / $item->base_unit_qty }}"
+                                                                                       class="unit-qty" id=""
+                                                                                       data-id="{{ $index + 1 }}"
+                                                                                       data-tab="{{ $key + 1 }}"
+                                                                                       data-unitcost={{ $value->pivot->cost }}>
                                                                             </td>
-                                                                            <td colspan="4" class="text-right"><span
-                                                                                    id="materialAmnt">{{ $totalAmnt }}</span>
+                                                                            <td class="text-center">
+                                                                                {{ $value->pivot->used_qty / $item->base_unit_qty }}
+                                                                            </td>
+                                                                            <td class="text-right">
+                                                                                {{ number_format($value->pivot->cost, 2, '.', '') }}
+
+                                                                            </td>
+                                                                            <td class="text-center">
+                                                                                {{ $value->qty }}
+                                                                                ({{ $value->unit->unit_name }})
+                                                                            </td>
+                                                                            <td class="text-center">
+                                                                                <input type="text"
+                                                                                       class="form-control text-right"
+                                                                                       value="{{ $value->pivot->qty }}"
+                                                                                       name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][qty]"
+                                                                                       id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_q_ty"
+                                                                                       data-id="{{ $index + 1 }}"
+                                                                                       readonly>
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="text"
+                                                                                       class="form-control text-right total material-amount"
+                                                                                       value="{{ number_format($value->pivot->cost * $value->pivot->qty, 2, '.', '') }}"
+                                                                                       name="production[{{ $key + 1 }}][materials][{{ $index + 1 }}][total]"
+                                                                                       id="production_{{ $key + 1 }}_materials_{{ $index + 1 }}_total"
+                                                                                       data-id="{{ $index + 1 }}"
+                                                                                       readonly>
                                                                             </td>
                                                                         </tr>
+                                                                    @endforeach
+                                                                    <tr>
+                                                                        <td colspan="3">Total</td>
+                                                                        <td class="text-right"><span
+                                                                                id="materialQty">{{ $totalMaterial }}</span>
+                                                                        </td>
+                                                                        <td colspan="4" class="text-right"><span
+                                                                                id="materialAmnt">{{ $totalAmnt }}</span>
+                                                                        </td>
+                                                                    </tr>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -295,14 +311,14 @@
                                                 <div class="form-group col-md-3 required">
                                                     <label for="">Remaining Dust</label>
                                                     <input type="text" class="form-control" name=""
-                                                        id="remaining_mixture"
-                                                        value="{{ $wastage->recyclable_wastage ?? '0' }}" readonly />
+                                                           id="remaining_mixture"
+                                                           value="{{ $wastage->recyclable_wastage ?? '0' }}" readonly/>
                                                 </div>
                                                 <div class="form-group col-md-3 required">
                                                     <label for="">Used Dust</label>
                                                     <input type="text" class="form-control" name="used_wastage_qty"
-                                                        id="used_wastage_qty" onkeyup="checkUsedMixtureQty();"
-                                                        value="{{ $item->used_wastage_qty }}" required />
+                                                           id="used_wastage_qty" onkeyup="checkUsedMixtureQty();"
+                                                           value="{{ $item->used_wastage_qty }}" required/>
                                                 </div>
                                             </div>
                                         </div>
@@ -311,8 +327,9 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-primary btn-sm mr-5 float-right"
-                            onclick="check_material_stock()" id="save-btn"><i class="fas fa-sync-alt"></i>
-                            Update</button>
+                                onclick="check_material_stock()" id="save-btn"><i class="fas fa-sync-alt"></i>
+                            Update
+                        </button>
                     </div>
                 </form>
             </div>
@@ -327,7 +344,7 @@
     <script src="js/bootstrap-datetimepicker.min.js"></script>
     <script>
         $(document).ready(function () {
-            $(document).on('keyup', '.finished-qty', function() {
+            $(document).on('keyup', '.finished-qty', function () {
                 let totalMaterial = 0;
                 let totalMoney = 0;
                 let finishedQty = $(this).val();
@@ -336,15 +353,15 @@
                 //     totalMoney = totalMoney + parseFloat(materialAmnt);
                 // });
 
-                $('.unit-qty').each(function() {
+                $('.unit-qty').each(function () {
                     let unit = $(this).val();
                     let materialQty = unit * finishedQty;
                     materialQty = materialQty.toFixed(2);
                     let dataId = $(this).data('id');
                     let datatab = $(this).data('tab');
                     let unitCost = $(this).data('unitcost');
-                    let materialId = '#production_'+datatab+'_materials_'+dataId+'_q_ty';
-                    let materialTotal = '#production_'+datatab+'_materials_'+dataId+'_total';
+                    let materialId = '#production_' + datatab + '_materials_' + dataId + '_q_ty';
+                    let materialTotal = '#production_' + datatab + '_materials_' + dataId + '_total';
                     let materialAmnt = unitCost * parseFloat(materialQty);
                     materialAmnt = materialAmnt.toFixed(2);
                     totalMoney += parseFloat(materialAmnt);
@@ -357,7 +374,7 @@
             });
         });
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.date').datetimepicker({
                 format: 'YYYY-MM-DD',
                 ignoreReadonly: true
@@ -405,19 +422,18 @@
                 contentType: false,
                 processData: false,
                 cache: false,
-                beforeSend: function() {
+                beforeSend: function () {
                     $('#save-btn').addClass('spinner spinner-white spinner-right');
                 },
-                complete: function() {
+                complete: function () {
                     $('#save-btn').removeClass('spinner spinner-white spinner-right');
                 },
-                success: function(data) {
+                success: function (data) {
                     $('#store_or_update_form').find('.is-invalid').removeClass('is-invalid');
                     $('#store_or_update_form').find('.error').remove();
                     if (data.status == false) {
-                        $.each(data.errors, function(key, value) {
-                            if(key == 'production.1.base_unit_qty')
-                            {
+                        $.each(data.errors, function (key, value) {
+                            if (key == 'production.1.base_unit_qty') {
                                 $('#store_or_update_form input#finished_qty').addClass('is-invalid');
                                 $('#store_or_update_form #finished_qty').parent().append(
                                     '<small class="error text-danger">Please Enter Finish Quantity</small>');
@@ -445,7 +461,7 @@
                         }
                     }
                 },
-                error: function(xhr, ajaxOption, thrownError) {
+                error: function (xhr, ajaxOption, thrownError) {
                     console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
                 }
             });
@@ -463,13 +479,13 @@
                 contentType: false,
                 processData: false,
                 cache: false,
-                beforeSend: function() {
+                beforeSend: function () {
                     $('#save-btn').addClass('spinner spinner-white spinner-right');
                 },
-                complete: function() {
+                complete: function () {
                     $('#save-btn').removeClass('spinner spinner-white spinner-right');
                 },
-                success: function(data) {
+                success: function (data) {
                     $('#store_or_update_form').find('.is-invalid').removeClass('is-invalid');
                     $('#store_or_update_form').find('.error').remove();
                     // if (data.status == false) {
@@ -488,7 +504,7 @@
                     }
                     // }
                 },
-                error: function(xhr, ajaxOption, thrownError) {
+                error: function (xhr, ajaxOption, thrownError) {
                     console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
                 }
             });
@@ -500,7 +516,7 @@
             return document.getElementById(x);
         }
 
-        $(document).on('input', '.other_cost', function() {
+        $(document).on('input', '.other_cost', function () {
             let other_cost = $(this).val();
             let grand_t = $('#grand_total').val();
             let finishedqty = $('#finished_qty').val();
@@ -511,16 +527,16 @@
             _('cost_per_unit').value = a / finishedqty;
         });
 
-        $(document).on('input', '.finishedQty', function() {
+        $(document).on('input', '.finishedQty', function () {
             let finishedQty = $(this).val();
-            $('.track').each(function(i, k) {
+            $('.track').each(function (i, k) {
                 let s_qt = $(this).data('stock_qty') ? $(this).data('stock_qty') : 0;
                 let qty = $(this).data('qty');
                 if (s_qt > qty) {
-                    let totalQtyCost =$(this).data('qty') * $(this)
+                    let totalQtyCost = $(this).data('qty') * $(this)
                         .data('cost') * finishedQty;
-                        totalQtyCost = totalQtyCost.toFixed(2);
-                    document.getElementById($(this).data('total')).value =totalQtyCost;
+                    totalQtyCost = totalQtyCost.toFixed(2);
+                    document.getElementById($(this).data('total')).value = totalQtyCost;
                 } else if (s_qt < qty) {
                     $(`#material_table_1 tbody tr:eq(${i})`).css({
                         'background': '#F64E60'
@@ -532,7 +548,7 @@
 
         function calculation() {
             let total = 0;
-            $('.total').each(function() {
+            $('.total').each(function () {
                 if ($(this).val() == '') {
                     total += +0;
                 } else {
