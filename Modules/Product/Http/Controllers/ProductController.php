@@ -170,7 +170,7 @@ class ProductController extends BaseController
                 'categories' => Category::allProductCategories(),
                 'units'      => Unit::all(),
                 'taxes'      => Tax::activeTaxes(),
-                'product' => Product::with('product_materials')->find($id)
+                'product' => Product::find($id)
             ];
             //            return $data;
             return view('product::edit', $data);
@@ -260,41 +260,41 @@ class ProductController extends BaseController
         }
     }
 
-    public function bulk_delete(Request $request)
-    {
-        if ($request->ajax()) {
-            if (permission('product-bulk-delete')) {
-                DB::beginTransaction();
-                try {
-                    foreach ($request->ids as $id) {
-                        $sale_product = SaleProduct::where('product_id', $id)->get()->count();
-                        $purchase_product = PurchaseProduct::where('product_id', $id)->get()->count();
-                        if ($sale_product == 0 && $purchase_product == 0) {
-                            ProductAttributeOption::where('product_id', $id)->delete();
-                            ProductAttribute::where('product_id', $id)->delete();
-                            ProductVariant::where('product_id', $id)->delete();
-                            $product  = $this->model->find($id);
-                            $old_image = $product ? $product->image : '';
-                            $result    = $product->delete();
-                            if ($result && $old_image != '') {
-                                $this->delete_file($old_image, PRODUCT_IMAGE_PATH);
-                            }
-                        }
-                    }
-                    $output   = $this->bulk_delete_message($result);
-                    DB::commit();
-                } catch (\Throwable $th) {
-                    DB::rollback();
-                    $output = ['status' => 'error', 'message' => $th->getMessage()];
-                }
-            } else {
-                $output   = $this->unauthorized();
-            }
-            return response()->json($output);
-        } else {
-            return response()->json($this->unauthorized());
-        }
-    }
+    // public function bulk_delete(Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         if (permission('product-bulk-delete')) {
+    //             DB::beginTransaction();
+    //             try {
+    //                 foreach ($request->ids as $id) {
+    //                     $sale_product = SaleProduct::where('product_id', $id)->get()->count();
+    //                     $purchase_product = PurchaseProduct::where('product_id', $id)->get()->count();
+    //                     if ($sale_product == 0 && $purchase_product == 0) {
+    //                         ProductAttributeOption::where('product_id', $id)->delete();
+    //                         ProductAttribute::where('product_id', $id)->delete();
+    //                         ProductVariant::where('product_id', $id)->delete();
+    //                         $product  = $this->model->find($id);
+    //                         $old_image = $product ? $product->image : '';
+    //                         $result    = $product->delete();
+    //                         if ($result && $old_image != '') {
+    //                             $this->delete_file($old_image, PRODUCT_IMAGE_PATH);
+    //                         }
+    //                     }
+    //                 }
+    //                 $output   = $this->bulk_delete_message($result);
+    //                 DB::commit();
+    //             } catch (\Throwable $th) {
+    //                 DB::rollback();
+    //                 $output = ['status' => 'error', 'message' => $th->getMessage()];
+    //             }
+    //         } else {
+    //             $output   = $this->unauthorized();
+    //         }
+    //         return response()->json($output);
+    //     } else {
+    //         return response()->json($this->unauthorized());
+    //     }
+    // }
 
     //Render Product Variation Combination View
     public function generate_product_variant(Request $request)
