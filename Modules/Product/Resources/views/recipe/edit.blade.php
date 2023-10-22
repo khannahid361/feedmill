@@ -181,8 +181,8 @@
 
         $(document).ready(function () {
             /** Start :: Add More Material Field **/
-                @if (!$product->product_material->isEmpty())
-            var material_count = "{{ count($product->product_material) }}";
+                @if (!$recipe->product_materials->isEmpty())
+            var material_count = "{{ count($recipe->product_materials) }}";
             @else
             var material_count = 1;
             @endif
