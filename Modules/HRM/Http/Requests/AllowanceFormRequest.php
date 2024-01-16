@@ -13,21 +13,9 @@ class AllowanceFormRequest extends FormRequest
      */
     public function rules()
     {
-        $rules['employee_id']           = ['required'];
-        $rules['allowances_name']       = ['required'];
-        $rules['allowances_month']      = ['required'];
-        $rules['allowances_amount']     = ['required'];
-        $rules['allowances_description']= ['required'];
-        $rules['status']                = ['required'];
-        if(request()->update_id)
-        {
-            $rules['employee_id']           = ['required'];
-            $rules['allowances_name']       = ['required'];
-            $rules['allowances_month']      = ['required'];
-            $rules['allowances_amount']     = ['required'];
-            $rules['allowances_description']= ['required'];
-            $rules['status']                = ['required'];
-        }
+        $rules['head']           = ['required'];
+        $rules['department']           = ['required', 'numeric', 'gt:0'];
+
         return $rules;
     }
 

@@ -247,4 +247,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('delete', 'HolidayControllerController@delete')->name('delete');
         Route::post('view', 'HolidayControllerController@view')->name('view');
     });
+
+    //Allowance
+    Route::get('hrm-allowance', 'AllowanceController@index')->name('hrm.allowance');
+    Route::group(['prefix' => 'hrm-allowance', 'as' => 'hrm.allowance.'], function () {
+        Route::post('datatable-data', 'AllowanceController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'AllowanceController@storeOrUpdate')->name('store.or.update');
+        Route::post('delete', 'AllowanceController@delete')->name('delete');
+    });
 });
