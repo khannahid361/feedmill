@@ -238,4 +238,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('edit', 'BranchController@edit')->name('edit');
         Route::post('delete', 'BranchController@delete')->name('delete');
     });
+
+    //Holiday
+    Route::get('holiday', 'HolidayControllerController@index')->name('holiday');
+    Route::group(['prefix' => 'holiday', 'as' => 'holiday.'], function () {
+        Route::post('datatable-data', 'HolidayControllerController@get_datatable_data')->name('datatable.data');
+        Route::post('store', 'HolidayControllerController@store')->name('store');
+        Route::post('delete', 'HolidayControllerController@delete')->name('delete');
+        Route::post('view', 'HolidayControllerController@view')->name('view');
+    });
 });

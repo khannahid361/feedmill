@@ -366,4 +366,8 @@ if (!function_exists('numberTowords')) {
 
 }
 
-
+define('TYPE_STATUS',['1'=>'Event','2'=>'Holiday']);
+define('TYPE_STATUS_LABEL',[
+    '1'=>'<span class="label label-success label-pill label-inline" style="min-width:70px !important;">Event</span>',
+    '2'=>'<span class="label label-info label-pill label-inline" style="min-width:70px !important;">Holiday</span>'
+]);
