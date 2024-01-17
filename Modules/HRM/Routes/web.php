@@ -273,4 +273,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('delete', 'ShiftController@delete')->name('delete');
         Route::post('edit', 'ShiftController@edit')->name('edit');
     });
+
+    //leave-category
+    Route::get('hrm-leave-category', 'LeaveCatController@index')->name('hrm.leave.category');
+    Route::group(['prefix' => 'hrm-leave-category', 'as' => 'hrm.leave.category.'], function () {
+        Route::post('datatable-data', 'LeaveCatController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'LeaveCatController@store_or_update_data')->name('store.or.update');
+        Route::post('delete', 'LeaveCatController@delete')->name('delete');
+        Route::post('edit', 'LeaveCatController@edit')->name('edit');
+    });
 });

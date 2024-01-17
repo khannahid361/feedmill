@@ -15,7 +15,7 @@
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    @if (permission('manage-leave-cat-add'))
+                    @if (permission('leave-add'))
                         <a href="javascript:void(0);" onclick="showFormModal('{{__('file.Add Leave Category')}}','{{__('file.Save')}}')" class="btn btn-primary btn-sm font-weight-bolder">
                             <i class="fas fa-plus-circle"></i> {{__('file.Add New')}}
                         </a>
@@ -100,7 +100,7 @@
                 zeroRecords: '<strong class="text-danger">No Data Found</strong>'
             },
             "ajax": {
-                "url": "{{route('leave.datatable.data')}}",
+                "url": "{{route('hrm.leave.category.datatable.data')}}",
                 "type": "POST",
                 "data": function (data) {
                     data.price      = $("#form-filter #price").val();
@@ -114,9 +114,6 @@
                 "className": "text-center"
             },
             ],
-            "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
         });
 
         $('#btn-filter').click(function () {
@@ -131,7 +128,7 @@
         $(document).on('click', '#save-btn', function () {
             let form        = document.getElementById('store_or_update_form');
             let formData    = new FormData(form);
-            let url         = "{{route('leave.store.or.update')}}";
+            let url         = "{{route('hrm.leave.category.store.or.update')}}";
             let id          = $('#update_id').val();
             let method;
             if (id) {
@@ -150,7 +147,7 @@
             $('#store_or_update_form').find('.error').remove();
             if (id) {
                 $.ajax({
-                    url: "{{route('leave.edit')}}",
+                    url: "{{route('hrm.leave.category.edit')}}",
                     type: "POST",
                     data: { id: id,_token: _token},
                     dataType: "JSON",
@@ -177,6 +174,13 @@
                     }
                 });
             }
+        });
+        $(document).on('click', '.delete_data', function () {
+            let id = $(this).data('id');
+            let name = $(this).data('name');
+            let row = table.row($(this).parent('tr'));
+            let url = "{{ route('hrm.leave.category.delete') }}";
+            delete_data(id, url, table, row, name);
         });
     });
     </script>

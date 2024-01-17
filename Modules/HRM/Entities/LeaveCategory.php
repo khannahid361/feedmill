@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LeaveCategory extends BaseModel
 {
-    protected $table    = 'leave_categories';
-    protected $fillable = ['created_by','leave_category','leave_category_description','status'];
+    protected $table = 'leave_categories';
+    protected $fillable = ['created_by', 'leave_category', 'leave_category_description', 'status', 'deleted_by', 'modified_by'];
 
     /******************************************
      * * * Begin :: Custom Datatable Code * * *
@@ -26,7 +26,7 @@ class LeaveCategory extends BaseModel
 
     private function get_datatable_query()
     {
-        $query = self::toBase();
+        $query = self::toBase()->where('status', 1);
         //search query
         if (!empty($this->_name)) {
             $query->where('leave_category', 'like', '%' . $this->_name . '%');
@@ -52,7 +52,7 @@ class LeaveCategory extends BaseModel
     public function count_filtered()
     {
         $query = $this->get_datatable_query();
-        return $query->get()->count();
+        return $query->where('status', 1)->get()->count();
     }
 
     public function count_all()

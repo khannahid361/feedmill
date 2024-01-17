@@ -15,7 +15,6 @@ class LeaveCatFormRequest extends FormRequest
     {
         $rules['leave_category']      = ['required','string','unique:leave_categories,leave_category'];
         $rules['leave_category_description']      = ['required'];
-        $rules['status']      = ['required'];
         if(request()->update_id)
         {
             $rules['leave_category']   = 'unique:leave_categories,leave_category,'.request()->update_id;

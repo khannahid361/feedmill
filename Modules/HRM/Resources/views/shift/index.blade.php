@@ -18,7 +18,7 @@
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        @if (permission('allowance-add'))
+                        @if (permission('shift-add'))
                             <a href="javascript:void(0);"
                                onclick="showFormModal('{{__('file.Add Shift')}}','{{__('file.Save')}}')"
                                class="btn btn-primary btn-sm font-weight-bolder">

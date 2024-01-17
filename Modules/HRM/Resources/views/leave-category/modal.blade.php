@@ -20,10 +20,6 @@
                     <input type="hidden" name="update_id" id="update_id"/>
                     <x-form.textbox labelName="{{__('file.Leave Category Name')}}" name="leave_category" required="required" col="col-md-12" placeholder="Enter name"/>
                     <x-form.textbox labelName="{{__('file.Description')}}" name="leave_category_description"  col="col-md-12" placeholder="Enter Category Description"/>
-                    <x-form.selectbox labelName="{{__('file.Status')}}" name="status" required="required" col="col-md-12" class="selectpicker">
-                        <option value="1">Active</option>
-                        <option value="2">Inactive</option>
-                    </x-form.selectbox>
                 </div>
             </div>
             <!-- /modal body -->
