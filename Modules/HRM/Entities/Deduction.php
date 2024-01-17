@@ -2,17 +2,71 @@
 
 namespace Modules\HRM\Entities;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\BaseModel;
 
-class Deduction extends Model
+class Deduction extends BaseModel
 {
-    use HasFactory;
+    protected $fillable = ['head', 'department', 'type', 'status', 'created_by', 'modified_by'];
 
-    protected $fillable = [];
-    
-    protected static function newFactory()
+    protected $table = 'allowance_deductions';
+
+    protected $head;
+    protected $department;
+
+    public function setHead($head)
     {
-        return \Modules\HRM\Database\factories\DeductionFactory::new();
+        $this->head = $head;
+    }
+
+    public function setDepartment($department)
+    {
+        $this->department = $department;
+    }
+
+    private function get_datatable_query()
+    {
+        $this->column_order = ['head', 'department', 'type', 'status', 'created_by', 'modified_by', null];
+
+
+        $query = self::toBase()->where('type',2)->where('status', 1);
+
+        if (!empty($this->head)) {
+            $query->where('head', 'like', '%' . $this->head . '%');
+        }
+        if (!empty($this->department)) {
+            $query->where('department', $this->department);
+        }
+
+        //order by data fetching code
+        if (isset($this->orderValue) && isset($this->dirValue)) { //orderValue is the index number of table header and dirValue is asc or desc
+            $query->orderBy($this->column_order[$this->orderValue], $this->dirValue); //fetch data order by matching column
+        } else if (isset($this->order)) {
+            $query->orderBy(key($this->order), $this->order[key($this->order)]);
+        }
+        return $query;
+    }
+
+    public function getDatatableList()
+    {
+        $query = $this->get_datatable_query();
+        if ($this->lengthVlaue != -1) {
+            $query->offset($this->startVlaue)->limit($this->lengthVlaue);
+        }
+        return $query->get();
+    }
+
+    public function count_filtered()
+    {
+        $query = $this->get_datatable_query();
+        return $query->get()->count();
+    }
+
+    public function count_all()
+    {
+        $query = self::toBase();
+        if (!empty($this->type)) {
+            $query->where('type',2);
+        }
+        return $query->get()->count();
     }
 }

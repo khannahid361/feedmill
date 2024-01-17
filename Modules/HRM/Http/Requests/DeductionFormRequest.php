@@ -13,21 +13,9 @@ class DeductionFormRequest extends FormRequest
      */
     public function rules()
     {
-        $rules['employee_id']          = ['required'];
-        $rules['deduction_name']       = ['required'];
-        $rules['deduction_month']      = ['required'];
-        $rules['deduction_amount']     = ['required'];
-        $rules['deduction_description']= ['required'];
-        $rules['status']               = ['required'];
-        if(request()->update_id)
-        {
-            $rules['employee_id']          = ['required'];
-            $rules['deduction_name']       = ['required'];
-            $rules['deduction_month']      = ['required'];
-            $rules['deduction_amount']     = ['required'];
-            $rules['deduction_description']= ['required'];
-            $rules['status']               = ['required'];
-        }
+        $rules['head']           = ['required'];
+        $rules['department']           = ['required', 'numeric', 'gt:0'];
+
         return $rules;
     }
 

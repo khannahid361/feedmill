@@ -17,7 +17,7 @@ class AllowanceController extends BaseController
     public function index()
     {
         if (permission('allowance-access')) {
-            $this->setPageData('Manage Holiday', 'Manage Holiday', 'fab fa-opencart', [['name' => 'Manage Holiday']]);
+            $this->setPageData('Manage Allowance', 'Manage Allowance', 'fab fa-opencart', [['name' => 'Manage Allowance']]);
 
             return view('hrm::allowances.index');
         } else {

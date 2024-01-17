@@ -18,8 +18,8 @@
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    @if (permission('deduction-add'))
-                        <a href="javascript:void(0);" onclick="showFormModal('{{__('file.Add New Deduction')}}','{{__('file.Save')}}')" class="btn btn-primary btn-sm font-weight-bolder">
+                    @if (permission('allowance-add'))
+                        <a href="javascript:void(0);" onclick="showFormModal('{{__('file.Add New Deductions')}}','{{__('file.Save')}}')" class="btn btn-primary btn-sm font-weight-bolder">
                             <i class="fas fa-plus-circle"></i> {{__('file.Add New')}}
                         </a>
                     @endif
@@ -33,8 +33,13 @@
             <div class="card-header flex-wrap py-5">
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row">
-                        <x-form.textbox labelName="{{__('file.Deduction Name')}}" name="deduction_name" col="col-md-4" />
-                        <div class="col-md-8">
+                        <x-form.textbox labelName="{{__('file.Head')}}" name="head" col="col-md-4" />
+                        <x-form.selectbox labelName="Department" name="department" col="col-md-4" class="selectpicker">
+                            @foreach (ALLOWANCE_DEPARTMENT as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
+                        </x-form.selectbox>
+                        <div class="col-md-4">
                             <div style="margin-top:28px;">
                                 <div style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
@@ -59,13 +64,10 @@
                                 <thead class="bg-primary">
                                     <tr>
                                         <th>{{__('file.SL')}}</th>
-                                        <th>{{__('file.Deduction Name')}}</th>
-                                        <th>{{__('file.Employee Name')}}</th>
-                                        <th>{{__('file.Deduction Month')}}</th>
-                                        <th>{{__('file.Designation Amount')}}</th>
-                                        <th>{{__('file.Designation Purpose')}}</th>
-                                        <th>{{__('file.Status')}}</th>
+                                        <th>{{__('file.Head')}}</th>
+                                        <th>{{__('file.Department')}}</th>
                                         <th>{{__('file.Created By')}}</th>
+                                        <th>{{__('file.Modified By')}}</th>
                                         <th>{{__('file.Action')}}</th>
                                     </tr>
                                 </thead>
@@ -82,11 +84,9 @@
 </div>
 @include('hrm::deduction.modal')
 @endsection
-
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
-
-    <script>
+<script>
     var table;
     $(document).ready(function(){
 
@@ -109,22 +109,20 @@
                 zeroRecords: '<strong class="text-danger">No Data Found</strong>'
             },
             "ajax": {
-                "url": "{{route('deduction.datatable.data')}}",
+                "url": "{{route('hrm.deduction.datatable.data')}}",
                 "type": "POST",
                 "data": function (data) {
-                    data.deduction_name      = $("#form-filter #deduction_name").val();
-                    data._token     = _token;
+                    data.head   = $("#form-filter #head").val();
+                    data.department   = $("#form-filter #department").find(':selected').val();
+                    data._token             = _token;
                 }
             },
             "columnDefs": [{
-                "targets"  : [0,1,2,3,4,5,6,7,8],
+                "targets"  : [0,1,2,3,4,5],
                 "orderable": false,
                 "className": "text-center"
             },
             ],
-            "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
         });
 
         $('#btn-filter').click(function () {
@@ -139,7 +137,7 @@
         $(document).on('click', '#save-btn', function () {
             let form        = document.getElementById('store_or_update_form');
             let formData    = new FormData(form);
-            let url         = "{{route('deduction.store.or.update')}}";
+            let url         = "{{route('hrm.deduction.store.or.update')}}";
             let id          = $('#update_id').val();
             let method;
             if (id) {
@@ -150,15 +148,16 @@
             store_or_update_data(table, method, url, formData);
         });
 
-        $(document).on('click', '.edit_data', function () {
+        $(document).on('click', '.edit-data', function () {
             let id = $(this).data('id');
             $('#store_or_update_form')[0].reset();
             $('#store_or_update_form .select').val('');
             $('#store_or_update_form').find('.is-invalid').removeClass('is-invalid');
             $('#store_or_update_form').find('.error').remove();
+            console.log(id);
             if (id) {
                 $.ajax({
-                    url: "{{route('deduction.edit')}}",
+                    url: "{{route('hrm.deduction.edit')}}",
                     type: "POST",
                     data: { id: id,_token: _token},
                     dataType: "JSON",
@@ -167,19 +166,15 @@
                             notification(data.status,data.message)
                         }else{
                             $('#store_or_update_form #update_id').val(data.id);
-                            $('#store_or_update_form #employee_id').val(data.employee_id);
-                            $('#store_or_update_form #deduction_name').val(data.deduction_name);
-                            $('#store_or_update_form #deduction_month').val(data.deduction_month);
-                            $('#store_or_update_form #deduction_amount').val(data.deduction_amount);
-                            $('#store_or_update_form #deduction_description').val(data.deduction_description);
-                            $('#store_or_update_form #status').val(data.status);
+                            $('#store_or_update_form #head').val(data.head);
+                            $('#store_or_update_form #department').val(data.department);
                             $('#store_or_update_form .selectpicker').selectpicker('refresh');
                             $('#store_or_update_modal').modal({
                                 keyboard: false,
                                 backdrop: 'static',
                             });
                             $('#store_or_update_modal .modal-title').html(
-                                '<i class="fas fa-edit text-white"></i> <span>{{__('file.Edit')}} ' + data.name + '</span>');
+                                '<i class="fas fa-edit text-white"></i> <span>{{__('file.Edit')}} ' + data.head + '</span>');
                             $('#store_or_update_modal #save-btn').text('{{__('file.Update')}}');
                         }
                     },
@@ -189,16 +184,18 @@
                 });
             }
         });
-    });
-    // Month datepicker
-    var dp=$("#deduction_month").datepicker( {
-        format: "yyyy-mm",
-        startView: "months",
-        minViewMode: "months"
+
+        $(document).on('click', '.delete_data', function () {
+            let id = $(this).data('id');
+            let name = $(this).data('name');
+            let row = table.row($(this).parent('tr'));
+            let url = "{{ route('hrm.deduction.delete') }}";
+            delete_data(id, url, table, row, name);
+        });
     });
 
-</script>
-{{--    Only INPUT Number and floting Number --}}
+    </script>
+
 <script>
     $(function(){
         $('.number-only').keypress(function(e) {
@@ -209,5 +206,4 @@
             });
     });
 </script>
-
 @endpush

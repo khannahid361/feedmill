@@ -256,4 +256,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('delete', 'AllowanceController@delete')->name('delete');
         Route::post('edit', 'AllowanceController@edit')->name('edit');
     });
+    //Deduction
+    Route::get('hrm-deduction', 'DeductionController@index')->name('hrm.deduction');
+    Route::group(['prefix' => 'hrm-deduction', 'as' => 'hrm.deduction.'], function () {
+        Route::post('datatable-data', 'DeductionController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'DeductionController@storeOrUpdate')->name('store.or.update');
+        Route::post('delete', 'DeductionController@delete')->name('delete');
+        Route::post('edit', 'DeductionController@edit')->name('edit');
+    });
 });
