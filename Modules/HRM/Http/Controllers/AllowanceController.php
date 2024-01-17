@@ -5,6 +5,7 @@ namespace Modules\HRM\Http\Controllers;
 use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Modules\HRM\Entities\Allowance;
+use Modules\HRM\Http\Requests\AllowanceFormRequest;
 
 class AllowanceController extends BaseController
 {
@@ -42,18 +43,17 @@ class AllowanceController extends BaseController
                 foreach ($list as $value) {
                     $no++;
                     $action = '';
-                    if (permission('allowance-view')) {
-                        $action .= ' <a class="dropdown-item edit-data" data-id="' . $value->id . '" data-name="' . $value->title . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
+                    if (permission('allowance-edit')) {
+                        $action .= ' <a class="dropdown-item edit-data" data-id="' . $value->id . '" data-name="' . $value->head . '" data-department="' . $value->department . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
                     }
                     if (permission('allowance-delete')) {
-                        $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->title . '">' . self::ACTION_BUTTON['Delete'] . '</a>';
+                        $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->head . '">' . self::ACTION_BUTTON['Delete'] . '</a>';
                     }
 
                     $row = [];
                     $row[] = $no;
                     $row[] = $value->head;
                     $row[] = ALLOWANCE_DEPARTMENT_LABEL[$value->department];
-                    $row[] = $value->description;
                     $row[] = $value->created_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Modified Yet</span>';
                     $row[] = $value->modified_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Modified Yet</span>';
                     $row[] = action_button($action);//custom helper function for action button
@@ -89,8 +89,25 @@ class AllowanceController extends BaseController
     {
         if ($request->ajax()) {
             if (permission('allowance-delete')) {
-                $result = $this->model->find($request->id)->delete();
+                $result = $this->model->find($request->id);
+                $result->update([
+                   'status' => '2'
+                ]);
                 $output = $this->delete_message($result);
+            } else {
+                $output = $this->unauthorized();
+            }
+            return response()->json($output);
+        } else {
+            return response()->json($this->unauthorized());
+        }
+    }
+
+    public function edit(Request $request)
+    {
+        if ($request->ajax()) {
+            if (permission('allowance-edit')) {
+                $output = $this->model->find($request->id);
             } else {
                 $output = $this->unauthorized();
             }

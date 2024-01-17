@@ -19,36 +19,12 @@
             <div class="modal-body">
                 <div class="row">
                     <input type="hidden" name="update_id" id="update_id"/>
-                    <div class="col-md-12 required" >
-                        <label for="employee_id" class="col-sm-12 control-label" style="padding-left: 0px;">{{ __('file.Employee') }}</label>
-                        <select class="selectpicker form-control" name="employee_id" id="employee_id"  data-live-search="true">
-                            <option value="">Select</option>
-                            @foreach ($employee as $key => $item)
-                                <option value="{{ $item->id }}" >{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-12 required">
-                        <label for="salary_month" class="col-sm-12 control-label" style="padding-left: 0px;">{{ __('file.Allowances Name') }}</label>
-                        <input type="text" class="form-control" name="allowances_name" id="allowances_name" required="required" placeholder="Allowances Name"/>
-                    </div>
-                    <div class="col-md-12 required">
-                        <label for="salary_month" class="col-sm-12 control-label" style="padding-left: 0px;">{{ __('file.Allowances Month') }}</label>
-                        <input type="text" class="form-control" name="allowances_month" id="allowances_month" required="required" placeholder="Select Allowances Month"/>
-                    </div>
-                    <div class="col-md-12 required">
-                        <label for="salary_month" class="col-sm-12 control-label" style="padding-left: 0px;">{{ __('file.Allowances Amount') }}</label>
-                        <input type="text" class="form-control number-only" name="allowances_amount" id="allowances_amount" required="required" placeholder="0.00"/>
-                    </div>
-                    <x-form.textbox labelName="{{__('file.Allowances Description')}}" name="allowances_description" required="required" col="col-md-12" placeholder="Enter Allowances Description"/>
-                    <div class="col-md-12 required" >
-                        <label for="employee_id" class="col-sm-12 control-label" style="padding-left: 0px;">{{ __('file.Status') }}</label>
-                        <select class="selectpicker form-control" name="status" id="status" data-live-search="true">
-                            <option value="">Select</option>
-                                <option value="1"  id="selectBox">Active</option>
-                                <option value="2"  id="selectBox">Inactive</option>
-                        </select>
-                    </div>
+                    <x-form.textbox labelName="{{__('file.Head')}}" name="head" col="col-md-12" />
+                    <x-form.selectbox labelName="Department" name="department" col="col-md-12" class="selectpicker">
+                        @foreach (ALLOWANCE_DEPARTMENT as $key => $value)
+                            <option value="{{ $key }}">{{ $value }}</option>
+                        @endforeach
+                    </x-form.selectbox>
                 </div>
             </div>
             <!-- /modal body -->

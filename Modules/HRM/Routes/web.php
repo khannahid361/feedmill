@@ -254,5 +254,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('datatable-data', 'AllowanceController@get_datatable_data')->name('datatable.data');
         Route::post('store-or-update', 'AllowanceController@storeOrUpdate')->name('store.or.update');
         Route::post('delete', 'AllowanceController@delete')->name('delete');
+        Route::post('edit', 'AllowanceController@edit')->name('edit');
     });
 });

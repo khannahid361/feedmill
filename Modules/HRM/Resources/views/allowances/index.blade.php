@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    @if (permission('allowances-add'))
+                    @if (permission('allowance-add'))
                         <a href="javascript:void(0);" onclick="showFormModal('{{__('file.Add New Allowances')}}','{{__('file.Save')}}')" class="btn btn-primary btn-sm font-weight-bolder">
                             <i class="fas fa-plus-circle"></i> {{__('file.Add New')}}
                         </a>
@@ -33,8 +33,13 @@
             <div class="card-header flex-wrap py-5">
                 <form method="POST" id="form-filter" class="col-md-12 px-0">
                     <div class="row">
-                        <x-form.textbox labelName="{{__('file.Allowances Name')}}" name="allowances_name" col="col-md-4" />
-                        <div class="col-md-8">
+                        <x-form.textbox labelName="{{__('file.Head')}}" name="head" col="col-md-4" />
+                        <x-form.selectbox labelName="Department" name="department" col="col-md-4" class="selectpicker">
+                            @foreach (ALLOWANCE_DEPARTMENT as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
+                        </x-form.selectbox>
+                        <div class="col-md-4">
                             <div style="margin-top:28px;">
                                 <div style="margin-top:28px;">
                                     <button id="btn-reset" class="btn btn-danger btn-sm btn-elevate btn-icon float-right" type="button"
@@ -59,13 +64,10 @@
                                 <thead class="bg-primary">
                                     <tr>
                                         <th>{{__('file.SL')}}</th>
-                                        <th>{{__('file.Allowances Name')}}</th>
-                                        <th>{{__('file.Employee Name')}}</th>
-                                        <th>{{__('file.Allowances Month')}}</th>
-                                        <th>{{__('file.Allowances Amount')}}</th>
-                                        <th>{{__('file.Allowances Purpose')}}</th>
-                                        <th>{{__('file.Status')}}</th>
+                                        <th>{{__('file.Head')}}</th>
+                                        <th>{{__('file.Department')}}</th>
                                         <th>{{__('file.Created By')}}</th>
+                                        <th>{{__('file.Modified By')}}</th>
                                         <th>{{__('file.Action')}}</th>
                                     </tr>
                                 </thead>
@@ -107,22 +109,20 @@
                 zeroRecords: '<strong class="text-danger">No Data Found</strong>'
             },
             "ajax": {
-                "url": "{{route('allowances.datatable.data')}}",
+                "url": "{{route('hrm.allowance.datatable.data')}}",
                 "type": "POST",
                 "data": function (data) {
-                    data.allowances_name   = $("#form-filter #allowances_name").val();
+                    data.head   = $("#form-filter #head").val();
+                    data.department   = $("#form-filter #department").find(':selected').val();
                     data._token             = _token;
                 }
             },
             "columnDefs": [{
-                "targets"  : [0,1,2,3,4,5,6,7,8],
+                "targets"  : [0,1,2,3,4,5],
                 "orderable": false,
                 "className": "text-center"
             },
             ],
-            "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
         });
 
         $('#btn-filter').click(function () {
@@ -137,7 +137,7 @@
         $(document).on('click', '#save-btn', function () {
             let form        = document.getElementById('store_or_update_form');
             let formData    = new FormData(form);
-            let url         = "{{route('allowances.store.or.update')}}";
+            let url         = "{{route('hrm.allowance.store.or.update')}}";
             let id          = $('#update_id').val();
             let method;
             if (id) {
@@ -148,15 +148,16 @@
             store_or_update_data(table, method, url, formData);
         });
 
-        $(document).on('click', '.edit_data', function () {
+        $(document).on('click', '.edit-data', function () {
             let id = $(this).data('id');
             $('#store_or_update_form')[0].reset();
             $('#store_or_update_form .select').val('');
             $('#store_or_update_form').find('.is-invalid').removeClass('is-invalid');
             $('#store_or_update_form').find('.error').remove();
+            console.log(id);
             if (id) {
                 $.ajax({
-                    url: "{{route('allowances.edit')}}",
+                    url: "{{route('hrm.allowance.edit')}}",
                     type: "POST",
                     data: { id: id,_token: _token},
                     dataType: "JSON",
@@ -165,19 +166,15 @@
                             notification(data.status,data.message)
                         }else{
                             $('#store_or_update_form #update_id').val(data.id);
-                            $('#store_or_update_form #employee_id').val(data.employee_id);
-                            $('#store_or_update_form #allowances_name').val(data.allowances_name);
-                            $('#store_or_update_form #allowances_month').val(data.allowances_month);
-                            $('#store_or_update_form #allowances_amount').val(data.allowances_amount);
-                            $('#store_or_update_form #allowances_description').val(data.allowances_description);
-                            $('#store_or_update_form #status').val(data.status);
+                            $('#store_or_update_form #head').val(data.head);
+                            $('#store_or_update_form #department').val(data.department);
                             $('#store_or_update_form .selectpicker').selectpicker('refresh');
                             $('#store_or_update_modal').modal({
                                 keyboard: false,
                                 backdrop: 'static',
                             });
                             $('#store_or_update_modal .modal-title').html(
-                                '<i class="fas fa-edit text-white"></i> <span>{{__('file.Edit')}} ' + data.name + '</span>');
+                                '<i class="fas fa-edit text-white"></i> <span>{{__('file.Edit')}} ' + data.head + '</span>');
                             $('#store_or_update_modal #save-btn').text('{{__('file.Update')}}');
                         }
                     },
@@ -188,15 +185,17 @@
             }
         });
 
+        $(document).on('click', '.delete_data', function () {
+            let id = $(this).data('id');
+            let name = $(this).data('name');
+            let row = table.row($(this).parent('tr'));
+            let url = "{{ route('hrm.allowance.delete') }}";
+            delete_data(id, url, table, row, name);
+        });
     });
-    // Month datepicker
-    var dp=$("#allowances_month").datepicker( {
-        format: "yyyy-mm",
-        startView: "months",
-        minViewMode: "months"
-    });
+
     </script>
-{{--    Only INPUT Number and floting Number --}}
+
 <script>
     $(function(){
         $('.number-only').keypress(function(e) {
