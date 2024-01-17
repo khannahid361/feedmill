@@ -264,4 +264,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('delete', 'DeductionController@delete')->name('delete');
         Route::post('edit', 'DeductionController@edit')->name('edit');
     });
+
+    //Shift
+    Route::get('hrm-shift', 'ShiftController@index')->name('hrm.shift');
+    Route::group(['prefix' => 'hrm-shift', 'as' => 'hrm.shift.'], function () {
+        Route::post('datatable-data', 'ShiftController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'ShiftController@storeOrUpdate')->name('store.or.update');
+        Route::post('delete', 'ShiftController@delete')->name('delete');
+        Route::post('edit', 'ShiftController@edit')->name('edit');
+    });
 });

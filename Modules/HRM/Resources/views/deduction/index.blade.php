@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    @if (permission('allowance-add'))
+                    @if (permission('deduction-add'))
                         <a href="javascript:void(0);" onclick="showFormModal('{{__('file.Add New Deductions')}}','{{__('file.Save')}}')" class="btn btn-primary btn-sm font-weight-bolder">
                             <i class="fas fa-plus-circle"></i> {{__('file.Add New')}}
                         </a>

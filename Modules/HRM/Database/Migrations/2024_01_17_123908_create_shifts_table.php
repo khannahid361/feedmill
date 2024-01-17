@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAllowanceDeductionsTable extends Migration
+class CreateShiftsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateAllowanceDeductionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('allowance_deductions', function (Blueprint $table) {
+        Schema::create('shifts', function (Blueprint $table) {
             $table->id();
-            $table->string('head');
-            $table->enum('department',['1','2'])->comment('1 = Employee, 2 = Labor');
-            $table->enum('type',['1','2'])-> comment('1 = allowance, 2 = Deduction');
-            $table->enum('status',['1','2'])-> comment('1 = Active, 2 = Deleted');
+            $table->string('name');
+            $table->time('starting_time');
+            $table->time('ending_time');
+            $table->enum('status', ['1', '2'])->comment('1 = Active , 2 = Deleted');
+            $table->enum('department', ['1', '2'])->comment('1 = Employee , 2 = Labor');
             $table->string('created_by')->nullable();
             $table->string('modified_by')->nullable();
+            $table->string('deleted_by')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +34,6 @@ class CreateAllowanceDeductionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('allowance_deductions');
+        Schema::dropIfExists('shifts');
     }
 }
