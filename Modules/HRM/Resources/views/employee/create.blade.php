@@ -99,7 +99,7 @@
                                                         <option value="2">{{ __('Female') }}</option>
                                                     </x-form.selectbox>
                                                     <div class="form-group col-md-12 required">
-                                                        <label for="sale_date">{{__('file.Date of Birth')}}</label>
+                                                        <label for="date_of_birth">{{__('file.Date of Birth')}}</label>
                                                         <input type="date" class="form-control date" id="date_of_birth" name="date_of_birth" value="{{date('Y-m-d')}}"/>
                                                     </div>
                                                     <x-form.selectbox labelName="{{__('file.Marital Status')}}" name="marital_status" required="required" col="col-md-12" class="selectpicker">
