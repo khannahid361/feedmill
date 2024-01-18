@@ -36,21 +36,47 @@
                                                             <input type="text" class="form-control"  readonly value="{{$employee->employee_id}}">
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <div class="row">
                                                     <x-form.selectbox labelName="{{__('file.Employee Type')}}" name="employee_type" required="required" col="col-md-6" class="selectpicker">
                                                         <option value="1">{{ __('Provision') }}</option>
                                                         <option value="2">{{ __('Permanent') }}</option>
                                                         <option value="3">{{ __('Full Time') }}</option>
                                                         <option value="4">{{ __('Part Time') }}</option>
                                                     </x-form.selectbox>
+                                                    <x-form.selectbox labelName="{{__('file.Shift')}}" name="shift_id" required="required" col="col-md-6" class="selectpicker">
+                                                       @foreach($shifts as $shift)
+                                                            <option value="{{ $shift->id }}">{{ $shift->name }}</option>
+                                                       @endforeach
+                                                    </x-form.selectbox>
                                                     <div class="col-md-6 form-group required">
                                                         <label for="salary">{{__('file.Basic Salary')}}</label>
                                                         <div class="input-group" >
-                                                            <input type="text" class="form-control number-only"  name="basic_salary" id="basic_salary" required="required" value="" placeholder="0.00">
+                                                            <input type="text" class="form-control number-only salary"  name="basic_salary" id="basic_salary" required="required" value="" placeholder="0.00">
                                                         </div>
+                                                    </div>
+                                                    <div class="col-md-6 form-group required">
+                                                        <label>Weekly Holidays</label>
+                                                        <br>
+                                                        <label for="day1">
+                                                            <input type="checkbox" id="day1" name="days[]" value="Saturday"> Saturday
+                                                        </label> &nbsp; &nbsp;
+                                                        <label for="day2">
+                                                            <input type="checkbox" id="day2" name="days[]" value="Sunday"> Sunday
+                                                        </label> &nbsp; &nbsp;
+                                                        <label for="day3">
+                                                            <input type="checkbox" id="day3" name="days[]" value="Monday"> Monday
+                                                        </label> &nbsp; &nbsp;
+                                                        <label for="day4">
+                                                            <input type="checkbox" id="day4" name="days[]" value="Tuesday"> Tuesday
+                                                        </label> &nbsp; &nbsp;
+                                                        <label for="day5">
+                                                            <input type="checkbox" id="day5" name="days[]" value="Wednesday"> Wednesday
+                                                        </label> &nbsp; &nbsp;
+                                                        <label for="day6">
+                                                            <input type="checkbox" id="day6" name="days[]" value="Thursday"> Thursday
+                                                        </label> &nbsp; &nbsp;
+                                                        <label for="day7">
+                                                            <input type="checkbox" id="day7" namew="days[]" value="Friday"> Friday
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -75,42 +101,15 @@
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <div class="row">
+                                                            @foreach($allowances as $key => $allowance)
                                                             <div class="col-md-6 form-group required">
-                                                                <label for="title">{{__('file.House Rent Allowance')}}</label>
+                                                                <label for="allowance_{{ $key }}_head_value">{{ $allowance->head }}</label>
                                                                 <div class="input-group" >
-                                                                    <input type=text step=any class="form-control number-only"   name="house_rent_allowance" id="house_rent_allowance" placeholder="0.00">
+                                                                    <input type=hidden step=any class="form-control"   name="allowance[{{ $key }}][head_id]" id="allowance_{{ $key }}_head_id" value="{{ $allowance->id }}">
+                                                                    <input type=text step=any class="form-control number-only allowance salary"   name="allowance[{{ $key }}][head_value]" id="allowance_{{ $key }}_head_value" placeholder="0.00">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6 form-group required">
-                                                                <label for="title">{{__('Medical Allowance')}}</label>
-                                                                <div class="input-group" >
-                                                                    <input type="text" class="form-control number-only"  name="medical_allowance" id="medical_allowance" placeholder="0.00">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6 form-group required">
-                                                                <label for="title">{{__('Transport Allowance')}}</label>
-                                                                <div class="input-group" >
-                                                                    <input type="text" class="form-control number-only"  name="transport_allowance" id="transport_allowance" placeholder="0.00">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6 form-group required">
-                                                                <label for="title">{{__('Mobile Allowance')}}</label>
-                                                                <div class="input-group" >
-                                                                    <input type="text" class="form-control number-only"  name="mobile_allowance" id="mobile_allowance" placeholder="0.00">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6 form-group required">
-                                                                <label for="title">{{__('Other Allowance')}}</label>
-                                                                <div class="input-group" >
-                                                                    <input type="text" class="form-control number-only"  name="other_allowance" id="other_allowance" placeholder="0.00">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6 form-group required">
-                                                                <label for="title">{{__('Provident Fund Contribution')}}</label>
-                                                                <div class="input-group" >
-                                                                    <input type="text" class="form-control number-only"  name="provident_fund_contribution" id="provident_fund_contribution" placeholder="0.00">
-                                                                </div>
-                                                            </div>
+                                                            @endforeach
                                                         </div>
                                                     </div>
                                                 </div>
@@ -134,24 +133,15 @@
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <div class="row">
-                                                            <div class="col-md-12 form-group ">
-                                                                <label for="title">{{__('Tax Deduction')}}</label>
+                                                            @foreach($deductions as  $key => $deduction)
+                                                            <div class="col-md-6 form-group ">
+                                                                <label for="deductions_{{ $key }}_head_value">{{ $deduction->head }}</label>
                                                                 <div class="input-group" >
-                                                                    <input type="text" class="form-control number-only"  name="tax_deduction" id="tax_deduction" placeholder="0.00">
+                                                                    <input type="hidden" class="form-control number-only"  name="deductions[{{ $key }}][head_id]" id="deductions_{{ $key }}_head_id" value="{{ $deduction->id }}">
+                                                                    <input type="text" class="form-control number-only deduction salary"  name="deductions[{{ $key }}][head_value]" id="deductions_{{ $key }}_head_value" placeholder="0.00">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-12 form-group ">
-                                                                <label for="title">{{__('Provident Fund Deduction')}}</label>
-                                                                <div class="input-group" >
-                                                                    <input type="text" class="form-control number-only"  name="provident_fund_deduction" id="provident_fund_deduction" placeholder="0.00">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 form-group ">
-                                                                <label for="title">{{__('Other Deduction')}}</label>
-                                                                <div class="input-group" >
-                                                                    <input type="text" class="form-control number-only"  name="other_deduction" id="other_deduction" placeholder="0.00">
-                                                                </div>
-                                                            </div>
+                                                            @endforeach
                                                         </div>
                                                     </div>
                                                 </div>
@@ -163,37 +153,7 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-6" style="margin-top: 0px;">
-                        <div class="card card-custom gutter-b" style="border-top: 4px solid #3c8dbc;margin-top:2px;">
-                            <h3 style="padding: 2px 9px;">Provident Fund</h3>
-                        </div>
-                        <div class="card card-custom" style="margin-top: -24px;">
-                            <div class="card-body" style="border: 2px solid #eaf2f2;">
-                                <div id="kt_datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <div class="row">
-                                                            <div class="col-md-12 form-group required">
-                                                                <label for="title">{{__('Total Provident Fund')}}</label>
-                                                                <div class="input-group" >
-                                                                    <input type="text" class="form-control"  name="total_provident_fund" id="total_provident_fund" readonly placeholder="0.00">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6" style="margin-top: 0px;">
+                    <div class="col-sm-12" style="margin-top: 0px;">
                         <div class="card card-custom gutter-b" style="border-top: 4px solid #dd4b39;margin-top:2px;">
                             <h3 style="padding: 2px 9px;">Total Salary Details</h3>
                         </div>
@@ -310,27 +270,24 @@
         });
 
         //For Calculation
-        $(document).on("keyup", "#store_or_update_form", function() {
+        $(document).on("keyup", ".salary", function() {
             calculation();
         });
         function calculation() {
             var sum = 0;
-            var basic_salary                = $("#basic_salary").val();
-            var house_rent_allowance        = $("#house_rent_allowance").val();
-            var medical_allowance           = $("#medical_allowance").val();
-            var transport_allowance         = $("#transport_allowance").val();
-            var mobile_allowance            = $("#mobile_allowance").val();
-            var provident_fund_contribution = $("#provident_fund_contribution").val();
-            var other_allowance             = $("#other_allowance").val();
-            var tax_deduction               = $("#tax_deduction").val();
-            var provident_fund_deduction    = $("#provident_fund_deduction").val();
-            var other_deduction             = $("#other_deduction").val();
+            var basic_salary          = Number($("#basic_salary").val());
+            var allowance             = 0;
+            var deduction             = 0;
+            $('.allowance').each(function(){
+                allowance += Number($(this).val());
+            });
 
-            var gross_salary    = (+basic_salary + +house_rent_allowance + +medical_allowance + +transport_allowance + +mobile_allowance + +other_allowance);
+            $('.deduction').each(function(){
+                deduction += Number($(this).val());
+            });
+            var gross_salary    = basic_salary + allowance;
 
-            var total_deduction = (+tax_deduction + +provident_fund_deduction + +other_deduction);
-
-            $("#total_provident_fund").val(+provident_fund_contribution + +provident_fund_deduction);
+            var total_deduction = deduction;
 
             $("#gross_salary").val(gross_salary);
             $("#total_deduction").val(total_deduction);
