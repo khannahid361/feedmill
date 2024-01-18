@@ -106,7 +106,7 @@ class EmployeeController extends BaseController
                         $this->delete_file($request->resume, EMPLOYEE_IMAGE_PATH);
                     }
                 }
-                $collection  = collect($request->all())->merge(['user_id' => $user->id,'created_by' => $user_id,'joining_month' => $joining_month,$resume]);
+                $collection  = collect($request->all())->merge(['user_id' => $user->id,'created_by' => $user_id,'joining_month' => $joining_month, 'resume' => $resume]);
                 $employees   = $this->model->create($collection->all());
                 $output      = $this->store_message($employees);
             }else{

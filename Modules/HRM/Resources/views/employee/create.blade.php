@@ -93,16 +93,25 @@
                                             <div class="col-sm-6">
                                                 <input type="hidden" name="update_id" id="update_id" value=""/>
                                                 <div class="row">
-                                                    <x-form.textbox labelName="{{__('file.Employee ID')}}" name="employee_id" required="required" col="col-md-12" placeholder="Enter Employee ID"/>
                                                     <x-form.textbox labelName="{{__('file.Name')}}" name="name" required="required" col="col-md-12" placeholder="Enter name"/>
-                                                    <x-form.textbox labelName="{{__('file.Username')}}" name="username" required="required" col="col-md-12" placeholder="Enter Username"/>
-                                                    <x-form.textbox labelName="{{__('file.Email')}}" name="email" required="required" col="col-md-12" placeholder="Enter Email Address"/>
-                                                    <x-form.textbox labelName="{{__('file.Contact No')}}" name="contact_no_one" required="required" col="col-md-12" placeholder="Enter Contact No"/>
-                                                    <x-form.textbox labelName="{{__('file.Emergency Contact')}}" name="contact_no_two"  col="col-md-12" placeholder="Enter Emergency Contact"/>
                                                     <x-form.selectbox labelName="{{__('file.Gender')}}" name="gender" required="required" col="col-md-12" class="selectpicker">
                                                         <option value="1">{{ __('Male') }}</option>
                                                         <option value="2">{{ __('Female') }}</option>
                                                     </x-form.selectbox>
+                                                    <div class="form-group col-md-12 required">
+                                                        <label for="sale_date">{{__('file.Date of Birth')}}</label>
+                                                        <input type="date" class="form-control date" id="date_of_birth" name="date_of_birth" value="{{date('Y-m-d')}}"/>
+                                                    </div>
+                                                    <x-form.selectbox labelName="{{__('file.Marital Status')}}" name="marital_status" required="required" col="col-md-12" class="selectpicker">
+                                                        <option value="1">{{ __('Married') }}</option>
+                                                        <option value="2">{{ __('Single') }}</option>
+                                                        <option value="3">{{ __('Divorced') }}</option>
+                                                        <option value="4">{{ __('Separated') }}</option>
+                                                        <option value="5">{{ __('Widowed') }}</option>
+                                                    </x-form.selectbox>
+                                                    <x-form.textbox labelName="{{__('file.Email')}}" name="email" required="required" col="col-md-12" placeholder="Enter Email Address"/>
+                                                    <x-form.textbox labelName="{{__('file.Contact No')}}" name="contact_no_one" required="required" col="col-md-12" placeholder="Enter Contact No"/>
+                                                    <x-form.textbox labelName="{{__('file.Emergency Contact')}}" name="contact_no_two"  col="col-md-12" placeholder="Enter Emergency Contact"/>
                                                     <x-form.textbox labelName="{{__('file.Address')}}" name="present_address" required="required" col="col-md-12" placeholder="Enter Address"/>
                                                     <x-form.selectbox labelName="{{__('file.Blood Group')}}" name="blood_group" required="required" col="col-md-12" class="selectpicker">
                                                         <option value="A+">{{ __('A+') }}</option>
@@ -116,24 +125,15 @@
                                                     </x-form.selectbox>
                                                     <x-form.textbox labelName="{{__('file.National ID Number')}}" name="id_number" required="required" col="col-md-12" placeholder="Enter ID Number"/>
                                                     <div class="form-group col-md-12 required">
-                                                        <label for="sale_date">{{__('file.Date of Birth')}}</label>
-                                                        <input type="date" class="form-control date" id="date_of_birth" name="date_of_birth" value="{{date('Y-m-d')}}"/>
+                                                        <label for="sale_date">{{__('file.Joining Date')}}</label>
+                                                        <input type="date" class="form-control date" id="joining_date" name="joining_date" required="required" value="{{date('Y-m-d')}}"/>
                                                     </div>
-                                                    <x-form.selectbox labelName="{{__('file.Marital Status')}}" name="marital_status" required="required" col="col-md-12" class="selectpicker">
-                                                        <option value="1">{{ __('Married') }}</option>
-                                                        <option value="2">{{ __('Single') }}</option>
-                                                        <option value="3">{{ __('Divorced') }}</option>
-                                                        <option value="4">{{ __('Separated') }}</option>
-                                                        <option value="5">{{ __('Widowed') }}</option>
-                                                    </x-form.selectbox>
+                                                    <x-form.textbox labelName="{{__('file.Username')}}" name="username" required="required" col="col-md-12" placeholder="Enter Username"/>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="row">
-                                                    <div class="form-group col-md-12 required">
-                                                        <label for="sale_date">{{__('file.Joining Date')}}</label>
-                                                        <input type="date" class="form-control date" id="joining_date" name="joining_date" required="required" value="{{date('Y-m-d')}}"/>
-                                                    </div>
+                                                    <x-form.textbox labelName="{{__('file.Employee ID')}}" name="employee_id" required="required" col="col-md-12" placeholder="Enter Employee ID"/>
                                                     <x-form.selectbox labelName="{{__('file.Branch')}}" name="branch_id" required="required" col="col-md-12" class="selectpicker">
                                                         @foreach($branch as $row)
                                                         <option value="{{$row->id}}">{{$row->name }}</option>
@@ -152,6 +152,7 @@
                                                     <x-form.textarea labelName="{{__('file.Academic Qualification')}}" name="academic_qualification" required required="required" col="col-md-12" placeholder="Enter Academic Qualification"/>
                                                     <x-form.textarea labelName="{{__('file.Professional Qualification')}}" name="professional_qualification"  col="col-md-12" placeholder="Enter Professional Qualification"/>
                                                     <x-form.textarea labelName="{{__('file.Experience')}}" name="experience" required required="required" col="col-md-12" placeholder="Enter Experience"/>
+                                                    <x-form.textbox labelName="{{__('file.Previous Workplace')}}" name="previous_workplace" required="required" col="col-md-12" placeholder="Enter Previous Work Place"/>
                                                     <div class="col-sm-12">
                                                         <div class="card">
                                                             <h3>Upload Resume</h3>

@@ -12,23 +12,26 @@ use Modules\Designation\Entities\Designation;
 class Employee extends BaseModel
 {
     protected $table = 'employees';
-    protected $fillable = ['user_id','employee_id','name','username','email','gender','father_name','mother_name','spouse_name','present_address','permanent_address','home_district','academic_qualification','professional_qualification','joining_date','joining_month','experience','reference','id_name','id_number','contact_no_one','contact_no_two','emergency_contact','web','date_of_birth','marital_status','branch_id','designation_id','department_id','activation_status','blood_group','deletion_status','resume','status','retired_date','created_by','date','modified_by'];
+    protected $fillable = ['user_id', 'employee_id', 'name', 'username', 'email', 'gender', 'father_name', 'mother_name', 'spouse_name', 'present_address', 'permanent_address', 'home_district', 'academic_qualification', 'professional_qualification', 'joining_date', 'joining_month', 'experience', 'reference', 'id_name', 'id_number', 'contact_no_one', 'contact_no_two', 'emergency_contact', 'web', 'date_of_birth', 'marital_status', 'branch_id', 'designation_id', 'department_id', 'activation_status', 'blood_group', 'deletion_status', 'resume', 'status', 'retired_date', 'created_by', 'date', 'modified_by', 'previous_workplace'];
 
     public function designation()
     {
-        return $this->belongsTo(Designation::class,'designation_id','id');
+        return $this->belongsTo(Designation::class, 'designation_id', 'id');
     }
+
     public function department()
     {
-        return $this->belongsTo(Department::class,'department_id','id');
+        return $this->belongsTo(Department::class, 'department_id', 'id');
     }
 
     /******************************************
      * * * Begin :: Custom Datatable Code * * *
      *******************************************/
-    public function setPasswordAttribute($value){
+    public function setPasswordAttribute($value)
+    {
         $this->attributes['password'] = Hash::make($value);
     }
+
     //custom search column property
     protected $_employee_id;
 

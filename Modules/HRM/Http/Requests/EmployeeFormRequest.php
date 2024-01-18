@@ -30,11 +30,8 @@ class EmployeeFormRequest extends FormRequest
         $rules['date_of_birth']             = ['required'];
         $rules['academic_qualification']    = ['required'];
         $rules['experience']                = ['required'];
-//        if(request()->update_id)
-//        {
-//            $rules['name']          = 'unique:departments,name,'.request()->update_id;
-//            $rules['depart_code']  = 'unique:departments,depart_code,'.request()->update_id;
-//        }
+        $rules['previous_workplace']        = ['nullable'];
+
         return $rules;
     }
 
