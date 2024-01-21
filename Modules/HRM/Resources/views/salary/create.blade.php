@@ -54,29 +54,36 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 form-group required">
+                                                        <label for="overtime_rate">{{__('file.Overtime Rate(Hourly)')}}</label>
+                                                        <div class="input-group" >
+                                                            <input type="text" class="form-control number-only"  name="overtime_rate" id="overtime_rate" required="required" value="" placeholder="0.00">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 form-group required">
                                                         <label>Weekly Holidays</label>
                                                         <br>
+                                                        <label for="day7">
+                                                            <input type="checkbox" id="day7" name="weekly_holidays[]" checked value="Friday"> Friday
+                                                        </label> &nbsp; &nbsp;
                                                         <label for="day1">
-                                                            <input type="checkbox" id="day1" name="days[]" value="Saturday"> Saturday
+                                                            <input type="checkbox" id="day1" name="weekly_holidays[]" value="Saturday"> Saturday
                                                         </label> &nbsp; &nbsp;
                                                         <label for="day2">
-                                                            <input type="checkbox" id="day2" name="days[]" value="Sunday"> Sunday
+                                                            <input type="checkbox" id="day2" name="weekly_holidays[]" value="Sunday"> Sunday
                                                         </label> &nbsp; &nbsp;
                                                         <label for="day3">
-                                                            <input type="checkbox" id="day3" name="days[]" value="Monday"> Monday
+                                                            <input type="checkbox" id="day3" name="weekly_holidays[]" value="Monday"> Monday
                                                         </label> &nbsp; &nbsp;
                                                         <label for="day4">
-                                                            <input type="checkbox" id="day4" name="days[]" value="Tuesday"> Tuesday
+                                                            <input type="checkbox" id="day4" name="weekly_holidays[]" value="Tuesday"> Tuesday
                                                         </label> &nbsp; &nbsp;
                                                         <label for="day5">
-                                                            <input type="checkbox" id="day5" name="days[]" value="Wednesday"> Wednesday
+                                                            <input type="checkbox" id="day5" name="weekly_holidays[]" value="Wednesday"> Wednesday
                                                         </label> &nbsp; &nbsp;
                                                         <label for="day6">
-                                                            <input type="checkbox" id="day6" name="days[]" value="Thursday"> Thursday
+                                                            <input type="checkbox" id="day6" name="weekly_holidays[]" value="Thursday"> Thursday
                                                         </label> &nbsp; &nbsp;
-                                                        <label for="day7">
-                                                            <input type="checkbox" id="day7" namew="days[]" value="Friday"> Friday
-                                                        </label>
+
                                                     </div>
                                                 </div>
                                             </div>

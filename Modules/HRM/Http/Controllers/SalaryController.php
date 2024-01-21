@@ -7,10 +7,12 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Modules\HRM\Entities\Allowance;
 use Modules\HRM\Entities\Deduction;
 use Modules\HRM\Entities\Employee;
 use Modules\HRM\Entities\Salary;
+use Modules\HRM\Entities\SalaryAllowancDeduction;
 use Modules\HRM\Entities\Shift;
 use Modules\HRM\Http\Requests\SalaryFormRequest;
 
@@ -109,18 +111,45 @@ class SalaryController extends BaseController
 
     public function store_or_update_data(SalaryFormRequest $request)
     {
-        dd($request->all());
         if ($request->ajax()) {
-            if (permission('salary-add')) {
-                date_default_timezone_set('Asia/Dhaka');
-                $date = date('Y-m-d');
-                $month = date('Y-m');
-                $collection = collect($request->all())->merge(['date' => $date, 'month' => $month, 'created_by' => Auth::user()->id, 'house_rent_allowance' => $request->house_rent_allowance ?? 0, 'medical_allowance' => $request->medical_allowance ?? 0, 'transport_allowance' => $request->transport_allowance ?? 0, 'mobile_allowance' => $request->mobile_allowance ?? 0, 'other_allowance' => $request->other_allowance ?? 0, 'provident_fund_contribution' => $request->provident_fund_contribution ?? 0, 'total_provident_fund' => $request->total_provident_fund ?? 0, 'tax_deduction' => $request->tax_deduction ?? 0, 'provident_fund_deduction' => $request->provident_fund_deduction ?? 0, 'other_deduction' => $request->other_deduction ?? 0,]);
-//                return response()->json($collection);
-                $salary = $this->model->create($collection->all());
-                $output = $this->store_message($salary);
-            } else {
-                $output = $this->unauthorized();
+            try {
+                if (permission('salary-add')) {
+                    DB::beginTransaction();
+                    date_default_timezone_set('Asia/Dhaka');
+                    $date = date('Y-m-d');
+                    $month = date('Y-m');
+                    $weekly_holidays = json_encode($request->weekly_holidays);
+                    $collection = collect($request->all())->merge(['date' => $date, 'month' => $month, 'created_by' => Auth::user()->username, 'weekly_holidays' => $weekly_holidays])->except(['allowance', 'deductions']);
+                    $salary = $this->model->create($collection->all());
+                    $heads = [];
+                    foreach ($request->allowance as $value)
+                    {
+                        $heads[] = [
+                            'salary_id'     => $salary->id,
+                            'head_id'       => $value['head_id'],
+                            'head_value'    => $value['head_value'],
+                            'type'          => 1,
+                        ];
+                    }
+
+                    foreach ($request->deductions as $value)
+                    {
+                        $heads[] = [
+                            'salary_id'     => $salary->id,
+                            'head_id'       => $value['head_id'],
+                            'head_value'    => $value['head_value'],
+                            'type'          => 2,
+                        ];
+                    }
+                    SalaryAllowancDeduction::insert($heads);
+                    $output = $this->store_message($salary);
+                    DB::commit();
+                } else {
+                    $output = $this->unauthorized();
+                }
+            } catch (\Exception $e) {
+                DB::rollback();
+                $output = ['status' => 'error', 'message' => $e->getMessage()];
             }
             return response()->json($output);
         } else {

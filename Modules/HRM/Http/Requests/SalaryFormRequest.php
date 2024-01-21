@@ -13,23 +13,18 @@ class SalaryFormRequest extends FormRequest
      */
     public function rules()
     {
-        $rules['employee_id']                   = ['required','string','unique:employees,name'];
+        $rules['employee_id']                   = ['required','string','unique:employees,employee_id'];
         $rules['basic_salary']                  = ['required'];
         $rules['employee_type']                 = ['required'];
+        $rules['shift_id']                 = ['required', 'numeric', 'gt:0'];
+        $rules['gross_salary']                 = ['required', 'numeric', 'gt:0'];
+        $rules['total_deduction']                 = ['required', 'numeric', 'gte:0'];
+        $rules['net_salary']                 = ['required', 'numeric', 'gt:0'];
+        $rules['overtime_rate']                 = ['required', 'numeric', 'gt:0'];
 
-//        if(request()->update_id)
-//        {
-//            $rules['name']          = 'unique:departments,name,'.request()->update_id;
-//            $rules['depart_code']  = 'unique:departments,depart_code,'.request()->update_id;
-//        }
         return $rules;
     }
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         return true;
