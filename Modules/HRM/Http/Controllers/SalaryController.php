@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\HRM\Entities\Allowance;
 use Modules\HRM\Entities\Deduction;
 use Modules\HRM\Entities\Employee;
+use Modules\HRM\Entities\LeaveCategory;
 use Modules\HRM\Entities\Salary;
 use Modules\HRM\Entities\SalaryAllowancDeduction;
 use Modules\HRM\Entities\Shift;
@@ -78,16 +79,6 @@ class SalaryController extends BaseController
         }
     }
 
-    public function go(Request $request)
-    {
-        request()->validate([
-            'employee_id' => 'required',
-        ], [
-            'employee_id.required' => 'The employee name field is required',
-        ]);
-        return redirect('/salary/manage-salary/' . $request->employee_id);
-    }
-
     public function create($user_id)
     {
         if (permission('salary-add')) {
@@ -99,10 +90,11 @@ class SalaryController extends BaseController
             $shifts = Shift::where(['status' => 1, 'department' => 1])->get();
             $allowances = Allowance::where(['department' => 1, 'type' => 1, 'status' => 1])->get();
             $deductions = Deduction::where(['department' => 1, 'type' => 2, 'status' => 1])->get();
+            $leaveCategories = LeaveCategory::take(6)->orderBy('id', 'asc')->get();
             if (empty($salary)) {
-                return view('hrm::salary.create', compact('employee', 'employee_id', 'salary', 'shifts', 'allowances', 'deductions'));
+                return view('hrm::salary.create', compact('employee', 'employee_id', 'salary', 'shifts', 'allowances', 'deductions', 'leaveCategories'));
             } else {
-                return view('hrm::salary.edit', compact('employee', 'employee_id', 'salary', 'shifts', 'allowances', 'deductions'));
+                return view('hrm::salary.edit', compact('employee', 'employee_id', 'salary', 'shifts', 'allowances', 'deductions', 'leaveCategories'));
             }
         } else {
             return $this->access_blocked();
@@ -163,7 +155,8 @@ class SalaryController extends BaseController
             $setTitle = __('file.Employee Edit');
             $this->setPageData($setTitle, $setTitle, 'far fa-handshake', [['name' => $setTitle]]);
             $salary = Salary::find($id);
-            return view('hrm::salary.edit', compact('salary'));
+            $leaveCategories = LeaveCategory::take(6)->orderBy('id', 'asc')->get();
+            return view('hrm::salary.edit', compact('salary', 'leaveCategories'));
         } else {
             return $this->access_blocked();
         }
