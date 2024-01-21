@@ -176,9 +176,12 @@ class SalaryController extends BaseController
         if (permission('employee-access')) {
             $setTitle = __('file.Employee Edit');
             $this->setPageData($setTitle, $setTitle, 'far fa-handshake', [['name' => $setTitle]]);
-            $salary = Salary::find($id);
+            $salary = Salary::with('leaves', 'shift')->find($id);
             $leaveCategories = LeaveCategory::take(6)->orderBy('id', 'asc')->get();
-            return view('hrm::salary.edit', compact('salary', 'leaveCategories'));
+            $shifts = Shift::where(['status' => 1, 'department' => 1])->get();
+            $allowances = Allowance::where(['department' => 1, 'type' => 1, 'status' => 1])->get();
+            $deductions = Deduction::where(['department' => 1, 'type' => 2, 'status' => 1])->get();
+            return view('hrm::salary.edit', compact('salary', 'leaveCategories' , 'shifts', 'allowances', 'deductions'));
         } else {
             return $this->access_blocked();
         }
@@ -188,8 +191,42 @@ class SalaryController extends BaseController
     {
         if ($request->ajax()) {
             if (permission('salary-add')) {
-                $collection = collect($request->all());
+                $weekly_holidays = json_encode($request->weekly_holidays);
+                $collection = collect($request->all())->merge(['modified_by' => Auth::user()->username, 'weekly_holidays' => $weekly_holidays])->except(['allowance', 'deductions', 'leave']);
                 $salary = $this->model->find($request->update_id)->update($collection->all());
+                $heads = [];
+                foreach ($request->allowance as $value)
+                {
+                    $heads[] = [
+                        'salary_id'     => $request->update_id,
+                        'head_id'       => $value['head_id'],
+                        'head_value'    => $value['head_value'],
+                        'type'          => 1,
+                    ];
+                }
+
+                foreach ($request->deductions as $value)
+                {
+                    $heads[] = [
+                        'salary_id'     => $request->update_id,
+                        'head_id'       => $value['head_id'],
+                        'head_value'    => $value['head_value'],
+                        'type'          => 2,
+                    ];
+                }
+                SalaryAllowancDeduction::insert($heads);
+                $leaves = [];
+                $existingLeaves = AssignLeave::where('employee_id', $request->employee_id)->delete();
+                foreach ($request->leave as $value)
+                {
+                    $leaves[] = [
+                        'employee_id'        => $request->employee_id,
+                        'leave_category_id'  => $value['category_id'],
+                        'number_of_days'     => $value['number_of_days'],
+                        'created_by'         => auth()->user()->username
+                    ];
+                }
+                AssignLeave::insert($leaves);
                 $output = $this->store_message($salary);
             } else {
                 $output = $this->unauthorized();

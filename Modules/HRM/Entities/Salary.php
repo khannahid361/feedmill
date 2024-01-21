@@ -19,6 +19,10 @@ class Salary extends BaseModel
         return $this->belongsTo(Employee::class, 'employee_id', 'id');
     }
 
+    public function leaves()
+    {
+        return $this->hasMany(AssignLeave::class, 'employee_id', 'employee_id');
+    }
     //custom search column property
     protected $employee_id;
 
