@@ -7,7 +7,7 @@ use App\Models\BaseModel;
 class Salary extends BaseModel
 {
     protected $table = 'salarys';
-    protected $fillable = ['employee_id', 'shift_id', 'weekly_holidays', 'employee_type', 'basic_salary', 'gross_salary', 'total_deduction', 'net_salary', 'date', 'month', 'joining_month', 'status', 'retired_date', 'created_by', 'modified_by', 'overtime_rate'];
+    protected $fillable = ['employee_id', 'shift_id', 'weekly_holidays', 'employee_type', 'basic_salary', 'gross_salary', 'total_deduction', 'net_salary', 'date', 'month', 'joining_month', 'status', 'retired_date', 'created_by', 'modified_by', 'overtime_rate', 'paid_leave'];
 
     public function shift()
     {

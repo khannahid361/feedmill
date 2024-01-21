@@ -21,7 +21,11 @@ class SalaryFormRequest extends FormRequest
         $rules['total_deduction']                 = ['required', 'numeric', 'gte:0'];
         $rules['net_salary']                 = ['required', 'numeric', 'gt:0'];
         $rules['overtime_rate']                 = ['required', 'numeric', 'gt:0'];
-
+        if(request()->has('leave')) {
+            foreach (request()->leave as $key => $value) {
+                $rules['leave.'.$key.'.number_of_days']             = ['required','numeric','gte:0'];
+            }
+        }
         return $rules;
     }
 

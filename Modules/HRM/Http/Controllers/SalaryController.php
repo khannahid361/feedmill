@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\HRM\Entities\Allowance;
+use Modules\HRM\Entities\AssignLeave;
 use Modules\HRM\Entities\Deduction;
 use Modules\HRM\Entities\Employee;
 use Modules\HRM\Entities\LeaveCategory;
@@ -79,6 +80,15 @@ class SalaryController extends BaseController
         }
     }
 
+    public function go(Request $request)
+    {
+        request()->validate([
+            'employee_id' => 'required',
+        ], [
+            'employee_id.required' => 'The employee name field is required',
+        ]);
+        return redirect('/salary/manage-salary/' . $request->employee_id);
+    }
     public function create($user_id)
     {
         if (permission('salary-add')) {
@@ -111,7 +121,7 @@ class SalaryController extends BaseController
                     $date = date('Y-m-d');
                     $month = date('Y-m');
                     $weekly_holidays = json_encode($request->weekly_holidays);
-                    $collection = collect($request->all())->merge(['date' => $date, 'month' => $month, 'created_by' => Auth::user()->username, 'weekly_holidays' => $weekly_holidays])->except(['allowance', 'deductions']);
+                    $collection = collect($request->all())->merge(['date' => $date, 'month' => $month, 'created_by' => Auth::user()->username, 'weekly_holidays' => $weekly_holidays])->except(['allowance', 'deductions', 'leave']);
                     $salary = $this->model->create($collection->all());
                     $heads = [];
                     foreach ($request->allowance as $value)
@@ -134,6 +144,18 @@ class SalaryController extends BaseController
                         ];
                     }
                     SalaryAllowancDeduction::insert($heads);
+                    $leaves = [];
+                    $existingLeaves = AssignLeave::where('employee_id', $request->employee_id)->delete();
+                    foreach ($request->leave as $value)
+                    {
+                        $leaves[] = [
+                            'employee_id'        => $request->employee_id,
+                            'leave_category_id'  => $value['category_id'],
+                            'number_of_days'     => $value['number_of_days'],
+                            'created_by'         => auth()->user()->username
+                        ];
+                    }
+                    AssignLeave::insert($leaves);
                     $output = $this->store_message($salary);
                     DB::commit();
                 } else {
