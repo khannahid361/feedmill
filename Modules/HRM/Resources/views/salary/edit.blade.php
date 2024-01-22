@@ -28,7 +28,7 @@
                                                                value="{{$salary->employee->id}}">
                                                         <input type="hidden" class="form-control" name="joining_month"
                                                                id="joining_month" readonly
-                                                               value="{{$employee->joining_month}}">
+                                                               value="{{$salary->employee->joining_month}}">
                                                         <label for="title">{{__('Employee Name')}}</label>
                                                         <div class="input-group">
                                                             <input type="text" class="form-control" readonly

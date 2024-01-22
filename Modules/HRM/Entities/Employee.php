@@ -24,6 +24,16 @@ class Employee extends BaseModel
         return $this->belongsTo(Department::class, 'department_id', 'id');
     }
 
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id', 'id');
+    }
+
+    public function salary()
+    {
+        return $this->hasOne(Salary::class, 'employee_id', 'id');
+    }
+
     /******************************************
      * * * Begin :: Custom Datatable Code * * *
      *******************************************/

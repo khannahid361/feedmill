@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDailyAttendancesTable extends Migration
+class CreateOvertimesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateDailyAttendancesTable extends Migration
      */
     public function up()
     {
-        Schema::create('daily_attendances', function (Blueprint $table) {
+        Schema::create('overtimes', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('employee_id');
-            $table->bigInteger('shift_id');
-            $table->date('check_in_date');
-            $table->time('check_in_time');
-            $table->date('check_out_date')->nullable();
-            $table->time('check_out_time')->nullable();
-            $table->double('working_hour')->nullable();
+            $table->date('date');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->double('working_hour');
             $table->enum('dept_type', ['1', '2'])->comment('1 = Employee, 2 = Labour');
             $table->enum('approval_status', ['1', '2'])->default('1')->comment(' 1 = Pending, 2 = Approved');
             $table->enum('type', ['1', '2'])->comment('1 = On-Time, 2 = Absent');
@@ -38,6 +36,6 @@ class CreateDailyAttendancesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('daily_attendances');
+        Schema::dropIfExists('overtimes');
     }
 }
