@@ -114,6 +114,7 @@
         </div>
     </div>
     @include('hrm::employee_leave.modal')
+    @include('hrm::employee_leave.view-modal')
 @endsection
 
 @push('scripts')
@@ -242,6 +243,39 @@
                     $('#duration').val(daysDuration.toFixed(2));
                 } else {
                     $('#duration').val('0.00');
+                }
+            });
+
+            $(document).on('click', '.delete_data', function () {
+                let id = $(this).data('id');
+                let name = $(this).data('name');
+                let row = table.row($(this).parent('tr'));
+                let url = "{{ route('leave.delete') }}";
+                delete_data(id, url, table, row, name);
+            });
+
+            $(document).on('click', '.view-data', function () {
+                let id = $(this).data('id');
+                let name  = $(this).data('name');
+                if (id) {
+                    $.ajax({
+                        url: "{{route('leave.view')}}",
+                        type: "POST",
+                        data: { id: id,_token: _token},
+                        success: function (data) {
+                            $('#view_modal #view-data').html('');
+                            $('#view_modal #view-data').html(data);
+                            $('#view_modal').modal({
+                                keyboard: false,
+                                backdrop: 'static',
+                            });
+                            $('#view_modal .modal-title').html(
+                                '<i class="fas fa-eye text-white"></i> <span> ' + name + 'Leave Details</span>');
+                        },
+                        error: function (xhr, ajaxOption, thrownError) {
+                            console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
+                        }
+                    });
                 }
             });
         });

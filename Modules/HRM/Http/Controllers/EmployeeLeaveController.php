@@ -95,12 +95,13 @@ class EmployeeLeaveController extends BaseController
             }
         }
     }
+
     public function view(Request $request)
     {
         if ($request->ajax()) {
             if (permission('leave-view')) {
-                $data = $this->model->findOrFail($request->id);
-                return view('hrm::holiday.view-modal-data', compact('data'))->render();
+                $data = $this->model->with('employee', 'leaveCategory')->findOrFail($request->id);
+                return view('hrm::employee_leave.modal-data', compact('data'))->render();
             }
         }
     }
@@ -109,10 +110,10 @@ class EmployeeLeaveController extends BaseController
     {
         if ($request->ajax()) {
             if (permission('leave-add') || permission('leave-edit')) {
-                $collection   = collect($request->validated())->merge(['created_by' => Auth::user()->username]);
-                $collection   = $this->track_data($collection,$request->update_id);
-                $result       = $this->model->updateOrCreate(['id'=>$request->update_id],$collection->all());
-                $output       = $this->store_message($result, $request->update_id);
+                $collection = collect($request->validated())->merge(['created_by' => Auth::user()->username]);
+                $collection = $this->track_data($collection, $request->update_id);
+                $result = $this->model->updateOrCreate(['id' => $request->update_id], $collection->all());
+                $output = $this->store_message($result, $request->update_id);
             } else {
                 $output = $this->unauthorized();
             }
@@ -126,7 +127,11 @@ class EmployeeLeaveController extends BaseController
     {
         if ($request->ajax()) {
             if (permission('leave-delete')) {
-                $result = $this->model->find($request->id)->delete();
+                $result = $this->model->find($request->id);
+                $result->update([
+                    'status' => '3',
+                    'deleted_by' => auth()->user()->username,
+                ]);
                 $output = $this->delete_message($result);
             } else {
                 $output = $this->unauthorized();

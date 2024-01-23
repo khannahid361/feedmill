@@ -57,7 +57,7 @@ class EmployeeLeave extends BaseModel
     private function get_datatable_query()
     {
         $this->column_order = ['employee_id', 'leave_category_id', 'status', 'start_date', 'end_date', 'duration', 'notes', 'created_by', 'modified_by', 'approved_by', 'deleted_by', 'is_paid', null];
-        $query = self::with('employee', 'leaveCategory');
+        $query = self::with('employee', 'leaveCategory')->where('status', '!=', '3');
         if (!empty($this->_employee_id)) {
             $query->where('employee_id', $this->_employee_id);
         }
