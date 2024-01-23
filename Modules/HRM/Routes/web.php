@@ -297,5 +297,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('delete', 'EmployeeLeaveController@delete')->name('delete');
         Route::post('edit', 'EmployeeLeaveController@edit')->name('edit');
         Route::post('view', 'EmployeeLeaveController@view')->name('view');
+        Route::get('approve/{id}', 'EmployeeLeaveController@approve')->name('approve');
     });
 });

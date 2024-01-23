@@ -58,6 +58,9 @@ class EmployeeLeaveController extends BaseController
                     if (permission('leave-edit') && $value->status == 1) {
                         $action .= ' <a class="dropdown-item edit-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
                     }
+                    if (permission('leave-approve') && $value->status == 1) {
+                        $action .= ' <a class="dropdown-item" href="' . route("leave.approve", $value->id) . '">' . self::ACTION_BUTTON['Approve'] . '</a>';
+                    }
                     if (permission('leave-view')) {
                         $action .= ' <a class="dropdown-item view-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['View'] . '</a>';
                     }
@@ -140,5 +143,20 @@ class EmployeeLeaveController extends BaseController
         } else {
             return response()->json($this->unauthorized());
         }
+    }
+
+    public function approve($id)
+    {
+        if (permission('leave-approve')) {
+            $result = $this->model->find($id);
+            $result->update([
+                'status' => '2',
+                'approved_by' => auth()->user()->username,
+            ]);
+            $output = ['status' => 'success', 'message' => 'Leave Approve Successfull'];
+        } else {
+            $output = $this->unauthorized();
+        }
+        return redirect()->back()->with($output);
     }
 }

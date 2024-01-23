@@ -16,6 +16,7 @@ class BaseController extends Controller
         'Delete'        => '<i class="fas fa-trash text-danger mr-2"></i> Delete',
         'Generate'        => '<i class="fas fa-file-signature text-danger mr-2"></i> Generate',
         'Change Status' => '<i class="fas fa-check-circle text-success mr-2"></i>Change Status',
+        'Approve' => '<i class="fas fa-check-circle text-success mr-2"></i>Approve',
     ];
 
     public function actionButton($key){
