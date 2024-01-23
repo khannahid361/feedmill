@@ -16,20 +16,10 @@ class EmployeeLeaveFormRequest extends FormRequest
         $rules['employee_id']    = ['required', 'numeric'];
         $rules['leave_category_id']       = ['required', 'numeric'];
         $rules['start_date']        = ['required'];
-        $rules['end_date']          = ['required'];
+        $rules['end_date']           = ['required', 'after_or_equal:start_date'];
         $rules['duration']           = ['required', 'numeric', 'gt:0'];
         $rules['notes']            = ['nullable'];
         $rules['is_paid']            = ['required'];
-        if(request()->update_id)
-        {
-            $rules['employee_id']    = ['required', 'numeric'];
-            $rules['leave_category_id']       = ['required', 'numeric'];
-            $rules['start_date']        = ['required'];
-            $rules['end_date']          = ['required'];
-            $rules['duration']           = ['required', 'numeric', 'gt:0'];
-            $rules['notes']            = ['nullable'];
-            $rules['is_paid']            = ['required'];
-        }
         return $rules;
     }
 

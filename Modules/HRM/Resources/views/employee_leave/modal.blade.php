@@ -39,12 +39,12 @@
                         </x-form.selectbox>
                         <div class="form-group col-md-12 required">
                             <label for="start_date">{{__('file.Start Date')}}</label>
-                            <input type="date" class="form-control date" id="start_date" name="start_date"
+                            <input type="date" class="form-control date date-change" id="start_date" name="start_date"
                                    required="required" value="{{date('Y-m-d')}}"/>
                         </div>
                         <div class="form-group col-md-12 required">
                             <label for="end_date">{{__('file.End Date')}}</label>
-                            <input type="date" class="form-control date" id="end_date" name="end_date"
+                            <input type="date" class="form-control date date-change" id="end_date" name="end_date"
                                    required="required" value="{{date('Y-m-d')}}"/>
                         </div>
                         <div class="form-group col-md-12 required">

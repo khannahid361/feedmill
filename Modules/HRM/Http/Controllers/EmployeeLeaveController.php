@@ -55,10 +55,13 @@ class EmployeeLeaveController extends BaseController
                 foreach ($list as $value) {
                     $no++;
                     $action = '';
+                    if (permission('leave-edit') && $value->status == 1) {
+                        $action .= ' <a class="dropdown-item edit-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
+                    }
                     if (permission('leave-view')) {
                         $action .= ' <a class="dropdown-item view-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['View'] . '</a>';
                     }
-                    if (permission('leave-delete')) {
+                    if (permission('leave-delete') && $value->status == 1) {
                         $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['Delete'] . '</a>';
                     }
                     $row = [];
@@ -83,6 +86,15 @@ class EmployeeLeaveController extends BaseController
         }
     }
 
+    public function edit(Request $request)
+    {
+        if ($request->ajax()) {
+            if (permission('leave-edit')) {
+                $data = $this->model->findOrFail($request->id);
+                return $data;
+            }
+        }
+    }
     public function view(Request $request)
     {
         if ($request->ajax()) {

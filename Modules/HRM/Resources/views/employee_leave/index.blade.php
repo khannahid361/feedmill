@@ -182,7 +182,7 @@
                 store_or_update_data(table, method, url, formData);
             });
 
-            $(document).on('click', '.edit_data', function () {
+            $(document).on('click', '.edit-data', function () {
                 let id = $(this).data('id');
                 $('#store_or_update_form')[0].reset();
                 $('#store_or_update_form .select').val('');
@@ -199,12 +199,15 @@
                                 notification(data.status, data.message)
                             } else {
                                 $('#store_or_update_form #update_id').val(data.id);
-                                $('#store_or_update_form #leave_category').val(data.leave_category);
+                                $('#store_or_update_form #leave_category_id').val(data.leave_category_id);
                                 $('#store_or_update_form #employee_id').val(data.employee_id);
                                 $('#store_or_update_form #start_date').val(data.start_date);
                                 $('#store_or_update_form #end_date').val(data.end_date);
-                                $('#store_or_update_form #purpose').val(data.purpose);
+                                $('#store_or_update_form #notes').val(data.notes);
                                 $('#store_or_update_form #status').val(data.status);
+                                $('#store_or_update_form #duration').val(data.status);
+                                $('#store_or_update_form #is_paid').val(data.is_paid);
+
                                 $('#store_or_update_form .selectpicker').selectpicker('refresh');
                                 $('#store_or_update_modal').modal({
                                     keyboard: false,
@@ -222,6 +225,25 @@
                 }
             });
 
+            $('.date-change').on('change', function (){
+                let startDate = $('#start_date').val();
+                let endDate = $('#end_date').val();
+
+
+                if (startDate && endDate) {
+                    let startDateTime = new Date(startDate);
+                    let endDateTime = new Date(endDate);
+
+                    // Calculate the duration in days
+                    let timeDiff = Math.abs(endDateTime - startDateTime);
+                    let daysDuration = timeDiff / (1000 * 60 * 60 * 24); // Convert milliseconds to days
+
+                    daysDuration = daysDuration + 1;
+                    $('#duration').val(daysDuration.toFixed(2));
+                } else {
+                    $('#duration').val('0.00');
+                }
+            });
         });
     </script>
 @endpush
