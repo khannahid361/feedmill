@@ -288,4 +288,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('attendance', 'AttendanceController@index')->name('attendance');
     Route::post('attendance-get-employees', 'AttendanceController@getEmployees')->name('attendance.get.employees');
     Route::post('attendance-store-or-update', 'AttendanceController@store_or_update')->name('attendance.store.or.update');
+
+    //Leave management
+    Route::get('leave', 'EmployeeLeaveController@index')->name('leave');
+    Route::group(['prefix' => 'leave', 'as' => 'leave.'], function () {
+        Route::post('datatable-data', 'EmployeeLeaveController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'EmployeeLeaveController@storeOrUpdate')->name('store.or.update');
+        Route::post('delete', 'EmployeeLeaveController@delete')->name('delete');
+        Route::post('edit', 'EmployeeLeaveController@edit')->name('edit');
+        Route::post('view', 'EmployeeLeaveController@view')->name('view');
+    });
 });

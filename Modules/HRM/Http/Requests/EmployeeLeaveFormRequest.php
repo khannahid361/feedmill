@@ -13,20 +13,22 @@ class EmployeeLeaveFormRequest extends FormRequest
      */
     public function rules()
     {
-        $rules['leave_category']    = ['required'];
-        $rules['employee_id']       = ['required'];
+        $rules['employee_id']    = ['required', 'numeric'];
+        $rules['leave_category_id']       = ['required', 'numeric'];
         $rules['start_date']        = ['required'];
         $rules['end_date']          = ['required'];
-        $rules['purpose']           = ['required'];
-        $rules['status']            = ['required'];
+        $rules['duration']           = ['required', 'numeric', 'gt:0'];
+        $rules['notes']            = ['nullable'];
+        $rules['is_paid']            = ['required'];
         if(request()->update_id)
         {
-            $rules['leave_category']    = ['required'];
-            $rules['employee_id']       = ['required'];
+            $rules['employee_id']    = ['required', 'numeric'];
+            $rules['leave_category_id']       = ['required', 'numeric'];
             $rules['start_date']        = ['required'];
             $rules['end_date']          = ['required'];
-            $rules['purpose']           = ['required'];
-            $rules['status']            = ['required'];
+            $rules['duration']           = ['required', 'numeric', 'gt:0'];
+            $rules['notes']            = ['nullable'];
+            $rules['is_paid']            = ['required'];
         }
         return $rules;
     }

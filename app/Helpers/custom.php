@@ -377,3 +377,10 @@ define('ALLOWANCE_DEPARTMENT_LABEL',[
     '1'=>'<span class="label label-success label-pill label-inline" style="min-width:70px !important;">Employee</span>',
     '2'=>'<span class="label label-info label-pill label-inline" style="min-width:70px !important;">Labor</span>'
 ]);
+
+define('LEAVE_STATUS',['1'=>'Pending','2'=>'Approved', '3'=>'Deleted']);
+define('LEAVE_STATUS_LABEL',[
+    '1'=>'<span class="label label-success label-pill label-inline" style="min-width:70px !important;">Pending</span>',
+    '2'=>'<span class="label label-info label-pill label-inline" style="min-width:70px !important;">Approved</span>',
+    '3'=>'<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Deleted</span>'
+]);
