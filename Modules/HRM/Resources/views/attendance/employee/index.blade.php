@@ -63,11 +63,10 @@
                                 <div style="margin-top:28px;">
                                     <div style="margin-top:28px;">
                                         <button id="btn-reset"
-                                                class="btn btn-danger btn-sm btn-elevate btn-icon float-left"
+                                                class="btn btn-danger btn-sm btn-elevate btn-icon float-left mr-1"
                                                 type="button"
                                                 data-toggle="tooltip" data-theme="dark" title="{{__('file.Reset')}}">
                                             <i class="fas fa-undo-alt"></i></button>
-
                                         <button id="btn-filter"
                                                 class="btn btn-primary btn-sm btn-elevate btn-icon mr-2 float-left btn-search"
                                                 type="button"
@@ -184,6 +183,27 @@
                         console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
                     }
                 });
+            }
+        }
+
+        function setHours(key) {
+            let checkinDate = $('#salary_' + key + '_check_in_date').val();
+            let checkinTime = $('#salary_' + key + '_check_in_time').val();
+            let checkoutDate = $('#salary_' + key + '_check_out_date').val();
+            let checkoutTime = $('#salary_' + key + '_check_out_time').val();
+
+            console.log('checkinDate:', checkinDate, 'checkinTime:', checkinTime, 'checkoutDate:', checkoutDate, 'checkoutTime:', checkoutTime);
+
+            if (checkinDate && checkinTime && checkoutDate && checkoutTime) {
+                let checkinDateTime = new Date(checkinDate + ' ' + checkinTime);
+                let checkoutDateTime = new Date(checkoutDate + ' ' + checkoutTime);
+
+                let timeDiff = Math.abs(checkoutDateTime - checkinDateTime);
+                let workingHours = timeDiff / 36e5; // Convert milliseconds to hours
+
+                $('#salary_' + key + '_working_hour').val(workingHours.toFixed(2));
+            } else {
+                $('#salary_' + key + '_working_hour').val('0.00');
             }
         }
     </script>

@@ -71,9 +71,8 @@ class AttendanceController extends BaseController
                 $output = $this->unauthorized();
             }
             return response()->json($output);
-        else{
-                return $this->access_blocked();
-            }
+        } else {
+            return response()->json($this->unauthorized());
         }
     }
 }
