@@ -17,7 +17,7 @@ class OvertimeFormRequest extends FormRequest
         $rules['start_date']        = ['required'];
         $rules['end_date']           = ['required', 'after_or_equal:start_date'];
         $rules['start_time']        = ['required'];
-        $rules['end_date']        = ['required'];
+        $rules['end_time']        = ['required'];
         $rules['working_hour']           = ['required', 'numeric', 'gt:0'];
         $rules['approve_remarks']            = ['nullable'];
         return $rules;

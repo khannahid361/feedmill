@@ -2,36 +2,40 @@
     <div class="table-responsive">
         <table class="table table-borderless">
             <tr>
-                <td><b>Leave Category</b></td>
-                <td><b>:</b></td>
-                <td>{{ $data->leaveCategory->leave_category }}</td>
-
-                <td><b>Type</b></td>
-                <td><b>:</b></td>
-                <td>{{ $data->is_paid == 1 ? 'Paid': 'Unpaid' }}</td>
-            </tr>
-            <tr>
                 <td><b>Employee</b></td>
                 <td><b>:</b></td>
                 <td>{{ $data->employee->name }}</td>
 
-                <td><b>Purpose</b></td>
+                <td><b>Hours</b></td>
                 <td><b>:</b></td>
-                <td>{{ $data->notes }}</td>
+                <td>{{ $data->working_hour }}</td>
             </tr>
             <tr>
-                <td><b>Start Date</b></td>
+                <td><b>Starting Time</b></td>
                 <td><b>:</b></td>
-                <td>{{ date("d-m-Y", strtotime($data->start_date)) }}</td>
+                <td>{{ date("d-m-Y H:i:s a", strtotime($data->start_date . ' ' . $data->start_time)) }} </td>
 
-                <td><b>End Date</b></td>
+                <td><b>Ending Time</b></td>
                 <td><b>:</b></td>
-                <td>{{ date("d-m-Y", strtotime($data->end_date)) }}</td>
+                <td>{{ date("d-m-Y H:i:s a", strtotime($data->end_date . ' ' . $data->end_time)) }}</td>
+            </tr>
+
+            <tr>
+                <td><b>Created By</b></td>
+                <td><b>:</b></td>
+                <td>{{ $data->created_by }}</td>
+
+                <td><b>Modified By</b></td>
+                <td><b>:</b></td>
+                <td>{{ $data->modified_by }}</td>
             </tr>
             <tr>
-                <td><b>Period</b></td>
+                <td><b>Approved By</b></td>
                 <td><b>:</b></td>
-                <td colspan="4">{{ $data->duration }} days</td>
+                <td>{{ $data->approved_by }}</td>
+                <td><b>Note</b></td>
+                <td><b>:</b></td>
+                <td>{{ $data->approve_remarks }}</td>
             </tr>
 
         </table>

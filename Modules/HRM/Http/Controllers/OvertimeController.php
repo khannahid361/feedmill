@@ -66,7 +66,7 @@ class OvertimeController extends BaseController
                     $row = [];
                     $row[] = $no;
                     $row[] = $value->employee->name;
-                    $row[] = 'From ' . date("d-m-Y", strtotime($value->start_date)) . ' To ' . date("d-m-Y", strtotime($value->end_date));
+                    $row[] = 'From ' . date("d-m-Y H:i:s a", strtotime($value->start_date . ' ' . $value->start_time)) . ' To ' . date("d-m-Y H:i:s a", strtotime($value->end_date . ' ' . $value->end_time));
                     $row[] = $value->working_hour;
                     $row[] = $value->approve_remarks;
                     $row[] = $value->created_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Modified Yet</span>';
