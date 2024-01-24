@@ -15,9 +15,9 @@
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        @if (permission('leave-add'))
+                        @if (permission('overtime-add'))
                             <a href="javascript:void(0);"
-                               onclick="showFormModal('{{__('file.Employee Leave Application')}}','{{__('file.Save')}}')"
+                               onclick="showFormModal('{{__('file.Employee Overtime')}}','{{__('file.Save')}}')"
                                class="btn btn-primary btn-sm font-weight-bolder">
                                 <i class="fas fa-plus-circle"></i> {{__('file.Add New')}}
                             </a>
@@ -54,13 +54,6 @@
                                 @endforeach
                             </x-form.selectbox>
 
-                            <x-form.selectbox labelName="Leave Category" name="leave_category_id" col="col-md-4"
-                                              class="selectpicker">
-                                @foreach ($leaveCategories as $value)
-                                    <option value="{{ $value->id }}">{{ $value->leave_category }}</option>
-                                @endforeach
-                            </x-form.selectbox>
-
                             <div class="col-md-4">
                                 <div style="margin-top:28px;">
                                     <div style="margin-top:28px;">
@@ -91,10 +84,9 @@
                                     <tr>
                                         <th>{{__('file.SL')}}</th>
                                         <th>{{__('file.Employee Name')}}</th>
-                                        <th>{{__('file.Leave Category')}}</th>
-                                        <th>{{__('file.Leave Period')}}</th>
-                                        <th>{{__('file.Duration (Days)')}}</th>
-                                        <th>{{__('file.Leave Type')}}</th>
+                                        <th>{{__('file.Overtime Period')}}</th>
+                                        <th>{{__('file.Duration (Hours)')}}</th>
+                                        <th>{{__('file.Note')}}</th>
                                         <th>{{__('file.Created By')}}</th>
                                         <th>{{__('file.Updated By')}}</th>
                                         <th>{{__('file.Approved By')}}</th>
@@ -113,8 +105,8 @@
             <!--end::Card-->
         </div>
     </div>
-    @include('hrm::employee_leave.modal')
-    @include('hrm::employee_leave.view-modal')
+    @include('hrm::overtime.modal')
+    @include('hrm::overtime.view-modal')
 @endsection
 
 @push('scripts')
@@ -142,19 +134,18 @@
                     zeroRecords: '<strong class="text-danger">No Data Found</strong>'
                 },
                 "ajax": {
-                    "url": "{{route('leave.datatable.data')}}",
+                    "url": "{{route('overtime.datatable.data')}}",
                     "type": "POST",
                     "data": function (data) {
                         data.employee_id = $("#form-filter #employee_id").val();
                         data.from_date = $("#form-filter #from_date").val();
                         data.to_date = $("#form-filter #to_date").val();
                         data.type = $("#form-filter #type").val();
-                        data.leave_category_id = $("#form-filter #leave_category_id").val();
                         data._token = _token;
                     }
                 },
                 "columnDefs": [{
-                    "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
                     "orderable": false,
                     "className": "text-center"
                 },
@@ -176,7 +167,7 @@
             $(document).on('click', '#save-btn', function () {
                 let form = document.getElementById('store_or_update_form');
                 let formData = new FormData(form);
-                let url = "{{route('leave.store.or.update')}}";
+                let url = "{{route('overtime.store.or.update')}}";
                 let id = $('#update_id').val();
                 let method;
                 if (id) {
@@ -195,7 +186,7 @@
                 $('#store_or_update_form').find('.error').remove();
                 if (id) {
                     $.ajax({
-                        url: "{{route('leave.edit')}}",
+                        url: "{{route('overtime.edit')}}",
                         type: "POST",
                         data: {id: id, _token: _token},
                         dataType: "JSON",
@@ -230,31 +221,11 @@
                 }
             });
 
-            $('.date-change').on('change', function (){
-                let startDate = $('#start_date').val();
-                let endDate = $('#end_date').val();
-
-
-                if (startDate && endDate) {
-                    let startDateTime = new Date(startDate);
-                    let endDateTime = new Date(endDate);
-
-                    // Calculate the duration in days
-                    let timeDiff = Math.abs(endDateTime - startDateTime);
-                    let daysDuration = timeDiff / (1000 * 60 * 60 * 24); // Convert milliseconds to days
-
-                    daysDuration = daysDuration + 1;
-                    $('#duration').val(daysDuration.toFixed(2));
-                } else {
-                    $('#duration').val('0.00');
-                }
-            });
-
             $(document).on('click', '.delete_data', function () {
                 let id = $(this).data('id');
                 let name = $(this).data('name');
                 let row = table.row($(this).parent('tr'));
-                let url = "{{ route('leave.delete') }}";
+                let url = "{{ route('overtime.delete') }}";
                 delete_data(id, url, table, row, name);
             });
 
@@ -263,7 +234,7 @@
                 let name  = $(this).data('name');
                 if (id) {
                     $.ajax({
-                        url: "{{route('leave.view')}}",
+                        url: "{{route('overtime.view')}}",
                         type: "POST",
                         data: { id: id,_token: _token},
                         success: function (data) {
@@ -283,5 +254,23 @@
                 }
             });
         });
+        function setHours() {
+            let checkinDate = $('#start_date').val();
+            let checkinTime = $('#start_time').val();
+            let checkoutDate = $('#end_date').val();
+            let checkoutTime = $('#end_time').val();
+
+            if (checkinDate && checkinTime && checkoutDate && checkoutTime) {
+                let checkinDateTime = new Date(checkinDate + ' ' + checkinTime);
+                let checkoutDateTime = new Date(checkoutDate + ' ' + checkoutTime);
+
+                let timeDiff = Math.abs(checkoutDateTime - checkinDateTime);
+                let workingHours = timeDiff / 36e5; // Convert milliseconds to hours
+
+                $('#working_hour').val(workingHours.toFixed(2));
+            } else {
+                $('#working_hour').val('0.00');
+            }
+        }
     </script>
 @endpush

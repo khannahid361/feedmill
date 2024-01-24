@@ -299,4 +299,15 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('view', 'EmployeeLeaveController@view')->name('view');
         Route::get('approve/{id}', 'EmployeeLeaveController@approve')->name('approve');
     });
+
+    //Overtime
+    Route::get('overtime', 'OvertimeController@index')->name('overtime');
+    Route::group(['prefix' => 'overtime', 'as' => 'overtime.'], function () {
+        Route::post('datatable-data', 'OvertimeController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'OvertimeController@storeOrUpdate')->name('store.or.update');
+        Route::post('delete', 'OvertimeController@delete')->name('delete');
+        Route::post('edit', 'OvertimeController@edit')->name('edit');
+        Route::post('view', 'OvertimeController@view')->name('view');
+        Route::get('approve/{id}', 'OvertimeController@approve')->name('approve');
+    });
 });

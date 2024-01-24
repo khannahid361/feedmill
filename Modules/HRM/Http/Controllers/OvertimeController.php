@@ -3,27 +3,26 @@
 namespace Modules\HRM\Http\Controllers;
 
 use App\Http\Controllers\BaseController;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\HRM\Entities\Employee;
-use Modules\HRM\Entities\EmployeeLeave;
-use Modules\HRM\Entities\LeaveCategory;
-use Modules\HRM\Http\Requests\EmployeeLeaveFormRequest;
+use Modules\HRM\Entities\Overtime;
+use Modules\HRM\Http\Requests\OvertimeFormRequest;
 
-class EmployeeLeaveController extends BaseController
+class OvertimeController extends BaseController
 {
-    public function __construct(EmployeeLeave $model)
+    public function __construct(Overtime $model)
     {
         $this->model = $model;
     }
 
     public function index()
     {
-        if (permission('leave-access')) {
-            $this->setPageData('Manage Employee Leave', 'Manage Employee Leave', 'fab fa-opencart', [['name' => 'Manage Employee Leave']]);
+        if (permission('overtime-access')) {
+            $this->setPageData('Manage Employee Overtime', 'Manage Employee Overtime', 'fab fa-opencart', [['name' => 'Manage Employee Overtime']]);
             $employees = Employee::where('activation_status', '1')->get();
-            $leaveCategories = LeaveCategory::orderBy('id', 'asc')->get();
-            return view('hrm::employee_leave.index', compact('employees', 'leaveCategories'));
+            return view('hrm::overtime.index', compact('employees'));
         } else {
             return $this->access_blocked();
         }
@@ -32,12 +31,9 @@ class EmployeeLeaveController extends BaseController
     public function get_datatable_data(Request $request)
     {
         if ($request->ajax()) {
-            if (permission('leave-access')) {
+            if (permission('overtime-access')) {
                 if (!empty($request->employee_id)) {
                     $this->model->setEmployee($request->employee_id);
-                }
-                if (!empty($request->leave_category_id)) {
-                    $this->model->setLeaveCategory($request->leave_category_id);
                 }
                 if (!empty($request->start_date)) {
                     $this->model->setFromDate($request->start_date);
@@ -55,29 +51,28 @@ class EmployeeLeaveController extends BaseController
                 foreach ($list as $value) {
                     $no++;
                     $action = '';
-                    if (permission('leave-edit') && $value->status == 1) {
+                    if (permission('overtime-edit') && $value->approval_status == 1) {
                         $action .= ' <a class="dropdown-item edit-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
                     }
-                    if (permission('leave-approve') && $value->status == 1) {
+                    if (permission('overtime-approve') && $value->approval_status == 1) {
                         $action .= ' <a class="dropdown-item" href="' . route("leave.approve", $value->id) . '">' . self::ACTION_BUTTON['Approve'] . '</a>';
                     }
-                    if (permission('leave-view')) {
+                    if (permission('overtime-view')) {
                         $action .= ' <a class="dropdown-item view-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['View'] . '</a>';
                     }
-                    if (permission('leave-delete') && $value->status == 1) {
+                    if (permission('overtime-delete') && $value->approval_status == 1) {
                         $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['Delete'] . '</a>';
                     }
                     $row = [];
                     $row[] = $no;
                     $row[] = $value->employee->name;
-                    $row[] = $value->leaveCategory->leave_category;
                     $row[] = 'From ' . date("d-m-Y", strtotime($value->start_date)) . ' To ' . date("d-m-Y", strtotime($value->end_date));
-                    $row[] = $value->duration;
-                    $row[] = $value->is_paid == 1 ? 'Paid' : 'Un-Paid';
+                    $row[] = $value->working_hour;
+                    $row[] = $value->approve_remarks;
                     $row[] = $value->created_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Modified Yet</span>';
                     $row[] = $value->modified_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Modified Yet</span>';
                     $row[] = $value->approved_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Approved Yet</span>';
-                    $row[] = LEAVE_STATUS_LABEL[$value->status];
+                    $row[] = LEAVE_STATUS_LABEL[$value->approval_status];
                     $row[] = action_button($action);//custom helper function for action button
                     $data[] = $row;
                 }
@@ -92,7 +87,7 @@ class EmployeeLeaveController extends BaseController
     public function edit(Request $request)
     {
         if ($request->ajax()) {
-            if (permission('leave-edit')) {
+            if (permission('overtime-edit')) {
                 $data = $this->model->findOrFail($request->id);
                 return $data;
             }
@@ -102,18 +97,18 @@ class EmployeeLeaveController extends BaseController
     public function view(Request $request)
     {
         if ($request->ajax()) {
-            if (permission('leave-view')) {
-                $data = $this->model->with('employee', 'leaveCategory')->findOrFail($request->id);
-                return view('hrm::employee_leave.modal-data', compact('data'))->render();
+            if (permission('overtime-view')) {
+                $data = $this->model->with('employee')->findOrFail($request->id);
+                return view('hrm::overtime.modal-data', compact('data'))->render();
             }
         }
     }
 
-    public function storeOrUpdate(EmployeeLeaveFormRequest $request)
+    public function storeOrUpdate(OvertimeFormRequest $request)
     {
         if ($request->ajax()) {
-            if (permission('leave-add') || permission('leave-edit')) {
-                $collection = collect($request->validated())->merge(['created_by' => Auth::user()->username]);
+            if (permission('overtime-add') || permission('overtime-edit')) {
+                $collection = collect($request->validated())->merge(['created_by' => Auth::user()->username, 'dept_type' => '1']);
                 $collection = $this->track_data($collection, $request->update_id);
                 $result = $this->model->updateOrCreate(['id' => $request->update_id], $collection->all());
                 $output = $this->store_message($result, $request->update_id);
@@ -129,10 +124,10 @@ class EmployeeLeaveController extends BaseController
     public function delete(Request $request)
     {
         if ($request->ajax()) {
-            if (permission('leave-delete')) {
+            if (permission('overtime-delete')) {
                 $result = $this->model->find($request->id);
                 $result->update([
-                    'status' => '3',
+                    'approval_status' => '3',
                     'deleted_by' => auth()->user()->username,
                 ]);
                 $output = $this->delete_message($result);
@@ -147,13 +142,13 @@ class EmployeeLeaveController extends BaseController
 
     public function approve($id)
     {
-        if (permission('leave-approve')) {
+        if (permission('overtime-approve')) {
             $result = $this->model->find($id);
             $result->update([
-                'status' => '2',
+                'approval_status' => '2',
                 'approved_by' => auth()->user()->username,
             ]);
-            $output = ['status' => 'success', 'message' => 'Leave Approve Successful'];
+            $output = ['status' => 'success', 'message' => 'Overtime Approve Successful'];
         } else {
             $output = $this->unauthorized();
         }

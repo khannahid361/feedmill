@@ -16,7 +16,8 @@ class CreateOvertimesTable extends Migration
         Schema::create('overtimes', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('employee_id');
-            $table->date('date');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->time('start_time');
             $table->time('end_time');
             $table->double('working_hour');
