@@ -55,7 +55,7 @@ class OvertimeController extends BaseController
                         $action .= ' <a class="dropdown-item edit-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
                     }
                     if (permission('overtime-approve') && $value->approval_status == 1) {
-                        $action .= ' <a class="dropdown-item" href="' . route("leave.approve", $value->id) . '">' . self::ACTION_BUTTON['Approve'] . '</a>';
+                        $action .= ' <a class="dropdown-item" href="' . route("overtime.approve", $value->id) . '">' . self::ACTION_BUTTON['Approve'] . '</a>';
                     }
                     if (permission('overtime-view')) {
                         $action .= ' <a class="dropdown-item view-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['View'] . '</a>';

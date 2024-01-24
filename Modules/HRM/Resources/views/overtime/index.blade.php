@@ -195,14 +195,13 @@
                                 notification(data.status, data.message)
                             } else {
                                 $('#store_or_update_form #update_id').val(data.id);
-                                $('#store_or_update_form #leave_category_id').val(data.leave_category_id);
                                 $('#store_or_update_form #employee_id').val(data.employee_id);
                                 $('#store_or_update_form #start_date').val(data.start_date);
                                 $('#store_or_update_form #end_date').val(data.end_date);
-                                $('#store_or_update_form #notes').val(data.notes);
-                                $('#store_or_update_form #status').val(data.status);
-                                $('#store_or_update_form #duration').val(data.status);
-                                $('#store_or_update_form #is_paid').val(data.is_paid);
+                                $('#store_or_update_form #start_time').val(data.start_time);
+                                $('#store_or_update_form #end_time').val(data.end_time);
+                                $('#store_or_update_form #approve_remarks').val(data.approve_remarks);
+                                $('#store_or_update_form #working_hour').val(data.working_hour);
 
                                 $('#store_or_update_form .selectpicker').selectpicker('refresh');
                                 $('#store_or_update_modal').modal({
