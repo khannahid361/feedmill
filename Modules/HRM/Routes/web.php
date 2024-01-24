@@ -310,4 +310,17 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('view', 'OvertimeController@view')->name('view');
         Route::get('approve/{id}', 'OvertimeController@approve')->name('approve');
     });
+
+    //Generate Salary
+    Route::get('generate-salary', 'GenerateMonthlySalaryCOntroller@index')->name('generate-salary');
+    Route::group(['prefix' => 'generate-salary', 'as' => 'generate.salary.'], function () {
+        Route::post('datatable-data', 'GenerateMonthlySalaryCOntroller@get_datatable_data')->name('datatable.data');
+        Route::get('create', 'GenerateMonthlySalaryCOntroller@create')->name('create');
+        Route::post('store-or-update', 'GenerateMonthlySalaryCOntroller@storeOrUpdate')->name('store.or.update');
+        Route::post('delete', 'GenerateMonthlySalaryCOntroller@delete')->name('delete');
+        Route::post('edit', 'GenerateMonthlySalaryCOntroller@edit')->name('edit');
+        Route::post('view', 'GenerateMonthlySalaryCOntroller@view')->name('view');
+        Route::get('approve/{id}', 'GenerateMonthlySalaryCOntroller@approve')->name('approve');
+    });
+    Route::post('get-employees-data', 'GenerateMonthlySalaryCOntroller@getEmployees')->name('get.employees.data');
 });

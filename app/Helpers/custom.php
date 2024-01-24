@@ -384,3 +384,33 @@ define('LEAVE_STATUS_LABEL',[
     '2'=>'<span class="label label-info label-pill label-inline" style="min-width:70px !important;">Approved</span>',
     '3'=>'<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Deleted</span>'
 ]);
+
+function salaryYears()
+{
+    $lastFiveYears = [];
+    $currentYear = date('Y');
+
+    for ($i = 0; $i < 5; $i++) {
+        $lastFiveYears[] = $currentYear - $i;
+    }
+    return $lastFiveYears;
+}
+
+function allMonths()
+{
+    $months = [
+        1 => "January",
+        2 => "February",
+        3 => "March",
+        4 => "April",
+        5 => "May",
+        6 => "June",
+        7 => "July",
+        8 => "August",
+        9 => "September",
+        10 => "October",
+        11 => "November",
+        12 => "December"
+    ];
+    return $months;
+}
