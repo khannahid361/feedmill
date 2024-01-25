@@ -128,11 +128,13 @@
 
         function report() {
             let selectedOptions = $('#employee_id').val();
+            let year = Number($('#year').val());
+            let month = Number($('#month').val());
             if (selectedOptions.length > 0) {
                 $.ajax({
                     url: "{{ route('get.employees.data') }}",
                     type: "POST",
-                    data: {id: selectedOptions, _token: _token},
+                    data: {id: selectedOptions, year: year, month: month, _token: _token},
                     success: function (data) {
                         $('#report').empty();
                         $('#report').append(data);

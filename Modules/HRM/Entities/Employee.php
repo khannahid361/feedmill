@@ -3,8 +3,6 @@
 namespace Modules\HRM\Entities;
 
 use App\Models\BaseModel;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Hash;
 use Modules\Department\Entities\Department;
 use Modules\Designation\Entities\Designation;

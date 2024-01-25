@@ -86,13 +86,11 @@ class GenerateMonthlySalaryCOntroller extends BaseController
 
     public function create()
     {
-        if (permission('generate-salary-add'))
-        {
+        if (permission('generate-salary-add')) {
             $this->setPageData('Add Employee Payslip', 'Add Employee Payslip', 'fab fa-opencart', [['name' => 'Add Employee Payslip']]);
             $employees = Employee::where('activation_status', '1')->get();
             return view('hrm::generate-salary.create', compact('employees'));
-        }
-        else{
+        } else {
             return response()->json($this->unauthorized());
         }
     }
@@ -102,12 +100,15 @@ class GenerateMonthlySalaryCOntroller extends BaseController
         if ($request->ajax()) {
             if (permission('generate-salary-add')) {
                 $idArray = $request->id;
+                $month = $request->month;
+                $year = $request->year;
                 if (in_array("0", $idArray)) {
-                    $employees = Employee::with('designation', 'department', 'branch', 'salary', 'salary.shift')->where('activation_status', '1')->get();
+                    $employees = Employee::with('department', 'salary', 'salary.shift')->where('activation_status', '1')
+                        ->get();
                 } else {
                     $employees = Employee::with('designation', 'department', 'branch', 'salary', 'salary.shift')->where('activation_status', '1')->whereIn('id', $idArray)->get();
                 }
-                return view('hrm::generate-salary.entry', compact('employees'))->render();
+                return view('hrm::generate-salary.entry', compact('employees', 'month', 'year'))->render();
             }
         }
     }
