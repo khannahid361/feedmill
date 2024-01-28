@@ -27,6 +27,7 @@
                     </x-form.selectbox>
                     <x-form.textbox labelName="{{__('file.Starting Time')}}" name="starting_time" col="col-md-12" type="time" step="36000" />
                     <x-form.textbox labelName="{{__('file.Ending Time')}}" name="ending_time" col="col-md-12" type="time" step="36000" />
+                    <x-form.textbox labelName="{{__('file.Shift Hours')}}" name="shift_hours" col="col-md-12" type="text" />
                 </div>
             </div>
             <!-- /modal body -->

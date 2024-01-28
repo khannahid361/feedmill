@@ -56,6 +56,7 @@ class ShiftController extends BaseController
                     $row[] = ALLOWANCE_DEPARTMENT_LABEL[$value->department];
                     $row[] = date("h:i:s a",strtotime($value->starting_time));
                     $row[] = date("h:i:s a",strtotime($value->ending_time));
+                    $row[] = $value->shift_hours;
                     $row[] = $value->created_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Modified Yet</span>';
                     $row[] = $value->modified_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Modified Yet</span>';
                     $row[] = action_button($action);//custom helper function for action button

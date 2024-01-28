@@ -7,7 +7,7 @@ use App\Models\BaseModel;
 class Shift extends BaseModel
 {
 
-    protected $fillable = ['name', 'starting_time', 'ending_time', 'status', 'department', 'created_by', 'modified_by', 'deleted_by'];
+    protected $fillable = ['name', 'starting_time', 'ending_time', 'status', 'department', 'created_by', 'modified_by', 'deleted_by', 'shift_hours'];
 
     protected $table = 'shifts';
 

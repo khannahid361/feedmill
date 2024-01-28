@@ -11,6 +11,7 @@ class ShiftFromRequest extends FormRequest
         $rules['name'] = ['required'];
         $rules['starting_time'] = ['required'];
         $rules['ending_time'] = ['required'];
+        $rules['shift_hours'] = ['required', 'numeric', 'gt:0'];
 //        $rules['ending_time'] = ['required', 'after:starting_time'];
         $rules['department'] = ['required', 'numeric', 'gt:0'];
 

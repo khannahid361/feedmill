@@ -4,29 +4,18 @@
     <thead class="bg-primary">
     <tr>
         <th>{{__('file.Employee ID')}}</th>
-        //
         <th>{{__('file.Employee Name')}}</th>
-        //
         <th>{{__('file.Department')}}</th>
-        //
         <th>{{__('file.Shift')}}</th>
-        //
         <th>{{__('file.Total Working Days')}}</th>
-        //
         <th>{{__('file.Total Holidays')}}</th>
-        //
         <th>{{__('file.Total Attended Days')}}</th>
-        //
         <th>{{__('file.Total Paid Leaves')}}</th>
-        //
         <th>{{__('file.Total Un-Paid Leaves')}}</th>
-        //
         <th>{{__('file.Total Working Hours')}}</th>
         <th>{{__('file.Total Attended Hours')}}</th>
-        //
         <th>{{__('file.Current Salary')}}</th>
-        //
-        <th>{{__('file.Increment')}} not created yet</th>
+        <th>{{__('file.Increment')}}</th>
 
         <th>{{__('file.Gross Salary')}}</th>
         <th>{{__('file.Net Salary')}}</th>
@@ -105,7 +94,11 @@
             ->groupBy('employee_id')
             ->first();
 
-           dd($thisEmployeeAttendance);
+           $thisEmployeeShiftHours = $emp->salary->shift->shift_hours;
+
+           $actualWorkingDays = $validDaysCount - $totalHolidays - $thisEmployeePaidLeaves;
+
+           $monthlyWorkingHours = $actualWorkingDays * $thisEmployeeShiftHours;
         @endphp
         <tr>
             <td>{{ $emp->employee_id }}</td>
@@ -113,33 +106,60 @@
             <td>{{ $emp->department->name }}</td>
             <td>{{ $emp->salary->shift->name }}
                 <input type="hidden" name="salary[{{$key}}][shift_id]" id="salary_{{$key}}_shift_id"
-                       value="{{ $emp->shift_id }}">
+                       value="{{ $emp->salary->shift_id }}">
+
+                <input type="hidden" name="salary[{{$key}}][employee_id]" id="salary_{{$key}}_employee_id"
+                       class="form-control"
+                       value="{{ $emp->id }}">
             </td>
             <td><input type="text" name="salary[{{$key}}][total_working_days]" id="salary_{{$key}}_total_working_days"
                        class="form-control"
                        readonly value="{{ $validDaysCount }}"></td>
-            <td><input type="time" name="salary[{{$key}}][total_holidays]" id="salary_{{$key}}_total_holidays"
+            <td><input type="text" name="salary[{{$key}}][total_holidays]" id="salary_{{$key}}_total_holidays"
                        class="form-control"
                        value="{{ $totalHolidays }}" readonly></td>
-            <td><input type="date" name="salary[{{$key}}][total_attended]" id="salary_{{$key}}_total_attended"
+            <td><input type="text" name="salary[{{$key}}][total_attended]" id="salary_{{$key}}_total_attended"
                        class="form-control"
-                       value="{{  }}"></td>
-            <td><input type="time" name="salary[{{$key}}][total_paid_leaves]" id="salary_{{$key}}_total_paid_leaves"
+                       value="{{ $thisEmployeeAttendance->attended }}" readonly></td>
+            <td><input type="text" name="salary[{{$key}}][total_paid_leaves]" id="salary_{{$key}}_total_paid_leaves"
                        class="form-control"
-                       value="{{ isset($existingData) ? $existingData->check_out_time : '' }}"
-                       onkeyup="setHours({{$key}})" onchange="setHours({{$key}})"></td>
-            <td><input type="text" name="salary[{{$key}}][working_hour]" id="salary_{{$key}}_working_hour"
+                       value="{{ $thisEmployeePaidLeaves }}" readonly></td>
+            <td><input type="text" name="salary[{{$key}}][total_unpaid_leaves]" id="salary_{{$key}}_total_unpaid_leaves"
                        class="form-control"
-                       value="{{ isset($existingData) ? $existingData->working_hour : '0' }}" readonly></td>
-            <td><input type="text" name="salary[{{$key}}][approve_remarks]" id="salary_{{$key}}_approve_remarks"
+                       value="{{ $thisEmployeeUnPaidLeaves }}" readonly></td>
+
+            <td><input type="text" name="salary[{{$key}}][total_working_hours]" id="salary_{{$key}}_total_working_hours"
                        class="form-control"
-                       value="{{ isset($existingData) ? $existingData->approve_remarks : '' }}">
-                <input type="hidden" name="salary[{{$key}}][employee_id]" id="salary_{{$key}}_employee_id"
+                       value="{{ $monthlyWorkingHours }}" readonly></td>
+            <td><input type="text" name="salary[{{$key}}][total_attended_hours]"
+                       id="salary_{{$key}}_total_attended_hours"
+                       class="form-control" readonly
+                       value="{{ $thisEmployeeAttendance->attended_hours }}">
+            </td>
+            <td>
+                <input type="text" name="salary[{{$key}}][current_salary]" id="salary_{{$key}}_current_salary"
                        class="form-control"
-                       value="{{ $emp->id }}">
-                <input type="hidden" name="salary[{{$key}}][shift_id]" id="salary_{{$key}}_shift_id"
+                       value="{{ $emp->salary->net_salary }}" readonly>
+            </td>
+            <td>
+                <input type="text" name="salary[{{$key}}][increment_salary]" id="salary_{{$key}}_increment_salary"
                        class="form-control"
-                       value="{{ $emp->salary->shift_id }}">
+                       value="{{ 0 }}" readonly>
+            </td>
+            <td>
+                <input type="text" name="salary[{{$key}}][gross_salary]" id="salary_{{$key}}_gross_salary"
+                       class="form-control"
+                       value="{{ $emp->salary->net_salary }}" readonly>
+            </td>
+            @php
+                $salaryPerHour = $emp->salary->net_salary / $monthlyWorkingHours;
+
+                $netSalary = $thisEmployeeAttendance->attended_hours * $salaryPerHour;
+            @endphp
+            <td>
+                <input type="text" name="salary[{{$key}}][net_salary]" id="salary_{{$key}}_gross_salary"
+                       class="form-control"
+                       value="{{ $netSalary }}" readonly>
             </td>
         </tr>
     @endforeach

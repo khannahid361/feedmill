@@ -7,7 +7,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Modules\HRM\Entities\Employee;
 use Modules\HRM\Entities\GenerateMonthlySalary;
-use Modules\HRM\Http\Requests\SalaryFormRequest;
+use Modules\HRM\Http\Requests\SalaryGenerateFormRequest;
 
 class GenerateMonthlySalaryCOntroller extends BaseController
 {
@@ -133,14 +133,34 @@ class GenerateMonthlySalaryCOntroller extends BaseController
         }
     }
 
-    public function storeOrUpdate(SalaryFormRequest $request)
+    public function storeOrUpdate(SalaryGenerateFormRequest $request)
     {
         if ($request->ajax()) {
             if (permission('generate-salary-add') || permission('generate-salary-edit')) {
-                $collection = collect($request->validated())->merge(['created_by' => Auth::user()->username, 'dept_type' => '1']);
-                $collection = $this->track_data($collection, $request->update_id);
-                $result = $this->model->updateOrCreate(['id' => $request->update_id], $collection->all());
-                $output = $this->store_message($result, $request->update_id);
+                $salary = [];
+                foreach ($request->salary as $value) {
+                    $salary[] = [
+                        'employee_id' => $value['employee_id'],
+                        'shift_id' => $value['shift_id'],
+                        'month' => $request->month_id,
+                        'year' => $request->year_id,
+                        'total_working_days' => $value['total_working_days'],
+                        'total_holidays' => $value['total_holidays'],
+                        'total_attended' => $value['total_attended'],
+                        'total_paid_leaves' => $value['total_paid_leaves'],
+                        'total_unpaid_leaves' => $value['total_unpaid_leaves'],
+                        'total_working_hours' => $value['total_working_hours'],
+                        'total_attended_hours' => $value['total_attended_hours'],
+                        'increment_salary' => $value['increment_salary'],
+                        'current_salary' => $value['current_salary'],
+                        'gross_salary' => $value['gross_salary'],
+                        'net_salary' => $value['net_salary'],
+                        'created_by' => auth()->user()->username,
+                        'status' => 1
+                    ];
+                }
+                $this->model->insert($salary);
+                $output = ['status' => 'success', 'message' => 'Salary added successfully'];
             } else {
                 $output = $this->unauthorized();
             }

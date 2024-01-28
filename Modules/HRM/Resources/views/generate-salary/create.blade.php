@@ -95,7 +95,7 @@
                     <div id="kt_datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <div class="row">
                             <div class="col-sm-12">
-                                <form id="attendance_store_or_update">
+                                <form id="salary_store_or_update">
                                     @csrf
                                     <div id="report" style="width: 100%;margin:0;padding:0;">
                                     </div>
@@ -146,6 +146,57 @@
             } else {
                 $('#report').empty();
                 notification('error', 'Please select Employee');
+            }
+        }
+
+        function store_data() {
+            var rownumber = $('table#dataTable tbody tr:last').index();
+            if (rownumber < 0) {
+                notification("error", "Please Select Employee");
+            } else {
+                let form = document.getElementById('salary_store_or_update');
+                let formData = new FormData(form);
+                let url = "{{ route('generate.salary.store.or.update') }}";
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: formData,
+                    dataType: "JSON",
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    beforeSend: function() {
+                        $('#save-btn').addClass('spinner spinner-white spinner-right');
+                    },
+                    complete: function() {
+                        $('#save-btn').removeClass('spinner spinner-white spinner-right');
+                    },
+                    success: function(data) {
+                        $('#salary_store_or_update').find('.is-invalid').removeClass('is-invalid');
+                        $('#salary_store_or_update').find('.error').remove();
+                        if (data.status == false) {
+                            $.each(data.errors, function(key, value) {
+                                var key = key.split('.').join('_');
+                                $('#salary_store_or_update input#' + key).addClass('is-invalid');
+                                $('#salary_store_or_update textarea#' + key).addClass('is-invalid');
+                                $('#salary_store_or_update select#' + key).parent().addClass('is-invalid');
+                                $('#salary_store_or_update #' + key).parent().append(
+                                    '<small class="error text-danger">' + value + '</small>');
+                            });
+                            $('html, body').animate({
+                                scrollTop: ($('.is-invalid').offset().top - 300)
+                            }, 1000);
+                        } else {
+                            notification(data.status, data.message);
+                            if (data.status == 'success') {
+                                window.location.replace("{{ route('generate.salary') }}");
+                            }
+                        }
+                    },
+                    error: function(xhr, ajaxOption, thrownError) {
+                        console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
+                    }
+                });
             }
         }
     </script>

@@ -75,6 +75,7 @@
                                         <th>{{__('file.Department')}}</th>
                                         <th>{{__('file.Starting Time')}}</th>
                                         <th>{{__('file.Ending Time')}}</th>
+                                        <th>{{__('file.Shift Hours')}}</th>
                                         <th>{{__('file.Created By')}}</th>
                                         <th>{{__('file.Modified By')}}</th>
                                         <th>{{__('file.Action')}}</th>
@@ -128,7 +129,7 @@
                     }
                 },
                 "columnDefs": [{
-                    "targets": [0, 1, 2, 3, 4, 5, 6, 7],
+                    "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8],
                     "orderable": false,
                     "className": "text-center"
                 },
@@ -179,6 +180,7 @@
                                 $('#store_or_update_form #name').val(data.name);
                                 $('#store_or_update_form #starting_time').val(data.starting_time);
                                 $('#store_or_update_form #ending_time').val(data.ending_time);
+                                $('#store_or_update_form #shift_hours').val(data.shift_hours);
                                 $('#store_or_update_form #department').val(data.department);
                                 $('#store_or_update_form .selectpicker').selectpicker('refresh');
                                 $('#store_or_update_modal').modal({

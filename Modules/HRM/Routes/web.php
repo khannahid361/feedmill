@@ -312,7 +312,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     //Generate Salary
-    Route::get('generate-salary', 'GenerateMonthlySalaryCOntroller@index')->name('generate-salary');
+    Route::get('generate-salary', 'GenerateMonthlySalaryCOntroller@index')->name('generate.salary');
     Route::group(['prefix' => 'generate-salary', 'as' => 'generate.salary.'], function () {
         Route::post('datatable-data', 'GenerateMonthlySalaryCOntroller@get_datatable_data')->name('datatable.data');
         Route::get('create', 'GenerateMonthlySalaryCOntroller@create')->name('create');
