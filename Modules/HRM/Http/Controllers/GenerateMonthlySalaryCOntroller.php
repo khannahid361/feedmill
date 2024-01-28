@@ -35,14 +35,14 @@ class GenerateMonthlySalaryCOntroller extends BaseController
                 if (!empty($request->employee_id)) {
                     $this->model->setEmployee($request->employee_id);
                 }
-                if (!empty($request->start_date)) {
-                    $this->model->setFromDate($request->start_date);
+                if (!empty($request->month)) {
+                    $this->model->setMonth($request->month);
                 }
-                if (!empty($request->end_date)) {
-                    $this->model->setToDate($request->end_date);
+                if (!empty($request->year)) {
+                    $this->model->setYear($request->year);
                 }
                 if (!empty($request->type)) {
-                    $this->model->setType($request->type);
+                    $this->model->setStatus($request->type);
                 }
                 $this->set_datatable_default_properties($request);//set datatable default properties
                 $list = $this->model->getDatatableList();//get table data
@@ -51,28 +51,32 @@ class GenerateMonthlySalaryCOntroller extends BaseController
                 foreach ($list as $value) {
                     $no++;
                     $action = '';
-                    if (permission('generate-salary-edit') && $value->approval_status == 1) {
-                        $action .= ' <a class="dropdown-item edit-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
-                    }
-                    if (permission('generate-salary-change-status') && $value->approval_status == 1) {
-                        $action .= ' <a class="dropdown-item" href="' . route("overtime.approve", $value->id) . '">' . self::ACTION_BUTTON['Approve'] . '</a>';
-                    }
-                    if (permission('generate-salary-view')) {
-                        $action .= ' <a class="dropdown-item view-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['View'] . '</a>';
-                    }
-                    if (permission('generate-salary-change-status') && $value->approval_status == 1) {
-                        $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['Delete'] . '</a>';
-                    }
+//                    if (permission('generate-salary-edit') && $value->approval_status == 1) {
+//                        $action .= ' <a class="dropdown-item edit-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
+//                    }
+//                    if (permission('generate-salary-change-status') && $value->approval_status == 1) {
+//                        $action .= ' <a class="dropdown-item" href="' . route("overtime.approve", $value->id) . '">' . self::ACTION_BUTTON['Approve'] . '</a>';
+//                    }
+//                    if (permission('generate-salary-view')) {
+//                        $action .= ' <a class="dropdown-item view-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['View'] . '</a>';
+//                    }
+//                    if (permission('generate-salary-change-status') && $value->approval_status == 1) {
+//                        $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['Delete'] . '</a>';
+//                    }
+                    $month = $monthName = date("F", mktime(0, 0, 0, $value->month, 1));;
                     $row = [];
                     $row[] = $no;
                     $row[] = $value->employee->name;
-                    $row[] = 'From ' . date("d-m-Y H:i:s a", strtotime($value->start_date . ' ' . $value->start_time)) . ' To ' . date("d-m-Y H:i:s a", strtotime($value->end_date . ' ' . $value->end_time));
-                    $row[] = $value->working_hour;
-                    $row[] = $value->approve_remarks;
-                    $row[] = $value->created_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Modified Yet</span>';
-                    $row[] = $value->modified_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Modified Yet</span>';
+                    $row[] = $month;
+                    $row[] = $value->year;
+                    $row[] = $value->total_working_days;
+                    $row[] = $value->total_paid_leaves + $value->total_unpaid_leaves;
+                    $row[] = $value->total_working_hours;
+                    $row[] = $value->total_attended_hours;
+                    $row[] = $value->net_salary;
+                    $row[] = $value->created_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Created Yet</span>';
                     $row[] = $value->approved_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Approved Yet</span>';
-                    $row[] = LEAVE_STATUS_LABEL[$value->approval_status];
+                    $row[] = LEAVE_STATUS_LABEL[$value->status];
                     $row[] = action_button($action);//custom helper function for action button
                     $data[] = $row;
                 }
@@ -176,7 +180,7 @@ class GenerateMonthlySalaryCOntroller extends BaseController
             if (permission('generate-salary-change-status')) {
                 $result = $this->model->find($request->id);
                 $result->update([
-                    'approval_status' => '3',
+                    'status' => '3',
                     'deleted_by' => auth()->user()->username,
                 ]);
                 $output = $this->delete_message($result);
@@ -194,10 +198,10 @@ class GenerateMonthlySalaryCOntroller extends BaseController
         if (permission('generate-salary-change-status')) {
             $result = $this->model->find($id);
             $result->update([
-                'approval_status' => '2',
+                'status' => '2',
                 'approved_by' => auth()->user()->username,
             ]);
-            $output = ['status' => 'success', 'message' => 'Overtime Approve Successful'];
+            $output = ['status' => 'success', 'message' => 'Payslip Approve Successful'];
         } else {
             $output = $this->unauthorized();
         }

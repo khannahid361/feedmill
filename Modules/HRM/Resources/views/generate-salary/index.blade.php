@@ -16,7 +16,9 @@
                     <div class="card-toolbar">
                         <!--begin::Button-->
                         @if (permission('generate-salary-add'))
-                            <a href="{{ route('generate.salary.create') }}"  class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add New</a>
+                            <a href="{{ route('generate.salary.create') }}"
+                               class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add
+                                New</a>
                         @endif
                         <!--end::Button-->
                     </div>
@@ -81,12 +83,14 @@
                                     <tr>
                                         <th>{{__('file.SL')}}</th>
                                         <th>{{__('file.Employee Name')}}</th>
-                                        <th>{{__('file.Leave Category')}}</th>
-                                        <th>{{__('file.Leave Period')}}</th>
-                                        <th>{{__('file.Duration (Days)')}}</th>
-                                        <th>{{__('file.Leave Type')}}</th>
+                                        <th>{{__('file.Month')}}</th>
+                                        <th>{{__('file.Year')}}</th>
+                                        <th>{{__('file.Working Days')}}</th>
+                                        <th>{{__('file.Leave(Paid & Unpaid)')}}</th>
+                                        <th>{{__('file.Working Hours')}}</th>
+                                        <th>{{__('file.Attended Hours')}}</th>
+                                        <th>{{__('file.Net Salary')}}</th>
                                         <th>{{__('file.Created By')}}</th>
-                                        <th>{{__('file.Updated By')}}</th>
                                         <th>{{__('file.Approved By')}}</th>
                                         <th>{{__('file.Status')}}</th>
                                         <th>{{__('file.Action')}}</th>
@@ -107,5 +111,58 @@
 
 @push('scripts')
     <script>
+        var table;
+        $(document).ready(function () {
+
+            table = $('#dataTable').DataTable({
+                "processing": true, //Feature control the processing indicator
+                "serverSide": true, //Feature control DataTable server side processing mode
+                "order": [], //Initial no order
+                "responsive": true, //Make table responsive in mobile device
+                "bInfo": true, //TO show the total number of data
+                "bFilter": false, //For datatable default search box show/hide
+                "lengthMenu": [
+                    [5, 10, 15, 25, 50, 100, 1000, 10000, -1],
+                    [5, 10, 15, 25, 50, 100, 1000, 10000, "All"]
+                ],
+                "pageLength": 25, //number of data show per page
+                "language": {
+                    processing: `<i class="fas fa-spinner fa-spin fa-3x fa-fw text-primary"></i> `,
+                    emptyTable: '<strong class="text-danger">No Data Found</strong>',
+                    infoEmpty: '',
+                    zeroRecords: '<strong class="text-danger">No Data Found</strong>'
+                },
+                "ajax": {
+                    "url": "{{route('generate.salary.datatable.data')}}",
+                    "type": "POST",
+                    "data": function (data) {
+                        data.employee_id = $("#form-filter #employee_id").val();
+                        data.year = $("#form-filter #year").val();
+                        data.month = $("#form-filter #month").val();
+                        data.type = $("#form-filter #type").val();
+                        data._token = _token;
+                    }
+                },
+                "columnDefs": [{
+                    "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                    "orderable": false,
+                    "className": "text-center"
+                },
+                ],
+                "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6' <'float-right'B>>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'float-right'p>>>",
+            });
+
+            $('#btn-filter').click(function () {
+                table.ajax.reload();
+            });
+
+            $('#btn-reset').click(function () {
+                $('#form-filter')[0].reset();
+                table.ajax.reload();
+            });
+        });
+
     </script>
 @endpush

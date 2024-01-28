@@ -50,7 +50,7 @@ class GenerateMonthlySalary extends BaseModel
 
     private function get_datatable_query()
     {
-        $query = self::where('status', '!=', 3)->with('employee', ' shift');
+        $query = self::where('status', '!=', 3)->with('employee', 'shift');
 
         if (!empty($this->_employee_id)) {
             $query->where('employee_id', $this->_employee_id);
