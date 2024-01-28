@@ -59,7 +59,7 @@ class GenerateMonthlySalaryCOntroller extends BaseController
                     if (permission('generate-salary-view')) {
                         $action .= ' <a class="dropdown-item view-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['View'] . '</a>';
                     }
-                    $month = $monthName = date("F", mktime(0, 0, 0, $value->month, 1));;
+                    $month = date("F", mktime(0, 0, 0, $value->month, 1));
                     $row = [];
                     $row[] = $no;
                     $row[] = $value->employee->name;
@@ -127,8 +127,8 @@ class GenerateMonthlySalaryCOntroller extends BaseController
     {
         if ($request->ajax()) {
             if (permission('generate-salary-view')) {
-                $data = $this->model->with('employee')->findOrFail($request->id);
-                return view('hrm::overtime.modal-data', compact('data'))->render();
+                $data = $this->model->with('employee', 'shift')->findOrFail($request->id);
+                return view('hrm::generate-salary.modal-data', compact('data'))->render();
             }
         }
     }
