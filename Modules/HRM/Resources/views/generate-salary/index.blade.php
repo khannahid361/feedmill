@@ -107,6 +107,7 @@
             <!--end::Card-->
         </div>
     </div>
+    @include('hrm::generate-salary.view-modal')
 @endsection
 
 @push('scripts')
@@ -162,7 +163,39 @@
                 $('#form-filter')[0].reset();
                 table.ajax.reload();
             });
-        });
 
+            $(document).on('click', '.view-data', function () {
+                let id = $(this).data('id');
+                let name  = $(this).data('name');
+                if (id) {
+                    $.ajax({
+                        url: "{{route('generate.salary.view')}}",
+                        type: "POST",
+                        data: { id: id,_token: _token},
+                        success: function (data) {
+                            $('#view_modal #view-data').html('');
+                            $('#view_modal #view-data').html(data);
+                            $('#view_modal').modal({
+                                keyboard: false,
+                                backdrop: 'static',
+                            });
+                            $('#view_modal .modal-title').html(
+                                '<i class="fas fa-eye text-white"></i> <span> ' + name + 'Payslip Details</span>');
+                        },
+                        error: function (xhr, ajaxOption, thrownError) {
+                            console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
+                        }
+                    });
+                }
+            });
+
+            $(document).on('click', '.delete-data', function () {
+                let id = $(this).data('id');
+                let name = $(this).data('name');
+                let row = table.row($(this).parent('tr'));
+                let url = "{{ route('generate.salary.delete') }}";
+                delete_data(id, url, table, row, name);
+            });
+        });
     </script>
 @endpush

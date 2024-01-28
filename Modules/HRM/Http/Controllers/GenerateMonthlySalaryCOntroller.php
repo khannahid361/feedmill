@@ -51,18 +51,14 @@ class GenerateMonthlySalaryCOntroller extends BaseController
                 foreach ($list as $value) {
                     $no++;
                     $action = '';
-//                    if (permission('generate-salary-edit') && $value->approval_status == 1) {
-//                        $action .= ' <a class="dropdown-item edit-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
-//                    }
-//                    if (permission('generate-salary-change-status') && $value->approval_status == 1) {
-//                        $action .= ' <a class="dropdown-item" href="' . route("overtime.approve", $value->id) . '">' . self::ACTION_BUTTON['Approve'] . '</a>';
-//                    }
-//                    if (permission('generate-salary-view')) {
-//                        $action .= ' <a class="dropdown-item view-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['View'] . '</a>';
-//                    }
-//                    if (permission('generate-salary-change-status') && $value->approval_status == 1) {
-//                        $action .= ' <a class="dropdown-item delete_data"  data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['Delete'] . '</a>';
-//                    }
+                    if (permission('generate-salary-change-status') && $value->status == 1) {
+                        $action .= ' <a class="dropdown-item" href="' . route("generate.salary.approve", $value->id) . '">' . self::ACTION_BUTTON['Approve'] . '</a>';
+
+                        $action .= ' <a class="dropdown-item delete-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['Delete'] . '</a>';
+                    }
+                    if (permission('generate-salary-view')) {
+                        $action .= ' <a class="dropdown-item view-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['View'] . '</a>';
+                    }
                     $month = $monthName = date("F", mktime(0, 0, 0, $value->month, 1));;
                     $row = [];
                     $row[] = $no;
