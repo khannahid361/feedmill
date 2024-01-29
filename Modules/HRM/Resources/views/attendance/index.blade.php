@@ -14,11 +14,11 @@
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        {{--                        @if (permission('employee-add'))--}}
-                        {{--                            <a href="{{route('employee.add')}}" class="btn btn-primary btn-sm font-weight-bolder">--}}
-                        {{--                                <i class="fas fa-plus-circle"></i> Add New Employee--}}
-                        {{--                            </a>--}}
-                        {{--                        @endif--}}
+                        @if (permission('attendance-add'))
+                            <a href="{{route('attendance')}}" class="btn btn-primary btn-sm font-weight-bolder">
+                                <i class="fas fa-plus-circle"></i> Daily Attendance
+                            </a>
+                        @endif
                         <!--end::Button-->
                     </div>
                 </div>
@@ -29,8 +29,34 @@
                 <div class="card-header flex-wrap py-5">
                     <form method="POST" id="form-filter" class="col-md-12 px-0">
                         <div class="row">
-                            <x-form.textbox labelName="{{__('file.Employee ID')}}" name="employee_id" col="col-md-4"/>
-                            <div class="col-md-8">
+                            <div class="form-group col-md-4 required">
+                                <label for="from_date">From Date</label>
+                                <input type="date" class="form-control" name="from_date" id="from_date"
+                                       value="" />
+                            </div>
+                            <div class="form-group col-md-4 required">
+                                <label for="to_date">To Date</label>
+                                <input type="date" class="form-control" name="to_date" id="to_date"
+                                       value="" />
+                            </div>
+                            <x-form.selectbox labelName="{{__('Shift')}}" name="shift_id" id="shift_id"
+                                              col="col-md-4" class="selectpicker">
+                                @foreach ($shifts as $row)
+                                    <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                @endforeach
+                            </x-form.selectbox>
+                            <x-form.selectbox labelName="{{__('Employee')}}" name="employee_id" id="employee_id"
+                                              col="col-md-4" class="selectpicker">
+                                @foreach ($employees as $row)
+                                    <option value="{{ $row->id }}">{{ $row->name }}--{{ $row->employee_id }}</option>
+                                @endforeach
+                            </x-form.selectbox>
+                            <x-form.selectbox labelName="Status" name="status" col="col-md-4" class="selectpicker">
+                                @foreach (DAILY_ATTENDENCE as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
+                                @endforeach
+                            </x-form.selectbox>
+                            <div class="col-md-4">
                                 <div style="margin-top:28px;">
                                     <div style="margin-top:28px;">
                                         <button id="btn-reset"
@@ -59,11 +85,13 @@
                                     <thead class="bg-primary">
                                     <tr>
                                         <th>{{__('file.SL')}}</th>
-                                        <th>{{__('file.Employee ID')}}</th>
-                                        <th>{{__('file.Name')}}</th>
-                                        <th>{{__('file.Joining Date')}}</th>
-                                        <th>{{__('file.Email')}}</th>
-                                        <th>{{__('file.Contact No')}}</th>
+                                        <th>{{__('file.Employee')}}</th>
+                                        <th>{{__('file.Shift')}}</th>
+                                        <th>{{__('file.Check In')}}</th>
+                                        <th>{{__('file.Check Out')}}</th>
+                                        <th>{{__('file.Working Hour')}}</th>
+                                        <th>{{__('file.Approved By')}}</th>
+                                        <th>{{__('file.Status')}}</th>
                                         <th>{{__('file.Action')}}</th>
                                     </tr>
                                     </thead>
@@ -108,11 +136,15 @@
                     "type": "POST",
                     "data": function (data) {
                         data.employee_id = $("#form-filter #employee_id").val();
+                        data.from_date = $("#form-filter #from_date").val();
+                        data.to_date = $("#form-filter #to_date").val();
+                        data.shift_id = $("#form-filter #shift_id").val();
+                        data.status = $("#form-filter #status").val();
                         data._token = _token;
                     }
                 },
                 "columnDefs": [{
-                    "targets": [0, 1, 2, 3, 4, 5, 6],
+                    "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8],
                     "orderable": false,
                     "className": "text-center"
                 },

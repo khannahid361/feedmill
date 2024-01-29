@@ -172,16 +172,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('change-status', 'LabourBonusController@change_status')->name('change.status');
     });
 
-    //Employee Attendance Setup Routes
-    Route::get('employee-attendance', 'EmployeeAttendanceController@index')->name('empAttendance');
-    Route::group(['prefix' => 'empAttendance', 'as' => 'empAttendance.'], function () {
-        Route::post('datatable-data', 'EmployeeAttendanceController@get_datatable_data')->name('datatable.data');
-        Route::post('store-or-update', 'EmployeeAttendanceController@store_or_update_data')->name('store.or.update');
-        Route::post('edit', 'EmployeeAttendanceController@edit')->name('edit');
-        Route::post('delete', 'EmployeeAttendanceController@delete')->name('delete');
-        Route::post('change-status', 'EmployeeAttendanceController@change_status')->name('change.status');
-    });
-
     //Employee Leave Setup Routes
     Route::get('employee-leave-application', 'EmployeeLeaveAppController@index')->name('empLeave');
     Route::group(['prefix' => 'empLeave', 'as' => 'empLeave.'], function () {
@@ -323,4 +313,16 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('approve/{id}', 'GenerateMonthlySalaryCOntroller@approve')->name('approve');
     });
     Route::post('get-employees-data', 'GenerateMonthlySalaryCOntroller@getEmployees')->name('get.employees.data');
+
+    //Employee Attendance Setup Routes
+    Route::get('employee-attendance', 'EmployeeAttendanceController@index')->name('empAttendance');
+    Route::group(['prefix' => 'empAttendance', 'as' => 'empAttendance.'], function () {
+        Route::post('datatable-data', 'EmployeeAttendanceController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'EmployeeAttendanceController@store_or_update_data')->name('store.or.update');
+        Route::post('edit', 'EmployeeAttendanceController@edit')->name('edit');
+        Route::post('delete', 'EmployeeAttendanceController@delete')->name('delete');
+        Route::post('change-status', 'EmployeeAttendanceController@change_status')->name('change.status');
+        Route::post('view', 'EmployeeAttendanceController@view')->name('view');
+        Route::get('approve/{id}', 'EmployeeAttendanceController@approve')->name('approve');
+    });
 });

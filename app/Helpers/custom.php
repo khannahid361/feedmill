@@ -414,3 +414,9 @@ function allMonths()
     ];
     return $months;
 }
+
+define('DAILY_ATTENDENCE',['1'=>'Pending','2'=>'Approved']);
+define('DAILY_ATTENDENCE_LABEL',[
+    '1'=>'<span class="label label-success label-pill label-inline" style="min-width:70px !important;">Pending</span>',
+    '2'=>'<span class="label label-info label-pill label-inline" style="min-width:70px !important;">Approved</span>'
+]);

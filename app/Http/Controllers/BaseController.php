@@ -44,6 +44,7 @@ class BaseController extends Controller
             'Generate Slip'                 => '<i class="fas fa-file-invoice-dollar text-dark mr-2"></i>'.__('file.Generate Slip'),
             'Builder'                       => '<i class="fas fa-th-list text-success mr-2"></i>'.__('file.Builder').__('file.Builder'),
             'Summary'                       => '<i class="fas fa-newspaper text-primary mr-2"></i>'.__('file.Summary'),
+            'Approve' => '<i class="fas fa-check-circle text-success mr-2"></i>Approve',
         ];
         return $button[$key];
     }

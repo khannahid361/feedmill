@@ -7,6 +7,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Modules\HRM\Entities\Employee;
 use Modules\HRM\Entities\GenerateMonthlySalary;
+use Modules\HRM\Entities\Shift;
 use Modules\HRM\Http\Requests\SalaryGenerateFormRequest;
 
 class GenerateMonthlySalaryCOntroller extends BaseController
@@ -21,7 +22,7 @@ class GenerateMonthlySalaryCOntroller extends BaseController
         if (permission('generate-salary-access')) {
             $this->setPageData('Manage Employee Payslip', 'Manage Employee Payslip', 'fab fa-opencart', [['name' => 'Manage Employee Payslip']]);
             $employees = Employee::where('activation_status', '1')->get();
-            $shifts = Employee::where('status', '1')->get();
+            $shifts = Shift::where('status', '1')->get();
             return view('hrm::generate-salary.index', compact('employees', 'shifts'));
         } else {
             return $this->access_blocked();
