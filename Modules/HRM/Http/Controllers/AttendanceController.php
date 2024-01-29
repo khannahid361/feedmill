@@ -75,4 +75,30 @@ class AttendanceController extends BaseController
             return response()->json($this->unauthorized());
         }
     }
+
+    public function reportIndex()
+    {
+        if (permission('attendance-report-access')) {
+            $setTitle = __('file.Attendance Report');
+            $this->setPageData($setTitle, $setTitle, 'fas fa-user-plus', [['name' => $setTitle]]);
+            $employees = Employee::where('activation_status', '1')->get();
+            return view('hrm::attendance.report', compact('employees'));
+        } else {
+            return $this->access_blocked();
+        }
+    }
+    public function reportData(Request $request)
+    {
+        if ($request->ajax()) {
+            if (permission('attendance-report-access')) {
+                $data = DailyAttendance::with('shift', 'employee', 'employee.designation', 'employee.department','employee.branch')
+                    ->where('employee_id', $request->id)
+                    ->where('check_in_date', '>=', $request->from_date)
+                    ->where('check_in_date', '<=', $request->to_date)
+                    ->orderBy('check_in_date', 'asc')
+                    ->get();
+                return view('hrm::attendance.report-data',compact('data'))->render();
+            }
+        }
+    }
 }

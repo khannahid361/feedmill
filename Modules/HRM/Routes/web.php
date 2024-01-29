@@ -325,4 +325,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('view', 'EmployeeAttendanceController@view')->name('view');
         Route::get('approve/{id}', 'EmployeeAttendanceController@approve')->name('approve');
     });
+    Route::get('attendance-report', 'AttendanceController@reportIndex')->name('attendance.report');
+    Route::post('attendance-report-data', 'AttendanceController@reportData')->name('attendance.report.data');
 });
