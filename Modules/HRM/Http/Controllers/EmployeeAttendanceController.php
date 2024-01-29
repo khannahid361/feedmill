@@ -57,7 +57,7 @@ class EmployeeAttendanceController extends BaseController
                     $no++;
                     $action = '';
                     if(permission('employee-attendance-view')){
-                        $action .= ' <a class="dropdown-item edit_data" data-id="' . $value->id . '">'.$this->actionButton('View').'</a>';
+                        $action .= ' <a class="dropdown-item view-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">'.$this->actionButton('View').'</a>';
                     }
                     if(permission('employee-attendance-change-status') && $value->approval_status == 1){
                         $action .= ' <a class="dropdown-item" href="'.route("empAttendance.approve", $value->id).'">'.$this->actionButton('Approve').'</a>';
@@ -85,21 +85,21 @@ class EmployeeAttendanceController extends BaseController
     public function view(Request $request)
     {
         if ($request->ajax()) {
-            if (permission('generate-salary-view')) {
+            if (permission('employee-attendance-view')) {
                 $data = $this->model->with('employee', 'shift')->findOrFail($request->id);
-                return view('hrm::generate-salary.modal-data', compact('data'))->render();
+                return view('hrm::attendance.modal-data', compact('data'))->render();
             }
         }
     }
     public function approve($id)
     {
-        if (permission('generate-salary-change-status')) {
+        if (permission('employee-attendance-change-status')) {
             $result = $this->model->find($id);
             $result->update([
-                'status' => '2',
+                'approval_status' => '2',
                 'approved_by' => auth()->user()->username,
             ]);
-            $output = ['status' => 'success', 'message' => 'Payslip Approve Successful'];
+            $output = ['status' => 'success', 'message' => 'Attendance Approve Successful'];
         } else {
             $output = $this->unauthorized();
         }

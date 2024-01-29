@@ -106,6 +106,7 @@
             <!--end::Card-->
         </div>
     </div>
+    @include('hrm::attendance.view')
 @endsection
 
 @push('scripts')
@@ -161,6 +162,31 @@
             $('#btn-reset').click(function () {
                 $('#form-filter')[0].reset();
                 table.ajax.reload();
+            });
+
+            $(document).on('click', '.view-data', function () {
+                let id = $(this).data('id');
+                let name  = $(this).data('name');
+                if (id) {
+                    $.ajax({
+                        url: "{{route('empAttendance.view')}}",
+                        type: "POST",
+                        data: { id: id,_token: _token},
+                        success: function (data) {
+                            $('#view_modal #view-data').html('');
+                            $('#view_modal #view-data').html(data);
+                            $('#view_modal').modal({
+                                keyboard: false,
+                                backdrop: 'static',
+                            });
+                            $('#view_modal .modal-title').html(
+                                '<i class="fas fa-eye text-white"></i> <span> ' + name + 'Attendance Details</span>');
+                        },
+                        error: function (xhr, ajaxOption, thrownError) {
+                            console.log(thrownError + '\r\n' + xhr.statusText + '\r\n' + xhr.responseText);
+                        }
+                    });
+                }
             });
         });
     </script>
