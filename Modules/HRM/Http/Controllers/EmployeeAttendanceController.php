@@ -20,9 +20,8 @@ class EmployeeAttendanceController extends BaseController
         if(permission('employee-attendance-access')){
             $setTitle = __('file.Manage Employee Attendance');
             $this->setPageData($setTitle, $setTitle, 'far fa-handshake', [['name' => $setTitle]]);
-            $deletable  = self::DELETABLE;
             $employee   = Employee::all();
-            return view('hrm::attendance.employee.index',compact('deletable','employee'));
+            return view('hrm::attendance.index',compact('employee'));
         }else{
             return $this->access_blocked();
         }
