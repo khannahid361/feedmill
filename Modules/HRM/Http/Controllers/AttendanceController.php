@@ -129,20 +129,6 @@ class AttendanceController extends BaseController
                             ->whereBetween('da.check_in_date', [$request->from_date, $request->to_date])
                             ->where('da.approval_status', 2);
                     })
-//                    ->leftJoin('employee_leaves as paid', function ($join) use ($request) {
-//                        $join->on('paid.employee_id', '=', 'e.id')
-//                            ->where('paid.start_date', '>=', $request->from_date)
-//                            ->where('paid.start_date', '<=', $request->to_date)
-//                            ->where('paid.status', '=', '2')
-//                            ->where('paid.is_paid', '=', '1');
-//                    })
-//                    ->leftJoin('employee_leaves as unpaid', function ($join) use ($request) {
-//                        $join->on('unpaid.employee_id', '=', 'e.id')
-//                            ->where('unpaid.start_date', '>=', $request->from_date)
-//                            ->where('unpaid.start_date', '<=', $request->to_date)
-//                            ->where('unpaid.status', '=', '2')
-//                            ->where('unpaid.is_paid', '=', '2');
-//                    })
                     ->leftJoin('overtimes as o', function ($join) use ($request) {
                         $join->on('o.employee_id', '=', 'e.id')
                             ->where('o.start_date', '>=', $request->from_date)
@@ -166,7 +152,6 @@ class AttendanceController extends BaseController
                 )
                     ->groupBy('e.id')
                     ->get();
-//                dd($data);
                 return view('hrm::attendance.summery-data', compact('data', 'request'))->render();
             }
         }
