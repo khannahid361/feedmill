@@ -15,14 +15,24 @@
     </thead>
     <tbody>
     @forelse($data as $key => $value)
+        @php
+            $paidLeaves = \Modules\HRM\Entities\EmployeeLeave::where('employee_id', $value->employee_id )->where('start_date', '>=', $request->from_date)
+                            ->where('start_date', '<=', $request->to_date)
+                            ->where('status', '=', '2')
+                            ->where('is_paid', '=', '1')->sum('duration');
+            $unpaidLeaves = \Modules\HRM\Entities\EmployeeLeave::where('employee_id', $value->employee_id )->where('start_date', '>=', $request->from_date)
+                            ->where('start_date', '<=', $request->to_date)
+                            ->where('status', '=', '2')
+                            ->where('is_paid', '=', '2')->sum('duration');
+        @endphp
         <tr>
             <td>{{ $value->employee_name }}</td>
             <td>{{ $value->designation_name }}</td>
             <td>{{ $value->department_name }}</td>
             <td>{{ $value->branch_name }}</td>
             <td>{{ $value->total_attended }}</td>
-            <td>{{ $value->total_paid_leaves }}</td>
-            <td>{{ $value->total_unpaid_leaves }}</td>
+            <td>{{ $paidLeaves }}</td>
+            <td>{{ $unpaidLeaves }}</td>
             <td>{{ $value->total_attended_hour }}</td>
             <td>{{ $value->total_overtime_hour }}</td>
         </tr>

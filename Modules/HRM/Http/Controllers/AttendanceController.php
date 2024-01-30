@@ -124,51 +124,50 @@ class AttendanceController extends BaseController
                     ->join('designations as dg', 'dg.id', '=', 'e.designation_id')
                     ->join('departments as dp', 'dp.id', '=', 'e.department_id')
                     ->join('branches as b', 'b.id', '=', 'e.branch_id')
-                    ->leftJoin('employee_leaves as paid', function ($join) use ($request) {
-                        $join->on('paid.employee_id', '=', 'e.id')
-                            ->where('paid.start_date', '>=', $request->from_date)
-                            ->where('paid.start_date', '<=', $request->to_date)
-                            ->where('paid.status', 2)
-                            ->where('paid.is_paid', 1);
-                    })
-                    ->leftJoin('employee_leaves as unpaid', function ($join) use ($request) {
-                        $join->on('unpaid.employee_id', '=', 'e.id')
-                            ->where('unpaid.start_date', '>=', $request->from_date)
-                            ->where('unpaid.start_date', '<=', $request->to_date)
-                            ->where('unpaid.status', 2)
-                            ->where('unpaid.is_paid', 2);
-                    })
                     ->leftJoin('daily_attendances as da', function ($join) use ($request) {
                         $join->on('da.employee_id', '=', 'e.id')
-                            ->where('da.check_in_date', '>=', $request->from_date)
-                            ->where('da.check_in_date', '<=', $request->to_date)
+                            ->whereBetween('da.check_in_date', [$request->from_date, $request->to_date])
                             ->where('da.approval_status', 2);
                     })
+//                    ->leftJoin('employee_leaves as paid', function ($join) use ($request) {
+//                        $join->on('paid.employee_id', '=', 'e.id')
+//                            ->where('paid.start_date', '>=', $request->from_date)
+//                            ->where('paid.start_date', '<=', $request->to_date)
+//                            ->where('paid.status', '=', '2')
+//                            ->where('paid.is_paid', '=', '1');
+//                    })
+//                    ->leftJoin('employee_leaves as unpaid', function ($join) use ($request) {
+//                        $join->on('unpaid.employee_id', '=', 'e.id')
+//                            ->where('unpaid.start_date', '>=', $request->from_date)
+//                            ->where('unpaid.start_date', '<=', $request->to_date)
+//                            ->where('unpaid.status', '=', '2')
+//                            ->where('unpaid.is_paid', '=', '2');
+//                    })
                     ->leftJoin('overtimes as o', function ($join) use ($request) {
-                    $join->on('o.employee_id', '=', 'e.id')
-                    ->where('o.start_date', '>=', $request->from_date)
-                    ->where('o.start_date', '<=', $request->to_date)
-                    ->where('o.approval_status', 2);
-                });
+                        $join->on('o.employee_id', '=', 'e.id')
+                            ->where('o.start_date', '>=', $request->from_date)
+                            ->where('o.start_date', '<=', $request->to_date)
+                            ->where('o.approval_status', 2);
+                    });
 
                 if (!in_array("0", $idArray)) {
-                    $data = $data->whereIn('e.id', $idArray);
+                    $data->whereIn('e.id', $idArray);
                 }
-                $data = $data->select(
-                    DB::raw('count(IF(da.employee_id = e.id, IFNULL(da.check_in_date, 0), 0)) as total_attended'),
+                $data=
+                    $data->select(
+                    DB::raw('count(da.check_in_date) as total_attended'),
                     DB::raw('sum(IFNULL(da.working_hour, 0)) as total_attended_hour'),
                     DB::raw('sum(IFNULL(o.working_hour, 0)) as total_overtime_hour'),
-                    DB::raw('sum(IFNULL(paid.duration, 0)) as total_paid_leaves'),
-                    DB::raw('sum(IFNULL(unpaid.duration, 0)) as total_unpaid_leaves'),
                     'e.name as employee_name',
                     'dp.name as department_name',
                     'dg.name as designation_name',
-                    'b.name as branch_name'
+                    'b.name as branch_name',
+                    'e.id as employee_id',
                 )
                     ->groupBy('e.id')
                     ->get();
-
-                return view('hrm::attendance.summery-data', compact('data'))->render();
+//                dd($data);
+                return view('hrm::attendance.summery-data', compact('data', 'request'))->render();
             }
         }
     }
