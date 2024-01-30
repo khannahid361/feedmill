@@ -9,6 +9,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Modules\Account\Entities\ChartOfAccount;
 use Modules\Department\Entities\Department;
 use Modules\Designation\Entities\Designation;
 use Modules\HRM\Entities\Branch;
@@ -114,6 +115,14 @@ class EmployeeController extends BaseController
                 }
                 $collection = collect($request->all())->merge(['user_id' => $user->id, 'created_by' => $user_id, 'joining_month' => $joining_month, 'resume' => $resume]);
                 $employees = $this->model->create($collection->all());
+//startcoa
+                $coa_max_code = ChartOfAccount::where('level', 3)->where('code', 'like', '50202%')->max('code');
+                $code = $coa_max_code ? ($coa_max_code + 1) : $this->coa_head_code('default_employee');
+                $head_name = $employees->id . '-' . $request->name;
+                $employee_coa_data = $this->employeeCoa($code, $head_name, $employees->id);
+
+                $employee_coa = ChartOfAccount::create($employee_coa_data);
+//endcoa
                 $output = $this->store_message($employees);
             } else {
                 $output = $this->unauthorized();
@@ -147,11 +156,21 @@ class EmployeeController extends BaseController
                 if ($request->hasFile('resume')) {
                     $resume = $this->upload_file($request->file('resume'), EMPLOYEE_IMAGE_PATH);
                     if (!empty($request->old_resume)) {
-                        unlink(public_path('storage/'.EMPLOYEE_IMAGE_PATH . '' . $request->old_resume));
+                        unlink(public_path('storage/' . EMPLOYEE_IMAGE_PATH . '' . $request->old_resume));
                     }
                 }
                 $collection = collect($request->all())->merge(['resume' => $resume]);
-                $employee = $this->model->find($request->update_id)->update($collection->all());
+                $oldData = $this->model->find($request->update_id);
+                //coa
+                $old_head_name = $request->update_id . '-' . $oldData->name;
+                $new_head_name = $request->update_id . '-' . $request->name;
+                $employee_coa = ChartOfAccount::where(['name' => $old_head_name, 'employee_id' => $request->update_id])->first();
+                if ($employee_coa) {
+//                    $supplier_coa_id = $employee_coa->id;
+                    $employee_coa->update(['name' => $new_head_name]);
+                }
+                $employee = $oldData->update($collection->all());
+                //endcoa
                 $output = $this->store_message($employee);
             } else {
                 $output = $this->unauthorized();
@@ -162,4 +181,25 @@ class EmployeeController extends BaseController
         }
     }
 
+    private function employeeCoa(string $code,string $head_name,int $employee_id)
+    {
+        return [
+            'code'              => $code,
+            'name'              => $head_name,
+            'parent_name'       => 'Employee Ledger',
+            'level'             => 3,
+            'type'              => 'L',
+            'transaction'       => 1,
+            'general_ledger'    => 2,
+            'customer_id'       => null,
+            'supplier_id'       => null,
+            'employee_id'       => $employee_id,
+            'budget'            => 2,
+            'depreciation'      => 2,
+            'depreciation_rate' => '0',
+            'status'            => 1,
+            'created_by'        => auth()->user()->name
+        ];
+    }
+    //INSERT INTO `chart_of_accounts` (`id`, `code`, `name`, `parent_name`, `level`, `type`, `transaction`, `general_ledger`, `customer_id`, `supplier_id`, `asm_id`, `salesmen_id`, `dealer_id`, `bank_id`, `mobile_bank_id`, `budget`, `depreciation`, `depreciation_rate`, `status`, `created_by`, `modified_by`, `created_at`, `updated_at`, `employee_id`) VALUES (NULL, '5020200003', '3-Nayem', 'Employee Ledger', '3', 'L', '1', '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', '2', '0', '1', 'SuperAdmin', NULL, '2024-01-30 18:50:59', NULL, '1');
 }

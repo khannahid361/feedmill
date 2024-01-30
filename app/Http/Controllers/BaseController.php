@@ -240,6 +240,9 @@ class BaseController extends Controller
             case 'employee_ledger':
                 return 50202;
                 break;
+            case 'default_employee':
+                return 5020200001;
+                break;
             case 'tax':
                 return 50203;
                 break;
