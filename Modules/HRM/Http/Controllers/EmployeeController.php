@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Traits\UploadAble;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Modules\Account\Entities\ChartOfAccount;
 use Modules\Department\Entities\Department;
@@ -201,5 +200,4 @@ class EmployeeController extends BaseController
             'created_by'        => auth()->user()->name
         ];
     }
-    //INSERT INTO `chart_of_accounts` (`id`, `code`, `name`, `parent_name`, `level`, `type`, `transaction`, `general_ledger`, `customer_id`, `supplier_id`, `asm_id`, `salesmen_id`, `dealer_id`, `bank_id`, `mobile_bank_id`, `budget`, `depreciation`, `depreciation_rate`, `status`, `created_by`, `modified_by`, `created_at`, `updated_at`, `employee_id`) VALUES (NULL, '5020200003', '3-Nayem', 'Employee Ledger', '3', 'L', '1', '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', '2', '0', '1', 'SuperAdmin', NULL, '2024-01-30 18:50:59', NULL, '1');
 }
