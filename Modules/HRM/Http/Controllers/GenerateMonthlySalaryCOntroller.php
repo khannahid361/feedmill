@@ -5,6 +5,9 @@ namespace Modules\HRM\Http\Controllers;
 use App\Http\Controllers\BaseController;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Modules\Account\Entities\ChartOfAccount;
+use Modules\Account\Entities\Transaction;
 use Modules\HRM\Entities\Employee;
 use Modules\HRM\Entities\GenerateMonthlySalary;
 use Modules\HRM\Entities\Shift;
@@ -45,8 +48,8 @@ class GenerateMonthlySalaryCOntroller extends BaseController
                 if (!empty($request->type)) {
                     $this->model->setStatus($request->type);
                 }
-                $this->set_datatable_default_properties($request);//set datatable default properties
-                $list = $this->model->getDatatableList();//get table data
+                $this->set_datatable_default_properties($request); //set datatable default properties
+                $list = $this->model->getDatatableList(); //get table data
                 $data = [];
                 $no = $request->input('start');
                 foreach ($list as $value) {
@@ -74,11 +77,15 @@ class GenerateMonthlySalaryCOntroller extends BaseController
                     $row[] = $value->created_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Created Yet</span>';
                     $row[] = $value->approved_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Approved Yet</span>';
                     $row[] = LEAVE_STATUS_LABEL[$value->status];
-                    $row[] = action_button($action);//custom helper function for action button
+                    $row[] = action_button($action); //custom helper function for action button
                     $data[] = $row;
                 }
-                return $this->datatable_draw($request->input('draw'), $this->model->count_all(),
-                    $this->model->count_filtered(), $data);
+                return $this->datatable_draw(
+                    $request->input('draw'),
+                    $this->model->count_all(),
+                    $this->model->count_filtered(),
+                    $data
+                );
             }
         } else {
             return response()->json($this->unauthorized());
@@ -193,15 +200,79 @@ class GenerateMonthlySalaryCOntroller extends BaseController
     public function approve($id)
     {
         if (permission('generate-salary-change-status')) {
-            $result = $this->model->find($id);
-            $result->update([
-                'status' => '2',
-                'approved_by' => auth()->user()->username,
-            ]);
-            $output = ['status' => 'success', 'message' => 'Payslip Approve Successful'];
+            DB::beginTransaction();
+            try {
+                $result = $this->model->find($id);
+                $data = $result;
+                $result->update([
+                    'status' => '2',
+                    'approved_by' => auth()->user()->username,
+                ]);
+                $employeeCoa = ChartOfAccount::where('employee_id', $data->employee_id)->first();
+                // dd($employeeCoa);
+                $this->generateSalary($employeeCoa->id, $data->year, $data->month, $data->employee->name, $data->net_salary);
+                $output = ['status' => 'success', 'message' => 'Payslip Approve Successful'];
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                $output = ['status' => 'error', 'message' => $e->getMessage()];
+            }
         } else {
             $output = $this->unauthorized();
         }
         return redirect()->back()->with($output);
+    }
+
+    public function generateSalary($employe_coa, $year, $month, $employee_name, $net_salary)
+    {
+        $voucher_no = 'EMSALARY-' . date('ymd') . rand(1, 999);
+        $voucher_date = date('Y-m-d');
+        $monthName = date("F", mktime(0, 0, 0, $month, 1));
+        $description = 'Monthly Salary Generated For the month of ' . $monthName . '-' . $year . ' For ' . $employee_name . '';
+        $liability = [
+            'chart_of_account_id' => 5,
+            'warehouse_id' => 1,
+            'voucher_no' => $voucher_no,
+            'voucher_type' => 'Monthly_Salary',
+            'voucher_date' => $voucher_date,
+            'description' => $description,
+            'debit' => $net_salary,
+            'credit' => 0,
+            'is_opening' => 2,
+            'posted' => 1,
+            'approve' => 1,
+            'created_by' => auth()->user()->username
+        ];
+        $emp_ledger = [
+            'chart_of_account_id' => 21,
+            'warehouse_id' => 1,
+            'voucher_no' => $voucher_no,
+            'voucher_type' => 'Monthly_Salary',
+            'voucher_date' => $voucher_date,
+            'description' => $description,
+            'debit' => $net_salary,
+            'credit' => 0,
+            'is_opening' => 2,
+            'posted' => 1,
+            'approve' => 1,
+            'created_by' => auth()->user()->username
+        ];
+        $employee = [
+            'chart_of_account_id' => $employe_coa,
+            'warehouse_id' => 1,
+            'voucher_no' => $voucher_no,
+            'voucher_type' => 'Monthly_Salary',
+            'voucher_date' => $voucher_date,
+            'description' => $description,
+            'debit' => 0,
+            'credit' => $net_salary,
+            'is_opening' => 2,
+            'posted' => 1,
+            'approve' => 1,
+            'created_by' => auth()->user()->username
+        ];
+        Transaction::create($liability);
+        Transaction::create($emp_ledger);
+        Transaction::create($employee);
     }
 }

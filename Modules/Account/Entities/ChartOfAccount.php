@@ -13,7 +13,7 @@ use Modules\Dealer\Entities\Dealer;
 class ChartOfAccount extends BaseModel
 {
     protected $fillable = [ 'code', 'name', 'parent_name', 'level', 'type', 'transaction', 'general_ledger',
-    'customer_id', 'supplier_id','asm_id', 'salesmen_id', 'dealer_id','bank_id','mobile_bank_id','budget', 'depreciation', 'depreciation_rate', 'status', 'created_by', 'modified_by'];
+    'customer_id', 'supplier_id','asm_id', 'salesmen_id', 'dealer_id','bank_id','mobile_bank_id','budget', 'depreciation', 'depreciation_rate', 'status', 'created_by', 'modified_by', 'employee_id'];
 
     public function transactions()
     {
