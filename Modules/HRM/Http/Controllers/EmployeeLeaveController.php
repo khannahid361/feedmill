@@ -5,6 +5,7 @@ namespace Modules\HRM\Http\Controllers;
 use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Modules\Account\Entities\Transaction;
 use Modules\HRM\Entities\Employee;
 use Modules\HRM\Entities\EmployeeLeave;
 use Modules\HRM\Entities\LeaveCategory;
@@ -149,6 +150,7 @@ class EmployeeLeaveController extends BaseController
     {
         if (permission('leave-approve')) {
             $result = $this->model->find($id);
+            $data = $result;
             $result->update([
                 'status' => '2',
                 'approved_by' => auth()->user()->username,
@@ -158,5 +160,43 @@ class EmployeeLeaveController extends BaseController
             $output = $this->unauthorized();
         }
         return redirect()->back()->with($output);
+    }
+
+    public function generateOvertime($employe_coa, $employee_name, $overtime)
+    {
+        $voucher_no = 'EOVERTIME-' . date('ymd') . rand(1, 999);
+        $voucher_date = date('Y-m-d');
+        $description = 'Overtime Generated For ' . $employee_name . '';
+        $Overtimeliability = [
+            'chart_of_account_id' => 703,
+            'warehouse_id' => 1,
+            'voucher_no' => $voucher_no,
+            'voucher_type' => 'Overtime',
+            'voucher_date' => $voucher_date,
+            'description' => $description,
+            'debit' => $overtime,
+            'credit' => 0,
+            'is_opening' => 2,
+            'posted' => 1,
+            'approve' => 1,
+            'created_by' => auth()->user()->username
+        ];
+
+        $employee = [
+            'chart_of_account_id' => $employe_coa,
+            'warehouse_id' => 1,
+            'voucher_no' => $voucher_no,
+            'voucher_type' => 'Overtime',
+            'voucher_date' => $voucher_date,
+            'description' => $description,
+            'debit' => 0,
+            'credit' => $overtime,
+            'is_opening' => 2,
+            'posted' => 1,
+            'approve' => 1,
+            'created_by' => auth()->user()->username
+        ];
+        Transaction::create($Overtimeliability);
+        Transaction::create($employee);
     }
 }
