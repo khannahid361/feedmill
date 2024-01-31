@@ -6,8 +6,12 @@ use App\Http\Controllers\BaseController;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Modules\Account\Entities\ChartOfAccount;
+use Modules\Account\Entities\Transaction;
 use Modules\HRM\Entities\Employee;
 use Modules\HRM\Entities\Overtime;
+use Modules\HRM\Entities\Salary;
 use Modules\HRM\Http\Requests\OvertimeFormRequest;
 
 class OvertimeController extends BaseController
@@ -44,8 +48,8 @@ class OvertimeController extends BaseController
                 if (!empty($request->type)) {
                     $this->model->setType($request->type);
                 }
-                $this->set_datatable_default_properties($request);//set datatable default properties
-                $list = $this->model->getDatatableList();//get table data
+                $this->set_datatable_default_properties($request); //set datatable default properties
+                $list = $this->model->getDatatableList(); //get table data
                 $data = [];
                 $no = $request->input('start');
                 foreach ($list as $value) {
@@ -73,11 +77,15 @@ class OvertimeController extends BaseController
                     $row[] = $value->modified_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Modified Yet</span>';
                     $row[] = $value->approved_by ?? '<span class="label label-danger label-pill label-inline" style="min-width:70px !important;">Not Approved Yet</span>';
                     $row[] = LEAVE_STATUS_LABEL[$value->approval_status];
-                    $row[] = action_button($action);//custom helper function for action button
+                    $row[] = action_button($action); //custom helper function for action button
                     $data[] = $row;
                 }
-                return $this->datatable_draw($request->input('draw'), $this->model->count_all(),
-                    $this->model->count_filtered(), $data);
+                return $this->datatable_draw(
+                    $request->input('draw'),
+                    $this->model->count_all(),
+                    $this->model->count_filtered(),
+                    $data
+                );
             }
         } else {
             return response()->json($this->unauthorized());
@@ -143,15 +151,64 @@ class OvertimeController extends BaseController
     public function approve($id)
     {
         if (permission('overtime-approve')) {
-            $result = $this->model->find($id);
-            $result->update([
-                'approval_status' => '2',
-                'approved_by' => auth()->user()->username,
-            ]);
-            $output = ['status' => 'success', 'message' => 'Overtime Approve Successful'];
+            DB::beginTransaction();
+            try {
+                $result = $this->model->find($id);
+                $data = $result;
+                $result->update([
+                    'approval_status' => '2',
+                    'approved_by' => auth()->user()->username,
+                ]);
+                $overtime = Salary::where('employee_id', $data->employee_id)->value('overtime_rate');
+                $overtime = $overtime * $data->working_hour;
+                $employeeCoa = ChartOfAccount::where('employee_id', $data->employee_id)->first();
+                $this->generateOvertime($employeeCoa->id, $data->employee->name, $overtime);
+                $output = ['status' => 'success', 'message' => 'Overtime Approve Successful'];
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                $output = ['status' => 'success', 'message' => $e->getMessage()];
+            }
         } else {
             $output = $this->unauthorized();
         }
         return redirect()->back()->with($output);
+    }
+    public function generateOvertime($employe_coa, $employee_name, $overtime)
+    {
+        $voucher_no = 'EOVERTIME-' . date('ymd') . rand(1, 999);
+        $voucher_date = date('Y-m-d');
+        $description = 'Overtime Generated For ' . $employee_name . '';
+        $Overtimeliability = [
+            'chart_of_account_id' => 703,
+            'warehouse_id' => 1,
+            'voucher_no' => $voucher_no,
+            'voucher_type' => 'Monthly_Salary',
+            'voucher_date' => $voucher_date,
+            'description' => $description,
+            'debit' => $overtime,
+            'credit' => 0,
+            'is_opening' => 2,
+            'posted' => 1,
+            'approve' => 1,
+            'created_by' => auth()->user()->username
+        ];
+
+        $employee = [
+            'chart_of_account_id' => $employe_coa,
+            'warehouse_id' => 1,
+            'voucher_no' => $voucher_no,
+            'voucher_type' => 'Monthly_Salary',
+            'voucher_date' => $voucher_date,
+            'description' => $description,
+            'debit' => 0,
+            'credit' => $overtime,
+            'is_opening' => 2,
+            'posted' => 1,
+            'approve' => 1,
+            'created_by' => auth()->user()->username
+        ];
+        Transaction::create($Overtimeliability);
+        Transaction::create($employee);
     }
 }
