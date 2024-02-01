@@ -187,11 +187,7 @@ class EmployeeSalaryPaymnetController extends BaseController
     {
         if ($request->ajax()) {
             if (permission('employee-salary-payment-change-status')) {
-                $result = $this->model->find($request->id);
-                $result->update([
-                    'status' => '3',
-                    'deleted_by' => auth()->user()->username,
-                ]);
+                $result = $this->model->find($request->id)->delete();
                 $output = $this->delete_message($result);
             } else {
                 $output = $this->unauthorized();
@@ -210,12 +206,10 @@ class EmployeeSalaryPaymnetController extends BaseController
                 $result = $this->model->find($id);
                 $data = $result;
                 $result->update([
-                    'status' => '2',
-                    'approved_by' => auth()->user()->username,
+                    'status' => '2'
                 ]);
                 $employeeCoa = ChartOfAccount::where('employee_id', $data->employee_id)->first();
-                // dd($employeeCoa);
-                $this->generateSalary($employeeCoa->id, $data->year, $data->month, $data->employee->name, $data->net_salary);
+                $this->generateSalary($employeeCoa->id, $data->employee->name, $data->paid_amount, $data->date, $data->account_id);
                 $output = ['status' => 'success', 'message' => 'Payslip Approve Successful'];
                 DB::commit();
             } catch (\Exception $e) {
@@ -228,31 +222,16 @@ class EmployeeSalaryPaymnetController extends BaseController
         return redirect()->back()->with($output);
     }
 
-    public function generateSalary($employe_coa, $year, $month, $employee_name, $net_salary)
+    public function generateSalary($employe_coa, $employee_name, $net_salary, $date, $account_id)
     {
-        $voucher_no = 'EMSALARY-' . date('ymd') . rand(1, 999);
-        $voucher_date = date('Y-m-d');
-        $monthName = date("F", mktime(0, 0, 0, $month, 1));
-        $description = 'Monthly Salary Generated For the month of ' . $monthName . '-' . $year . ' For ' . $employee_name . '';
+        $voucher_no = 'SALARY-' . date('ymd') . rand(1, 999);
+        $voucher_date = $date;
+        $description = 'Monthly Salary Paid To '. $employee_name . '';
         $liability = [
-            'chart_of_account_id' => 5,
+            'chart_of_account_id' => $account_id,
             'warehouse_id' => 1,
             'voucher_no' => $voucher_no,
-            'voucher_type' => 'Monthly_Salary',
-            'voucher_date' => $voucher_date,
-            'description' => $description,
-            'debit' => $net_salary,
-            'credit' => 0,
-            'is_opening' => 2,
-            'posted' => 1,
-            'approve' => 1,
-            'created_by' => auth()->user()->username
-        ];
-        $emp_ledger = [
-            'chart_of_account_id' => 21,
-            'warehouse_id' => 1,
-            'voucher_no' => $voucher_no,
-            'voucher_type' => 'Monthly_Salary',
+            'voucher_type' => 'SALARY_PAYMENT',
             'voucher_date' => $voucher_date,
             'description' => $description,
             'debit' => $net_salary,
@@ -266,18 +245,17 @@ class EmployeeSalaryPaymnetController extends BaseController
             'chart_of_account_id' => $employe_coa,
             'warehouse_id' => 1,
             'voucher_no' => $voucher_no,
-            'voucher_type' => 'Monthly_Salary',
+            'voucher_type' => 'SALARY_PAYMENT',
             'voucher_date' => $voucher_date,
             'description' => $description,
-            'debit' => 0,
-            'credit' => $net_salary,
+            'debit' => $net_salary,
+            'credit' => 0,
             'is_opening' => 2,
             'posted' => 1,
             'approve' => 1,
             'created_by' => auth()->user()->username
         ];
         Transaction::create($liability);
-        Transaction::create($emp_ledger);
         Transaction::create($employee);
     }
 }
