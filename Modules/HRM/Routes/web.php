@@ -316,7 +316,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Employee Attendance Setup Routes
     Route::get('employee-attendance', 'EmployeeAttendanceController@index')->name('empAttendance');
-    Route::group(['prefix' => 'empAttendance', 'as' => 'empAttendance.'], function () {
+    Route::group(['prefix' => 'employee-attendance', 'as' => 'empAttendance.'], function () {
         Route::post('datatable-data', 'EmployeeAttendanceController@get_datatable_data')->name('datatable.data');
         Route::post('store-or-update', 'EmployeeAttendanceController@store_or_update_data')->name('store.or.update');
         Route::post('edit', 'EmployeeAttendanceController@edit')->name('edit');
@@ -333,4 +333,16 @@ Route::group(['middleware' => ['auth']], function () {
     //Attendance Summery
     Route::get('attendance-summery', 'AttendanceController@summery')->name('attendance.summery');
     Route::post('attendance-summery-data', 'AttendanceController@summeryData')->name('attendance.summery.data');
+
+    
+    //Employee Attendance Setup Routes
+    Route::get('employee-salary-payment', 'EmployeeSalaryPaymnetController@index')->name('employee.salary.payment');
+    Route::group(['prefix' => 'employee-salary-payment', 'as' => 'employee.salary.payment.'], function () {
+        Route::post('datatable-data', 'EmployeeSalaryPaymnetController@get_datatable_data')->name('datatable.data');
+        Route::post('store-or-update', 'EmployeeSalaryPaymnetController@store_or_update_data')->name('store.or.update');
+        Route::get('edit/{id}', 'EmployeeSalaryPaymnetController@edit')->name('edit');
+        Route::post('delete', 'EmployeeSalaryPaymnetController@delete')->name('delete');
+        Route::post('view', 'EmployeeSalaryPaymnetController@view')->name('view');
+        Route::get('approve/{id}', 'EmployeeSalaryPaymnetController@approve')->name('approve');
+    });
 });
