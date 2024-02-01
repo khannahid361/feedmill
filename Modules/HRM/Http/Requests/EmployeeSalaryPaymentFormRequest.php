@@ -11,7 +11,6 @@ class EmployeeSalaryPaymentFormRequest extends FormRequest
 
     public function rules()
     {
-
         if(request()->has('salary'))
         {
             foreach (request()->salary as $key => $value) {

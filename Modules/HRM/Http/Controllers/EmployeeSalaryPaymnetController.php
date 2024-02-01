@@ -6,8 +6,11 @@ use App\Http\Controllers\BaseController;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Modules\Account\Entities\ChartOfAccount;
+use Modules\Account\Entities\Transaction;
 use Modules\HRM\Entities\Employee;
 use Modules\HRM\Entities\EmployeeSalaryPayment;
+use Modules\HRM\Http\Requests\EmployeeSalaryPaymenEdittFormRequest;
 use Modules\HRM\Http\Requests\EmployeeSalaryPaymentFormRequest;
 
 class EmployeeSalaryPaymnetController extends BaseController
@@ -99,20 +102,24 @@ class EmployeeSalaryPaymnetController extends BaseController
                 $employees = DB::table('employees as e')->join('chart_of_accounts as coa', 'coa.employee_id', 'e.id')->join('transactions as t', 't.chart_of_account_id', 'coa.id');
                 if (!in_array("0", $idArray)) {
                     $employees->whereIn('e.id', $idArray);
-                } 
-                $employees=$employees->groupBy('t.chart_of_account_id')->select(DB::raw('sum(debit) as debit'), DB::raw('sum(credit) as credit'),'e.id as employee_id', 'e.name as name')->get();
+                }
+                $employees = $employees->groupBy('t.chart_of_account_id')->select(DB::raw('sum(debit) as debit'), DB::raw('sum(credit) as credit'), 'e.id as employee_id', 'e.name as name')->get();
                 return view('hrm::salary-payment.data', compact('employees'))->render();
             }
         }
     }
 
-    public function edit(Request $request)
+    public function edit($id)
     {
-        if ($request->ajax()) {
-            if (permission('employee-salary-payment-edit')) {
-                $data = $this->model->findOrFail($request->id);
-                return $data;
-            }
+        if (permission('employee-salary-payment-edit')) {
+            $this->setPageData('Edit Employee Payslip', 'Edit Employee Payslip', 'fab fa-opencart', [['name' => 'Edit Employee Payslip']]);
+            $data = $this->model->with('coa', 'employee')->findOrFail($id);
+            $coahead = $data->employee->coa->id;
+            $due = Transaction::where('chart_of_account_id', $coahead)->select(DB::raw('sum(debit) as debit'), DB::raw('sum(credit) as credit'))->first();
+            $due = $due->credit - $due->debit;
+            return view('hrm::salary-payment.edit', compact('data', 'due'));
+        } else {
+            return response()->json($this->unauthorized());
         }
     }
 
@@ -144,6 +151,29 @@ class EmployeeSalaryPaymnetController extends BaseController
                 }
                 $this->model->insert($salary);
                 $output = ['status' => 'success', 'message' => 'Salary added successfully'];
+            } else {
+                $output = $this->unauthorized();
+            }
+            return response()->json($output);
+        } else {
+            return response()->json($this->unauthorized());
+        }
+    }
+
+    public function update(EmployeeSalaryPaymenEdittFormRequest $request)
+    {
+        if ($request->ajax()) {
+            if (permission('employee-salary-payment-add') || permission('employee-salary-payment-edit')) {
+                $data = EmployeeSalaryPayment::where('id', $request->update_id)->first();
+                $data->update([
+                    'paid_amount' => $request->paid_amount,
+                    'payment_method' => $request->payment_method,
+                    'account_id' => $request->account_id,
+                    'date' => date("Y-m-d"),
+                    'modified_by' => auth()->user()->username,
+                    'status' => 1
+                ]);
+                $output = ['status' => 'success', 'message' => 'Salary Updated successfully'];
             } else {
                 $output = $this->unauthorized();
             }

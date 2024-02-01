@@ -4,6 +4,7 @@ namespace Modules\HRM\Entities;
 
 use App\Models\BaseModel;
 use Illuminate\Support\Facades\Hash;
+use Modules\Account\Entities\ChartOfAccount;
 use Modules\Department\Entities\Department;
 use Modules\Designation\Entities\Designation;
 
@@ -30,6 +31,11 @@ class Employee extends BaseModel
     public function salary()
     {
         return $this->hasOne(Salary::class, 'employee_id', 'id');
+    }
+
+    public function coa()
+    {
+        return $this->hasOne(ChartOfAccount::class, 'employee_id', 'id');
     }
 
     /******************************************

@@ -341,6 +341,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('datatable-data', 'EmployeeSalaryPaymnetController@get_datatable_data')->name('datatable.data');
         Route::get('create', 'EmployeeSalaryPaymnetController@create')->name('create');
         Route::post('store-or-update', 'EmployeeSalaryPaymnetController@storeOrUpdate')->name('store.or.update');
+        Route::post('update', 'EmployeeSalaryPaymnetController@update')->name('update');
         Route::get('edit/{id}', 'EmployeeSalaryPaymnetController@edit')->name('edit');
         Route::post('delete', 'EmployeeSalaryPaymnetController@delete')->name('delete');
         Route::post('view', 'EmployeeSalaryPaymnetController@view')->name('view');
