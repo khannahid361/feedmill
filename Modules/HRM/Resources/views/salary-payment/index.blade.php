@@ -90,7 +90,7 @@
             <!--end::Card-->
         </div>
     </div>
-    {{-- @include('hrm::salary-payment.view-modal') --}}
+    @include('hrm::salary-payment.view-modal')
 @endsection
 
 @push('scripts')

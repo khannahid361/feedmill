@@ -57,7 +57,7 @@ class EmployeeSalaryPaymnetController extends BaseController
                     if (permission('employee-salary-payment-view')) {
                         $action .= ' <a class="dropdown-item view-data" data-id="' . $value->id . '" data-name="' . $value->employee->name . '">' . self::ACTION_BUTTON['View'] . '</a>';
                     }
-                    if (permission('employee-salary-payment-edit')) {
+                    if (permission('employee-salary-payment-edit') && $value->status == 1) {
                         $action .= ' <a class="dropdown-item" href="' . route("employee.salary.payment.edit", $value->id) . '">' . self::ACTION_BUTTON['Edit'] . '</a>';
                     }
                     $row = [];
@@ -127,7 +127,7 @@ class EmployeeSalaryPaymnetController extends BaseController
     {
         if ($request->ajax()) {
             if (permission('employee-salary-payment-view')) {
-                $data = $this->model->with('employee', 'shift')->findOrFail($request->id);
+                $data = $this->model->with('employee', 'coa')->findOrFail($request->id);
                 return view('hrm::salary-payment.modal-data', compact('data'))->render();
             }
         }
