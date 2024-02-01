@@ -16,7 +16,7 @@
                     <div class="card-toolbar">
                         <!--begin::Button-->
                         @if (permission('employee-salary-payment-add'))
-                            <a href="{{ route('generate.salary.create') }}"
+                            <a href="{{ route('employee.salary.payment.create') }}"
                                class="btn btn-primary btn-sm font-weight-bolder"><i class="fas fa-plus-circle"></i> Add
                                 New</a>
                         @endif
@@ -30,19 +30,7 @@
                 <div class="card-header flex-wrap py-5">
                     <form method="POST" id="form-filter" class="col-md-12 px-0">
                         <div class="row">
-                            <x-form.selectbox labelName="{{__('Year')}}" name="year" id="year"
-                                              col="col-md-4" class="selectpicker">
-                                @foreach (salaryYears() as $key => $row)
-                                    <option value="{{ $row }}">{{ $row }}</option>
-                                @endforeach
-                            </x-form.selectbox>
-                            <x-form.selectbox labelName="{{__('Month')}}" name="month" id="month"
-                                              col="col-md-4" class="selectpicker">
-                                @foreach (allMonths() as $key => $row)
-                                    <option value="{{ $key }}">{{ $row }}</option>
-                                @endforeach
-                            </x-form.selectbox>
-                            <x-form.selectbox labelName="Status" name="type" col="col-md-4" class="selectpicker">
+                            <x-form.selectbox labelName="Status" name="status" col="col-md-4" class="selectpicker">
                                 @foreach (LEAVE_STATUS as $key => $value)
                                     <option value="{{ $key }}">{{ $value }}</option>
                                 @endforeach
@@ -83,15 +71,10 @@
                                     <tr>
                                         <th>{{__('file.SL')}}</th>
                                         <th>{{__('file.Employee Name')}}</th>
-                                        <th>{{__('file.Month')}}</th>
-                                        <th>{{__('file.Year')}}</th>
-                                        <th>{{__('file.Working Days')}}</th>
-                                        <th>{{__('file.Leave(Paid & Unpaid)')}}</th>
-                                        <th>{{__('file.Working Hours')}}</th>
-                                        <th>{{__('file.Attended Hours')}}</th>
-                                        <th>{{__('file.Net Salary')}}</th>
+                                        <th>{{__('file.Paid Amount')}}</th>
+                                        <th>{{__('file.Account')}}</th>
                                         <th>{{__('file.Created By')}}</th>
-                                        <th>{{__('file.Approved By')}}</th>
+                                        <th>{{__('file.Modified By')}}</th>
                                         <th>{{__('file.Status')}}</th>
                                         <th>{{__('file.Action')}}</th>
                                     </tr>
@@ -107,7 +90,7 @@
             <!--end::Card-->
         </div>
     </div>
-    @include('hrm::generate-salary.view-modal')
+    {{-- @include('hrm::salary-payment.view-modal') --}}
 @endsection
 
 @push('scripts')
@@ -134,7 +117,7 @@
                     zeroRecords: '<strong class="text-danger">No Data Found</strong>'
                 },
                 "ajax": {
-                    "url": "{{route('generate.salary.datatable.data')}}",
+                    "url": "{{route('employee.salary.payment.datatable.data')}}",
                     "type": "POST",
                     "data": function (data) {
                         data.employee_id = $("#form-filter #employee_id").val();
@@ -145,7 +128,7 @@
                     }
                 },
                 "columnDefs": [{
-                    "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                    "targets": [0, 1, 2, 3, 4, 5, 6, 7],
                     "orderable": false,
                     "className": "text-center"
                 },
@@ -169,7 +152,7 @@
                 let name  = $(this).data('name');
                 if (id) {
                     $.ajax({
-                        url: "{{route('generate.salary.view')}}",
+                        url: "{{route('employee.salary.payment.view')}}",
                         type: "POST",
                         data: { id: id,_token: _token},
                         success: function (data) {
@@ -193,7 +176,7 @@
                 let id = $(this).data('id');
                 let name = $(this).data('name');
                 let row = table.row($(this).parent('tr'));
-                let url = "{{ route('generate.salary.delete') }}";
+                let url = "{{ route('employee.salary.payment.delete') }}";
                 delete_data(id, url, table, row, name);
             });
         });

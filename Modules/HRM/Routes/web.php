@@ -339,10 +339,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('employee-salary-payment', 'EmployeeSalaryPaymnetController@index')->name('employee.salary.payment');
     Route::group(['prefix' => 'employee-salary-payment', 'as' => 'employee.salary.payment.'], function () {
         Route::post('datatable-data', 'EmployeeSalaryPaymnetController@get_datatable_data')->name('datatable.data');
+        Route::get('create', 'EmployeeSalaryPaymnetController@create')->name('create');
         Route::post('store-or-update', 'EmployeeSalaryPaymnetController@store_or_update_data')->name('store.or.update');
         Route::get('edit/{id}', 'EmployeeSalaryPaymnetController@edit')->name('edit');
         Route::post('delete', 'EmployeeSalaryPaymnetController@delete')->name('delete');
         Route::post('view', 'EmployeeSalaryPaymnetController@view')->name('view');
         Route::get('approve/{id}', 'EmployeeSalaryPaymnetController@approve')->name('approve');
     });
+
+    Route::post('get-employees-due', 'EmployeeSalaryPaymnetController@getEmployees')->name('get.employees.due');
 });

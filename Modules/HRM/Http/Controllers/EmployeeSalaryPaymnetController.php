@@ -5,6 +5,7 @@ namespace Modules\HRM\Http\Controllers;
 use App\Http\Controllers\BaseController;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Modules\HRM\Entities\Employee;
 use Modules\HRM\Entities\EmployeeSalaryPayment;
 use Modules\HRM\Http\Requests\EmployeeSalaryPaymentFormRequest;
@@ -21,7 +22,7 @@ class EmployeeSalaryPaymnetController extends BaseController
         if (permission('employee-salary-payment-access')) {
             $this->setPageData('Manage Employee Payment', 'Manage Employee Payment', 'fab fa-opencart', [['name' => 'Manage Employee Payment']]);
             $employees = Employee::where('activation_status', '1')->get();
-            return view('hrm::salary-payment.index', compact('employees', 'shifts'));
+            return view('hrm::salary-payment.index', compact('employees'));
         } else {
             return $this->access_blocked();
         }
@@ -95,15 +96,12 @@ class EmployeeSalaryPaymnetController extends BaseController
         if ($request->ajax()) {
             if (permission('employee-salary-payment-add')) {
                 $idArray = $request->id;
-                $month = $request->month;
-                $year = $request->year;
-                if (in_array("0", $idArray)) {
-                    $employees = Employee::with('department', 'salary', 'salary.shift')->where('activation_status', '1')
-                        ->get();
-                } else {
-                    $employees = Employee::with('designation', 'department', 'branch', 'salary', 'salary.shift')->where('activation_status', '1')->whereIn('id', $idArray)->get();
-                }
-                return view('hrm::salary-payment.data', compact('employees', 'month', 'year'))->render();
+                $employees = DB::table('employees as e')->join('chart_of_accounts as coa', 'coa.employee_id', 'e.id')->join('transactions as t', 't.chart_of_account_id', 'coa.id');
+                if (!in_array("0", $idArray)) {
+                    $employees->whereIn('e.id', $idArray);
+                } 
+                $employees=$employees->groupBy('t.chart_of_account_id')->select(DB::raw('sum(debit) as debit'), DB::raw('sum(credit) as credit'),'e.id as employee_id', 'e.name as name')->get();
+                return view('hrm::salary-payment.data', compact('employees'))->render();
             }
         }
     }
