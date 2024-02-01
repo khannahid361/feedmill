@@ -134,20 +134,10 @@ class EmployeeSalaryPaymnetController extends BaseController
                 foreach ($request->salary as $value) {
                     $salary[] = [
                         'employee_id' => $value['employee_id'],
-                        'shift_id' => $value['shift_id'],
-                        'month' => $request->month_id,
-                        'year' => $request->year_id,
-                        'total_working_days' => $value['total_working_days'],
-                        'total_holidays' => $value['total_holidays'],
-                        'total_attended' => $value['total_attended'],
-                        'total_paid_leaves' => $value['total_paid_leaves'],
-                        'total_unpaid_leaves' => $value['total_unpaid_leaves'],
-                        'total_working_hours' => $value['total_working_hours'],
-                        'total_attended_hours' => $value['total_attended_hours'],
-                        'increment_salary' => $value['increment_salary'],
-                        'current_salary' => $value['current_salary'],
-                        'gross_salary' => $value['gross_salary'],
-                        'net_salary' => $value['net_salary'],
+                        'paid_amount' => $value['paid_amount'],
+                        'payment_method' => $value['payment_method'],
+                        'account_id' => $value['account_id'],
+                        'date' => date("Y-m-d"),
                         'created_by' => auth()->user()->username,
                         'status' => 1
                     ];
