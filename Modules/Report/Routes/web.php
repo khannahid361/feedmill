@@ -143,4 +143,8 @@ Route::group(['middleware' => ['auth']], function () {
     //Dealer monthly sales report
     Route::get('monthly-sales-report', 'MonthlyDealerSaleReportController@index')->name('monthly.dealer.sales.report');
     Route::post('monthly-sales-report/data', 'MonthlyDealerSaleReportController@productLedgerData')->name('monthly.dealer.sales.report.data');
+
+    //Employee Ledger
+    Route::get('employee-ledger', 'EmployeeLedgerController@index')->name('employee.ledger');
+    Route::post('employee-ledger/data', 'EmployeeLedgerController@report')->name('employee.ledger.data');
 });
