@@ -96,7 +96,7 @@
 
            $thisEmployeeShiftHours = $emp->salary->shift->shift_hours;
 
-           $actualWorkingDays = $validDaysCount - $totalHolidays - $thisEmployeePaidLeaves;
+           $actualWorkingDays = $validDaysCount - $thisEmployeePaidLeaves;
 
            $monthlyWorkingHours = $actualWorkingDays * $thisEmployeeShiftHours;
         @endphp
